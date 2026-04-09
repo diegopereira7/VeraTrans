@@ -1,0 +1,4 @@
+pdfplumber==0.11.9
+tabulate==0.10.0
+openpyxl==3.1.5
+pytest==9.0.2
