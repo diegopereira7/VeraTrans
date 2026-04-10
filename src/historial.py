@@ -47,24 +47,31 @@ class History:
             entry['pdf_path'] = self.entries[inv]['pdf_path']
         self.entries[inv] = entry
         self.save()
-        # Sync a MySQL
+        # Sync a MySQL — el schema real usa nombres en español
+        # (numero_factura, pdf_nombre, proveedor, ok_count, sin_match,
+        #  fecha_proceso) y `numero_factura` es la clave única.
         if MYSQL_AVAILABLE:
             try:
                 conn = get_connection()
                 cur = conn.cursor()
                 cur.execute("""
-                    INSERT INTO historial (invoice_key, pdf, provider, total_usd,
-                        lineas, ok, sin_match, fecha)
-                    VALUES (%s,%s,%s,%s,%s,%s,%s,%s)
+                    INSERT INTO historial
+                        (numero_factura, pdf_nombre, proveedor, total_usd,
+                         lineas, ok_count, sin_match, fecha_proceso)
+                    VALUES (%s, %s, %s, %s, %s, %s, %s, %s)
                     ON DUPLICATE KEY UPDATE
-                        pdf=VALUES(pdf), total_usd=VALUES(total_usd),
-                        lineas=VALUES(lineas), ok=VALUES(ok), sin_match=VALUES(sin_match),
-                        fecha=VALUES(fecha), provider=VALUES(provider)
+                        pdf_nombre    = VALUES(pdf_nombre),
+                        proveedor     = VALUES(proveedor),
+                        total_usd     = VALUES(total_usd),
+                        lineas        = VALUES(lineas),
+                        ok_count      = VALUES(ok_count),
+                        sin_match     = VALUES(sin_match),
+                        fecha_proceso = VALUES(fecha_proceso)
                 """, (inv, pdf, provider, total, n, ok, fail, fecha + ':00'))
                 conn.commit()
                 conn.close()
             except Exception as e:
-                logger.debug("MySQL historial sync falló: %s", e)
+                logger.warning("MySQL historial sync falló: %s", e)
 
     def was_processed(self, inv: str) -> bool:
         """Comprueba si una factura ya fue procesada."""

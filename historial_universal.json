@@ -15044,13 +15044,14 @@
     "fecha": "2026-04-09 09:29"
   },
   "1519": {
-    "pdf": "PREMIUM 1519.pdf",
-    "provider": "Premium Flowers Boyacá",
-    "total_usd": 636.0,
-    "lineas": 8,
-    "ok": 3,
-    "sin_match": 3,
-    "fecha": "2026-04-09 09:29"
+    "pdf": "1775806521_PONDEROSA_1.pdf",
+    "provider": "Verdes La Estacion",
+    "total_usd": 0.0,
+    "lineas": 6,
+    "ok": 6,
+    "sin_match": 0,
+    "fecha": "2026-04-10 09:35",
+    "pdf_path": "C:\\verabuy-traductor\\web\\uploads\\1775806521_PONDEROSA_1.pdf"
   },
   "2117": {
     "pdf": "PRESTIGE 2117.pdf",
@@ -15676,13 +15677,93 @@
     "pdf_path": "C:\\verabuy-traductor\\web\\uploads\\1775735712_VUELVEN.pdf"
   },
   "000004214": {
-    "pdf": "1775735729_BRISSAS.pdf",
+    "pdf": "1775805803_BRISSAS.pdf",
     "provider": "Brissas",
     "total_usd": 13800.0,
     "lineas": 38,
     "ok": 30,
     "sin_match": 5,
-    "fecha": "2026-04-09 13:55",
-    "pdf_path": "C:\\verabuy-traductor\\web\\uploads\\1775735729_BRISSAS.pdf"
+    "fecha": "2026-04-10 09:23",
+    "pdf_path": "C:\\verabuy-traductor\\web\\uploads\\1775805803_BRISSAS.pdf"
+  },
+  "3689": {
+    "pdf": "DAFLOR.pdf",
+    "provider": "Daflor",
+    "total_usd": 0.0,
+    "lineas": 8,
+    "ok": 7,
+    "sin_match": 0,
+    "fecha": "2026-04-10 09:16",
+    "pdf_path": "C:\\verabuy-traductor\\batch_uploads\\20260410071655_695f5d63\\DAFLOR.pdf"
+  },
+  "3688": {
+    "pdf": "DAFLOR_2.pdf",
+    "provider": "Daflor",
+    "total_usd": 0.0,
+    "lineas": 7,
+    "ok": 2,
+    "sin_match": 3,
+    "fecha": "2026-04-10 09:16",
+    "pdf_path": "C:\\verabuy-traductor\\batch_uploads\\20260410071655_695f5d63\\DAFLOR_2.pdf"
+  },
+  "INV-008092": {
+    "pdf": "1775805831_MILONGAS.pdf",
+    "provider": "Flores Milonga",
+    "total_usd": 1977.5,
+    "lineas": 19,
+    "ok": 17,
+    "sin_match": 0,
+    "fecha": "2026-04-10 09:23",
+    "pdf_path": "C:\\verabuy-traductor\\web\\uploads\\1775805831_MILONGAS.pdf"
+  },
+  "8.555": {
+    "pdf": "NEUSA.pdf",
+    "provider": "Inversiones del Neusa",
+    "total_usd": 0.0,
+    "lineas": 3,
+    "ok": 3,
+    "sin_match": 0,
+    "fecha": "2026-04-10 09:25",
+    "pdf_path": "C:\\verabuy-traductor\\batch_uploads\\20260410072516_5b0e5d1c\\NEUSA.pdf"
+  },
+  "1518": {
+    "pdf": "PONDEROSA.pdf",
+    "provider": "Verdes La Estacion",
+    "total_usd": 0.0,
+    "lineas": 69,
+    "ok": 69,
+    "sin_match": 0,
+    "fecha": "2026-04-10 09:25",
+    "pdf_path": "C:\\verabuy-traductor\\batch_uploads\\20260410072516_5b0e5d1c\\PONDEROSA.pdf"
+  },
+  "1772": {
+    "pdf": "PREMIUM.pdf",
+    "provider": "Premium Flowers Boyacá",
+    "total_usd": 780.0,
+    "lineas": 8,
+    "ok": 2,
+    "sin_match": 4,
+    "fecha": "2026-04-10 09:17",
+    "pdf_path": "C:\\verabuy-traductor\\batch_uploads\\20260410071655_695f5d63\\PREMIUM.pdf"
+  },
+  "2688": {
+    "pdf": "PRESTIGE_ROSES.pdf",
+    "provider": "Prestige Roses",
+    "total_usd": 0.0,
+    "lineas": 6,
+    "ok": 3,
+    "sin_match": 3,
+    "fecha": "2026-04-10 09:25",
+    "pdf_path": "C:\\verabuy-traductor\\batch_uploads\\20260410072516_5b0e5d1c\\PRESTIGE_ROSES.pdf"
+  },
+  "135371": {
+    "pdf": "TURFLOR.pdf",
+    "provider": "Turflor",
+    "total_usd": 0.0,
+    "lineas": 3,
+    "ok": 0,
+    "sin_match": 2,
+    "fecha": "2026-04-10 09:17",
+    "pdf_path": "C:\\verabuy-traductor\\batch_uploads\\20260410071655_695f5d63\\TURFLOR.pdf"
   }
 }

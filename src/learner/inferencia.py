@@ -221,38 +221,100 @@ def _inferir_desde_texto(fps: list[PDFFingerprint]) -> list[ExtractionRule]:
     fp_ref = fps[0]
     sep = fp_ref.separador_campos
 
+    def _split_line(line: str, separator: str) -> list[str]:
+        if separator == 'tab':
+            return [f.strip() for f in line.split('\t') if f.strip()]
+        # Por defecto: 2+ espacios (PDFs con columnas alineadas)
+        return [f.strip() for f in re.split(r'\s{2,}', line) if f.strip()]
+
     # Splitear líneas en campos
     field_sets: list[list[str]] = []
     for line in all_lines:
-        if sep == 'tab':
-            fields = [f.strip() for f in line.split('\t') if f.strip()]
-        else:
-            fields = [f.strip() for f in re.split(r'\s{2,}', line) if f.strip()]
+        fields = _split_line(line, sep)
         if len(fields) >= 3:
             field_sets.append(fields)
+
+    # Fallback: si el separador "natural" no produjo nada utilizable
+    # (típico en PDFs donde las columnas se separan por 1 espacio),
+    # reintentamos splitenado por espacios simples. Esto sacrifica
+    # robustez contra varieties multi-palabra a cambio de poder inferir
+    # reglas para formatos compactos como FARIN ROSES.
+    if not field_sets:
+        for line in all_lines:
+            fields = [f.strip() for f in re.split(r'\s+', line) if f.strip()]
+            if len(fields) >= 3:
+                field_sets.append(fields)
 
     if not field_sets:
         return rules
 
+    # Si las líneas tienen longitudes mixtas, nos quedamos con el formato
+    # dominante: el análisis por posición sólo funciona si las columnas
+    # están alineadas. Esto evita confundir el clasificador cuando un PDF
+    # incluye líneas extra de tipo "<stems> <spb> <bunches> <variety>..."
+    # mezcladas con la línea principal "<farm> <boxes> <type> ...".
+    from collections import Counter
+    len_counts = Counter(len(fs) for fs in field_sets)
+    if len(len_counts) > 1:
+        dominant_len, _ = len_counts.most_common(1)[0]
+        field_sets = [fs for fs in field_sets if len(fs) == dominant_len]
+
     # Analizar cada posición
     max_cols = max(len(fs) for fs in field_sets)
 
+    classifications: list[tuple[int, str, list[str]]] = []
     for col_idx in range(min(max_cols, 15)):
         values = [fs[col_idx] for fs in field_sets if col_idx < len(fs)]
         if not values:
             continue
-
         campo = _classify_column(values, col_idx, max_cols)
         if campo:
-            rules.append(ExtractionRule(
-                campo_destino=campo,
-                tipo='posicion_fija',
-                indice_columna=col_idx,
-                confianza=0.6,
-                evidencia=values[:5],
-            ))
+            classifications.append((col_idx, campo, values))
+
+    # Promoción de variety: si ninguna columna se clasificó como variety
+    # pero hay columnas de texto sin etiquetar (no box_type ni literal),
+    # promovemos la columna de texto con valores más largos a `variety`.
+    # Esto resuelve formatos donde la variedad no está en las primeras 3
+    # columnas (ej: FARIN, donde VINTAGE viene tras farm/box/stems).
+    has_variety = any(c == 'variety' for _, c, _ in classifications)
+    if not has_variety:
+        used_cols = {idx for idx, _, _ in classifications}
+        text_cols: list[tuple[int, list[str], float]] = []
+        for col_idx in range(min(max_cols, 15)):
+            if col_idx in used_cols:
+                continue
+            values = [fs[col_idx] for fs in field_sets if col_idx < len(fs)]
+            if not values:
+                continue
+            # ¿Es columna de texto descriptivo (no número, no literal corto)?
+            text_only = all(
+                not re.match(r'^[\d.,$]+$', v) and len(v) >= 3
+                and v.upper() not in ('CMS', 'CM', 'PCS', 'EA', 'UN', 'USD')
+                for v in values
+            )
+            if text_only:
+                avg_len = sum(len(v) for v in values) / len(values)
+                text_cols.append((col_idx, values, avg_len))
+        if text_cols:
+            # La columna con la media de longitud más alta gana
+            text_cols.sort(key=lambda x: -x[2])
+            best_idx, best_vals, _ = text_cols[0]
+            classifications.append((best_idx, 'variety', best_vals))
+
+    for col_idx, campo, values in classifications:
+        rules.append(ExtractionRule(
+            campo_destino=campo,
+            tipo='posicion_fija',
+            indice_columna=col_idx,
+            confianza=0.6,
+            evidencia=values[:5],
+        ))
 
     return rules
+
+
+_BOX_TYPE_RE = re.compile(r'^(QB|HB|TB|FB|HALF|QUARTER|FULL|H|Q|F)$', re.IGNORECASE)
+_LITERAL_RE  = re.compile(r'^(CMS?|PCS|EA|UN|USD|US\$|\$)$', re.IGNORECASE)
 
 
 def _classify_column(values: list[str], col_idx: int, max_cols: int) -> str | None:
@@ -283,7 +345,17 @@ def _classify_column(values: list[str], col_idx: int, max_cols: int) -> str | No
     int_ratio = int_count / total
     text_ratio = text_count / total
 
-    # Texto descriptivo (probablemente variety/product)
+    # Box types (QB/HB/TB/...) → box_type
+    if text_ratio > 0.7 and all(_BOX_TYPE_RE.match(v) for v in values):
+        return 'box_type'
+
+    # Literales fijos (CMS/PCS/$/...) → no es un campo extraíble
+    if text_ratio > 0.7 and all(_LITERAL_RE.match(v) for v in values):
+        return None
+
+    # Texto descriptivo en columnas tempranas → posible variety
+    # (la lógica de promoción posterior cubre el caso de variety en
+    # posiciones intermedias).
     if text_ratio > 0.7:
         if col_idx <= 2:
             return 'variety'

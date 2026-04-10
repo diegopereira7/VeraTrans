@@ -92,12 +92,26 @@ class ArticulosLoader:
     def load_from_sql(self, sql_path: str) -> int:
         """Carga artículos desde un dump SQL de INSERT statements.
 
+        Si el dump no existe en disco, hace fallback automático a MySQL.
+        El proyecto migró los artículos a la BD `traductor-verabuy` y el
+        dump dejó de mantenerse, pero los callers (batch_process,
+        procesar_pdf) siguen invocando este método con la ruta histórica.
+
         Args:
             sql_path: Ruta al fichero .sql.
 
         Returns:
             Número de artículos cargados.
         """
+        from pathlib import Path
+        if not Path(sql_path).exists():
+            # NB: usamos logger.info (no warning) a propósito: el handler
+            # `lastResort` de Python descarta INFO por defecto, así no se
+            # imprime nada en stderr y la salida JSON de los CLI (procesar_pdf
+            # / batch_process) queda limpia para el wrapper PHP.
+            logger.info("Dump SQL no encontrado en %s; cargando desde MySQL", sql_path)
+            return self.load_from_db()
+
         count = 0
         for sp in set(SPECIES_PREFIXES.values()):
             self.by_species[sp] = []
@@ -112,14 +126,7 @@ class ArticulosLoader:
                     art = self._parse_row(ln)
                     if not art:
                         continue
-                    self.articulos[art['id']] = art
-                    nombre = art['nombre']
-                    if nombre:
-                        self.by_name[nombre.upper()] = art['id']
-                        clean = strip_provider_suffix(nombre.upper())
-                        if clean != nombre.upper():
-                            self.by_name[clean] = art['id']
-                        self._index_species(art)
+                    self._register_article(art)
                     count += 1
                 except (ValueError, IndexError):
                     continue
@@ -130,6 +137,62 @@ class ArticulosLoader:
         logger.info("Artículos cargados: %d, rosas EC: %d, variedades: %d",
                      count, len(self.rosas_ec), len(self.by_variety))
         return count
+
+    def load_from_db(self) -> int:
+        """Carga artículos desde la tabla MySQL `articulos`.
+
+        Lee los mismos 6 campos que extrae `_parse_row` del dump SQL para
+        que la indexación posterior sea idéntica.
+
+        Returns:
+            Número de artículos cargados.
+        """
+        from src.db import get_connection
+
+        count = 0
+        for sp in set(SPECIES_PREFIXES.values()):
+            self.by_species[sp] = []
+
+        conn = get_connection()
+        try:
+            with conn.cursor() as cur:
+                cur.execute(
+                    "SELECT id, id_proveedor, tamano, paquete, nombre, familia "
+                    "FROM articulos"
+                )
+                for row in cur.fetchall():
+                    art = {
+                        'id':           int(row[0] or 0),
+                        'id_proveedor': int(row[1] or 0),
+                        'tamano':       row[2] or '',
+                        'paquete':      int(row[3] or 0),
+                        'nombre':       row[4] or '',
+                        'familia':      row[5] or '',
+                    }
+                    if not art['id']:
+                        continue
+                    self._register_article(art)
+                    count += 1
+        finally:
+            conn.close()
+
+        self._build_brand_index()
+        self._build_variety_index()
+        self.loaded = True
+        logger.info("Artículos cargados desde MySQL: %d, rosas EC: %d, variedades: %d",
+                     count, len(self.rosas_ec), len(self.by_variety))
+        return count
+
+    def _register_article(self, art: dict) -> None:
+        """Registra un artículo en los índices internos (compartido SQL/DB)."""
+        self.articulos[art['id']] = art
+        nombre = art['nombre']
+        if nombre:
+            self.by_name[nombre.upper()] = art['id']
+            clean = strip_provider_suffix(nombre.upper())
+            if clean != nombre.upper():
+                self.by_name[clean] = art['id']
+            self._index_species(art)
 
     # --- Búsquedas ---
 

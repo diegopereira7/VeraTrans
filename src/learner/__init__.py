@@ -102,6 +102,7 @@ def aprender_de_batch(pdfs_sin_parser: list[dict]) -> list[dict]:
         nombre = cluster_fps[0].proveedor_candidato or f'auto_{cluster_id[:8]}'
 
         if score >= 0.85:
+            # VERDE: parser activo en producción, sin revisión necesaria.
             parser_info = generar_parser(nombre, reglas, cluster_fps, score)
             registrar_parser_aprendido(parser_info)
             auditor.log_parser_generado(nombre, score, reglas, cluster_fps, detalles, 'VERDE')
@@ -113,6 +114,7 @@ def aprender_de_batch(pdfs_sin_parser: list[dict]) -> list[dict]:
                 'parser_info': parser_info,
             })
         elif score >= 0.50:
+            # AMARILLO: parser activo PERO marcado para revisión.
             parser_info = generar_parser(nombre, reglas, cluster_fps, score)
             registrar_parser_aprendido(parser_info)
             auditor.log_parser_generado(nombre, score, reglas, cluster_fps, detalles, 'AMARILLO')
@@ -121,6 +123,20 @@ def aprender_de_batch(pdfs_sin_parser: list[dict]) -> list[dict]:
                 'nombre': nombre,
                 'score': score,
                 'decision': 'AMARILLO',
+                'pdfs': [fp.pdf_path for fp in cluster_fps],
+            })
+        elif score >= 0.25:
+            # NARANJA: parser NO activado. Sólo se registra en pendientes
+            # para que el usuario lo vea en la pestaña Auto-Aprendizaje y
+            # decida si lo aprueba manualmente. Esto evita que un parser
+            # poco confiable ensucie producción pero da feedback de que el
+            # motor sí intentó aprender.
+            auditor.log_parser_generado(nombre, score, reglas, cluster_fps, detalles, 'NARANJA')
+            auditor.registrar_pendiente(nombre, score, cluster_fps, reglas, detalles)
+            resultados.append({
+                'nombre': nombre,
+                'score': score,
+                'decision': 'NARANJA',
                 'pdfs': [fp.pdf_path for fp in cluster_fps],
             })
         else:

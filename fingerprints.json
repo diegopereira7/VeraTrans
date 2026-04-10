@@ -1,0 +1,47 @@
+{
+  "C:\\verabuy-traductor\\web/uploads/1775806807_FARIN_375.pdf": {
+    "hash_estructura": "5ed4e00195b8",
+    "proveedor_candidato": "FARIN ROSES (cid:13)",
+    "keywords": [
+      "INVOICE",
+      "ROSES",
+      "SL"
+    ],
+    "num_paginas": 1,
+    "tiene_tablas": false,
+    "num_columnas": 0,
+    "headers": [],
+    "confianza": 0.4,
+    "timestamp": "2026-04-10T09:40:07.591094"
+  },
+  "C:\\verabuy-traductor\\web/uploads/1775806816_FARIN_375.pdf": {
+    "hash_estructura": "5ed4e00195b8",
+    "proveedor_candidato": "FARIN ROSES (cid:13)",
+    "keywords": [
+      "INVOICE",
+      "ROSES",
+      "SL"
+    ],
+    "num_paginas": 1,
+    "tiene_tablas": false,
+    "num_columnas": 0,
+    "headers": [],
+    "confianza": 0.4,
+    "timestamp": "2026-04-10T09:40:16.461865"
+  },
+  "web/uploads/1775806807_FARIN_375.pdf": {
+    "hash_estructura": "5ed4e00195b8",
+    "proveedor_candidato": "FARIN ROSES (cid:13)",
+    "keywords": [
+      "INVOICE",
+      "ROSES",
+      "SL"
+    ],
+    "num_paginas": 1,
+    "tiene_tablas": false,
+    "num_columnas": 0,
+    "headers": [],
+    "confianza": 0.4,
+    "timestamp": "2026-04-10T09:42:48.489992"
+  }
+}

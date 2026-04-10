@@ -59,10 +59,20 @@ def _process_single_pdf(
     """Procesa un PDF individual. Retorna dict con resultado o error."""
     pdata = detect_provider(str(pdf_path))
     if not pdata:
+        # Re-extraemos el texto para poder pasárselo al motor de
+        # auto-aprendizaje al final del batch. detect_provider lo extrajo
+        # pero lo descartó al no encontrar match. La clave empieza con `_`
+        # para que la serialización a JSON la filtre.
+        from src.pdf import extract_text
+        try:
+            _text = extract_text(str(pdf_path))
+        except Exception:
+            _text = ''
         return {
             'ok': False,
             'pdf': pdf_path.name,
             'error': 'Proveedor no reconocido',
+            '_text': _text,
         }
 
     pdata['pdf_path'] = str(pdf_path)  # para parsers que usan pdfplumber tables
@@ -233,8 +243,16 @@ def _generate_excel(results: list[dict], output_path: Path):
 
 def run_batch(folder: Path, batch_id: str | None = None, output: Path | None = None):
     """Ejecuta el procesamiento masivo."""
-    status_path = STATUS_DIR / f'{batch_id}.json' if batch_id else None
     is_web = batch_id is not None
+
+    # Asegurar que existan los directorios de estado/resultados antes de escribir.
+    # Si no, la primera llamada a _write_status revienta y, al correr en background
+    # con la salida redirigida, el batch queda colgado en "Iniciando..." sin pista.
+    if is_web:
+        STATUS_DIR.mkdir(parents=True, exist_ok=True)
+        RESULTS_DIR.mkdir(parents=True, exist_ok=True)
+
+    status_path = STATUS_DIR / f'{batch_id}.json' if batch_id else None
 
     def update_status(data: dict):
         if status_path:
@@ -464,9 +482,10 @@ def run_batch(folder: Path, batch_id: str | None = None, output: Path | None = N
               f'{total_lineas} líneas ({total_ok} match, {total_fail} sin match)')
         print(f'Total USD: ${total_usd:,.2f}')
 
-    # Limpiar carpeta temporal (solo modo web)
-    if is_web and folder.parent == UPLOADS_DIR:
-        shutil.rmtree(folder, ignore_errors=True)
+    # NB: ya NO borramos la carpeta de uploads al terminar. Los PDFs deben
+    # quedar disponibles ~1 día para que la pestaña Historial pueda
+    # reprocesarlos y mostrar las líneas. La limpieza diferida la hace el
+    # wrapper PHP (`_cleanOldBatches`) cada vez que arranca un batch nuevo.
 
 
 def main():

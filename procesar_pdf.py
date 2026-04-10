@@ -40,10 +40,31 @@ def run(pdf_path: str) -> dict:
             lines = auto_result['lines']
             # Saltar al matching directamente
             return _process_with_lines(pdf_path, pdata, header, lines)
+
+        # Sin parser aprendido para este PDF. Construimos un mensaje útil
+        # que explique POR QUÉ y qué puede hacer el usuario, en vez de un
+        # genérico "Proveedor no reconocido".
+        info = auto_result.get('auto_learn_info') or {}
+        candidato = info.get('proveedor_candidato')
+        confianza = info.get('confianza_deteccion', 0)
+
+        partes = ['Proveedor no reconocido en el PDF.']
+        if candidato:
+            partes.append(
+                f'Detectado posible proveedor «{candidato}» '
+                f'(confianza {int(confianza * 100)}%).'
+            )
+        partes.append(
+            'El motor de auto-aprendizaje necesita al menos 2 facturas del '
+            'mismo proveedor para inferir un parser nuevo. Sube varias '
+            'juntas en «Importación Masiva» y, cuando termine el lote, el '
+            'sistema generará el parser automáticamente.'
+        )
+
         return {
             'ok': False,
-            'error': 'Proveedor no reconocido en el PDF',
-            'auto_learn_info': auto_result.get('auto_learn_info'),
+            'error': ' '.join(partes),
+            'auto_learn_info': info,
         }
 
     fmt = pdata.get('fmt', '')
@@ -51,8 +72,9 @@ def run(pdf_path: str) -> dict:
     if not parser:
         return {'ok': False, 'error': f'Sin parser para formato "{fmt}"'}
 
-    if not SQL_FILE.exists():
-        return {'ok': False, 'error': f'No se encuentra la BD de artículos: {SQL_FILE}'}
+    # Nota: ya no comprobamos SQL_FILE.exists() — ArticulosLoader.load_from_sql
+    # hace fallback automático a MySQL si el dump no está. La comprobación
+    # bloqueaba todo el flujo aunque la BD estuviera disponible.
 
     # Inyectar ruta al PDF para parsers que necesiten acceso directo (ej: tablas)
     pdata['pdf_path'] = pdf_path
@@ -201,5 +223,17 @@ if __name__ == '__main__':
     if len(sys.argv) < 2:
         print(json.dumps({'ok': False, 'error': 'Uso: procesar_pdf.py <ruta_pdf>'}))
         sys.exit(1)
-    result = run(sys.argv[1])
+    # Cualquier excepción se convierte en una respuesta JSON. El wrapper PHP
+    # captura stdout+stderr (`2>&1`) así que si dejásemos propagar la excepción
+    # el traceback se mezclaría con el JSON y el frontend sólo vería un error
+    # genérico de parseo.
+    try:
+        result = run(sys.argv[1])
+    except Exception as exc:
+        import traceback
+        result = {
+            'ok': False,
+            'error': f'Excepción procesando PDF: {exc}',
+            'traceback': traceback.format_exc(),
+        }
     print(json.dumps(result, ensure_ascii=False, default=str))

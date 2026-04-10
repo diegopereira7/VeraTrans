@@ -1065,7 +1065,11 @@ document.addEventListener('DOMContentLoaded', () => {
                 status = 'OK'; statusClass = 'badge badge-ok';
             }
             const hasLines = r.ok && r.lines && r.lines.length > 0;
-            const needsReview = r.ok && r.sin_match > 0;
+            // Las acciones (editar / eliminar) se muestran siempre que haya
+            // líneas, no solo cuando hay sin_match. Aunque el match por
+            // sinónimo marque la línea como OK puede ser incorrecto y el
+            // usuario tiene que poder corregirlo o eliminarlo.
+            const showActions = hasLines;
             const rowId = `batch-lines-${i}`;
 
             let html = `
@@ -1092,9 +1096,9 @@ document.addEventListener('DOMContentLoaded', () => {
                                     <th>Descripción</th><th>Variedad</th><th>Talla</th>
                                     <th>Tallos</th><th>Total</th>
                                     <th>ID Artículo</th><th>Nombre Artículo</th>
-                                    <th>Match</th>${needsReview ? '<th>Acción</th>' : ''}
+                                    <th>Match</th>${showActions ? '<th>Acción</th>' : ''}
                                 </tr></thead>
-                                <tbody>${r.lines.map(l => _batchLineRow(l, r, needsReview)).join('')}</tbody>
+                                <tbody>${r.lines.map((l, li) => _batchLineRow(l, r, showActions, i, li)).join('')}</tbody>
                             </table>
                         </div>
                     </td>
@@ -1104,12 +1108,16 @@ document.addEventListener('DOMContentLoaded', () => {
         }).join('');
     }
 
-    function _batchLineRow(l, invoiceResult, showActions) {
+    function _batchLineRow(l, invoiceResult, showActions, invoiceIdx, lineIdx) {
         const isBad = l.match_status !== 'ok';
         const cls = isBad ? 'row-sin-match' : '';
         const key = `${invoiceResult.provider_id || 0}|${l.species || ''}|${l.variety || ''}|${l.size || 0}|${l.stems_per_bunch || 0}|${l.grade || ''}`;
+        // El input se muestra siempre (no sólo en filas sin match) para
+        // permitir corregir también líneas matcheadas por sinónimo o auto.
+        // Viene prefilleado con el id actual para que sea fácil sobrescribirlo.
+        const currentId = l.articulo_id ? l.articulo_id : '';
         return `
-            <tr class="${cls}" data-syn-key="${esc(key)}" data-pdf="${esc(invoiceResult.pdf)}">
+            <tr class="${cls}" data-syn-key="${esc(key)}" data-pdf="${esc(invoiceResult.pdf)}" data-invoice-idx="${invoiceIdx}" data-line-idx="${lineIdx}">
                 <td title="${esc(l.raw || '')}">${esc((l.raw || '').substring(0, 50))}${(l.raw || '').length > 50 ? '...' : ''}</td>
                 <td><strong>${esc(l.variety || '')}</strong></td>
                 <td>${l.size || '-'}</td>
@@ -1118,17 +1126,42 @@ document.addEventListener('DOMContentLoaded', () => {
                 <td>${l.articulo_id || '-'}</td>
                 <td>${esc(l.articulo_name || '-')}</td>
                 <td>${matchBadge(l.match_status || '', l.match_method || '')}</td>
-                ${showActions && isBad ? `<td>
-                    <input type="number" class="edit-input batch-art-id" placeholder="ID" style="width:65px">
+                ${showActions ? `<td style="white-space:nowrap">
+                    <input type="number" class="edit-input batch-art-id" placeholder="ID" style="width:65px" value="${currentId}">
                     <button class="btn-icon batch-line-save" title="Guardar">&#10003;</button>
-                </td>` : (showActions ? '<td></td>' : '')}
+                    <button class="btn-icon batch-line-delete" title="Eliminar línea" style="color:var(--danger);font-size:14px;vertical-align:middle">&#10005;</button>
+                </td>` : ''}
             </tr>`;
+    }
+
+    // Recalcula los contadores (lineas/ok/sin_match) de la fila padre de una
+    // factura tras añadir o eliminar líneas en su detalle.
+    function _batchRecalcInvoiceCounts(invoiceIdx) {
+        const r = batchAllResults[invoiceIdx];
+        if (!r || !r.lines) return;
+        const live = r.lines.filter(l => !l._deleted);
+        r.lineas    = live.length;
+        r.ok_count  = live.filter(l => l.match_status === 'ok').length;
+        r.sin_match = live.length - r.ok_count;
+        // Actualizar las celdas correspondientes en la fila padre del DOM
+        const parentRow = document.querySelector(`#batchTable tbody tr[data-target="batch-lines-${invoiceIdx}"]`);
+        if (parentRow) {
+            const cells = parentRow.querySelectorAll('td');
+            // [0]=#, [1]=pdf, [2]=prov, [3]=invoice, [4]=date,
+            // [5]=lineas, [6]=ok, [7]=sin_match, [8]=total, [9]=estado
+            cells[5].textContent = r.lineas;
+            cells[6].textContent = r.ok_count;
+            cells[7].textContent = r.sin_match;
+        }
     }
 
     // Expandir/colapsar líneas de factura
     document.querySelector('#batchTable tbody').addEventListener('click', e => {
         const expandRow = e.target.closest('.batch-expandable');
-        if (expandRow && !e.target.closest('.batch-line-save') && !e.target.closest('input')) {
+        if (expandRow
+                && !e.target.closest('.batch-line-save')
+                && !e.target.closest('.batch-line-delete')
+                && !e.target.closest('input')) {
             const targetId = expandRow.dataset.target;
             const linesRow = document.getElementById(targetId);
             if (linesRow) {
@@ -1136,6 +1169,22 @@ document.addEventListener('DOMContentLoaded', () => {
                 const arrow = expandRow.querySelector('.expand-arrow');
                 if (arrow) arrow.innerHTML = linesRow.classList.contains('hidden') ? '&#9654;' : '&#9660;';
             }
+        }
+
+        // Eliminar línea de batch
+        const delBtn = e.target.closest('.batch-line-delete');
+        if (delBtn) {
+            const tr = delBtn.closest('tr');
+            const invoiceIdx = parseInt(tr.dataset.invoiceIdx);
+            const lineIdx    = parseInt(tr.dataset.lineIdx);
+            if (!Number.isNaN(invoiceIdx) && !Number.isNaN(lineIdx)
+                    && batchAllResults[invoiceIdx]
+                    && batchAllResults[invoiceIdx].lines[lineIdx]) {
+                batchAllResults[invoiceIdx].lines[lineIdx]._deleted = true;
+            }
+            tr.remove();
+            _batchRecalcInvoiceCounts(invoiceIdx);
+            return;
         }
 
         // Guardar match desde línea de batch
@@ -1162,7 +1211,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 .then(r => r ? r.json() : null)
                 .then(data => {
                     if (data && data.ok) {
-                        // Actualizar visualmente
+                        // Actualizar visualmente sin destruir el input
+                        // (así se puede volver a corregir si hace falta).
                         const cells = tr.querySelectorAll('td');
                         cells[5].textContent = artId;
                         cells[6].textContent = '';
@@ -1171,8 +1221,14 @@ document.addEventListener('DOMContentLoaded', () => {
                             .then(d => { if (d.ok) cells[6].textContent = d.nombre; });
                         cells[7].innerHTML = '<span class="badge badge-manual">manual-web</span>';
                         tr.classList.remove('row-sin-match');
-                        const actionCell = cells[cells.length - 1];
-                        actionCell.innerHTML = '<span style="color:green">&#10003;</span>';
+                        // Flash visual breve del botón guardar
+                        const orig = saveBtn.innerHTML;
+                        saveBtn.innerHTML = '<span style="color:green">&#10003;</span>';
+                        saveBtn.disabled = true;
+                        setTimeout(() => {
+                            saveBtn.innerHTML = orig;
+                            saveBtn.disabled = false;
+                        }, 1200);
                     } else if (data) {
                         alert('Error: ' + data.error);
                     }

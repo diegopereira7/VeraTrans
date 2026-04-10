@@ -84,14 +84,28 @@ class Auditor:
         reglas: list[ExtractionRule],
         detalles: dict,
     ):
-        """Registra un parser con score AMARILLO para revisión."""
+        """Registra un parser para revisión humana.
+
+        Se invoca tanto para AMARILLO (parser activo, revisar para promover
+        a VERDE) como para NARANJA (parser no activo, revisar para aprobar
+        manualmente).
+        """
+        # Inferir la decisión a partir del score (mismo umbral que en
+        # src/learner/__init__.py: aprender_de_batch).
+        if score >= 0.85:
+            decision = 'VERDE'
+        elif score >= 0.50:
+            decision = 'AMARILLO'
+        else:
+            decision = 'NARANJA'
+
         pending = self._load_pending()
 
         pending['pendientes'] = pending.get('pendientes', [])
         pending['pendientes'].append({
             'proveedor': nombre,
             'score': round(score, 3),
-            'decision': 'AMARILLO',
+            'decision': decision,
             'razon': _generate_reason(detalles),
             'pdfs': [fp.pdf_path for fp in cluster_fps],
             'reglas_propuestas': [{

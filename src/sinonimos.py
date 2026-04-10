@@ -34,29 +34,56 @@ class SynonymStore:
         with open(self.fp, 'w', encoding=FILE_ENCODING) as f:
             json.dump(self.syns, f, indent=2, ensure_ascii=False)
 
+    # Mapeo de origenes lógicos del proyecto al enum real de la columna
+    # `origen` en MySQL: ENUM('manual','auto','auto-fuzzy').
+    _ORIGEN_MAP = {
+        'manual':       'manual',
+        'manual-web':   'manual',
+        'manual-batch': 'manual',
+        'revisado':     'manual',
+        'auto':         'auto',
+        'auto-fuzzy':   'auto-fuzzy',
+    }
+
     def _sync_to_mysql(self, key: str, entry: dict) -> None:
-        """Sincroniza una entrada a MySQL (best-effort, no falla si MySQL caído)."""
+        """Sincroniza una entrada a MySQL (best-effort, no falla si MySQL caído).
+
+        El schema real de la tabla `sinonimos` usa nombres en español
+        (id_articulo, nombre_articulo, id_proveedor, nombre_factura, especie,
+        talla, grado) y `origen` es un ENUM restringido. Esta función mapea
+        los campos del entry interno (estilo JSON) a esas columnas.
+        """
         if not MYSQL_AVAILABLE:
             return
         try:
             conn = get_connection()
             cur = conn.cursor()
+            origen = self._ORIGEN_MAP.get(entry.get('origen', ''), 'manual')
             cur.execute("""
-                INSERT INTO sinonimos (clave, articulo_id, articulo_name, origen,
-                    provider_id, species, variety, size, stems_per_bunch, grade, raw, invoice)
-                VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)
+                INSERT INTO sinonimos
+                    (clave, id_proveedor, nombre_factura, especie, talla,
+                     stems_per_bunch, grado, id_articulo, nombre_articulo, origen)
+                VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
                 ON DUPLICATE KEY UPDATE
-                    articulo_id=VALUES(articulo_id), articulo_name=VALUES(articulo_name),
-                    origen=VALUES(origen), raw=VALUES(raw), invoice=VALUES(invoice)
-            """, (key, entry.get('articulo_id', 0), entry.get('articulo_name', ''),
-                  entry.get('origen', ''), entry.get('provider_id', 0),
-                  entry.get('species', ''), entry.get('variety', ''),
-                  entry.get('size', 0), entry.get('stems_per_bunch', 0),
-                  entry.get('grade', ''), entry.get('raw', ''), entry.get('invoice', '')))
+                    id_articulo     = VALUES(id_articulo),
+                    nombre_articulo = VALUES(nombre_articulo),
+                    origen          = VALUES(origen)
+            """, (
+                key,
+                int(entry.get('provider_id', 0) or 0),
+                entry.get('variety', ''),
+                entry.get('species', ''),
+                int(entry.get('size', 0) or 0),
+                int(entry.get('stems_per_bunch', 0) or 0),
+                entry.get('grade', ''),
+                int(entry.get('articulo_id', 0) or 0),
+                entry.get('articulo_name', ''),
+                origen,
+            ))
             conn.commit()
             conn.close()
         except Exception as e:
-            logger.debug("MySQL sync falló (no crítico): %s", e)
+            logger.warning("MySQL sync sinónimo falló: %s", e)
 
     def _key(self, provider_id: int, line: InvoiceLine) -> str:
         return f"{provider_id}|{line.match_key()}"

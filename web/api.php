@@ -107,8 +107,43 @@ function _cleanOldUploads(int $days = 7): void
     }
 }
 
+/**
+ * Limpia carpetas de batch (uploads + status + xlsx) con más de N días.
+ *
+ * Llamada al inicio de cada nuevo batch upload para que los PDFs procesados
+ * queden disponibles ~1 día y la pestaña Historial pueda reprocesarlos. Se
+ * borra el trío {batch_uploads/{id}/, batch_status/{id}.json,
+ * batch_results/{id}.xlsx} cuando la carpeta de uploads supera el TTL.
+ */
+function _cleanOldBatches(int $days = 1): void
+{
+    if (!is_dir(BATCH_UPLOADS_DIR)) return;
+    $cutoff = time() - ($days * 86400);
+
+    foreach (glob(BATCH_UPLOADS_DIR . '/*', GLOB_ONLYDIR) as $dir) {
+        if (filemtime($dir) >= $cutoff) continue;
+
+        $batchId = basename($dir);
+        // Borrar PDFs y carpeta
+        foreach (glob($dir . '/*') as $f) {
+            @unlink($f);
+        }
+        @rmdir($dir);
+        // Borrar status y xlsx asociados
+        @unlink(BATCH_STATUS_DIR  . '/' . $batchId . '.json');
+        @unlink(BATCH_RESULTS_DIR . '/' . $batchId . '.xlsx');
+    }
+}
+
 function handleProcess(): void
 {
+    // Asegurar que existe el directorio de uploads. Si no, move_uploaded_file
+    // lanza un Warning de PHP que se convierte en HTML (Xdebug) y rompe el
+    // JSON que espera el frontend.
+    if (!is_dir(UPLOAD_DIR)) {
+        @mkdir(UPLOAD_DIR, 0777, true);
+    }
+
     _cleanOldUploads(1); // Borrar PDFs de hace más de 1 día
 
     if (!isset($_FILES['pdf']) || $_FILES['pdf']['error'] !== UPLOAD_ERR_OK) {
@@ -172,9 +207,26 @@ function handleSynonyms(): void
 {
     $db = get_db();
     if ($db) {
-        $result = $db->query("SELECT clave AS `key`, articulo_id, articulo_name,
-            origen, provider_id, species, variety, size, stems_per_bunch, grade,
-            raw, invoice FROM sinonimos WHERE activo = 1 ORDER BY clave");
+        // El schema real usa nombres en español; aliasamos a los nombres que
+        // espera el frontend (app.js). `raw` e `invoice` no existen en la
+        // tabla — el frontend los usa solo para búsquedas de texto, así que
+        // devolvemos cadenas vacías.
+        $result = $db->query(
+            "SELECT clave              AS `key`,
+                    id_articulo        AS articulo_id,
+                    nombre_articulo    AS articulo_name,
+                    origen,
+                    id_proveedor       AS provider_id,
+                    especie            AS species,
+                    nombre_factura     AS variety,
+                    talla              AS size,
+                    stems_per_bunch,
+                    grado              AS grade,
+                    ''                 AS raw,
+                    ''                 AS invoice
+             FROM sinonimos
+             ORDER BY clave"
+        );
         if ($result) {
             $list = $result->fetch_all(MYSQLI_ASSOC);
             // Convertir tipos numéricos
@@ -214,8 +266,19 @@ function handleHistory(): void
 {
     $db = get_db();
     if ($db) {
-        $result = $db->query("SELECT invoice_key, pdf, provider, total_usd,
-            lineas, ok, sin_match, fecha FROM historial ORDER BY fecha DESC");
+        // Schema real en español; aliasamos a los nombres que espera app.js.
+        $result = $db->query(
+            "SELECT numero_factura                         AS invoice_key,
+                    pdf_nombre                             AS pdf,
+                    proveedor                              AS provider,
+                    total_usd,
+                    lineas,
+                    ok_count                               AS ok,
+                    sin_match,
+                    DATE_FORMAT(fecha_proceso, '%Y-%m-%d %H:%i') AS fecha
+             FROM historial
+             ORDER BY fecha_proceso DESC"
+        );
         if ($result) {
             $list = $result->fetch_all(MYSQLI_ASSOC);
             foreach ($list as &$row) {
@@ -263,14 +326,37 @@ function handleSaveSynonym(): void
     $artId = (int)$input['articulo_id'];
     $artName = $input['articulo_name'] ?? '';
 
-    // MySQL
+    // La clave viene en formato "provider_id|species|variety|size|spb|grade"
+    // (mismo formato que SynonymStore._key en el lado Python). Se desempaca para
+    // poblar las columnas NOT NULL del schema real (id_proveedor, nombre_factura,
+    // especie, talla, stems_per_bunch, grado).
+    $parts        = explode('|', $key);
+    $provId       = isset($parts[0]) ? (int)$parts[0] : 0;
+    $especie      = $parts[1] ?? '';
+    $variety      = $parts[2] ?? '';
+    $talla        = isset($parts[3]) ? (int)$parts[3] : 0;
+    $spb          = isset($parts[4]) ? (int)$parts[4] : 0;
+    $grado        = $parts[5] ?? '';
+
+    // MySQL — el enum `origen` solo acepta manual/auto/auto-fuzzy, así que
+    // 'manual-web' se mapea a 'manual'.
     $db = get_db();
     if ($db) {
-        $stmt = $db->prepare("INSERT INTO sinonimos (clave, articulo_id, articulo_name, origen)
-            VALUES (?, ?, ?, 'manual-web')
-            ON DUPLICATE KEY UPDATE articulo_id=VALUES(articulo_id),
-            articulo_name=VALUES(articulo_name), origen='manual-web'");
-        $stmt->bind_param('sis', $key, $artId, $artName);
+        $stmt = $db->prepare(
+            "INSERT INTO sinonimos
+                (clave, id_proveedor, nombre_factura, especie, talla,
+                 stems_per_bunch, grado, id_articulo, nombre_articulo, origen)
+             VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, 'manual')
+             ON DUPLICATE KEY UPDATE
+                id_articulo     = VALUES(id_articulo),
+                nombre_articulo = VALUES(nombre_articulo),
+                origen          = 'manual'"
+        );
+        $stmt->bind_param(
+            'sissiisis',
+            $key, $provId, $variety, $especie, $talla,
+            $spb, $grado, $artId, $artName
+        );
         $stmt->execute();
     }
 
@@ -352,7 +438,16 @@ function handleUpdateSynonym(): void
         return;
     }
 
-    // MySQL
+    // MySQL — desempaquetar la nueva clave para poblar columnas NOT NULL
+    // (provider_id|species|variety|size|spb|grade)
+    $parts   = explode('|', $newKey);
+    $provId  = isset($parts[0]) ? (int)$parts[0] : 0;
+    $especie = $parts[1] ?? '';
+    $variety = $parts[2] ?? '';
+    $talla   = isset($parts[3]) ? (int)$parts[3] : 0;
+    $spb     = isset($parts[4]) ? (int)$parts[4] : 0;
+    $grado   = $parts[5] ?? '';
+
     $db = get_db();
     if ($db) {
         if ($origKey !== $newKey) {
@@ -361,11 +456,21 @@ function handleUpdateSynonym(): void
             $stmt->bind_param('s', $origKey);
             $stmt->execute();
         }
-        $stmt = $db->prepare("INSERT INTO sinonimos (clave, articulo_id, articulo_name, origen)
-            VALUES (?, ?, ?, 'manual-web')
-            ON DUPLICATE KEY UPDATE articulo_id=VALUES(articulo_id),
-            articulo_name=VALUES(articulo_name), origen='manual-web'");
-        $stmt->bind_param('sis', $newKey, $artId, $artName);
+        $stmt = $db->prepare(
+            "INSERT INTO sinonimos
+                (clave, id_proveedor, nombre_factura, especie, talla,
+                 stems_per_bunch, grado, id_articulo, nombre_articulo, origen)
+             VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, 'manual')
+             ON DUPLICATE KEY UPDATE
+                id_articulo     = VALUES(id_articulo),
+                nombre_articulo = VALUES(nombre_articulo),
+                origen          = 'manual'"
+        );
+        $stmt->bind_param(
+            'sissiisis',
+            $newKey, $provId, $variety, $especie, $talla,
+            $spb, $grado, $artId, $artName
+        );
         $stmt->execute();
     }
 
@@ -399,10 +504,10 @@ function handleDeleteSynonym(): void
         return;
     }
 
-    // MySQL: soft delete
+    // MySQL: hard delete (la tabla `sinonimos` no tiene columna `activo`).
     $db = get_db();
     if ($db) {
-        $stmt = $db->prepare("UPDATE sinonimos SET activo = 0 WHERE clave = ?");
+        $stmt = $db->prepare("DELETE FROM sinonimos WHERE clave = ?");
         $stmt->bind_param('s', $key);
         $stmt->execute();
     }
@@ -514,6 +619,8 @@ function _syncSynonymToJson(string $key, array $entry): void
  */
 function handleBatchUpload(): void
 {
+    _cleanOldBatches(1); // Borrar batches de hace más de 1 día
+
     // Verificar que no hay batch en curso
     $running = _findRunningBatch();
     if ($running) {
@@ -617,6 +724,8 @@ function handleBatchUpload(): void
  */
 function handleBatchUploadPdfs(): void
 {
+    _cleanOldBatches(1); // Borrar batches de hace más de 1 día
+
     // Verificar que no hay batch en curso
     $running = _findRunningBatch();
     if ($running) {

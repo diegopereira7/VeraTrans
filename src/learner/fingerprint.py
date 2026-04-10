@@ -21,12 +21,19 @@ _INVOICE_PATTERNS = {
     'awb': re.compile(r'(?:M\.?A\.?W\.?B\.?|AWB)\s*(?:No\.?)?\s*[:\s]*([\d\-\s]+)', re.IGNORECASE),
 }
 
-# Patrones de línea de datos (producto)
+# Patrones de línea de datos (producto). Lista deliberadamente amplia para
+# capturar la mayor variedad de formatos posibles — el clustering posterior
+# filtra falsos positivos por similitud estructural.
 _DATA_LINE_INDICATORS = re.compile(
     r'(?:^\s*\d+\s+(?:QB|HB|TB|HALF|QUARTER|FULL)\b|'
     r'\b(?:QB|HB|TB)\s+\d|'
     r'\b(?:ROSE|HYDRANGEA|CARNATION|GYPSOPHILA|ALSTRO)\b|'
-    r'^\s*\d+\s+[A-Z].*\d+\.\d{2})',
+    r'^\s*\d+\s+[A-Z].*\d+\.\d{2}|'
+    # Líneas tipo "<int> <int> <int> <VARIETY> <size> CMS $price $total"
+    # (formato compacto FARIN-style sin marcador HB/QB pero con CM/CMS+precio)
+    r'^\s*\d+\s+\d+\s+\d+\s+[A-Z][A-Z\s.\-/]*\s+\d{2,3}\s*CM|'
+    # Líneas con descripción + tamaño CM + precio
+    r'[A-Z]{3,}\s+\d{2,3}\s*CMS?\b.*\$?\d+\.\d{2})',
     re.IGNORECASE | re.MULTILINE
 )
 
@@ -173,13 +180,17 @@ def _extract_text_structure(text: str, fp: PDFFingerprint):
         else:
             fp.separador_campos = 'mixed'
 
-        # Contar campos por línea
+        # Contar campos por línea. Si el split por 2+ espacios devuelve
+        # 1 sólo campo, reintentamos con espacio simple para detectar
+        # formatos compactos tipo FARIN ROSES.
         field_counts = []
         for line in data_lines:
             if fp.separador_campos == 'tab':
                 fields = [f.strip() for f in line.split('\t') if f.strip()]
             else:
                 fields = [f.strip() for f in re.split(r'\s{2,}', line) if f.strip()]
+                if len(fields) <= 1:
+                    fields = [f.strip() for f in re.split(r'\s+', line) if f.strip()]
             field_counts.append(len(fields))
 
         if field_counts:
@@ -202,7 +213,10 @@ def _identify_provider_candidate(text: str, fp: PDFFingerprint):
         if line and len(line) > 3 and not line.startswith(('http', 'www', '(')):
             # Filtrar líneas que son claramente datos
             if not re.match(r'^\d+\s', line) and not _NOISE_LINE.match(line):
-                fp.proveedor_candidato = line[:60].strip()
+                # Limpiar artefactos del extractor de PDF (CID, control chars).
+                cleaned = re.sub(r'\(cid:\d+\)', '', line)
+                cleaned = re.sub(r'\s+', ' ', cleaned).strip()
+                fp.proveedor_candidato = cleaned[:60].strip()
                 break
 
 
