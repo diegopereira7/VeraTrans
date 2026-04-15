@@ -406,7 +406,48 @@ python tools/auto_learn_parsers.py evaluate <carpeta>
 # Lote (desde UI) — genera Excel
 # O desde CLI:
 python batch_process.py carpeta_con_pdfs/ --output resultado.xlsx
+
+# Baseline/benchmark masivo (in-process, carga catálogo una sola vez)
+python tools/evaluate_all.py                       # todos los proveedores
+python tools/evaluate_all.py --provider MYSTIC     # filtrar
+python tools/evaluate_all.py --max-samples 3       # recortar
+
+# Artefactos que genera:
+#   auto_learn_report.json           detalle por proveedor + muestras raw
+#   auto_learn_report.csv            fila por proveedor, columnas comparables
+#   auto_learn_penalties_top.json    ranking global de match_penalties
+#                                    (entrada para la taxonomía del Paso 3)
 ```
+
+## Cómo leer el benchmark
+
+`evaluate_all.py` ejecuta el pipeline completo (extracción → parser →
+rescue → matcher) y agrega métricas. Campos clave del CSV por proveedor:
+
+| Columna | Qué mide |
+|---|---|
+| `verdict` | OK / TOTALES_MAL / NO_PARSEA / NO_DETECTADO / MUCHO_RESCATE |
+| `parsed_any` / `samples` | cuántas muestras extrajeron ≥1 línea |
+| `totals_ok` | cuántas muestras cuadraron `sum_lines ≈ header.total` |
+| `ok_lines` | líneas con `match_status='ok'` |
+| `ambiguous_lines` | líneas con `match_status='ambiguous_match'` |
+| `autoapprovable_lines` | ok + link≥0.80 + margen≥0.05 + sin errors + no rescue |
+| `autoapprove_rate` | `autoapprovable / (ok + ambiguous)` |
+| `needs_review_lines` | todo lo que no pasa auto (ambiguous, sin_match, sin_parser, low conf, validation errors) |
+
+El **global** que aparece al final del stdout es el KPI operativo: cuánto
+porcentaje de líneas linkables es autoaprobable con los umbrales
+actuales. Baseline tras sesión 6: **61% autoaprobable**.
+
+`auto_learn_penalties_top.json` es la **entrada directa del Paso 3 del
+roadmap** (taxonomía E1..E10): cuál es la penalización del matcher que
+más dispara líneas a revisión. Baseline:
+
+1. `weak_synonym` (sinónimos `aprendido_en_prueba` → E7_SYNONYM_DRIFT)
+2. `tie_top2_margin` (empates prácticos → E8_AMBIGUOUS_LINK)
+3. `low_evidence` (evidencia insuficiente → E8_AMBIGUOUS_LINK)
+4. `variety_no_overlap` (variedad no match → E6_MATCH_WRONG o E7)
+5. `foreign_brand` (marca ajena → E6_MATCH_WRONG)
 
 ## Colisiones / ambigüedades conocidas
 
@@ -543,6 +584,17 @@ final de este archivo, en la sección "Historial de sesiones".
      rompía tokens como 'R11-BCPI' o `$0.300000I 13.00` (I pegado a dígito/$).
      Fix: `re.split(r'(?<![A-Z])I\s+')` — solo separa cuando la I no está
      precedida por mayúscula. Ahora GLAMOUR extrae 4/4 variedades correctas.
+- **2026-04-15 sesión 8**: Consolidación del benchmark (cierra Paso 1 del
+  roadmap). Reescritura de `tools/evaluate_all.py` a ejecución in-process
+  (antes lanzaba 82 subprocesos cargando el catálogo cada vez) para
+  obtener acceso a las señales del matcher. Métricas nuevas por proveedor:
+  `ok_lines`, `ambiguous_lines`, `autoapprovable_lines`, `autoapprove_rate`,
+  `needs_review_lines`, mix de `extraction_source` y motor OCR. Nuevo
+  artefacto `auto_learn_penalties_top.json` con ranking global de
+  `match_penalties` (entrada directa para la taxonomía del Paso 3).
+  Salida también en CSV (`auto_learn_report.csv`) para comparar en el
+  tiempo. Baseline capturada: 2644 líneas, 61.1% autoaprobables; top
+  penalty `weak_synonym` (1382 ocurrencias).
 - **2026-04-15 sesión 7**: Reorganización documental (sin cambios de
   código). Los dos documentos de seguimiento pasan a nombres cortos
   coherentes:

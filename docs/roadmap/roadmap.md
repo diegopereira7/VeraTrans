@@ -95,10 +95,13 @@ Estado del proyecto tras las **sesiones 5 y 6** (abril 2026):
 
 # PASO 1 — Congelar línea base y generar benchmark post-cambios
 
-> **Estado parcial.** `tools/evaluate_all.py` ya existe y lo usan las
-> sesiones 4–6 para validar regresión. Lo que queda es **consolidarlo**
-> con las métricas nuevas que expone el pipeline tras las sesiones 5 y 6
-> — no reescribirlo desde cero. El prompt está acotado a ese delta.
+> **CERRADO en sesión 8.** `tools/evaluate_all.py` fue reescrito a
+> ejecución in-process con todas las métricas nuevas (`ambiguous_lines`,
+> `autoapprovable_lines`, `autoapprove_rate`, mix de `extraction_source`,
+> motor OCR, `needs_review_lines`) + salida JSON + CSV + ranking global
+> de `match_penalties`. Baseline capturada: 2644 líneas, 61.1%
+> autoaprobables, top penalty `weak_synonym`. Ver comando y lectura del
+> reporte en CLAUDE.md → "Comandos habituales" y "Cómo leer el benchmark".
 
 ## Objetivo
 Dejar una foto objetiva del estado actual del sistema tras los cambios ya implementados o tras ejecutar tus prompts anteriores, para que cada mejora futura se compare contra una baseline real.

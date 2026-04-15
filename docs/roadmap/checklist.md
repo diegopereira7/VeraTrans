@@ -68,13 +68,20 @@ _Cifras tomadas del historial de sesiones de `CLAUDE.md` (sesión 6, abril 2026)
   - `mark_confirmed`/`mark_corrected` ya existen en `SynonymStore`;
     falta engancharlos a UI/API.
 
-### KPIs objetivos hoy (baseline)
-- OK: **30/82** proveedores (parsed_any + totals_ok)
-- TOTALES_MAL: **21/82**
-- NO_PARSEA: **30/82**
-- NO_DETECTADO: **1/82** (PONDEROSA, reshuffle del reporte)
+### KPIs baseline (sesión 8, `tools/evaluate_all.py`)
+- OK: **30/82** proveedores · TOTALES_MAL: **21/82** ·
+  NO_PARSEA: **30/82** · NO_DETECTADO: **1/82**
+- Líneas totales procesadas: **2644**
+- Líneas `ok`: **1620** · `ambiguous_match`: **796** · `autoapprovable`: **1476**
+- **autoapprove_rate: 61.1%** de las líneas linkables
 - Rama OCR real disponible: **OCRmyPDF+Tesseract** + EasyOCR fallback
 - Matching: **scoring por evidencia** con vetos duros y trazabilidad
+- Top-5 penalties globales (input del Paso 3):
+  1. `weak_synonym` 1382 — sinónimos en prueba con trust bajo
+  2. `tie_top2_margin` 533 — empates prácticos entre candidatos
+  3. `low_evidence` 282 — ganador < 0.70 de score
+  4. `variety_no_overlap` 262 — variedad no coincide con el ganador
+  5. `foreign_brand` 216 — marca ajena al proveedor actual
 
 ---
 
@@ -87,10 +94,11 @@ _Cifras tomadas del historial de sesiones de `CLAUDE.md` (sesión 6, abril 2026)
 - [x] Verificar que no rompe UI web
 - [x] Confirmar que `CLAUDE.md` se actualizó correctamente
 - [x] Guardar resumen técnico de cambios (commit `650e0d7`)
-- [-] Ejecutar benchmark masivo post-cambios (se ha corrido `evaluate_all.py`
-  en sesiones 5–6; falta consolidar con métricas nuevas ambiguous/link/
-  extraction_source/autoapprove)
-- [ ] Guardar informe comparativo antes/después (JSON/CSV versionado)
+- [x] Ejecutar benchmark masivo post-cambios (sesión 8, reescrito
+  `tools/evaluate_all.py` a in-process con todas las métricas nuevas)
+- [x] Guardar informe comparativo antes/después
+  (`auto_learn_report.json`, `auto_learn_report.csv`,
+  `auto_learn_penalties_top.json`)
 
 ### Criterio de cierre de fase
 - prompt 1 aplicado,
@@ -98,11 +106,12 @@ _Cifras tomadas del historial de sesiones de `CLAUDE.md` (sesión 6, abril 2026)
 - sin regresiones graves,
 - documentación actualizada.
 
-### Delta pendiente para cerrar la fase
-Consolidar `tools/evaluate_all.py` para que emita las métricas nuevas
-(ambiguous_match, link_confidence, extraction_source, autoapprove_rate,
-ranking de match_penalties). Este es el Paso 1 del roadmap en su
-versión acotada — un solo turno de trabajo.
+### Baseline capturada (sesión 8)
+- 2644 líneas procesadas en 82 proveedores
+- 1620 `ok` · 796 `ambiguous_match` · 1476 `autoapprovable`
+- **autoapprove_rate: 61.1%** de las líneas linkables
+- Top penalties: `weak_synonym` (1382) · `tie_top2_margin` (533) ·
+  `low_evidence` (282) · `variety_no_overlap` (262) · `foreign_brand` (216)
 
 ---
 
@@ -319,14 +328,13 @@ reales de revisión, que solo se puede hacer en producción real.
 
 ## Próximo bloque recomendado
 Marca uno como activo para no dispersarte. La lista está re-priorizada
-tras las sesiones 5–6 (antes el prompt 1 y 2 eran los siguientes; ya no).
+tras la sesión 8 (baseline ya capturada).
 
-- [-] **1. Consolidar `tools/evaluate_all.py` con métricas nuevas**
-      (ambiguous_match, link_confidence, extraction_source, autoapprove_rate).
-      Requisito para medir cualquier mejora siguiente. Es el Paso 1
-      acotado del roadmap. **← activo**
-- [ ] 2. Crear golden set manual (Paso 2)
-- [ ] 3. Aplicar taxonomía E1..E10 sobre la salida del benchmark (Paso 3)
+- [x] 1. Consolidar `tools/evaluate_all.py` con métricas nuevas (sesión 8)
+- [-] **2. Aplicar taxonomía E1..E10 sobre la salida del benchmark**
+      (Paso 3 del roadmap). Input ya disponible en
+      `auto_learn_penalties_top.json`. **← activo siguiente**
+- [ ] 3. Crear golden set manual (Paso 2)
 - [ ] 4. Atacar Top-10 `NO_PARSEA` guiado por la taxonomía (Paso 4)
 - [ ] 5. TOTALES_MAL (Paso 5)
 - [ ] 6. Enganchar `mark_confirmed`/`mark_corrected` a la UI (cierra Paso 7)
@@ -338,6 +346,22 @@ tras las sesiones 5–6 (antes el prompt 1 y 2 eran los siguientes; ya no).
 ## Registro rápido de avances
 
 ### Último bloque cerrado
+- Fecha: 2026-04-15
+- Paso: Fase 1 cerrada — Paso 1 del roadmap (benchmark consolidado)
+- Qué se hizo (sesión 8):
+  * Reescritura de `tools/evaluate_all.py` a ejecución in-process
+    (antes 82 subprocesos cargando el catálogo cada vez).
+  * Nuevas métricas por proveedor: `ok_lines`, `ambiguous_lines`,
+    `autoapprovable_lines`, `autoapprove_rate`, `needs_review_lines`,
+    mix de `extraction_source`, motor OCR.
+  * Salida triple: `auto_learn_report.json` + `auto_learn_report.csv` +
+    `auto_learn_penalties_top.json` (ranking global de penalties).
+  * Baseline capturada: 2644 líneas, 61.1% autoaprobables.
+- Resultado: tenemos KPIs comparables en el tiempo y ranking de
+  penalties para alimentar la taxonomía del Paso 3.
+- Riesgos / pendientes: ninguno bloqueante.
+
+### Penúltimo bloque cerrado
 - Fecha: 2026-04-15
 - Paso: Fase 3 (matching y confidence scoring) — estructural
 - Qué se hizo (sesión 6, commit `42cdb64`):
@@ -375,21 +399,22 @@ tras las sesiones 5–6 (antes el prompt 1 y 2 eran los siguientes; ya no).
   funciona sobre escaneados (p. ej. APOSENTOS) con calidad 0.85+.
 
 ### Bloque actual
-- Fecha: _(en curso)_
-- Paso: Paso 1 consolidado — benchmark formal con métricas nuevas
-- Objetivo: dejar `tools/evaluate_all.py` emitiendo JSON/CSV con
-  ambiguous, link_confidence, extraction_source, autoapprove_rate y
-  ranking de `match_penalties`. Input para Paso 3 (taxonomía) y Paso 2
-  (golden set).
+- Fecha: _(siguiente sesión)_
+- Paso: Paso 3 del roadmap — taxonomía E1..E10 sobre la baseline
+- Objetivo: convertir `auto_learn_penalties_top.json` + discrepancias
+  por proveedor en un backlog priorizado por familia de error. Al
+  cierre, cada proveedor con problemas debería tener asignada su
+  categoría E1..E10 dominante y una severidad estimada.
 - Estado: pendiente
-- Nota rápida: no reescribir; solo extender la serialización del script
-  actual con los campos que ya existen en `_serialize_line`.
+- Nota rápida: baseline ya disponible — no hay que correr nada para
+  arrancar, solo decidir formato de la salida y procesarla.
 
 ### Próximo bloque
-- Paso: Paso 3 — taxonomía E1..E10 sobre la salida del Paso 1
-- Motivo: convierte el benchmark en backlog accionable por familia de
-  error en vez de por proveedor.
-- Dependencias: Paso 1 consolidado (este bloque actual).
+- Paso: Paso 4 del roadmap — atacar Top-10 `NO_PARSEA` pero ahora
+  guiado por categoría E1..E10 (no proveedor por proveedor).
+- Motivo: con taxonomía aplicada, patrones reutilizables se arreglan
+  juntos.
+- Dependencias: Paso 3 cerrado.
 
 ---
 
