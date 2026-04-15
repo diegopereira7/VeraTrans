@@ -68,7 +68,25 @@ from src.parsers.auto_sanjorge import AutoParser as auto_sanjorge_Parser
 
 from src.parsers.auto_milagro import AutoParser as auto_milagro_Parser
 
+from src.parsers.auto_mountain import AutoParser as auto_mountain_Parser
+
+from src.parsers.auto_native import AutoParser as auto_native_Parser
+
+from src.parsers.auto_sanfrancisco import AutoParser as auto_sanfrancisco_Parser
+
+from src.parsers.auto_zorro import AutoParser as auto_zorro_Parser
+
+from src.parsers.auto_cean import AutoParser as auto_cean_Parser
+
+from src.parsers.auto_elite import AutoParser as auto_elite_Parser
+
 FORMAT_PARSERS = {
+    'auto_elite': auto_elite_Parser(),
+    'auto_cean': auto_cean_Parser(),
+    'auto_zorro': auto_zorro_Parser(),
+    'auto_sanfrancisco': auto_sanfrancisco_Parser(),
+    'auto_native': auto_native_Parser(),
+    'auto_mountain': auto_mountain_Parser(),
     'auto_milagro': auto_milagro_Parser(),
     'auto_sanjorge': auto_sanjorge_Parser(),
     'auto_floreloy': auto_floreloy_Parser(),

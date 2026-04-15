@@ -74,7 +74,8 @@ def cmd_validate(args):
         entry = {'file': pdf.name, 'lines': 0, 'sample_lines': [], 'error': ''}
         try:
             text = extract_text(str(pdf))
-            h, lines = parser_cls().parse(text, {**provider, 'key': 'auto'})
+            # Inyectar pdf_path para parsers que usen pdfplumber directamente.
+            h, lines = parser_cls().parse(text, {**provider, 'key': 'auto', 'pdf_path': str(pdf)})
             valid = [l for l in lines if l.variety and (l.stems or l.line_total)]
             entry['lines'] = len(valid)
             entry['invoice'] = h.invoice_number

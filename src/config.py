@@ -169,20 +169,20 @@ PROVIDERS = {
     # usuario suba ≥2 facturas en Importación Masiva. IDs extraídos de marca_prov.txt.
     'agrinag':       {'id': 443,   'name': 'Agrinag',                'fmt': 'auto_agrinag', 'patterns': ['AGRINAG S.A.S', 'AGRINAG', '0991515941']},
     'bellarosa':     {'id': 2331,  'name': 'Bellarosa',              'fmt': 'auto_qualisa', 'patterns': ['collectings@bellarosa', 'bellarosa.com', 'BELLAROSA', 'BELLARO']},
-    'cean':          {'id': 311,   'name': 'CEAN Global',            'fmt': 'unknown', 'patterns': ['CEAN GLOBAL SAS', 'CEAN GLOBAL', 'ceanglobal', '901377544']},
+    'cean':          {'id': 311,   'name': 'CEAN Global',            'fmt': 'auto_cean', 'patterns': ['CEAN GLOBAL SAS', 'CEAN GLOBAL', 'ceanglobal', '901377544']},
     'campanario':    {'id': 90046, 'name': 'El Campanario',          'fmt': 'auto_campanario', 'patterns': ['EL CAMPANARIO', 'CAMPANARIO']},
-    'elite':         {'id': 90047, 'name': 'The Elite Flower',       'fmt': 'unknown', 'patterns': ['THE ELITE FLOWER', 'ELITE FLOWER S.A.S']},
+    'elite':         {'id': 90047, 'name': 'The Elite Flower',       'fmt': 'auto_elite', 'patterns': ['THE ELITE FLOWER', 'ELITE FLOWER S.A.S']},
     'farin':         {'id': 1426,  'name': 'Farin Roses',            'fmt': 'auto_farin', 'patterns': ['FARIN ROSES', 'farinroses', '1715889844']},
     'feso':          {'id': 90048, 'name': 'FESO',                   'fmt': 'unknown', 'patterns': ['FESO ']},  # hay que afinar, nombre genérico
     'floreloy':      {'id': 90049, 'name': 'Floreloy',               'fmt': 'auto_floreloy', 'patterns': ['FLORELOY']},
     'greengrowers':  {'id': 90050, 'name': 'Green Growers',          'fmt': 'auto_campanario', 'patterns': ['GREEN GROWERS', 'GREENGROWERS']},
-    'mountain':      {'id': 90051, 'name': 'Mountain Fresh Flowers', 'fmt': 'unknown', 'patterns': ['mountainfreshflowers', 'MOUNTAIN FRESH']},
-    'native_blooms': {'id': 12898, 'name': 'Native Blooms',          'fmt': 'unknown', 'patterns': ['NATIVE BLOOMS', 'NATIVEFARM']},
+    'mountain':      {'id': 90051, 'name': 'Mountain Fresh Flowers', 'fmt': 'auto_mountain', 'patterns': ['mountainfreshflowers', 'MOUNTAIN FRESH']},
+    'native_blooms': {'id': 12898, 'name': 'Native Blooms',          'fmt': 'auto_native', 'patterns': ['NATIVE BLOOMS', 'NATIVEFARM']},
     'natuflor':      {'id': 2628,  'name': 'Natuflor',               'fmt': 'auto_natuflor', 'patterns': ['natuflor.com', 'NATUFLOR']},
     'qualisa':       {'id': 90052, 'name': 'Qualisa',                'fmt': 'auto_qualisa', 'patterns': ['collectings@qualisa', 'qualisa.com', 'QUALISA']},
-    'san_francisco': {'id': 90053, 'name': 'San Francisco Gardens',  'fmt': 'unknown', 'patterns': ['SAN FRANCISCO GARDENS', 'CI SAN FRANCISCO']},
+    'san_francisco': {'id': 90053, 'name': 'San Francisco Gardens',  'fmt': 'auto_sanfrancisco', 'patterns': ['SAN FRANCISCO GARDENS', 'CI SAN FRANCISCO']},
     'san_jorge':     {'id': 90054, 'name': 'San Jorge',              'fmt': 'auto_sanjorge', 'patterns': ['SAN JORGE']},
-    'zorro':         {'id': 90055, 'name': 'Flores El Zorro',        'fmt': 'unknown', 'patterns': ['FLORES EL ZORRO', 'floreselzorro']},
+    'zorro':         {'id': 90055, 'name': 'Flores El Zorro',        'fmt': 'auto_zorro', 'patterns': ['FLORES EL ZORRO', 'floreselzorro']},
 }
 
 # --- Regex para eliminar sufijo de proveedor del nombre del artículo ---

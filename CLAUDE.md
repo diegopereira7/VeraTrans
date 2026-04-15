@@ -140,11 +140,11 @@ Output JSON con métricas por muestra:
 
 ## Proveedores: estado actual (triage más reciente)
 
-- **78 REGISTRADO_OK** — detectados y con parser funcional
-- **5 REGISTRADO_STUB** — detectados pero `fmt='unknown'` (pendientes de parser):
-  `CEAN GLOBAL`, `ELITE`, `FESO`, `MOUNTAIN`, `NATIVE BLOOMS`, `SAN FRANCISCO`, `ZORRO`
-- **7 LOGISTICA** — filtrados por SKIP_PATTERNS del batch:
-  `ALLIANCE`, `DSV`, `EXCELE CARGA`, `LOGIZTIK`, `REAL CARGA`, `SAFTEC`, `VERALEZA` (la buyer)
+- **84 REGISTRADO_OK** — detectados y con parser funcional
+- **0 REGISTRADO_STUB** — ¡todos los stubs convertidos!
+- **8 LOGISTICA** — filtrados por SKIP_PATTERNS del batch:
+  `ALLIANCE`, `DSV`, `EXCELE CARGA`, `LOGIZTIK`, `REAL CARGA`, `SAFTEC`, `VERALEZA` (la buyer),
+  `FESO` (EXCELLENT CARGO SERVICE SAS, carguero)
 
 **Carpeta de entrenamiento** del usuario (ruta fija):
 ```
@@ -154,16 +154,22 @@ Contiene subcarpeta por proveedor con 5 facturas nuevas + 2 antiguas (para regre
 
 ## Parsers aprendidos (auto_*.py)
 
-| Parser | Proveedores que lo usan |
-|---|---|
-| `auto_farin` | FARIN |
-| `auto_qualisa` | QUALISA, BELLAROSA |
-| `auto_agrinag` | AGRINAG |
-| `auto_natuflor` | NATUFLOR (dual: colombiano + SaaS, delega en auto_agrinag) |
-| `auto_campanario` | GREENGROWERS, EL CAMPANARIO (mismo template Lasso) |
-| `auto_floreloy` | FLORELOY |
-| `auto_sanjorge` | SAN JORGE |
-| `auto_milagro` | MILAGRO (EL MILAGRO DE LAS FLORES SAS) |
+| Parser | Proveedores que lo usan | Notas |
+|---|---|---|
+| `auto_farin` | FARIN | layout lineal simple |
+| `auto_qualisa` | QUALISA, BELLAROSA | template SaaS compartido |
+| `auto_agrinag` | AGRINAG | parent/sub-línea para mixed box |
+| `auto_natuflor` | NATUFLOR | dual: colombiano + SaaS (delega en auto_agrinag) |
+| `auto_campanario` | GREENGROWERS, EL CAMPANARIO | template Lasso; código "R14 ZAIRA"/"VERALEZA" antes de variety |
+| `auto_floreloy` | FLORELOY | parent + data en líneas separadas |
+| `auto_sanjorge` | SAN JORGE | decimal coma; marcador 'T' entre price y total |
+| `auto_milagro` | MILAGRO | sub-líneas "Milagro" con stems reales; skip parents MIXED |
+| `auto_mountain` | MOUNTAIN | usa `pdfplumber.extract_words()` con x-coords para mapear CM |
+| `auto_native` | NATIVE BLOOMS | dual: roses + tropical foliage; heurística para decimal/miles con coma |
+| `auto_sanfrancisco` | SAN FRANCISCO | Hydrangeas; size=60 default, spb=1 |
+| `auto_zorro` | ZORRO | single-sample overfit acceptable; tolera OCR 'l'→'1', 'ASSORTEO'→'ASSORTED' |
+| `auto_cean` | CEAN GLOBAL | factura electrónica COL; colores inglés→español via `translate_carnation_color` |
+| `auto_elite` | ELITE | Alstroemeria parent + sub-líneas solo-stems heredando price |
 
 ## Signals al usuario (UI)
 
@@ -255,13 +261,75 @@ python batch_process.py carpeta_con_pdfs/ --output resultado.xlsx
 
 ## Para el próximo turno
 
-Si el usuario pide "seguir con los difíciles" o "atacar los stubs pendientes", son:
-- CEAN GLOBAL (factura electrónica colombiana columnar)
-- ELITE (Alstroemeria multi-variedad por caja)
-- FESO (factura electrónica, similar CEAN)
-- MOUNTAIN (layout poco estándar)
-- NATIVE BLOOMS (tropical foliage)
-- SAN FRANCISCO (Hydrangeas, datos escasos)
-- ZORRO (1 sola muestra, riesgo overfit)
+Todos los stubs convertidos a parsers funcionales. Lo siguiente lógico:
 
-Si pide "evaluar los existentes", usar `python tools/auto_learn_parsers.py evaluate <carpeta>` uno por uno y solo tocar los que muestren gaps reales.
+- **Evaluación masiva de los 66 parsers heredados** (no auto_*.py): correr
+  `python tools/auto_learn_parsers.py evaluate <carpeta>` uno por uno contra las
+  nuevas facturas + las 2 antiguas de regresión. Solo tocar los que muestren
+  gaps reales. Anotar en esta doc qué parsers fueron modificados y por qué.
+- **Añadir mejoras puntuales** a parsers auto_* que hayan dado <100% pass ratio
+  cuando aparezcan nuevas muestras (MILAGRO 80%, NATIVE 80%, ELITE 80%, CEAN 80%).
+
+## REGLA OBLIGATORIA — mantener este archivo actualizado
+
+Cada vez que hagas cambios en el código del proyecto (añadir parser, arreglar
+bug, cambiar convenciones, añadir nueva herramienta, etc.), **DEBES** actualizar
+este CLAUDE.md dentro del MISMO turno, sin esperar a que el usuario lo pida.
+
+Qué actualizar según el cambio:
+- Parser nuevo → añadir fila en la tabla "Parsers aprendidos", mover al proveedor
+  de REGISTRADO_STUB → REGISTRADO_OK en "Proveedores: estado actual"
+- Arreglo de parser existente → anotarlo en "Cosas que no hay que hacer" si se
+  aprendió algo reutilizable, o en "Colisiones / ambigüedades" si es relevante
+- Nuevo módulo / archivo → añadirlo al árbol de "Cómo está organizado el código"
+- Nuevo comando de CLI → añadirlo a "Comandos habituales"
+- Cambio en contrato de parsers (InvoiceLine, etc.) → actualizar "Modelo de datos"
+  y "Convenciones de parsers"
+- Añadir nueva lección aprendida (ej. un tipo de OCR que falla, un truco de
+  pdfplumber.extract_words) → añadirla a "Lecciones aprendidas"
+
+Siempre terminar el turno añadiendo la fecha y un resumen de 1-2 líneas al
+final de este archivo, en la sección "Historial de sesiones".
+
+## Lecciones aprendidas (en orden cronológico)
+
+- **OCR con detalle de confianza**: EasyOCR con `detail=1` devuelve `(bbox, text, conf)`
+  por segmento. La media se expone vía `get_last_ocr_confidence()` en `pdf.py` y se
+  propaga a cada `InvoiceLine.ocr_confidence`.
+- **Preproceso OpenCV mejora OCR drásticamente**: denoise bilateral + binarización
+  adaptativa gaussiana + deskew. Solo se activa si cv2 está instalado; si no, no-op.
+- **pdfplumber tables no siempre sirve**: MOUNTAIN tiene una tabla cuyo `extract_tables()`
+  no detecta bien las columnas de tallas (40/50/60/70 cm). Solución: `extract_words()`
+  con x-coordinates para mapear cada valor a su columna por posición horizontal.
+- **Decimal con coma vs punto**: muchos proveedores COL/EC usan coma. Helper típico:
+  `float(s.replace('.', '').replace(',', '.'))` para formato europeo (1.234,56),
+  `float(s.replace(',', '.'))` si solo hay coma. NATIVE BLOOMS es peor: usa coma
+  para decimales Y para miles (ej "81,000" son $81, no 81k). Ver `_num()` en
+  `auto_native.py` para heurística.
+- **Templates SaaS compartidos**: varios proveedores ecuatorianos usan el mismo
+  template (parece comercial de algún SaaS local). Detectables por la cabecera
+  `# BOX PRODUCT SPECIES LABEL`. Ejemplos: QUALISA, BELLAROSA, AGRINAG, NATUFLOR,
+  GREENGROWERS, EL CAMPANARIO. Cuando aparezcan stubs con layout así, probar
+  primero con `--fmt-name auto_qualisa` o `auto_agrinag` antes de escribir
+  parser nuevo.
+- **Layout de parent/sub-líneas para mixed boxes**: AGRINAG y MILAGRO tienen
+  cajas parent con sub-líneas de detalle. Estrategia: emitir sub-líneas (traen
+  variedad real) y saltar parents que dicen "MIXED BOX" (no aportan info).
+- **Variedades en mixed case**: algunos proveedores (QUALISA, NATUFLOR_SaaS,
+  BELLAROSA) usan mixed case ("Vendela", "Freedom") en el PDF. Siempre normalizar
+  con `.strip().upper()` antes de guardar en InvoiceLine.
+
+## Historial de sesiones
+
+- **2026-04-15 sesión 1**: Mejoras de pipeline (confidence, validación, conciliación,
+  LLM fallback), UI de revisión con badges/dots, 10 parsers nuevos (FARIN, QUALISA,
+  BELLAROSA, AGRINAG, NATUFLOR, GREENGROWERS, EL CAMPANARIO, FLORELOY, SAN JORGE,
+  MILAGRO), arreglo de VerdesEstacionParser (variante B sin CM), CLAUDE.md inicial.
+  Commit `5856f26`.
+- **2026-04-15 sesión 2**: Atacando los 5 stubs difíciles. +MOUNTAIN (5/5 con
+  x-coords de pdfplumber) +NATIVE BLOOMS (4/5, soporta layout roses + tropical).
+  Añadida regla obligatoria de mantener CLAUDE.md actualizado solo.
+- **2026-04-15 sesión 2 (cont)**: +SAN FRANCISCO (5/5 Hydrangeas) +ZORRO (1/1
+  con tolerancia OCR) +CEAN (4/5 factura electrónica COL con traducción colores)
+  +ELITE (4/5 Alstroemeria parent/sub-líneas). FESO descartado por ser carguero
+  (EXCELLENT CARGO SERVICE SAS), añadido a SKIP_PATTERNS. **0 stubs pendientes.**

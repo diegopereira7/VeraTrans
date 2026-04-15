@@ -340,6 +340,8 @@ def run_batch(folder: Path, batch_id: str | None = None, output: Path | None = N
         # Ampliados a partir del triage de la carpeta PROVEEDORES —
         # forwarders/aduanas que a veces llegan mezclados con las facturas.
         'DSV', 'LOGIZTIK', 'EXCELE', 'EXCELE CARGA',
+        # EXCELLENT CARGO SERVICE SAS (facturas con prefijo FESO) — carguero
+        'FESO',
     ]
 
     def _should_skip(name: str) -> str | None:
