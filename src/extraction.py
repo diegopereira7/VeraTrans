@@ -118,13 +118,31 @@ _MIN_NATIVE_CHARS = 40
 _MIN_ALNUM_RATIO = 0.35
 
 
-def _page_is_useful_native(text: str) -> bool:
-    """Heurística: ¿es texto nativo utilizable o páginas escaneadas disfrazadas?"""
+def _page_is_useful_native(text: str, n_words: int) -> bool:
+    """Heurística: ¿es texto nativo utilizable o páginas escaneadas disfrazadas?
+
+    Cruzamos dos señales:
+      1) extract_text devuelve ≥ _MIN_NATIVE_CHARS con ≥ _MIN_ALNUM_RATIO
+      2) extract_words devuelve ≥ _MIN_NATIVE_WORDS palabras reales
+
+    La señal #2 es clave: muchos PDFs escaneados llevan una capa de texto
+    "basura" (OCR previo fallido, metadatos, formulario invisible) que
+    pdfplumber.extract_text() devuelve pero que extract_words() ignora
+    porque no detecta bounding boxes coherentes. Requerir ambas evita
+    que un PDF escaneado se marque como nativo por error.
+    """
     if not text or len(text) < _MIN_NATIVE_CHARS:
+        return False
+    if n_words < _MIN_NATIVE_WORDS:
         return False
     alnum = sum(1 for c in text if c.isalnum())
     ratio = alnum / max(len(text), 1)
     return ratio >= _MIN_ALNUM_RATIO
+
+
+# Número mínimo de palabras "reales" (extract_words) para considerar la
+# página nativa. Una factura con 1 producto tiene fácil > 30 palabras.
+_MIN_NATIVE_WORDS = 15
 
 
 def _triage_pdf(path: str) -> list[str]:
@@ -142,7 +160,12 @@ def _triage_pdf(path: str) -> list[str]:
         with pdfplumber.open(path) as p:
             for pg in p.pages:
                 txt = pg.extract_text() or ''
-                verdict.append('native' if _page_is_useful_native(txt) else 'scan')
+                try:
+                    n_words = len(pg.extract_words() or [])
+                except Exception:
+                    n_words = 0
+                verdict.append(
+                    'native' if _page_is_useful_native(txt, n_words) else 'scan')
         return verdict
     except Exception as e:
         logger.debug("Triage pdfplumber falló en %s: %s", path, e)
@@ -241,6 +264,17 @@ def _get_easyocr():
     global _easyocr_reader
     if _easyocr_reader is None:
         try:
+            # Silenciar warning cosmético de PyTorch en CPU
+            # ("pin_memory argument is set as true but no accelerator is
+            # found"). EasyOCR arranca un DataLoader con pin_memory=True
+            # de forma incondicional; el warning no afecta al resultado
+            # pero ensucia stderr en cada inicialización.
+            import warnings
+            warnings.filterwarnings(
+                'ignore',
+                message=r".*pin_memory.*accelerator.*",
+                category=UserWarning,
+            )
             import easyocr
             logger.info("Inicializando EasyOCR (primera vez, puede tardar)...")
             _easyocr_reader = easyocr.Reader(['en', 'es'], gpu=False, verbose=False)
@@ -437,7 +471,11 @@ def extract(path: str) -> ExtractionResult:
                 with pdfplumber.open(path) as p_orig:
                     for i, pg in enumerate(p_orig.pages):
                         native = pg.extract_text() or ''
-                        if _page_is_useful_native(native):
+                        try:
+                            nw = len(pg.extract_words() or [])
+                        except Exception:
+                            nw = 0
+                        if _page_is_useful_native(native, nw):
                             pages.append(PageExtraction(
                                 text=native, source='native',
                                 confidence=1.0, char_count=len(native),
