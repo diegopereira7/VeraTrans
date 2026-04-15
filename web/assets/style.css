@@ -223,16 +223,18 @@ main {
 /* Stats Bar */
 .stats-bar {
     display: flex;
-    gap: 16px;
+    gap: 12px;
     margin-bottom: 16px;
+    flex-wrap: wrap;
 }
 
 .stat-card {
-    flex: 1;
+    flex: 1 1 110px;
+    min-width: 110px;
     background: var(--surface);
     border: 1px solid var(--border);
     border-radius: var(--radius);
-    padding: 16px;
+    padding: 14px 12px;
     text-align: center;
 }
 
@@ -356,6 +358,85 @@ tr.row-sin-parser {
 
 tr.row-sin-parser:hover td {
     background: #fef3c7;
+}
+
+/* Validación cruzada y confianza — fila con errores de validación (totales, stems). */
+tr.row-has-error {
+    background: #fff1f2;
+    border-left: 3px solid var(--danger);
+}
+tr.row-has-error:hover td {
+    background: #ffe4e6;
+}
+
+/* Fila con confianza < 80% pero sin errores duros — naranja suave. */
+tr.row-low-conf {
+    background: #fffbeb;
+    border-left: 3px solid #f59e0b;
+}
+tr.row-low-conf:hover td {
+    background: #fef3c7;
+}
+
+/* Dots de aviso junto al índice de la línea. */
+.conf-dot {
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+    line-height: 16px;
+    text-align: center;
+    border-radius: 50%;
+    font-size: 10px;
+    font-weight: 700;
+    margin-left: 4px;
+    color: #fff;
+    cursor: help;
+}
+.conf-dot.dot-err   { background: var(--danger); }
+.conf-dot.dot-price { background: #2563eb; }
+
+/* Desglose de archivos omitidos / con error en el resumen del lote. */
+details.batch-skipped {
+    background: #fffbeb;
+    border: 1px solid #fde68a;
+    border-radius: var(--radius);
+    padding: 8px 14px;
+    margin: 0 0 16px 0;
+    font-size: 13px;
+}
+details.batch-skipped summary {
+    cursor: pointer;
+    font-weight: 600;
+    color: #92400e;
+    list-style: revert;
+}
+details.batch-skipped[open] summary { margin-bottom: 8px; }
+.batch-skipped-section h4 {
+    margin: 8px 0 4px 0;
+    font-size: 13px;
+    color: var(--text);
+}
+.batch-skipped-section ul {
+    margin: 4px 0 8px 20px;
+    padding: 0;
+    max-height: 200px;
+    overflow-y: auto;
+}
+.batch-skipped-section li {
+    margin-bottom: 2px;
+    list-style: disc;
+}
+.batch-skipped-section code {
+    background: #fef3c7;
+    padding: 1px 4px;
+    border-radius: 3px;
+    font-size: 12px;
+}
+.batch-skipped-hint {
+    font-size: 12px;
+    color: var(--text-muted);
+    margin: 6px 0 0 0;
+    font-style: italic;
 }
 
 .stat-card.warning .stat-value { color: #d97706; }

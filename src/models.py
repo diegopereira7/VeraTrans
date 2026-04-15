@@ -1,7 +1,7 @@
 """Modelos de datos: InvoiceHeader, InvoiceLine y excepciones custom."""
 from __future__ import annotations
 
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from typing import Optional
 
 from src.config import (
@@ -69,6 +69,16 @@ class InvoiceLine:
     articulo_name: str = ''
     match_status: str = 'pendiente'
     match_method: str = ''
+    # Confianza de extracción y matching (0.0-1.0).
+    # ocr_confidence: 1.0 si el texto era nativo del PDF; <1.0 si vino de OCR.
+    # match_confidence: se asigna según la etapa del pipeline que resolvió la línea.
+    # field_confidence: confianza por campo extraído; permite enviar a revisión
+    #                   humana solo los campos inciertos (ver validate.py).
+    # validation_errors: lista de reglas cruzadas que fallaron (totales, stems…).
+    ocr_confidence: float = 1.0
+    match_confidence: float = 0.0
+    field_confidence: dict = field(default_factory=dict)
+    validation_errors: list = field(default_factory=list)
 
     def expected_name(self) -> str:
         """Construye el nombre esperado en VeraBuy según especie y origen.

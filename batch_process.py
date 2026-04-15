@@ -22,12 +22,15 @@ sys.stdout.reconfigure(encoding='utf-8')
 sys.stderr.reconfigure(encoding='utf-8')
 
 from src.config import SQL_FILE, SYNS_FILE, HIST_FILE, BASE_DIR
-from src.pdf import detect_provider
+from src.pdf import detect_provider, get_last_ocr_confidence
 from src.parsers import FORMAT_PARSERS
 from src.articulos import ArticulosLoader
 from src.sinonimos import SynonymStore
 from src.matcher import Matcher, rescue_unparsed_lines, split_mixed_boxes, reclassify_assorted
 from src.historial import History
+from src.validate import validate_invoice
+from src.reconciliation import reconcile
+from src.llm_fallback import enrich_unparsed_lines
 
 # Directorios de batch
 STATUS_DIR  = BASE_DIR / 'batch_status'
@@ -88,9 +91,23 @@ def _process_single_pdf(
     header, lines = parser.parse(pdata['text'], pdata)
     lines = split_mixed_boxes(lines)
     rescued = rescue_unparsed_lines(pdata['text'], lines)
+
+    # Propaga la confianza del OCR a cada línea ANTES de matchear.
+    ocr_conf = get_last_ocr_confidence()
+    for l in lines + rescued:
+        l.ocr_confidence = ocr_conf
+
     lines = matcher.match_all(pdata['id'], lines)
     lines = reclassify_assorted(lines)
     lines.extend(rescued)
+
+    # LLM fallback (solo sin_parser, no-op sin API key), validación cruzada
+    # y conciliación de precios. Mismo pipeline que procesar_pdf.py para que
+    # la vista de lote y la vista individual muestren las mismas señales.
+    lines = enrich_unparsed_lines(lines)
+    header_validation = validate_invoice(header, lines)
+    reconciliation = reconcile(pdata['id'], lines) if pdata.get('id') else {
+        'checked_lines': 0, 'with_history': 0, 'anomalies': 0, 'deltas': []}
 
     if len(lines) == 0:
         return {
@@ -101,6 +118,19 @@ def _process_single_pdf(
 
     ok_count = sum(1 for l in lines if l.match_status == 'ok')
     no_parser = sum(1 for l in lines if l.match_status == 'sin_parser')
+    mixed_box = sum(1 for l in lines if l.match_status == 'mixed_box')
+    needs_review = sum(
+        1 for l in lines
+        if l.match_status in ('sin_match', 'sin_parser', 'llm_extraido')
+           or (l.match_status == 'ok' and 0 < l.match_confidence < 0.80)
+           or (l.match_status == 'ok' and l.validation_errors)
+    )
+
+    # Fallback: si el parser no extrajo el total de cabecera (quedó en 0),
+    # usa la suma de line_total. Esto evita el "Total USD $0.00" del lote.
+    header_total = header.total
+    if not header_total or header_total <= 0:
+        header_total = round(sum(l.line_total for l in lines), 2)
 
     return {
         'ok': True,
@@ -112,14 +142,19 @@ def _process_single_pdf(
             'hawb':           getattr(header, 'hawb', ''),
             'provider_name':  header.provider_name,
             'provider_id':    header.provider_id,
-            'total':          header.total,
+            'total':          header_total,
         },
         'stats': {
-            'total_lineas': len(lines),
-            'ok':           ok_count,
-            'sin_match':    len(lines) - ok_count - no_parser,
-            'sin_parser':   no_parser,
+            'total_lineas':   len(lines),
+            'ok':             ok_count,
+            'sin_match':      len(lines) - ok_count - no_parser - mixed_box,
+            'sin_parser':     no_parser,
+            'mixed_box':      mixed_box,
+            'needs_review':   needs_review,
+            'ocr_confidence': ocr_conf,
         },
+        'validation':     header_validation,
+        'reconciliation': reconciliation,
         'lines': [{
             'raw':             l.raw_description[:120],
             'species':         l.species,
@@ -136,6 +171,10 @@ def _process_single_pdf(
             'articulo_name':   l.articulo_name or '',
             'match_status':    l.match_status,
             'match_method':    l.match_method,
+            'ocr_confidence':   round(l.ocr_confidence, 3),
+            'match_confidence': round(l.match_confidence, 3),
+            'validation_errors': list(l.validation_errors),
+            'needs_review':     l.match_confidence > 0 and l.match_confidence < 0.80,
         } for l in lines],
     }
 
@@ -297,7 +336,10 @@ def run_batch(folder: Path, batch_id: str | None = None, output: Path | None = N
     SKIP_PATTERNS = [
         'DUA', 'NYD', 'ALLIANCE', 'FULL', 'GUIA', 'PREALERT', 'PRE ALERT', 'REAL CARGA',
         'SAFTEC', 'EXCELLENT', 'EXCELLENTE',
-        'BTOS', 'PARTE', 'CORRECTA', 'LINDA', 'JORGE', 'SLU',
+        'BTOS', 'PARTE', 'CORRECTA', 'LINDA', 'SLU',
+        # Ampliados a partir del triage de la carpeta PROVEEDORES —
+        # forwarders/aduanas que a veces llegan mezclados con las facturas.
+        'DSV', 'LOGIZTIK', 'EXCELE', 'EXCELE CARGA',
     ]
 
     def _should_skip(name: str) -> str | None:
@@ -433,20 +475,31 @@ def run_batch(folder: Path, batch_id: str | None = None, output: Path | None = N
         print(f'\nExcel generado: {excel_path}')
 
     # Estadísticas totales
-    total_lineas = sum(r['stats']['total_lineas'] for r in results if r['ok'])
-    total_ok     = sum(r['stats']['ok'] for r in results if r['ok'])
-    total_fail   = sum(r['stats']['sin_match'] for r in results if r['ok'])
-    total_usd    = sum(r['header']['total'] for r in results if r['ok'])
+    total_lineas       = sum(r['stats']['total_lineas'] for r in results if r['ok'])
+    total_ok           = sum(r['stats']['ok'] for r in results if r['ok'])
+    total_fail         = sum(r['stats']['sin_match'] for r in results if r['ok'])
+    total_needs_review = sum(r['stats'].get('needs_review', 0) for r in results if r['ok'])
+    total_anomalies    = sum(r.get('reconciliation', {}).get('anomalies', 0)
+                             for r in results if r['ok'])
+    # Total USD: usa header.total si existe; si no, suma line_total (ya se hizo
+    # fallback en _process_single_pdf, así que aquí siempre tiene valor sensato).
+    total_usd = sum(r['header']['total'] for r in results if r['ok'])
+    # Facturas cuya suma de líneas NO cuadra con el total del header (±1%).
+    total_no_cuadra = sum(1 for r in results
+                          if r['ok'] and r.get('validation', {}).get('header_ok') is False)
 
     resumen = {
-        'total_facturas':  total,
-        'procesadas_ok':   ok_count,
-        'con_error':       err_count,
-        'omitidos':        skip_count,
-        'total_lineas':    total_lineas,
-        'total_ok':        total_ok,
-        'total_sin_match': total_fail,
-        'total_usd':       round(total_usd, 2),
+        'total_facturas':     total,
+        'procesadas_ok':      ok_count,
+        'con_error':          err_count,
+        'omitidos':           skip_count,
+        'total_lineas':       total_lineas,
+        'total_ok':           total_ok,
+        'total_sin_match':    total_fail,
+        'total_needs_review': total_needs_review,
+        'total_anomalies':    total_anomalies,
+        'total_no_cuadra':    total_no_cuadra,
+        'total_usd':          round(total_usd, 2),
     }
 
     # Estado final
@@ -467,7 +520,10 @@ def run_batch(folder: Path, batch_id: str | None = None, output: Path | None = N
             'lineas': r['stats']['total_lineas'] if r['ok'] else 0,
             'ok_count': r['stats']['ok'] if r['ok'] else 0,
             'sin_match': r['stats']['sin_match'] if r['ok'] else 0,
-            'total_usd': r['header']['total'] if r['ok'] else 0,
+            'needs_review':  r['stats'].get('needs_review', 0) if r['ok'] else 0,
+            'total_usd':     r['header']['total'] if r['ok'] else 0,
+            'validation':    r.get('validation', {}) if r['ok'] else {},
+            'reconciliation': r.get('reconciliation', {}) if r['ok'] else {},
             'error': r.get('error', ''),
             'lines': r.get('lines', []) if r['ok'] else [],
         } for r in results],

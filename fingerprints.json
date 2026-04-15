@@ -43,5 +43,80 @@
     "headers": [],
     "confianza": 0.4,
     "timestamp": "2026-04-10T09:42:48.489992"
+  },
+  "C:\\verabuy-traductor\\web/uploads/1776237881_PONDEROSA.pdf": {
+    "hash_estructura": "cdc8fcd4e6e3",
+    "proveedor_candidato": "NIT 900.428.540-9",
+    "keywords": [
+      "FARM",
+      "FLOWERS",
+      "GROWER",
+      "INVOICE",
+      "S.A.S",
+      "SLU"
+    ],
+    "num_paginas": 2,
+    "tiene_tablas": true,
+    "num_columnas": 11,
+    "headers": [
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      ""
+    ],
+    "confianza": 0.30000000000000004,
+    "timestamp": "2026-04-15T09:24:43.398559"
+  },
+  "web/uploads/1776237881_PONDEROSA.pdf": {
+    "hash_estructura": "cdc8fcd4e6e3",
+    "proveedor_candidato": "NIT 900.428.540-9",
+    "keywords": [
+      "FARM",
+      "FLOWERS",
+      "GROWER",
+      "INVOICE",
+      "S.A.S",
+      "SLU"
+    ],
+    "num_paginas": 2,
+    "tiene_tablas": true,
+    "num_columnas": 11,
+    "headers": [
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      ""
+    ],
+    "confianza": 0.30000000000000004,
+    "timestamp": "2026-04-15T09:27:29.116767"
+  },
+  "batch_uploads/20260410074444_8c399209/FARIN.pdf": {
+    "hash_estructura": "aabbdf73d21f",
+    "proveedor_candidato": "FARIN ROSES",
+    "keywords": [
+      "INVOICE",
+      "ROSES",
+      "SL"
+    ],
+    "num_paginas": 1,
+    "tiene_tablas": false,
+    "num_columnas": 0,
+    "headers": [],
+    "confianza": 0.6,
+    "timestamp": "2026-04-15T09:28:36.244283"
   }
 }

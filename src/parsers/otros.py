@@ -922,46 +922,119 @@ class UmaParser:
 
 
 class VerdesEstacionParser:
-    """Formato Verdes La Estacion: #/TOTAL HB/QB FRAC FRAC VARIETY SIZECM STEMS STEMS LABEL CO TARIFF $ PRICE $ TOTAL
-    Líneas de continuación (caja mixta) no tienen el prefijo #/TOTAL.
-    Ejemplo: "1/39 HB 0,50 1,00 FREEDOM 50CM 240 240 MARL CO 0603110000 $ 0,30 $ 72,00"
+    """Formato Verdes La Estacion / Ponderosa (mismo template SaaS, dos NITs).
+
+    Soporta DOS variantes históricas del mismo template:
+
+    Variante A (antigua):
+      "1/39 HB 0,50 1,00 FREEDOM 50CM 240 240 MARL CO 0603110000 $ 0,30 $ 72,00"
+
+    Variante B (actual, tras cambio de plantilla):
+      "1 / 31 0,50 1,00 Vendela 50 240 MARL VERALEZA SLU FRESH CUT ROSES*20 CO 0603110000 $ 0,20 $ 48,00"
+      "Explorer 60 50 R11-Tita VERALEZA SLU FRESH CUT ROSES*25 CO 0603110000 $ 0,40 $ 20,00"  ← cont. mixed box
+
+    La variante B ya no trae el token CM pegado a la talla y tiene un único
+    contador de stems (no duplicado como en A).
     """
-    def parse(self, text:str, pdata:dict):
-        h=InvoiceHeader(); h.provider_key=pdata['key']; h.provider_id=pdata['id']; h.provider_name=pdata['name']
-        m=re.search(r'INVOICE\s+([\d.]+)',text,re.I); h.invoice_number=m.group(1).replace('.','') if m else ''
-        m=re.search(r'(\d{1,2}/\d{2}/\d{4})',text); h.date=m.group(1) if m else ''
-        m=re.search(r'AWB\s+([\d\-]+)',text,re.I); h.awb=re.sub(r'\s+','',m.group(1)) if m else ''
-        m=re.search(r'HWB\s+([\w\-]+)',text,re.I); h.hawb=m.group(1).strip() if m else ''
-        lines=[]; label=''; btype='HB'; spb=25
+    # Variante A: "VARIETY 50CM 240 240 LABEL CO <hts> $ price $ total"
+    _RE_A = re.compile(
+        r'([A-Z][A-Z\s]+?)\s+(\d{2})CM\s+(\d+)\s+(\d+)\s+([\w\s]*?)\s*CO\s+\d+\s+'
+        r'\$\s*([\d,]+)\s+\$\s*([\d,]+)')
+
+    # Variante B: "Variety <size> <stems> [LABEL] VERALEZA SLU FRESH CUT ROSES*<spb> CO <hts> $ price $ total"
+    _RE_B = re.compile(
+        r'([A-Za-z][A-Za-z\s\-]+?)\s+'          # variedad (mixed case o upper)
+        r'(\d{2,3})\s+'                          # talla sin CM
+        r'(\d+)\s+'                              # stems
+        r'(\S*?)\s*'                             # label (puede ser vacío)
+        r'VERALEZA\s+SLU\s+FRESH\s+CUT\s+ROSES\s*\*\s*(\d+)\s+'
+        r'(?:STEMS\s+)?CO\s+\d+\s+'
+        r'\$\s*([\d,]+)\s+\$\s*([\d,]+)')
+
+    def parse(self, text: str, pdata: dict):
+        h = InvoiceHeader()
+        h.provider_key = pdata.get('key', '')
+        h.provider_id  = pdata.get('id', 0)
+        h.provider_name = pdata.get('name', '')
+        m = re.search(r'INVOICE\s+([\d.]+)', text, re.I)
+        h.invoice_number = m.group(1).replace('.', '') if m else ''
+        m = re.search(r'(\d{1,2}/\d{2}/\d{4})', text)
+        h.date = m.group(1) if m else ''
+        m = re.search(r'AWB\s+([\d\-]+)', text, re.I)
+        h.awb = re.sub(r'\s+', '', m.group(1)) if m else ''
+        m = re.search(r'HWB\s+([\w\-]+)', text, re.I)
+        h.hawb = m.group(1).strip() if m else ''
+
+        lines = []
+        label = ''
+        btype = 'HB'
+        spb_default = 25
         text_lines = text.split('\n')
         for i, ln in enumerate(text_lines):
-            ln=ln.strip()
-            # Detectar línea principal: "1/39 HB 0,50 1,00 FREEDOM 50CM 240 240 MARL CO ..."
-            pm=re.search(r'\d+/\d+\s+(HB|QB)',ln)
-            if pm:
-                btype=pm.group(1)
-            # SPB: extraer de "ROSES*25STEMS" o "ROSES*20 STEMS" en esta línea o adyacentes
-            spb_m=re.search(r'ROSES\*(\d+)\s*STEMS',ln,re.I)
+            ln = ln.strip()
+            # Tipo de caja y marcador de box_num
+            bm = re.search(r'\d+\s*/\s*\d+\s+(HB|QB|TB|FB)', ln)
+            if bm:
+                btype = bm.group(1)
+            # SPB por defecto: extraer de ROSES*25 en la misma línea o adyacente
+            spb_m = re.search(r'ROSES\s*\*\s*(\d+)', ln, re.I)
+            if not spb_m and i + 1 < len(text_lines):
+                spb_m = re.search(r'ROSES\s*\*\s*(\d+)', text_lines[i + 1], re.I)
             if spb_m:
-                spb=int(spb_m.group(1))
-            elif i+1 < len(text_lines):
-                spb_m=re.search(r'ROSES\*(\d+)\s*STEMS',text_lines[i+1],re.I)
-                if spb_m:
-                    spb=int(spb_m.group(1))
-            # Extraer variedad, tamaño, stems, label, precio, total
-            vm=re.search(r'([A-Z][A-Z\s]+?)\s+(\d{2})CM\s+(\d+)\s+(\d+)\s+([\w\s]*?)\s*CO\s+\d+\s+\$\s*([\d,]+)\s+\$\s*([\d,]+)',ln)
-            if not vm: continue
-            var=vm.group(1).strip(); sz=int(vm.group(2)); stems=int(vm.group(4))
-            cur_label=vm.group(5).strip()
-            if cur_label and cur_label not in ('CO',): label=cur_label
+                spb_default = int(spb_m.group(1))
+
+            # Probar variante B primero (más común en facturas recientes)
+            vm = self._RE_B.search(ln)
+            if vm:
+                variety = vm.group(1).strip().upper()
+                # Descartar matches "falsos" donde la "variedad" es texto de cabecera
+                if variety.startswith(('VARIEDAD', 'VARIETY', 'CAJAS', 'DESCRIPCION')):
+                    continue
+                size = int(vm.group(2))
+                stems = int(vm.group(3))
+                cur_label = vm.group(4).strip() or label
+                if cur_label:
+                    label = cur_label
+                spb = int(vm.group(5))
+                try:
+                    price = float(vm.group(6).replace(',', '.'))
+                    total = float(vm.group(7).replace(',', '.'))
+                except Exception:
+                    price = 0.0
+                    total = 0.0
+                lines.append(InvoiceLine(
+                    raw_description=ln[:120], species='ROSES', variety=variety,
+                    origin='COL', size=size, stems_per_bunch=spb, stems=stems,
+                    price_per_stem=price, line_total=total, label=label,
+                    box_type=btype, provider_key=pdata.get('key', ''),
+                ))
+                continue
+
+            # Variante A (legacy)
+            vm = self._RE_A.search(ln)
+            if not vm:
+                continue
+            var = vm.group(1).strip()
+            sz = int(vm.group(2))
+            stems = int(vm.group(4))
+            cur_label = vm.group(5).strip()
+            if cur_label and cur_label not in ('CO',):
+                label = cur_label
             try:
-                price=float(vm.group(6).replace(',','.'))
-                total=float(vm.group(7).replace(',','.'))
-            except: price=0.0; total=0.0
-            il=InvoiceLine(raw_description=ln,species='ROSES',variety=var,origin='COL',
-                           size=sz,stems_per_bunch=spb,stems=stems,
-                           price_per_stem=price,line_total=total,label=label,box_type=btype)
-            lines.append(il)
+                price = float(vm.group(6).replace(',', '.'))
+                total = float(vm.group(7).replace(',', '.'))
+            except Exception:
+                price = 0.0
+                total = 0.0
+            lines.append(InvoiceLine(
+                raw_description=ln[:120], species='ROSES', variety=var,
+                origin='COL', size=sz, stems_per_bunch=spb_default, stems=stems,
+                price_per_stem=price, line_total=total, label=label,
+                box_type=btype, provider_key=pdata.get('key', ''),
+            ))
+
+        if not h.total and lines:
+            h.total = round(sum(l.line_total for l in lines), 2)
         return h, lines
 
 

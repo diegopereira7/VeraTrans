@@ -113,6 +113,12 @@
                 <!-- Tarjetas resumen -->
                 <div class="batch-summary" id="batchSummary"></div>
 
+                <!-- Detalle de omitidos/errores expandible -->
+                <details id="batchSkippedDetails" class="batch-skipped hidden">
+                    <summary>Ver archivos omitidos / con error</summary>
+                    <div id="batchSkippedContent"></div>
+                </details>
+
                 <!-- Filtros -->
                 <div class="filters">
                     <select id="batchFilterInvoice">
@@ -140,6 +146,7 @@
                                 <th>Líneas</th>
                                 <th>OK</th>
                                 <th>Sin Match</th>
+                                <th title="Líneas que necesitan revisión (sin match, baja confianza, o incoherencia de totales).">Revisar</th>
                                 <th>Total USD</th>
                                 <th>Estado</th>
                             </tr>

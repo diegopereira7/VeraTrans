@@ -91,13 +91,14 @@
     "fecha": "2026-03-30 17:11"
   },
   "750": {
-    "pdf": "FLORSANI 002001000528827.pdf",
+    "pdf": "FLORSANI_002001000543885.pdf",
     "provider": "Florsani",
     "total_usd": 0.0,
     "lineas": 1,
     "ok": 1,
     "sin_match": 0,
-    "fecha": "2026-04-09 09:26"
+    "fecha": "2026-04-15 09:47",
+    "pdf_path": "C:\\verabuy-traductor\\batch_uploads\\20260415074719_659d4da3\\FLORSANI_002001000543885.pdf"
   },
   "GOLDEN 105369.pdf": {
     "pdf": "GOLDEN 105369.pdf",
@@ -181,13 +182,14 @@
     "fecha": "2026-03-30 17:11"
   },
   "ROSELY": {
-    "pdf": "ROSELY 002001000323876.pdf",
+    "pdf": "ROSELY_002001000326087.pdf",
     "provider": "Rosely Flowers",
     "total_usd": 0.0,
-    "lineas": 3,
-    "ok": 3,
-    "sin_match": 0,
-    "fecha": "2026-04-09 09:29"
+    "lineas": 13,
+    "ok": 12,
+    "sin_match": 1,
+    "fecha": "2026-04-15 09:47",
+    "pdf_path": "C:\\verabuy-traductor\\batch_uploads\\20260415074719_659d4da3\\ROSELY_002001000326087.pdf"
   },
   "83155": {
     "pdf": "SAYONARA 83155.pdf",
@@ -298,13 +300,14 @@
     "fecha": "2026-03-30 17:09"
   },
   "": {
-    "pdf": "UNIQUE.pdf",
-    "provider": "Unique Flowers",
-    "total_usd": 210.0,
-    "lineas": 2,
-    "ok": 0,
-    "sin_match": 2,
-    "fecha": "2026-04-09 10:28"
+    "pdf": "FLORSANI_002001000543894.pdf",
+    "provider": "Florsani",
+    "total_usd": 0.0,
+    "lineas": 20,
+    "ok": 20,
+    "sin_match": 0,
+    "fecha": "2026-04-15 09:47",
+    "pdf_path": "C:\\verabuy-traductor\\batch_uploads\\20260415074719_659d4da3\\FLORSANI_002001000543894.pdf"
   },
   "7.149": {
     "pdf": "000 full.pdf",
@@ -3791,31 +3794,34 @@
     "fecha": "2026-03-28 10:57"
   },
   "FA-116284": {
-    "pdf": "SEMANA_7_729-4588_9712_(241)_COLIBRI.pdf",
+    "pdf": "1776238685_COLIBRI.pdf",
     "provider": "Colibri Flowers",
     "total_usd": 0.0,
     "lineas": 27,
     "ok": 27,
     "sin_match": 0,
-    "fecha": "2026-03-30 17:05"
+    "fecha": "2026-04-15 09:38",
+    "pdf_path": "C:\\verabuy-traductor\\web\\uploads\\1776238685_COLIBRI.pdf"
   },
   "4040": {
-    "pdf": "SEMANA_7_729-4588_9712_(241)_DAFLOR.pdf",
+    "pdf": "1776238711_DAFLOR.pdf",
     "provider": "Daflor",
     "total_usd": 0.0,
     "lineas": 13,
-    "ok": 0,
-    "sin_match": 8,
-    "fecha": "2026-03-30 17:05"
+    "ok": 7,
+    "sin_match": 1,
+    "fecha": "2026-04-15 09:38",
+    "pdf_path": "C:\\verabuy-traductor\\web\\uploads\\1776238711_DAFLOR.pdf"
   },
   "A2571217": {
-    "pdf": "SEMANA_7_729-4588_9712_(241)_MULTIFLORA.pdf",
+    "pdf": "1776238556_MULTIFLORA.pdf",
     "provider": "Multiflora",
     "total_usd": 859.2,
     "lineas": 9,
-    "ok": 0,
-    "sin_match": 9,
-    "fecha": "2026-03-30 17:05"
+    "ok": 6,
+    "sin_match": 0,
+    "fecha": "2026-04-15 09:35",
+    "pdf_path": "C:\\verabuy-traductor\\web\\uploads\\1776238556_MULTIFLORA.pdf"
   },
   "3125": {
     "pdf": "SEMANA_7_729-4588_9712_(241)_PRESTIGE.pdf",
@@ -3827,13 +3833,14 @@
     "fecha": "2026-03-30 17:05"
   },
   "136865": {
-    "pdf": "SEMANA_7_729-4588_9712_(241)_TURFLOR.pdf",
+    "pdf": "1776238596_TURFLOR.pdf",
     "provider": "Turflor",
     "total_usd": 0.0,
     "lineas": 11,
     "ok": 0,
     "sin_match": 4,
-    "fecha": "2026-03-30 17:05"
+    "fecha": "2026-04-15 09:36",
+    "pdf_path": "C:\\verabuy-traductor\\web\\uploads\\1776238596_TURFLOR.pdf"
   },
   "57819": {
     "pdf": "SEMANA_7_729-4591_5041_(78)_CONDOR.pdf",
@@ -15765,5 +15772,15 @@
     "sin_match": 2,
     "fecha": "2026-04-10 09:17",
     "pdf_path": "C:\\verabuy-traductor\\batch_uploads\\20260410071655_695f5d63\\TURFLOR.pdf"
+  },
+  "00000708": {
+    "pdf": "ROSALEDA_00000708.pdf",
+    "provider": "Floricola La Rosaleda",
+    "total_usd": 0.0,
+    "lineas": 57,
+    "ok": 57,
+    "sin_match": 0,
+    "fecha": "2026-04-15 09:47",
+    "pdf_path": "C:\\verabuy-traductor\\batch_uploads\\20260415074719_659d4da3\\ROSALEDA_00000708.pdf"
   }
 }

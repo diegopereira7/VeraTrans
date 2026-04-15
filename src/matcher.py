@@ -17,6 +17,33 @@ from src.sinonimos import SynonymStore
 logger = logging.getLogger(__name__)
 
 
+# Confianza asignada a cada etapa del pipeline (proxy calibrado, no probabilidad real).
+# Valores elegidos para que un umbral de 0.80 separe "auto" de "revisar".
+_METHOD_CONFIDENCE = {
+    'sinónimo':          1.00,
+    'sinónimo→marca':    0.98,
+    'exacto':            0.95,
+    'marca':             0.90,
+    'delegacion':        0.80,   # Life Flowers delegation-stripping
+    'color-strip':       0.75,   # "PINK ESPERANCE" → "ESPERANCE"
+}
+
+
+def _confidence_for_method(method: str) -> float:
+    """Traduce match_method a un score 0-1.
+
+    Si el método empieza por 'fuzzy NN%', extrae NN y lo divide por 100.
+    Si es un método compuesto ('delegacion+exacto'), se queda con el primero.
+    """
+    if not method:
+        return 0.0
+    head = method.split('+', 1)[0].strip()
+    m = re.match(r'fuzzy\s+(\d+)%', head, re.I)
+    if m:
+        return int(m.group(1)) / 100.0
+    return _METHOD_CONFIDENCE.get(head, 0.70)
+
+
 def _strip_life_delegation(variety: str, art_index: dict) -> str:
     """Strip Life Flowers delegation prefix by finding a known variety as suffix.
 
@@ -231,7 +258,17 @@ class Matcher:
     def match_all(self, provider_id: int, lines: list[InvoiceLine],
                    invoice: str = '') -> list[InvoiceLine]:
         """Matchea todas las líneas de una factura."""
-        return [self.match_line(provider_id, l, invoice=invoice) for l in lines]
+        out = []
+        for l in lines:
+            matched = self.match_line(provider_id, l, invoice=invoice)
+            # Confidence del matching combinada con la del OCR.
+            if matched.match_status == 'ok':
+                base = _confidence_for_method(matched.match_method)
+            else:
+                base = 0.0
+            matched.match_confidence = round(base * matched.ocr_confidence, 3)
+            out.append(matched)
+        return out
 
 
 # --- Postproceso ---

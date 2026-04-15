@@ -9,13 +9,16 @@ import json
 import sys
 from pathlib import Path
 
-from src.pdf import detect_provider
+from src.pdf import detect_provider, get_last_ocr_confidence
 from src.parsers import FORMAT_PARSERS
 from src.articulos import ArticulosLoader
 from src.sinonimos import SynonymStore
 from src.matcher import Matcher, rescue_unparsed_lines, split_mixed_boxes, reclassify_assorted
 from src.config import SQL_FILE, SYNS_FILE, HIST_FILE
 from src.historial import History
+from src.validate import validate_invoice
+from src.reconciliation import reconcile
+from src.llm_fallback import enrich_unparsed_lines
 
 
 def run(pdf_path: str) -> dict:
@@ -94,9 +97,29 @@ def _process_with_lines(pdf_path: str, pdata: dict, header, lines) -> dict:
     lines = split_mixed_boxes(lines)
     rescued = rescue_unparsed_lines(pdata.get('text', ''), lines)
     pdf_name = Path(pdf_path).name if pdf_path else ''
+
+    # Propaga la confianza del OCR a cada línea ANTES de matchear — el matcher
+    # combina match_confidence con ocr_confidence para bajar el score de
+    # facturas escaneadas.
+    ocr_conf = get_last_ocr_confidence()
+    for l in lines + rescued:
+        l.ocr_confidence = ocr_conf
+
     lines = matcher.match_all(pdata.get('id', 0), lines, invoice=pdf_name)
     lines = reclassify_assorted(lines)
     lines.extend(rescued)
+
+    # LLM fallback — solo para sin_parser, y solo si la API key está disponible.
+    # Si no, no-op. Nunca sustituye a los parsers deterministas.
+    lines = enrich_unparsed_lines(lines)
+
+    # Validación cruzada: anota errores en cada línea y devuelve resumen.
+    header_validation = validate_invoice(header, lines)
+
+    # Conciliación contra histórico de precios del proveedor (best-effort).
+    provider_id = pdata.get('id', 0)
+    reconciliation = reconcile(provider_id, lines) if provider_id else {
+        'checked_lines': 0, 'with_history': 0, 'anomalies': 0, 'deltas': []}
 
     if len(lines) == 0:
         provider_name = pdata.get('name', 'desconocido')
@@ -124,6 +147,16 @@ def _process_with_lines(pdf_path: str, pdata: dict, header, lines) -> dict:
     raw_lines = _serialize_lines(lines)
     grouped_lines = _group_mixed_boxes(raw_lines)
 
+    # "A Revisar" = todo lo que no está verde: sin match, sin parser, extraído
+    # por LLM, o match ok con baja confianza. Las cajas mixtas (mixed_box)
+    # se excluyen porque son un estado conocido y aceptado, no un problema.
+    needs_review = sum(
+        1 for l in lines
+        if l.match_status in ('sin_match', 'sin_parser', 'llm_extraido')
+           or (l.match_status == 'ok' and 0 < l.match_confidence < 0.80)
+           or (l.match_status == 'ok' and l.validation_errors)
+    )
+
     return {
         'ok': True,
         'header': {
@@ -141,7 +174,11 @@ def _process_with_lines(pdf_path: str, pdata: dict, header, lines) -> dict:
             'sin_match':    len(lines) - ok_count - no_parser - mixed_box,
             'sin_parser':   no_parser,
             'mixed_box':    mixed_box,
+            'needs_review': needs_review,
+            'ocr_confidence': ocr_conf,
         },
+        'validation':     header_validation,
+        'reconciliation': reconciliation,
         'lines': grouped_lines,
     }
 
@@ -164,6 +201,11 @@ def _serialize_line(l) -> dict:
         'articulo_name':   l.articulo_name or '',
         'match_status':    l.match_status,
         'match_method':    l.match_method,
+        'ocr_confidence':   round(l.ocr_confidence, 3),
+        'match_confidence': round(l.match_confidence, 3),
+        'field_confidence': l.field_confidence,
+        'validation_errors': list(l.validation_errors),
+        'needs_review':     l.match_confidence > 0 and l.match_confidence < 0.80,
     }
 
 

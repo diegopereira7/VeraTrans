@@ -52,7 +52,31 @@ from src.parsers.otros import (
     TimanaParser,
 )
 
+from src.parsers.auto_farin import AutoParser as auto_farin_Parser
+
+from src.parsers.auto_qualisa import AutoParser as auto_qualisa_Parser
+
+from src.parsers.auto_agrinag import AutoParser as auto_agrinag_Parser
+
+from src.parsers.auto_natuflor import AutoParser as auto_natuflor_Parser
+
+from src.parsers.auto_campanario import AutoParser as auto_campanario_Parser
+
+from src.parsers.auto_floreloy import AutoParser as auto_floreloy_Parser
+
+from src.parsers.auto_sanjorge import AutoParser as auto_sanjorge_Parser
+
+from src.parsers.auto_milagro import AutoParser as auto_milagro_Parser
+
 FORMAT_PARSERS = {
+    'auto_milagro': auto_milagro_Parser(),
+    'auto_sanjorge': auto_sanjorge_Parser(),
+    'auto_floreloy': auto_floreloy_Parser(),
+    'auto_campanario': auto_campanario_Parser(),
+    'auto_natuflor': auto_natuflor_Parser(),
+    'auto_agrinag': auto_agrinag_Parser(),
+    'auto_qualisa': auto_qualisa_Parser(),
+    'auto_farin': auto_farin_Parser(),
     'cantiza'    : CantizaParser(),
     'agrivaldani': AgrivaldaniParser(),
     'brissas'    : BrissasParser(),

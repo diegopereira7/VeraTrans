@@ -202,6 +202,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const s = data.stats;
         const sinParser = s.sin_parser || 0;
+        const needsReview = s.needs_review || 0;
+        const ocrConf = typeof s.ocr_confidence === 'number' ? s.ocr_confidence : 1.0;
+        const val = data.validation || {};
+        const rec = data.reconciliation || {};
+        const headerOk = val.header_ok !== false;
+        const headerDiff = val.header_diff || 0;
+        const anomalies = rec.anomalies || 0;
         document.getElementById('statsBar').innerHTML = `
             <div class="stat-card">
                 <div class="stat-value">${s.total_lineas}</div>
@@ -220,7 +227,35 @@ document.addEventListener('DOMContentLoaded', () => {
                 <div class="stat-value">${sinParser}</div>
                 <div class="stat-label">No Parseadas</div>
             </div>` : ''}
+            <div class="stat-card ${needsReview > 0 ? 'warning' : 'success'}"
+                 title="Líneas con confianza < 80%. Revisa estas antes de generar la orden.">
+                <div class="stat-value">${needsReview}</div>
+                <div class="stat-label">A Revisar</div>
+            </div>
+            <div class="stat-card ${headerOk ? 'success' : 'danger'}"
+                 title="Suma de líneas vs total de factura.${headerDiff ? ' Diferencia: ' + headerDiff.toFixed(2) + ' USD' : ''}">
+                <div class="stat-value">${headerOk ? '✓' : (headerDiff >= 0 ? '+' : '') + headerDiff.toFixed(2)}</div>
+                <div class="stat-label">Totales</div>
+            </div>
+            ${anomalies > 0 ? `
+            <div class="stat-card danger"
+                 title="Precios con desviación >15% respecto al histórico del proveedor.">
+                <div class="stat-value">${anomalies}</div>
+                <div class="stat-label">Precio Anómalo</div>
+            </div>` : ''}
+            ${ocrConf < 1.0 ? `
+            <div class="stat-card ${ocrConf < 0.75 ? 'warning' : ''}"
+                 title="Este PDF venía escaneado; la extracción usó OCR. Valor más bajo = más probable que haya errores.">
+                <div class="stat-value">${Math.round(ocrConf * 100)}%</div>
+                <div class="stat-label">OCR</div>
+            </div>` : ''}
         `;
+
+        // Guardar deltas de precio para mostrar en tooltips por línea.
+        window._priceDeltas = {};
+        (rec.deltas || []).forEach(d => {
+            if (d.articulo_id) window._priceDeltas[d.articulo_id] = d;
+        });
 
         window._currentProviderId = data.header.provider_id || 0;
 
@@ -238,9 +273,18 @@ document.addEventListener('DOMContentLoaded', () => {
         const tbody = document.querySelector('#linesTable tbody');
         tbody.innerHTML = flatLines.map((l, i) => {
             const synKey = `${window._currentProviderId}|${l.species||''}|${l.variety||''}|${l.size||0}|${l.stems_per_bunch||0}|${l.grade||''}`;
+            // Clase de fila: sin_parser > sin_match > validation errors > low confidence
+            const hasErrors = l.validation_errors && l.validation_errors.length > 0;
+            const needsRev = l.needs_review === true;
+            const priceDelta = window._priceDeltas && l.articulo_id ? window._priceDeltas[l.articulo_id] : null;
+            let rowClass = '';
+            if (l.match_status === 'sin_parser') rowClass = 'row-sin-parser';
+            else if (l.match_status !== 'ok') rowClass = 'row-sin-match';
+            else if (hasErrors) rowClass = 'row-has-error';
+            else if (needsRev) rowClass = 'row-low-conf';
             return `
-            <tr class="${l.match_status === 'sin_parser' ? 'row-sin-parser' : l.match_status !== 'ok' ? 'row-sin-match' : ''}" data-idx="${i}" data-syn-key="${esc(synKey)}">
-                <td>${i+1}</td>
+            <tr class="${rowClass}" data-idx="${i}" data-syn-key="${esc(synKey)}">
+                <td>${i+1}${confDot(l, priceDelta, hasErrors)}</td>
                 <td title="${esc(l.raw)}">${esc((l.raw||'').substring(0, 55))}${(l.raw||'').length > 55 ? '...' : ''}</td>
                 <td>${esc(l.species)}</td>
                 <td><strong>${esc(l.variety)}</strong></td>
@@ -250,7 +294,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 <td><input class="edit-input edit-line" data-idx="${i}" data-field="price_per_stem" type="number" step="0.001" value="${num(l.price_per_stem||0)}"/></td>
                 <td><input class="edit-input edit-line" data-idx="${i}" data-field="line_total" type="number" step="0.01" value="${num(l.line_total||0)}"/></td>
                 <td>${l.articulo_id ? `<strong>${l.articulo_id}</strong> ${esc(l.articulo_name||'')}` : '<em>-</em>'}</td>
-                <td>${matchBadge(l.match_status, l.match_method)}</td>
+                <td>${matchBadge(l.match_status, l.match_method)}${confBadge(l.match_confidence)}</td>
                 <td style="white-space:nowrap"><input class="edit-input edit-art" data-idx="${i}" placeholder="ID o Fref" style="width:70px;display:inline-block" value="${l.articulo_id||''}"/><button class="btn-icon line-delete" data-idx="${i}" title="Eliminar línea" style="color:var(--danger);font-size:14px;vertical-align:middle">✕</button></td>
             </tr>`;
         }).join('');
@@ -361,10 +405,35 @@ document.addEventListener('DOMContentLoaded', () => {
         if (status === 'sin_parser') {
             return '<span class="badge badge-sin-parser">NO PARSEADO</span>';
         }
+        if (status === 'llm_extraido') {
+            return '<span class="badge badge-fuzzy" title="Extraído por LLM — revisar manualmente">LLM</span>';
+        }
         if (status === 'mixed_box') {
             return '<span class="badge badge-fuzzy" title="Caja mixta sin desglose">CAJA MIXTA</span>';
         }
         return '<span class="badge badge-sin-match">SIN MATCH</span>';
+    }
+
+    // Badge de confianza (solo si < 80% — sobre el badge principal añade porcentaje).
+    function confBadge(conf) {
+        if (typeof conf !== 'number' || conf <= 0 || conf >= 0.80) return '';
+        const cls = conf < 0.60 ? 'badge-sin-match' : 'badge-fuzzy';
+        return ` <span class="badge ${cls}" title="Confianza del match: ${Math.round(conf * 100)}%. Revisar manualmente.">${Math.round(conf * 100)}%</span>`;
+    }
+
+    // Dot de estado junto al índice: rojo si errores, naranja si low conf, azul si delta precio.
+    function confDot(l, priceDelta, hasErrors) {
+        const dots = [];
+        if (hasErrors) {
+            const tip = l.validation_errors.join(' · ');
+            dots.push(`<span class="conf-dot dot-err" title="${esc(tip)}">!</span>`);
+        }
+        if (priceDelta) {
+            const sign = priceDelta.delta_pct >= 0 ? '+' : '';
+            const tip = `Precio ${sign}${priceDelta.delta_pct}% vs histórico (ref ${priceDelta.price_ref})`;
+            dots.push(`<span class="conf-dot dot-price" title="${esc(tip)}">$</span>`);
+        }
+        return dots.length ? ' ' + dots.join('') : '';
     }
 
     // --- History Tab ---
@@ -1010,6 +1079,10 @@ document.addEventListener('DOMContentLoaded', () => {
         batchAllResults = data.resultados || [];
 
         // Tarjetas resumen
+        const tNeeds = r.total_needs_review || 0;
+        const tAnom  = r.total_anomalies || 0;
+        const tNoCuadra = r.total_no_cuadra || 0;
+        const tOmit  = r.omitidos || 0;
         document.getElementById('batchSummary').innerHTML = `
             <div class="stat-card success">
                 <div class="stat-value">${r.total_facturas}</div>
@@ -1023,6 +1096,11 @@ document.addEventListener('DOMContentLoaded', () => {
                 <div class="stat-value">${r.con_error}</div>
                 <div class="stat-label">Con Error</div>
             </div>` : ''}
+            ${tOmit > 0 ? `<div class="stat-card warning"
+                 title="Documentos descartados por nombre (no son facturas de proveedor): DUA, guías, manifiestos, pre-alertas…">
+                <div class="stat-value">${tOmit}</div>
+                <div class="stat-label">Omitidos</div>
+            </div>` : ''}
             <div class="stat-card primary">
                 <div class="stat-value">${r.total_lineas}</div>
                 <div class="stat-label">Líneas</div>
@@ -1035,11 +1113,57 @@ document.addEventListener('DOMContentLoaded', () => {
                 <div class="stat-value">${r.total_sin_match}</div>
                 <div class="stat-label">Sin Match</div>
             </div>` : ''}
+            <div class="stat-card ${tNeeds > 0 ? 'warning' : 'success'}"
+                 title="Líneas que requieren revisión manual (sin match, confianza baja o errores de validación).">
+                <div class="stat-value">${tNeeds}</div>
+                <div class="stat-label">A Revisar</div>
+            </div>
+            ${tNoCuadra > 0 ? `<div class="stat-card danger"
+                 title="Facturas donde la suma de líneas NO cuadra con el total declarado en cabecera (±1%).">
+                <div class="stat-value">${tNoCuadra}</div>
+                <div class="stat-label">No Cuadran</div>
+            </div>` : ''}
+            ${tAnom > 0 ? `<div class="stat-card danger"
+                 title="Precios con desviación >15% respecto al histórico del proveedor.">
+                <div class="stat-value">${tAnom}</div>
+                <div class="stat-label">Precio Anómalo</div>
+            </div>` : ''}
             <div class="stat-card primary">
                 <div class="stat-value">$${Number(r.total_usd).toLocaleString('en-US', {minimumFractionDigits: 2})}</div>
                 <div class="stat-label">Total USD</div>
             </div>
         `;
+
+        // Desglose expandible de archivos omitidos y con error. Explica por
+        // qué solo se procesa 1 de 7 cuando el resto son DUAs, guías, etc.
+        const skippedDetails = document.getElementById('batchSkippedDetails');
+        const skippedContent = document.getElementById('batchSkippedContent');
+        const omitList = data.omitidos_detalle || [];
+        const errList  = data.errores || [];
+        if ((omitList.length + errList.length) > 0) {
+            let html = '';
+            if (omitList.length > 0) {
+                html += `<div class="batch-skipped-section">
+                    <h4>Omitidos (${omitList.length}) — no se consideran facturas</h4>
+                    <ul>${omitList.map(o =>
+                        `<li><code>${esc(o.pdf)}</code> — ${esc(o.motivo)}</li>`
+                    ).join('')}</ul>
+                    <p class="batch-skipped-hint">El filtro automático descarta documentos cuyo nombre indica que son guías, DUAs, pre-alertas, manifiestos de carga, etc. Si crees que algún archivo se filtró por error, renómbralo antes de subirlo.</p>
+                </div>`;
+            }
+            if (errList.length > 0) {
+                html += `<div class="batch-skipped-section">
+                    <h4>Con error (${errList.length})</h4>
+                    <ul>${errList.map(e =>
+                        `<li><code>${esc(e.pdf)}</code> — ${esc(e.error)}</li>`
+                    ).join('')}</ul>
+                </div>`;
+            }
+            skippedContent.innerHTML = html;
+            skippedDetails.classList.remove('hidden');
+        } else {
+            skippedDetails.classList.add('hidden');
+        }
 
         // Llenar filtro de facturas
         const sel = document.getElementById('batchFilterInvoice');
@@ -1056,24 +1180,40 @@ document.addEventListener('DOMContentLoaded', () => {
     function batchRenderTable(list) {
         const tbody = document.querySelector('#batchTable tbody');
         tbody.innerHTML = list.map((r, i) => {
+            const needsRev = r.needs_review || 0;
+            const val = r.validation || {};
+            const rec = r.reconciliation || {};
+            const noCuadra = val.header_ok === false;
+            const anomalies = rec.anomalies || 0;
             let status, statusClass;
             if (!r.ok) {
                 status = 'ERROR'; statusClass = 'badge badge-sin-match';
-            } else if (r.sin_match > 0) {
-                status = 'PARCIAL'; statusClass = 'badge badge-fuzzy';
+            } else if (r.sin_match > 0 || needsRev > 0 || noCuadra || anomalies > 0) {
+                status = 'REVISAR'; statusClass = 'badge badge-fuzzy';
             } else {
                 status = 'OK'; statusClass = 'badge badge-ok';
             }
             const hasLines = r.ok && r.lines && r.lines.length > 0;
-            // Las acciones (editar / eliminar) se muestran siempre que haya
-            // líneas, no solo cuando hay sin_match. Aunque el match por
-            // sinónimo marque la línea como OK puede ser incorrecto y el
-            // usuario tiene que poder corregirlo o eliminarlo.
             const showActions = hasLines;
             const rowId = `batch-lines-${i}`;
 
+            // Fila padre: roja si error, ámbar si necesita revisión, verde limpia si OK
+            let parentCls = '';
+            if (!r.ok) parentCls = 'row-sin-match';
+            else if (status === 'REVISAR') parentCls = 'row-low-conf';
+
+            // Mini avisos junto al total si algo no cuadra
+            const totalWarn = [];
+            if (noCuadra && val.header_diff) {
+                const sign = val.header_diff >= 0 ? '+' : '';
+                totalWarn.push(`<span class="conf-dot dot-err" title="Suma líneas - total cabecera = ${sign}${val.header_diff.toFixed(2)} USD">!</span>`);
+            }
+            if (anomalies > 0) {
+                totalWarn.push(`<span class="conf-dot dot-price" title="${anomalies} precio(s) con desviación >15% vs histórico">$</span>`);
+            }
+
             let html = `
-                <tr class="${!r.ok ? 'row-sin-match' : r.sin_match > 0 ? 'row-partial' : ''} ${hasLines ? 'batch-expandable' : ''}" data-target="${rowId}">
+                <tr class="${parentCls} ${hasLines ? 'batch-expandable' : ''}" data-target="${rowId}">
                     <td>${i + 1}</td>
                     <td>${hasLines ? '<span class="expand-arrow">&#9654;</span> ' : ''}${esc(r.pdf)}</td>
                     <td>${esc(r.provider || '-')}</td>
@@ -1082,14 +1222,15 @@ document.addEventListener('DOMContentLoaded', () => {
                     <td>${r.lineas || 0}</td>
                     <td>${r.ok_count || 0}</td>
                     <td>${r.sin_match || 0}</td>
-                    <td>$${num(r.total_usd || 0)}</td>
+                    <td>${needsRev > 0 ? `<strong style="color:#d97706">${needsRev}</strong>` : '0'}</td>
+                    <td>$${num(r.total_usd || 0)} ${totalWarn.join('')}</td>
                     <td><span class="${statusClass}">${status}</span>${!r.ok ? `<br><small>${esc(r.error)}</small>` : ''}</td>
                 </tr>`;
 
             // Fila expandible con líneas de detalle
             if (hasLines) {
                 html += `<tr id="${rowId}" class="batch-lines-row hidden">
-                    <td colspan="10">
+                    <td colspan="11">
                         <div class="batch-lines-detail">
                             <table class="batch-lines-table">
                                 <thead><tr>
@@ -1109,23 +1250,29 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function _batchLineRow(l, invoiceResult, showActions, invoiceIdx, lineIdx) {
-        const isBad = l.match_status !== 'ok';
-        const cls = isBad ? 'row-sin-match' : '';
+        const hasErrors = l.validation_errors && l.validation_errors.length > 0;
+        const needsRev = l.needs_review === true;
+        let cls = '';
+        if (l.match_status === 'sin_parser') cls = 'row-sin-parser';
+        else if (l.match_status !== 'ok') cls = 'row-sin-match';
+        else if (hasErrors) cls = 'row-has-error';
+        else if (needsRev) cls = 'row-low-conf';
         const key = `${invoiceResult.provider_id || 0}|${l.species || ''}|${l.variety || ''}|${l.size || 0}|${l.stems_per_bunch || 0}|${l.grade || ''}`;
-        // El input se muestra siempre (no sólo en filas sin match) para
-        // permitir corregir también líneas matcheadas por sinónimo o auto.
-        // Viene prefilleado con el id actual para que sea fácil sobrescribirlo.
         const currentId = l.articulo_id ? l.articulo_id : '';
+        // Dot de error si hay errores de validación en la línea
+        const errDot = hasErrors
+            ? ` <span class="conf-dot dot-err" title="${esc(l.validation_errors.join(' · '))}">!</span>`
+            : '';
         return `
             <tr class="${cls}" data-syn-key="${esc(key)}" data-pdf="${esc(invoiceResult.pdf)}" data-invoice-idx="${invoiceIdx}" data-line-idx="${lineIdx}">
-                <td title="${esc(l.raw || '')}">${esc((l.raw || '').substring(0, 50))}${(l.raw || '').length > 50 ? '...' : ''}</td>
+                <td title="${esc(l.raw || '')}">${esc((l.raw || '').substring(0, 50))}${(l.raw || '').length > 50 ? '...' : ''}${errDot}</td>
                 <td><strong>${esc(l.variety || '')}</strong></td>
                 <td>${l.size || '-'}</td>
                 <td>${l.stems || '-'}</td>
                 <td>$${num(l.line_total || 0)}</td>
                 <td>${l.articulo_id || '-'}</td>
                 <td>${esc(l.articulo_name || '-')}</td>
-                <td>${matchBadge(l.match_status || '', l.match_method || '')}</td>
+                <td>${matchBadge(l.match_status || '', l.match_method || '')}${confBadge(l.match_confidence)}</td>
                 ${showActions ? `<td style="white-space:nowrap">
                     <input type="number" class="edit-input batch-art-id" placeholder="ID" style="width:65px" value="${currentId}">
                     <button class="btn-icon batch-line-save" title="Guardar">&#10003;</button>
@@ -1148,7 +1295,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (parentRow) {
             const cells = parentRow.querySelectorAll('td');
             // [0]=#, [1]=pdf, [2]=prov, [3]=invoice, [4]=date,
-            // [5]=lineas, [6]=ok, [7]=sin_match, [8]=total, [9]=estado
+            // [5]=lineas, [6]=ok, [7]=sin_match, [8]=revisar, [9]=total, [10]=estado
             cells[5].textContent = r.lineas;
             cells[6].textContent = r.ok_count;
             cells[7].textContent = r.sin_match;
