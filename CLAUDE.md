@@ -2,6 +2,23 @@
 
 Este archivo se carga automáticamente en cada sesión. Contiene lo que tienes que saber para trabajar con este repo sin romper nada y sin preguntar lo mismo dos veces.
 
+## Documentación de seguimiento
+
+Este archivo cubre el **estado actual** (arquitectura, convenciones,
+sesiones). Para **planificar el siguiente bloque de trabajo** y ver
+**por dónde va** el proyecto:
+
+- [`docs/README.md`](docs/README.md) — índice corto de la documentación.
+- [`docs/roadmap/roadmap.md`](docs/roadmap/roadmap.md) — plan a 12 pasos
+  con prompts ejecutables listos para pegar a Claude Code.
+- [`docs/roadmap/checklist.md`](docs/roadmap/checklist.md) — tablero
+  rápido: estado actual, próximo bloque activo, registro de sesiones.
+
+Regla: si pasan días entre sesiones, **sincroniza primero** los dos
+archivos de `docs/roadmap/` con el "Historial de sesiones" de este
+archivo antes de ejecutar nada nuevo. El roadmap y el checklist solo
+valen si van por delante de lo que ya está hecho.
+
 ## Qué es este proyecto
 
 **VeraBuy Traductor** — extrae líneas de producto de facturas PDF de proveedores de flores (~80 proveedores EC/COL/otros), las traduce a artículos del catálogo de VeraBuy, y mantiene un diccionario de sinónimos entrenado. Dos frontends (CLI + Web PHP) comparten el mismo pipeline Python.
@@ -526,6 +543,16 @@ final de este archivo, en la sección "Historial de sesiones".
      rompía tokens como 'R11-BCPI' o `$0.300000I 13.00` (I pegado a dígito/$).
      Fix: `re.split(r'(?<![A-Z])I\s+')` — solo separa cuando la I no está
      precedida por mayúscula. Ahora GLAMOUR extrae 4/4 variedades correctas.
+- **2026-04-15 sesión 7**: Reorganización documental (sin cambios de
+  código). Los dos documentos de seguimiento pasan a nombres cortos
+  coherentes:
+  * `docs/roadmap/verabuy_roadmap_y_prompts.md` → `docs/roadmap/roadmap.md`
+  * `docs/roadmap/verabuy_checklist_operativa.md` → `docs/roadmap/checklist.md`
+  * Nuevo `docs/README.md` como índice corto.
+  * Añadida sección "Documentación de seguimiento" al principio de este
+    archivo con el mapa de uso y la regla de sincronización.
+  * Añadido puntero desde `README.md` raíz a `CLAUDE.md` y `docs/`.
+  Referencias cruzadas entre roadmap y checklist actualizadas.
 - **2026-04-15 sesión 6**: Scoring de matching por evidencia. Cambios clave:
   * **Candidatos vs ganador**: los generadores antiguos (sinónimo,
     priority, branded, delegation, color-strip, exact, rose, fuzzy) dejan

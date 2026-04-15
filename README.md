@@ -2,6 +2,11 @@
 
 Sistema de traducción de facturas PDF de proveedores de flores. Extrae líneas de producto, las vincula con artículos de la BD de VeraBuy, y mantiene un diccionario de sinónimos entrenado.
 
+> **Documentación operativa**: este README cubre instalación y uso básico.
+> Para entender el **estado real del pipeline** (arquitectura, convenciones,
+> lecciones, historial) → [`CLAUDE.md`](CLAUDE.md).
+> Para **planificar y seguir trabajo futuro** → [`docs/`](docs/README.md).
+
 ## Requisitos
 
 - Python 3.12+

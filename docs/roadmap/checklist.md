@@ -1,7 +1,7 @@
 # VeraBuy Traductor — Checklist operativa de avance
 
 Usa este archivo como tablero rápido de seguimiento.
-La idea es complementar `verabuy_roadmap_y_prompts.md` con una vista corta de:
+La idea es complementar [`roadmap.md`](roadmap.md) con una vista corta de:
 - qué queda pendiente,
 - qué está en curso,
 - qué está bloqueado,

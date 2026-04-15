@@ -264,7 +264,7 @@ OBJETIVO
 Implementar una taxonomía de errores y una forma de asignar automáticamente o semiautomáticamente a cada fallo una categoría útil para priorización técnica.
 
 REQUISITOS
-1. Adopta la taxonomía oficial ya declarada en `verabuy_checklist_operativa.md`:
+1. Adopta la taxonomía oficial ya declarada en `checklist.md`:
    - E1_PARSE_ZERO       — el parser no extrae ninguna línea
    - E2_PARSE_PARTIAL    — extrae algunas líneas pero se deja otras
    - E3_LAYOUT_COORDS    — el problema es de columnas/coords, necesita extract_words
