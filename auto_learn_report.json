@@ -283,39 +283,46 @@
   },
   {
     "folder": "AGROSANALFONSO",
-    "verdict": "NO_PARSEA",
+    "verdict": "OK",
     "samples": 5,
     "detected": 5,
-    "parsed_any": 4,
-    "total_parsed": 16,
+    "parsed_any": 5,
+    "total_parsed": 30,
     "total_rescued": 0,
-    "totals_ok": 4,
+    "totals_ok": 5,
     "samples_raw": [
       {
         "file": "01 - 075-67339786 - AGROSANALFONSO AGROSANALFONSO 231352.pdf",
         "detected_as": "Agro San Alfonso (Glamour)",
         "fmt": "auto_agrosanalfonso",
-        "parsed_lines": 2,
+        "parsed_lines": 5,
         "rescued_lines": 0,
-        "header_total": 28.0,
-        "sum_line_total": 28.0,
+        "header_total": 58.0,
+        "sum_line_total": 58.0,
         "header_ok": true,
         "error": "",
         "invoice": "231352",
         "diff_pct": 0.0,
         "sample_parsed": [
           {
-            "variety": "AL",
+            "variety": "EXPLORER",
             "size": 50,
-            "stems": 11,
+            "stems": 50,
+            "total": 15.0,
+            "method": ""
+          },
+          {
+            "variety": "MONDIAL",
+            "size": 50,
+            "stems": 75,
             "total": 22.5,
             "method": ""
           },
           {
-            "variety": "GHTON",
-            "size": 40,
-            "stems": 11,
-            "total": 5.5,
+            "variety": "FRUTTETO",
+            "size": 50,
+            "stems": 25,
+            "total": 7.5,
             "method": ""
           }
         ],
@@ -325,41 +332,57 @@
         "file": "01 - 729-4932 4122 (194) - AGROSANALFONSO 214774.pdf",
         "detected_as": "Agro San Alfonso (Glamour)",
         "fmt": "auto_agrosanalfonso",
-        "parsed_lines": 0,
+        "parsed_lines": 1,
         "rescued_lines": 0,
-        "header_total": 0.0,
-        "sum_line_total": 0,
-        "header_ok": null,
+        "header_total": 75.0,
+        "sum_line_total": 75.0,
+        "header_ok": true,
         "error": "",
         "invoice": "214774",
-        "sample_parsed": [],
+        "diff_pct": 0.0,
+        "sample_parsed": [
+          {
+            "variety": "MONDIAL",
+            "size": 50,
+            "stems": 250,
+            "total": 75.0,
+            "method": ""
+          }
+        ],
         "sample_rescued": []
       },
       {
         "file": "02 - 369-96926255 - AGROSANALFONSO AGROSANALFONSO 231264.pdf",
         "detected_as": "Agro San Alfonso (Glamour)",
         "fmt": "auto_agrosanalfonso",
-        "parsed_lines": 2,
+        "parsed_lines": 6,
         "rescued_lines": 0,
-        "header_total": 75.0,
-        "sum_line_total": 75.0,
+        "header_total": 216.0,
+        "sum_line_total": 216.0,
         "header_ok": true,
         "error": "",
         "invoice": "231264",
         "diff_pct": 0.0,
         "sample_parsed": [
           {
-            "variety": "EXPLORER",
+            "variety": "MONDIAL",
             "size": 50,
-            "stems": 25,
-            "total": 7.5,
+            "stems": 250,
+            "total": 75.0,
             "method": ""
           },
           {
-            "variety": "EXPLORER",
+            "variety": "MONDIAL",
+            "size": 40,
+            "stems": 150,
+            "total": 33.0,
+            "method": ""
+          },
+          {
+            "variety": "MONDIAL",
             "size": 50,
-            "stems": 225,
-            "total": 67.5,
+            "stems": 100,
+            "total": 22.0,
             "method": ""
           }
         ],
@@ -369,15 +392,22 @@
         "file": "02 - 729-4932 4122 (194) - AGROSANALFONSO 214741.pdf",
         "detected_as": "Agro San Alfonso (Glamour)",
         "fmt": "auto_agrosanalfonso",
-        "parsed_lines": 4,
+        "parsed_lines": 7,
         "rescued_lines": 0,
-        "header_total": 136.0,
-        "sum_line_total": 136.0,
+        "header_total": 327.0,
+        "sum_line_total": 327.0,
         "header_ok": true,
         "error": "",
         "invoice": "214741",
         "diff_pct": 0.0,
         "sample_parsed": [
+          {
+            "variety": "MONDIAL",
+            "size": 60,
+            "stems": 200,
+            "total": 70.0,
+            "method": ""
+          },
           {
             "variety": "EXPLORER",
             "size": 60,
@@ -391,13 +421,6 @@
             "stems": 25,
             "total": 8.75,
             "method": ""
-          },
-          {
-            "variety": "EXPLORER",
-            "size": 40,
-            "stems": 275,
-            "total": 60.5,
-            "method": ""
           }
         ],
         "sample_rescued": []
@@ -406,15 +429,22 @@
         "file": "03 - 075-67335936 - AGROSANALFONSO AGROSANALFONSO 231232.pdf",
         "detected_as": "Agro San Alfonso (Glamour)",
         "fmt": "auto_agrosanalfonso",
-        "parsed_lines": 8,
+        "parsed_lines": 11,
         "rescued_lines": 0,
-        "header_total": 197.5,
-        "sum_line_total": 197.5,
+        "header_total": 317.5,
+        "sum_line_total": 317.5,
         "header_ok": true,
         "error": "",
         "invoice": "231232",
         "diff_pct": 0.0,
         "sample_parsed": [
+          {
+            "variety": "MONDIAL",
+            "size": 70,
+            "stems": 150,
+            "total": 60.0,
+            "method": ""
+          },
           {
             "variety": "VENDELA",
             "size": 60,
@@ -427,13 +457,6 @@
             "size": 70,
             "stems": 25,
             "total": 8.75,
-            "method": ""
-          },
-          {
-            "variety": "COUNTRYHOME",
-            "size": 50,
-            "stems": 100,
-            "total": 30.0,
             "method": ""
           }
         ],
@@ -818,7 +841,7 @@
     "detected": 5,
     "parsed_any": 3,
     "total_parsed": 25,
-    "total_rescued": 7,
+    "total_rescued": 8,
     "totals_ok": 3,
     "samples_raw": [
       {
@@ -826,14 +849,16 @@
         "detected_as": "Flores de Aposentos",
         "fmt": "aposentos",
         "parsed_lines": 0,
-        "rescued_lines": 0,
+        "rescued_lines": 1,
         "header_total": 0,
         "sum_line_total": 0,
         "header_ok": null,
         "error": "",
         "invoice": "",
         "sample_parsed": [],
-        "sample_rescued": []
+        "sample_rescued": [
+          "6000 CARNATIONS ILIAS YELLOW DUTY FREE FANCY CO-0603129000 0.1600 960.00"
+        ]
       },
       {
         "file": "01 - 996-14255161 - APOSENTOS APOSENTOS.pdf",
@@ -960,66 +985,58 @@
   },
   {
     "folder": "ART ROSES",
-    "verdict": "OK",
+    "verdict": "NO_PARSEA",
     "samples": 5,
     "detected": 5,
-    "parsed_any": 5,
-    "total_parsed": 29,
+    "parsed_any": 2,
+    "total_parsed": 14,
     "total_rescued": 0,
-    "totals_ok": 5,
+    "totals_ok": 1,
     "samples_raw": [
       {
         "file": "01 - 075-6577 1436 (44) - ART ROSES.pdf",
         "detected_as": "Flores y Frutas Florifrut",
         "fmt": "mystic",
-        "parsed_lines": 1,
+        "parsed_lines": 0,
         "rescued_lines": 0,
         "header_total": 22.0,
-        "sum_line_total": 22.0,
-        "header_ok": true,
+        "sum_line_total": 0,
+        "header_ok": false,
         "error": "",
         "invoice": "0001061809",
-        "diff_pct": 0.0,
-        "sample_parsed": [
-          {
-            "variety": "Iguana",
-            "size": 40,
-            "stems": 100,
-            "total": 22.0,
-            "method": ""
-          }
-        ],
+        "diff_pct": 100.0,
+        "sample_parsed": [],
         "sample_rescued": []
       },
       {
         "file": "01 - 075-67714625 - ART ROSES ART ROSES (2).pdf",
         "detected_as": "Flores y Frutas Florifrut",
         "fmt": "mystic",
-        "parsed_lines": 14,
+        "parsed_lines": 8,
         "rescued_lines": 0,
         "header_total": 867.0,
-        "sum_line_total": 867.0,
-        "header_ok": true,
+        "sum_line_total": 167.0,
+        "header_ok": false,
         "error": "",
         "invoice": "0001093134",
-        "diff_pct": 0.0,
+        "diff_pct": 80.74,
         "sample_parsed": [
           {
-            "variety": "Brighton",
+            "variety": "BRIGHTON",
             "size": 40,
             "stems": 25,
             "total": 5.5,
             "method": ""
           },
           {
-            "variety": "Frutteto",
+            "variety": "FRUTTETO",
             "size": 40,
             "stems": 200,
             "total": 44.0,
             "method": ""
           },
           {
-            "variety": "Momentum",
+            "variety": "MOMENTUM",
             "size": 40,
             "stems": 50,
             "total": 11.0,
@@ -1032,60 +1049,30 @@
         "file": "02 - 075-67714544 - ART ROSES ART.pdf",
         "detected_as": "Flores y Frutas Florifrut",
         "fmt": "mystic",
-        "parsed_lines": 7,
+        "parsed_lines": 0,
         "rescued_lines": 0,
         "header_total": 788.0,
-        "sum_line_total": 788.0,
-        "header_ok": true,
+        "sum_line_total": 0,
+        "header_ok": false,
         "error": "",
         "invoice": "0001092887",
-        "diff_pct": 0.0,
-        "sample_parsed": [
-          {
-            "variety": "Mondial",
-            "size": 40,
-            "stems": 400,
-            "total": 88.0,
-            "method": ""
-          },
-          {
-            "variety": "Mondial",
-            "size": 50,
-            "stems": 350,
-            "total": 105.0,
-            "method": ""
-          },
-          {
-            "variety": "Mondial",
-            "size": 50,
-            "stems": 350,
-            "total": 105.0,
-            "method": ""
-          }
-        ],
+        "diff_pct": 100.0,
+        "sample_parsed": [],
         "sample_rescued": []
       },
       {
         "file": "02 - S. 075-6577 1436 - ART ROSES 1061809.pdf",
         "detected_as": "Flores y Frutas Florifrut",
         "fmt": "mystic",
-        "parsed_lines": 1,
+        "parsed_lines": 0,
         "rescued_lines": 0,
         "header_total": 22.0,
-        "sum_line_total": 22.0,
-        "header_ok": true,
+        "sum_line_total": 0,
+        "header_ok": false,
         "error": "",
         "invoice": "0001061809",
-        "diff_pct": 0.0,
-        "sample_parsed": [
-          {
-            "variety": "Iguana",
-            "size": 40,
-            "stems": 100,
-            "total": 22.0,
-            "method": ""
-          }
-        ],
+        "diff_pct": 100.0,
+        "sample_parsed": [],
         "sample_rescued": []
       },
       {
@@ -1102,21 +1089,21 @@
         "diff_pct": 0.0,
         "sample_parsed": [
           {
-            "variety": "Frutteto",
+            "variety": "FRUTTETO",
             "size": 40,
             "stems": 200,
             "total": 44.0,
             "method": ""
           },
           {
-            "variety": "Momentum",
+            "variety": "MOMENTUM",
             "size": 40,
             "stems": 150,
             "total": 33.0,
             "method": ""
           },
           {
-            "variety": "Blush",
+            "variety": "BLUSH",
             "size": 50,
             "stems": 25,
             "total": 7.5,
@@ -1261,7 +1248,7 @@
     "detected": 5,
     "parsed_any": 4,
     "total_parsed": 45,
-    "total_rescued": 3,
+    "total_rescued": 4,
     "totals_ok": 3,
     "samples_raw": [
       {
@@ -1292,7 +1279,7 @@
         "detected_as": "Benchmark Growers",
         "fmt": "golden",
         "parsed_lines": 0,
-        "rescued_lines": 0,
+        "rescued_lines": 1,
         "header_total": 1350.0,
         "sum_line_total": 0,
         "header_ok": false,
@@ -1300,7 +1287,9 @@
         "invoice": "",
         "diff_pct": 100.0,
         "sample_parsed": [],
-        "sample_rescued": []
+        "sample_rescued": [
+          "15   A 500 7500 CONSUMER BUNCH CARNATION FANCY FCY MIX CB S2 0.180 1,350.00"
+        ]
       },
       {
         "file": "02 - 075-6537 6964 (334) - BENCHMARK 089568.pdf",
@@ -1895,11 +1884,12 @@
         "fmt": "auto_cean",
         "parsed_lines": 0,
         "rescued_lines": 0,
-        "header_total": 0.0,
+        "header_total": 992.5,
         "sum_line_total": 0,
-        "header_ok": null,
+        "header_ok": false,
         "error": "",
         "invoice": "2057",
+        "diff_pct": 100.0,
         "sample_parsed": [],
         "sample_rescued": []
       },
@@ -2657,28 +2647,36 @@
   },
   {
     "folder": "CONEJERA",
-    "verdict": "NO_PARSEA",
+    "verdict": "OK",
     "samples": 5,
     "detected": 5,
-    "parsed_any": 0,
-    "total_parsed": 0,
-    "total_rescued": 21,
-    "totals_ok": 0,
+    "parsed_any": 5,
+    "total_parsed": 13,
+    "total_rescued": 8,
+    "totals_ok": 5,
     "samples_raw": [
       {
         "file": "01 - 729-4509 6004 (415) - CONEJERA.pdf",
         "detected_as": "Flores La Conejera",
-        "fmt": "turflor",
-        "parsed_lines": 0,
-        "rescued_lines": 3,
-        "header_total": 0.0,
-        "sum_line_total": 0,
-        "header_ok": null,
+        "fmt": "auto_conejera",
+        "parsed_lines": 1,
+        "rescued_lines": 2,
+        "header_total": 40.0,
+        "sum_line_total": 40.0,
+        "header_ok": true,
         "error": "",
-        "invoice": "",
-        "sample_parsed": [],
+        "invoice": "FE042138",
+        "diff_pct": 0.0,
+        "sample_parsed": [
+          {
+            "variety": "ASSORTED",
+            "size": 0,
+            "stems": 500,
+            "total": 40.0,
+            "method": ""
+          }
+        ],
         "sample_rescued": [
-          "1 QB 500 CARNATION ASSORTED SHORT PORRIÑO 0603.12.90.00 CAJICA Stems 500 USD$ 0.080 USD$ 40.00",
           "CARNATION Dianthus L. Dianthus caryophyllus carnation 1 0.25 500 USD$ 0.08000 USD$ 40.000",
           "CARNATION Dianthus L. Dianthus caryophyllus carnation 500 $0.08 $40"
         ]
@@ -2686,34 +2684,50 @@
       {
         "file": "01 - 729-45487886 - CONEJERA CONEJERA FE047942.pdf",
         "detected_as": "Flores La Conejera",
-        "fmt": "turflor",
-        "parsed_lines": 0,
-        "rescued_lines": 2,
-        "header_total": 0.0,
-        "sum_line_total": 0,
-        "header_ok": null,
+        "fmt": "auto_conejera",
+        "parsed_lines": 1,
+        "rescued_lines": 1,
+        "header_total": 40.0,
+        "sum_line_total": 40.0,
+        "header_ok": true,
         "error": "",
-        "invoice": "",
-        "sample_parsed": [],
+        "invoice": "FE047942",
+        "diff_pct": 0.0,
+        "sample_parsed": [
+          {
+            "variety": "CLARO ROSA HANOI",
+            "size": 0,
+            "stems": 200,
+            "total": 40.0,
+            "method": ""
+          }
+        ],
         "sample_rescued": [
-          "1 QB 200 CARNATION LIGHT PINK HANOI RUTAS 0603.12.90.00 CAJICA Stems 200 USD$ 0.200 USD$ 40.00",
           "CARNATION Dianthus L. Dianthus caryophyllus carnation 1 0.25 200 USD$ 0.20000 USD$ 40.000"
         ]
       },
       {
         "file": "02 - 729-4509 5654 (524) - CONEJERA.pdf",
         "detected_as": "Flores La Conejera",
-        "fmt": "turflor",
-        "parsed_lines": 0,
-        "rescued_lines": 3,
-        "header_total": 0.0,
-        "sum_line_total": 0,
-        "header_ok": null,
+        "fmt": "auto_conejera",
+        "parsed_lines": 1,
+        "rescued_lines": 2,
+        "header_total": 40.0,
+        "sum_line_total": 40.0,
+        "header_ok": true,
         "error": "",
-        "invoice": "",
-        "sample_parsed": [],
+        "invoice": "FE042373",
+        "diff_pct": 0.0,
+        "sample_parsed": [
+          {
+            "variety": "ASSORTED",
+            "size": 0,
+            "stems": 500,
+            "total": 40.0,
+            "method": ""
+          }
+        ],
         "sample_rescued": [
-          "1 QB 500 CARNATION ASSORTED SHORT PORRIÑO 0603.12.90.00 CAJICA Stems 500 USD$ 0.080 USD$ 40.00",
           "CARNATION Dianthus L. Dianthus caryophyllus carnation 1 0.25 500 USD$ 0.08000 USD$ 40.000",
           "CARNATION Dianthus L. Dianthus caryophyllus carnation 500 $0.08 $40"
         ]
@@ -2721,37 +2735,80 @@
       {
         "file": "02 - 729-45488645 - CONEJERA CONEJERA FE047707.pdf",
         "detected_as": "Flores La Conejera",
-        "fmt": "turflor",
-        "parsed_lines": 0,
-        "rescued_lines": 8,
-        "header_total": 0.0,
-        "sum_line_total": 0,
-        "header_ok": null,
+        "fmt": "auto_conejera",
+        "parsed_lines": 6,
+        "rescued_lines": 2,
+        "header_total": 238.0,
+        "sum_line_total": 238.0,
+        "header_ok": true,
         "error": "",
-        "invoice": "",
-        "sample_parsed": [],
+        "invoice": "FE047707",
+        "diff_pct": 0.0,
+        "sample_parsed": [
+          {
+            "variety": "CHAMPAGNE BRUT",
+            "size": 0,
+            "stems": 200,
+            "total": 40.0,
+            "method": ""
+          },
+          {
+            "variety": "AMARILLO GOLDEN",
+            "size": 0,
+            "stems": 200,
+            "total": 38.0,
+            "method": ""
+          },
+          {
+            "variety": "GOLD GOLDY",
+            "size": 0,
+            "stems": 200,
+            "total": 40.0,
+            "method": ""
+          }
+        ],
         "sample_rescued": [
-          "1 QB 200 CARNATION CHAMPAGNE BRUT RUTAS 0603.12.90.00 SISGA Stems 200 USD$ 0.200 USD$ 40.00",
-          "1 QB 200 CARNATION YELLOW GOLDEN RUTAS 0603.12.90.00 SISGA Stems 200 USD$ 0.190 USD$ 38.00",
-          "1 QB 200 CARNATION GOLD GOLDY RUTAS 0603.12.90.00 SISGA Stems 200 USD$ 0.200 USD$ 40.00"
+          "CARNATION Dianthus L. Dianthus caryophyllus carnation 6 1.5 1200 USD$ 0.19833 USD$ 238.000",
+          "CARNATION Dianthus L. Dianthus caryophyllus carnation 200 $0.19 $38"
         ]
       },
       {
         "file": "03 - 729-45488564 - CONEJERA CONEJERA FE047450.pdf",
         "detected_as": "Flores La Conejera",
-        "fmt": "turflor",
-        "parsed_lines": 0,
-        "rescued_lines": 5,
-        "header_total": 0.0,
-        "sum_line_total": 0,
-        "header_ok": null,
+        "fmt": "auto_conejera",
+        "parsed_lines": 4,
+        "rescued_lines": 1,
+        "header_total": 160.0,
+        "sum_line_total": 160.0,
+        "header_ok": true,
         "error": "",
-        "invoice": "",
-        "sample_parsed": [],
+        "invoice": "FE047450",
+        "diff_pct": 0.0,
+        "sample_parsed": [
+          {
+            "variety": "SELECT CREAM",
+            "size": 0,
+            "stems": 200,
+            "total": 40.0,
+            "method": ""
+          },
+          {
+            "variety": "GOLD GOLDY",
+            "size": 0,
+            "stems": 200,
+            "total": 40.0,
+            "method": ""
+          },
+          {
+            "variety": "HOT ROSA BIZET",
+            "size": 0,
+            "stems": 200,
+            "total": 40.0,
+            "method": ""
+          }
+        ],
         "sample_rescued": [
-          "1 QB 200 CARNATION SELECT CREAM RUTAS 0603.12.90.00 SISGA Stems 200 USD$ 0.200 USD$ 40.00",
-          "1 QB 200 CARNATION GOLD GOLDY RUTAS 0603.12.90.00 SISGA Stems 200 USD$ 0.200 USD$ 40.00",
-          "1 QB 200 CARNATION HOT PINK BIZET RUTAS 0603.12.90.00 SISGA Stems 200 USD$ 0.200 USD$ 40.00"
+          "CARNATION Dianthus L. Dianthus caryophyllus carnation 4 1 800 USD$ 0.20000 USD$ 160.000"
         ]
       }
     ]
@@ -2919,46 +2976,32 @@
   },
   {
     "folder": "ECOFLOR",
-    "verdict": "TOTALES_MAL",
+    "verdict": "NO_PARSEA",
     "samples": 5,
     "detected": 5,
-    "parsed_any": 5,
-    "total_parsed": 52,
+    "parsed_any": 4,
+    "total_parsed": 9,
     "total_rescued": 0,
-    "totals_ok": 2,
+    "totals_ok": 0,
     "samples_raw": [
       {
         "file": "01 - 075-67712271 - ECOFLOR ECOFLOR.pdf",
         "detected_as": "Ecoflor Groupchile",
         "fmt": "mystic",
-        "parsed_lines": 8,
+        "parsed_lines": 1,
         "rescued_lines": 0,
         "header_total": 724.5,
-        "sum_line_total": 667.0,
+        "sum_line_total": 101.5,
         "header_ok": false,
         "error": "",
         "invoice": "0000080942",
-        "diff_pct": 7.94,
+        "diff_pct": 85.99,
         "sample_parsed": [
           {
-            "variety": "MONDIAL",
+            "variety": "PURPLE",
             "size": 50,
-            "stems": 300,
-            "total": 87.0,
-            "method": ""
-          },
-          {
-            "variety": "MONDIAL",
-            "size": 50,
-            "stems": 300,
-            "total": 87.0,
-            "method": ""
-          },
-          {
-            "variety": "EXPLORER",
-            "size": 50,
-            "stems": 300,
-            "total": 87.0,
+            "stems": 350,
+            "total": 101.5,
             "method": ""
           }
         ],
@@ -2968,71 +3011,35 @@
         "file": "01 - 729-4932 4111 (126) - ECOFLOR 0000051298.pdf",
         "detected_as": "Ecoflor Groupchile",
         "fmt": "mystic",
-        "parsed_lines": 4,
+        "parsed_lines": 0,
         "rescued_lines": 0,
         "header_total": 195.0,
-        "sum_line_total": 195.0,
-        "header_ok": true,
+        "sum_line_total": 0,
+        "header_ok": false,
         "error": "",
         "invoice": "0000051298",
-        "diff_pct": 0.0,
-        "sample_parsed": [
-          {
-            "variety": "IGUANA",
-            "size": 50,
-            "stems": 125,
-            "total": 37.5,
-            "method": ""
-          },
-          {
-            "variety": "IGUANA",
-            "size": 50,
-            "stems": 125,
-            "total": 37.5,
-            "method": ""
-          },
-          {
-            "variety": "ENGAGEMENT",
-            "size": 50,
-            "stems": 100,
-            "total": 30.0,
-            "method": ""
-          }
-        ],
+        "diff_pct": 100.0,
+        "sample_parsed": [],
         "sample_rescued": []
       },
       {
         "file": "02 - 075-67711000 - ECOFLOR ECOFLOR.pdf",
         "detected_as": "Ecoflor Groupchile",
         "fmt": "mystic",
-        "parsed_lines": 12,
+        "parsed_lines": 1,
         "rescued_lines": 0,
         "header_total": 724.5,
-        "sum_line_total": 667.0,
+        "sum_line_total": 101.5,
         "header_ok": false,
         "error": "",
         "invoice": "0000080709",
-        "diff_pct": 7.94,
+        "diff_pct": 85.99,
         "sample_parsed": [
           {
-            "variety": "MONDIAL",
+            "variety": "PURPLE",
             "size": 50,
-            "stems": 300,
-            "total": 87.0,
-            "method": ""
-          },
-          {
-            "variety": "MONDIAL",
-            "size": 50,
-            "stems": 150,
-            "total": 43.5,
-            "method": ""
-          },
-          {
-            "variety": "MONDIAL",
-            "size": 50,
-            "stems": 75,
-            "total": 21.75,
+            "stems": 350,
+            "total": 101.5,
             "method": ""
           }
         ],
@@ -3042,14 +3049,14 @@
         "file": "02 - 729-4984 6860 (44) - ECOFLOR 51140.pdf",
         "detected_as": "Ecoflor Groupchile",
         "fmt": "mystic",
-        "parsed_lines": 18,
+        "parsed_lines": 6,
         "rescued_lines": 0,
         "header_total": 168.0,
-        "sum_line_total": 168.0,
-        "header_ok": true,
+        "sum_line_total": 30.8,
+        "header_ok": false,
         "error": "",
         "invoice": "0000051140",
-        "diff_pct": 0.0,
+        "diff_pct": 81.67,
         "sample_parsed": [
           {
             "variety": "SWEET",
@@ -3059,17 +3066,17 @@
             "method": ""
           },
           {
-            "variety": "ENGAGEMENT",
+            "variety": "PURPLE",
             "size": 50,
             "stems": 20,
-            "total": 5.6000000000000005,
+            "total": 5.6,
             "method": ""
           },
           {
-            "variety": "JESSICA",
+            "variety": "MAGIC",
             "size": 50,
-            "stems": 30,
-            "total": 8.4,
+            "stems": 20,
+            "total": 5.6,
             "method": ""
           }
         ],
@@ -3079,34 +3086,20 @@
         "file": "03 - 075-67714500 - ECOFLOR ECOFLOR.pdf",
         "detected_as": "Ecoflor Groupchile",
         "fmt": "mystic",
-        "parsed_lines": 10,
+        "parsed_lines": 1,
         "rescued_lines": 0,
         "header_total": 724.5,
-        "sum_line_total": 667.0,
+        "sum_line_total": 101.5,
         "header_ok": false,
         "error": "",
         "invoice": "0000080480",
-        "diff_pct": 7.94,
+        "diff_pct": 85.99,
         "sample_parsed": [
           {
-            "variety": "MONDIAL",
+            "variety": "PURPLE",
             "size": 50,
-            "stems": 75,
-            "total": 21.75,
-            "method": ""
-          },
-          {
-            "variety": "MONDIAL",
-            "size": 70,
-            "stems": 225,
-            "total": 65.25,
-            "method": ""
-          },
-          {
-            "variety": "MONDIAL",
-            "size": 50,
-            "stems": 300,
-            "total": 87.0,
+            "stems": 350,
+            "total": 101.5,
             "method": ""
           }
         ],
@@ -3888,42 +3881,28 @@
     "samples": 5,
     "detected": 5,
     "parsed_any": 4,
-    "total_parsed": 45,
+    "total_parsed": 22,
     "total_rescued": 0,
-    "totals_ok": 4,
+    "totals_ok": 1,
     "samples_raw": [
       {
         "file": "01 - 369-99022674 - FIORENTINA FIORENTINA (2).pdf",
         "detected_as": "Fiorentina Flowers",
         "fmt": "mystic",
-        "parsed_lines": 6,
+        "parsed_lines": 1,
         "rescued_lines": 0,
         "header_total": 555.0,
-        "sum_line_total": 555.0,
-        "header_ok": true,
+        "sum_line_total": 75.0,
+        "header_ok": false,
         "error": "",
         "invoice": "0000141933",
-        "diff_pct": 0.0,
+        "diff_pct": 86.49,
         "sample_parsed": [
           {
-            "variety": "MONDIAL",
-            "size": 50,
-            "stems": 300,
-            "total": 96.0,
-            "method": ""
-          },
-          {
-            "variety": "MONDIAL",
-            "size": 50,
-            "stems": 300,
-            "total": 96.0,
-            "method": ""
-          },
-          {
-            "variety": "MONDIAL",
-            "size": 50,
-            "stems": 300,
-            "total": 96.0,
+            "variety": "ABSOLUT IN PINK",
+            "size": 60,
+            "stems": 250,
+            "total": 75.0,
             "method": ""
           }
         ],
@@ -3933,34 +3912,34 @@
         "file": "01 - 729-4932 4111 (126) - FIORENTINA 0000087799.pdf",
         "detected_as": "Fiorentina Flowers",
         "fmt": "mystic",
-        "parsed_lines": 15,
+        "parsed_lines": 9,
         "rescued_lines": 0,
         "header_total": 468.0,
-        "sum_line_total": 468.0,
-        "header_ok": true,
+        "sum_line_total": 240.0,
+        "header_ok": false,
         "error": "",
         "invoice": "0000087799",
-        "diff_pct": 0.0,
+        "diff_pct": 48.72,
         "sample_parsed": [
           {
             "variety": "FRUTETTO",
-            "size": 60,
-            "stems": 50,
-            "total": 16.0,
+            "size": 50,
+            "stems": 300,
+            "total": 90.0,
             "method": ""
           },
           {
-            "variety": "MONDIAL",
-            "size": 60,
-            "stems": 150,
-            "total": 48.0,
+            "variety": "COOL WATER",
+            "size": 50,
+            "stems": 50,
+            "total": 15.0,
             "method": ""
           },
           {
-            "variety": "SILANTOI",
-            "size": 60,
-            "stems": 50,
-            "total": 16.0,
+            "variety": "CHERRY BRANDY",
+            "size": 50,
+            "stems": 25,
+            "total": 7.5,
             "method": ""
           }
         ],
@@ -3970,49 +3949,71 @@
         "file": "02 - 075-67711210 - FIORENTINA FIORENTINA.pdf",
         "detected_as": "Fiorentina Flowers",
         "fmt": "mystic",
-        "parsed_lines": 0,
+        "parsed_lines": 3,
         "rescued_lines": 0,
         "header_total": 96.0,
-        "sum_line_total": 0,
-        "header_ok": false,
+        "sum_line_total": 96.0,
+        "header_ok": true,
         "error": "",
         "invoice": "0000141627",
-        "diff_pct": 100.0,
-        "sample_parsed": [],
+        "diff_pct": 0.0,
+        "sample_parsed": [
+          {
+            "variety": "BLUSH",
+            "size": 50,
+            "stems": 100,
+            "total": 32.0,
+            "method": ""
+          },
+          {
+            "variety": "COUNTRY HOME",
+            "size": 50,
+            "stems": 100,
+            "total": 32.0,
+            "method": ""
+          },
+          {
+            "variety": "DEEP PURPLE",
+            "size": 50,
+            "stems": 100,
+            "total": 32.0,
+            "method": ""
+          }
+        ],
         "sample_rescued": []
       },
       {
         "file": "02 - 729-4984 6926 (84) - FIORENTINA 0000087799.pdf",
         "detected_as": "Fiorentina Flowers",
         "fmt": "mystic",
-        "parsed_lines": 15,
+        "parsed_lines": 9,
         "rescued_lines": 0,
         "header_total": 468.0,
-        "sum_line_total": 468.0,
-        "header_ok": true,
+        "sum_line_total": 240.0,
+        "header_ok": false,
         "error": "",
         "invoice": "0000087799",
-        "diff_pct": 0.0,
+        "diff_pct": 48.72,
         "sample_parsed": [
           {
             "variety": "FRUTETTO",
-            "size": 60,
-            "stems": 50,
-            "total": 16.0,
+            "size": 50,
+            "stems": 300,
+            "total": 90.0,
             "method": ""
           },
           {
-            "variety": "MONDIAL",
-            "size": 60,
-            "stems": 150,
-            "total": 48.0,
+            "variety": "COOL WATER",
+            "size": 50,
+            "stems": 50,
+            "total": 15.0,
             "method": ""
           },
           {
-            "variety": "SILANTOI",
-            "size": 60,
-            "stems": 50,
-            "total": 16.0,
+            "variety": "CHERRY BRANDY",
+            "size": 50,
+            "stems": 25,
+            "total": 7.5,
             "method": ""
           }
         ],
@@ -4022,37 +4023,15 @@
         "file": "03 - 075-67714544 - FIORENTINA FIORENTINA.pdf",
         "detected_as": "Fiorentina Flowers",
         "fmt": "mystic",
-        "parsed_lines": 9,
+        "parsed_lines": 0,
         "rescued_lines": 0,
         "header_total": 791.0,
-        "sum_line_total": 791.0,
-        "header_ok": true,
+        "sum_line_total": 0,
+        "header_ok": false,
         "error": "",
         "invoice": "0000141297",
-        "diff_pct": 0.0,
-        "sample_parsed": [
-          {
-            "variety": "MONDIAL",
-            "size": 40,
-            "stems": 350,
-            "total": 80.5,
-            "method": ""
-          },
-          {
-            "variety": "MONDIAL",
-            "size": 40,
-            "stems": 350,
-            "total": 80.5,
-            "method": ""
-          },
-          {
-            "variety": "MONDIAL",
-            "size": 50,
-            "stems": 300,
-            "total": 90.0,
-            "method": ""
-          }
-        ],
+        "diff_pct": 100.0,
+        "sample_parsed": [],
         "sample_rescued": []
       }
     ]
@@ -4339,43 +4318,43 @@
   },
   {
     "folder": "FLORIFRUT",
-    "verdict": "OK",
+    "verdict": "NO_PARSEA",
     "samples": 5,
     "detected": 5,
-    "parsed_any": 5,
-    "total_parsed": 71,
+    "parsed_any": 2,
+    "total_parsed": 12,
     "total_rescued": 0,
-    "totals_ok": 5,
+    "totals_ok": 0,
     "samples_raw": [
       {
         "file": "01 - 075-67710963 - FLORIFRUT FLORIFRUT.pdf",
         "detected_as": "Flores y Frutas Florifrut",
         "fmt": "mystic",
-        "parsed_lines": 14,
+        "parsed_lines": 7,
         "rescued_lines": 0,
         "header_total": 955.0,
-        "sum_line_total": 955.0,
-        "header_ok": true,
+        "sum_line_total": 167.0,
+        "header_ok": false,
         "error": "",
         "invoice": "0001092565",
-        "diff_pct": 0.0,
+        "diff_pct": 82.51,
         "sample_parsed": [
           {
-            "variety": "Frutteto",
+            "variety": "FRUTTETO",
             "size": 40,
             "stems": 200,
             "total": 44.0,
             "method": ""
           },
           {
-            "variety": "Momentum",
+            "variety": "MOMENTUM",
             "size": 40,
             "stems": 75,
             "total": 16.5,
             "method": ""
           },
           {
-            "variety": "Momentum",
+            "variety": "MOMENTUM",
             "size": 50,
             "stems": 75,
             "total": 16.5,
@@ -4388,68 +4367,46 @@
         "file": "01 - 729-4932 4111 (126) - FLORIFRUT 0001060938.pdf",
         "detected_as": "Flores y Frutas Florifrut",
         "fmt": "mystic",
-        "parsed_lines": 4,
+        "parsed_lines": 0,
         "rescued_lines": 0,
         "header_total": 308.0,
-        "sum_line_total": 308.0,
-        "header_ok": true,
+        "sum_line_total": 0,
+        "header_ok": false,
         "error": "",
         "invoice": "0001060938",
-        "diff_pct": 0.0,
-        "sample_parsed": [
-          {
-            "variety": "Mondial",
-            "size": 50,
-            "stems": 350,
-            "total": 77.0,
-            "method": ""
-          },
-          {
-            "variety": "Mondial",
-            "size": 50,
-            "stems": 350,
-            "total": 77.0,
-            "method": ""
-          },
-          {
-            "variety": "Mondial",
-            "size": 50,
-            "stems": 350,
-            "total": 77.0,
-            "method": ""
-          }
-        ],
+        "diff_pct": 100.0,
+        "sample_parsed": [],
         "sample_rescued": []
       },
       {
         "file": "02 - 075-67710926 - FLORIFRUT FLORIFRUT.pdf",
         "detected_as": "Flores y Frutas Florifrut",
         "fmt": "mystic",
-        "parsed_lines": 12,
+        "parsed_lines": 5,
         "rescued_lines": 0,
         "header_total": 955.0,
-        "sum_line_total": 955.0,
-        "header_ok": true,
+        "sum_line_total": 167.0,
+        "header_ok": false,
         "error": "",
         "invoice": "0001092203",
-        "diff_pct": 0.0,
+        "diff_pct": 82.51,
         "sample_parsed": [
           {
-            "variety": "Frutteto",
+            "variety": "FRUTTETO",
             "size": 40,
             "stems": 200,
             "total": 44.0,
             "method": ""
           },
           {
-            "variety": "Momentum",
+            "variety": "MOMENTUM",
             "size": 40,
             "stems": 150,
             "total": 33.0,
             "method": ""
           },
           {
-            "variety": "Brighton",
+            "variety": "BRIGHTON",
             "size": 50,
             "stems": 100,
             "total": 30.0,
@@ -4462,74 +4419,30 @@
         "file": "02 - 729-4932 4122 (194) - FLORIFRUT 0001061145.pdf",
         "detected_as": "Flores y Frutas Florifrut",
         "fmt": "mystic",
-        "parsed_lines": 6,
+        "parsed_lines": 0,
         "rescued_lines": 0,
         "header_total": 160.0,
-        "sum_line_total": 160.0,
-        "header_ok": true,
+        "sum_line_total": 0,
+        "header_ok": false,
         "error": "",
         "invoice": "0001061145",
-        "diff_pct": 0.0,
-        "sample_parsed": [
-          {
-            "variety": "Brighton",
-            "size": 40,
-            "stems": 125,
-            "total": 27.5,
-            "method": ""
-          },
-          {
-            "variety": "Deep Purple",
-            "size": 40,
-            "stems": 125,
-            "total": 27.5,
-            "method": ""
-          },
-          {
-            "variety": "Nena",
-            "size": 40,
-            "stems": 100,
-            "total": 22.0,
-            "method": ""
-          }
-        ],
+        "diff_pct": 100.0,
+        "sample_parsed": [],
         "sample_rescued": []
       },
       {
         "file": "03 - 369-99008420 - FLORIFRUT FLORIFRUT.pdf",
         "detected_as": "Flores y Frutas Florifrut",
         "fmt": "mystic",
-        "parsed_lines": 35,
+        "parsed_lines": 0,
         "rescued_lines": 0,
         "header_total": 817.5,
-        "sum_line_total": 817.5,
-        "header_ok": true,
+        "sum_line_total": 0,
+        "header_ok": false,
         "error": "",
         "invoice": "0001092097",
-        "diff_pct": 0.0,
-        "sample_parsed": [
-          {
-            "variety": "Iguazu",
-            "size": 50,
-            "stems": 300,
-            "total": 114.0,
-            "method": ""
-          },
-          {
-            "variety": "Vendela",
-            "size": 40,
-            "stems": 350,
-            "total": 77.0,
-            "method": ""
-          },
-          {
-            "variety": "Vendela",
-            "size": 40,
-            "stems": 350,
-            "total": 77.0,
-            "method": ""
-          }
-        ],
+        "diff_pct": 100.0,
+        "sample_parsed": [],
         "sample_rescued": []
       }
     ]
@@ -4673,39 +4586,46 @@
   },
   {
     "folder": "GLAMOUR",
-    "verdict": "NO_PARSEA",
+    "verdict": "OK",
     "samples": 5,
     "detected": 5,
-    "parsed_any": 4,
-    "total_parsed": 8,
+    "parsed_any": 5,
+    "total_parsed": 28,
     "total_rescued": 0,
-    "totals_ok": 4,
+    "totals_ok": 5,
     "samples_raw": [
       {
         "file": "01 - 075-67339871 - GLAMOUR GLAMOUR 231597.pdf",
         "detected_as": "Agro San Alfonso (Glamour)",
         "fmt": "auto_agrosanalfonso",
-        "parsed_lines": 2,
+        "parsed_lines": 4,
         "rescued_lines": 0,
-        "header_total": 28.0,
-        "sum_line_total": 28.0,
+        "header_total": 58.0,
+        "sum_line_total": 58.0,
         "header_ok": true,
         "error": "",
         "invoice": "231597",
         "diff_pct": 0.0,
         "sample_parsed": [
           {
-            "variety": "AL",
+            "variety": "EXPLORER",
             "size": 50,
-            "stems": 11,
+            "stems": 75,
             "total": 22.5,
             "method": ""
           },
           {
-            "variety": "GHTON",
-            "size": 40,
-            "stems": 11,
-            "total": 5.5,
+            "variety": "MONDIAL",
+            "size": 50,
+            "stems": 75,
+            "total": 22.5,
+            "method": ""
+          },
+          {
+            "variety": "FRUTTETO",
+            "size": 50,
+            "stems": 25,
+            "total": 7.5,
             "method": ""
           }
         ],
@@ -4715,27 +4635,34 @@
         "file": "01 - 729-4932 4111 (126) - GLAMOUR 214542.pdf",
         "detected_as": "Agro San Alfonso (Glamour)",
         "fmt": "auto_agrosanalfonso",
-        "parsed_lines": 2,
+        "parsed_lines": 6,
         "rescued_lines": 0,
-        "header_total": 55.0,
-        "sum_line_total": 55.0,
+        "header_total": 178.0,
+        "sum_line_total": 178.0,
         "header_ok": true,
         "error": "",
         "invoice": "214542",
         "diff_pct": 0.0,
         "sample_parsed": [
           {
-            "variety": "EXPLORER",
+            "variety": "MONDIAL",
             "size": 40,
             "stems": 175,
             "total": 38.5,
             "method": ""
           },
           {
+            "variety": "MONDIAL",
+            "size": 40,
+            "stems": 125,
+            "total": 27.5,
+            "method": ""
+          },
+          {
             "variety": "EXPLORER",
             "size": 40,
-            "stems": 75,
-            "total": 16.5,
+            "stems": 175,
+            "total": 38.5,
             "method": ""
           }
         ],
@@ -4745,34 +4672,34 @@
         "file": "02 - 075-67335774 - GLAMOUR GLAMOUR 230539.pdf",
         "detected_as": "Agro San Alfonso (Glamour)",
         "fmt": "auto_agrosanalfonso",
-        "parsed_lines": 3,
+        "parsed_lines": 8,
         "rescued_lines": 0,
-        "header_total": 65.5,
-        "sum_line_total": 65.5,
+        "header_total": 196.0,
+        "sum_line_total": 196.0,
         "header_ok": true,
         "error": "",
         "invoice": "230539",
         "diff_pct": 0.0,
         "sample_parsed": [
           {
+            "variety": "MONDIAL",
+            "size": 60,
+            "stems": 200,
+            "total": 70.0,
+            "method": ""
+          },
+          {
+            "variety": "NECTARINE",
+            "size": 40,
+            "stems": 125,
+            "total": 32.5,
+            "method": ""
+          },
+          {
             "variety": "FRUTTETO",
             "size": 50,
             "stems": 125,
             "total": 37.5,
-            "method": ""
-          },
-          {
-            "variety": "AL",
-            "size": 50,
-            "stems": 11,
-            "total": 22.5,
-            "method": ""
-          },
-          {
-            "variety": "GHTON",
-            "size": 50,
-            "stems": 11,
-            "total": 5.5,
             "method": ""
           }
         ],
@@ -4782,34 +4709,71 @@
         "file": "02 - 729-4932 4995 (232) - GLAMOUR 214555.pdf",
         "detected_as": "Agro San Alfonso (Glamour)",
         "fmt": "auto_agrosanalfonso",
-        "parsed_lines": 0,
+        "parsed_lines": 4,
         "rescued_lines": 0,
-        "header_total": 0.0,
-        "sum_line_total": 0,
-        "header_ok": null,
+        "header_total": 120.0,
+        "sum_line_total": 120.0,
+        "header_ok": true,
         "error": "",
         "invoice": "214555",
-        "sample_parsed": [],
+        "diff_pct": 0.0,
+        "sample_parsed": [
+          {
+            "variety": "NECTARINE",
+            "size": 40,
+            "stems": 250,
+            "total": 55.0,
+            "method": ""
+          },
+          {
+            "variety": "NECTARINE",
+            "size": 40,
+            "stems": 125,
+            "total": 27.5,
+            "method": ""
+          },
+          {
+            "variety": "TWILIGHT",
+            "size": 50,
+            "stems": 100,
+            "total": 30.0,
+            "method": ""
+          }
+        ],
         "sample_rescued": []
       },
       {
         "file": "03 - 369-96071231 - GLAMOUR GLAMOUR 229860.pdf",
         "detected_as": "Agro San Alfonso (Glamour)",
         "fmt": "auto_agrosanalfonso",
-        "parsed_lines": 1,
+        "parsed_lines": 6,
         "rescued_lines": 0,
-        "header_total": 55.0,
-        "sum_line_total": 55.0,
+        "header_total": 196.0,
+        "sum_line_total": 196.0,
         "header_ok": true,
         "error": "",
         "invoice": "229860",
         "diff_pct": 0.0,
         "sample_parsed": [
           {
+            "variety": "MONDIAL",
+            "size": 50,
+            "stems": 250,
+            "total": 75.0,
+            "method": ""
+          },
+          {
             "variety": "EXPLORER",
             "size": 40,
             "stems": 250,
             "total": 55.0,
+            "method": ""
+          },
+          {
+            "variety": "MONDIAL",
+            "size": 40,
+            "stems": 25,
+            "total": 5.5,
             "method": ""
           }
         ],
@@ -5730,13 +5694,13 @@
   },
   {
     "folder": "LA ESTACION",
-    "verdict": "NO_PARSEA",
+    "verdict": "OK",
     "samples": 5,
     "detected": 5,
-    "parsed_any": 2,
-    "total_parsed": 106,
+    "parsed_any": 5,
+    "total_parsed": 205,
     "total_rescued": 0,
-    "totals_ok": 2,
+    "totals_ok": 5,
     "samples_raw": [
       {
         "file": "01 - 729-4509 5470 (217) - LA ESTACION 608.pdf",
@@ -5779,42 +5743,111 @@
         "file": "01 - 729-45096446 - LA ESTACION LA ESTACION 709.pdf",
         "detected_as": "Verdes La Estacion / Ponderosa",
         "fmt": "verdesestacion",
-        "parsed_lines": 0,
+        "parsed_lines": 22,
         "rescued_lines": 0,
-        "header_total": 0.0,
-        "sum_line_total": 0,
-        "header_ok": null,
+        "header_total": 336.0,
+        "sum_line_total": 336.0,
+        "header_ok": true,
         "error": "",
         "invoice": "709",
-        "sample_parsed": [],
+        "diff_pct": 0.0,
+        "sample_parsed": [
+          {
+            "variety": "EXPLORER",
+            "size": 40,
+            "stems": 300,
+            "total": 48.0,
+            "method": ""
+          },
+          {
+            "variety": "EXPLORER",
+            "size": 50,
+            "stems": 300,
+            "total": 48.0,
+            "method": ""
+          },
+          {
+            "variety": "HIGH AND MAGIC",
+            "size": 40,
+            "stems": 50,
+            "total": 8.0,
+            "method": ""
+          }
+        ],
         "sample_rescued": []
       },
       {
         "file": "02 - 729-4509 5470 (217) - LA ESTACION 609.pdf",
         "detected_as": "Verdes La Estacion / Ponderosa",
         "fmt": "verdesestacion",
-        "parsed_lines": 0,
+        "parsed_lines": 51,
         "rescued_lines": 0,
-        "header_total": 0.0,
-        "sum_line_total": 0,
-        "header_ok": null,
+        "header_total": 384.0,
+        "sum_line_total": 384.0,
+        "header_ok": true,
         "error": "",
         "invoice": "609",
-        "sample_parsed": [],
+        "diff_pct": 0.0,
+        "sample_parsed": [
+          {
+            "variety": "FREEDOM",
+            "size": 40,
+            "stems": 300,
+            "total": 48.0,
+            "method": ""
+          },
+          {
+            "variety": "EXPLORER",
+            "size": 40,
+            "stems": 300,
+            "total": 48.0,
+            "method": ""
+          },
+          {
+            "variety": "FRUTTETO",
+            "size": 40,
+            "stems": 25,
+            "total": 4.0,
+            "method": ""
+          }
+        ],
         "sample_rescued": []
       },
       {
         "file": "02 - 729-45096380 - LA ESTACION LA ESTACION 695.pdf",
         "detected_as": "Verdes La Estacion / Ponderosa",
         "fmt": "verdesestacion",
-        "parsed_lines": 0,
+        "parsed_lines": 26,
         "rescued_lines": 0,
-        "header_total": 0.0,
-        "sum_line_total": 0,
-        "header_ok": null,
+        "header_total": 280.0,
+        "sum_line_total": 280.0,
+        "header_ok": true,
         "error": "",
         "invoice": "695",
-        "sample_parsed": [],
+        "diff_pct": 0.0,
+        "sample_parsed": [
+          {
+            "variety": "ORANGE",
+            "size": 40,
+            "stems": 50,
+            "total": 8.0,
+            "method": ""
+          },
+          {
+            "variety": "MONDIAL",
+            "size": 40,
+            "stems": 75,
+            "total": 12.0,
+            "method": ""
+          },
+          {
+            "variety": "EXPLORER",
+            "size": 40,
+            "stems": 50,
+            "total": 8.0,
+            "method": ""
+          }
+        ],
         "sample_rescued": []
       },
       {
@@ -7395,38 +7428,88 @@
     "verdict": "NO_PARSEA",
     "samples": 5,
     "detected": 5,
-    "parsed_any": 2,
-    "total_parsed": 20,
-    "total_rescued": 5,
+    "parsed_any": 4,
+    "total_parsed": 29,
+    "total_rescued": 13,
     "totals_ok": 0,
     "samples_raw": [
       {
         "file": "01 - 996-14255161 - MILONGA FLOWERS MILONGA.pdf",
         "detected_as": "Flores Milonga",
         "fmt": "colfarm",
-        "parsed_lines": 0,
-        "rescued_lines": 0,
+        "parsed_lines": 9,
+        "rescued_lines": 4,
         "header_total": 0.0,
-        "sum_line_total": 0,
+        "sum_line_total": 1382.5,
         "header_ok": null,
         "error": "",
         "invoice": "INV-008992",
-        "sample_parsed": [],
-        "sample_rescued": []
+        "sample_parsed": [
+          {
+            "variety": "MI",
+            "size": 50,
+            "stems": 325,
+            "total": 100.75,
+            "method": ""
+          },
+          {
+            "variety": "NENA",
+            "size": 50,
+            "stems": 25,
+            "total": 7.75,
+            "method": ""
+          },
+          {
+            "variety": "EXPLORER",
+            "size": 50,
+            "stems": 50,
+            "total": 15.5,
+            "method": ""
+          }
+        ],
+        "sample_rescued": [
+          "Rose PatzX25 - 50 117263 50 150' 150 ST 0.31 46.50",
+          "Rose Dream Peace X25 - 50 117264 50 150 150 ST 0.31 46.50",
+          "Rose Playa Blanca X25 - 50 117265 50 Xx 150 150 ST 0.40 60.00"
+        ]
       },
       {
         "file": "01 - S. 729-4494 1396 (417) - MILONGA.pdf",
         "detected_as": "Flores Milonga",
         "fmt": "colfarm",
-        "parsed_lines": 0,
-        "rescued_lines": 0,
+        "parsed_lines": 3,
+        "rescued_lines": 1,
         "header_total": 0.0,
-        "sum_line_total": 0,
+        "sum_line_total": 692.5,
         "header_ok": null,
         "error": "",
         "invoice": "INV-003058",
-        "sample_parsed": [],
-        "sample_rescued": []
+        "sample_parsed": [
+          {
+            "variety": "FREEDOM",
+            "size": 50,
+            "stems": 1800,
+            "total": 504.0,
+            "method": ""
+          },
+          {
+            "variety": "MNDIAL",
+            "size": 50,
+            "stems": 300,
+            "total": 96.0,
+            "method": ""
+          },
+          {
+            "variety": "FREEDOM",
+            "size": 60,
+            "stems": 250,
+            "total": 92.5,
+            "method": ""
+          }
+        ],
+        "sample_rescued": [
+          "Rose Rosoidea Rose 2350.00 94 8 692.50"
+        ]
       },
       {
         "file": "02 - 729-45937360 - MILONGA FLOWERS MILONGA.pdf",
@@ -7442,7 +7525,7 @@
         "diff_pct": 12.37,
         "sample_parsed": [
           {
-            "variety": "MIX",
+            "variety": "MI",
             "size": 50,
             "stems": 325,
             "total": 100.75,
@@ -7488,16 +7571,16 @@
         "file": "03 - 729-45937194 - MILONGA FLOWERS MILONGA.pdf",
         "detected_as": "Flores Milonga",
         "fmt": "colfarm",
-        "parsed_lines": 8,
-        "rescued_lines": 2,
+        "parsed_lines": 5,
+        "rescued_lines": 5,
         "header_total": 0.0,
-        "sum_line_total": 786.5,
+        "sum_line_total": 201.5,
         "header_ok": null,
         "error": "",
         "invoice": "INV-008850",
         "sample_parsed": [
           {
-            "variety": "MIX",
+            "variety": "MI",
             "size": 50,
             "stems": 325,
             "total": 100.75,
@@ -7519,8 +7602,9 @@
           }
         ],
         "sample_rescued": [
-          "Rose 2,425 8 4.00 72.00 Kgs. 88.00 Kgs.",
-          "Rose Rosoidea Rose 2425.00 97 8 4 685.75"
+          "2 H Rose Freedom X25 -40 115199- 40 lOO( 300 600 ST 0.25 150.00",
+          "2 H Rose Freedom X25 -50 115201- 50 lOO( 300 600 ST 0.29 174.00",
+          "3 H Rose Vendela X25 -50 115203- 50 lOO( 300 900 ST 0.29 261.00"
         ]
       }
     ]
@@ -7807,26 +7891,41 @@
   },
   {
     "folder": "MULTIFLORA",
-    "verdict": "NO_PARSEA",
+    "verdict": "TOTALES_MAL",
     "samples": 5,
     "detected": 5,
-    "parsed_any": 2,
-    "total_parsed": 21,
-    "total_rescued": 2,
-    "totals_ok": 0,
+    "parsed_any": 5,
+    "total_parsed": 26,
+    "total_rescued": 1,
+    "totals_ok": 1,
     "samples_raw": [
       {
         "file": "01 - 075-6537 6964 (334) - MULTIFLORA A2365234.pdf",
         "detected_as": "Multiflora",
         "fmt": "multiflora",
-        "parsed_lines": 0,
+        "parsed_lines": 2,
         "rescued_lines": 0,
         "header_total": 0.0,
-        "sum_line_total": 0,
+        "sum_line_total": 100.0,
         "header_ok": null,
         "error": "",
         "invoice": "",
-        "sample_parsed": [],
+        "sample_parsed": [
+          {
+            "variety": "YELLOW",
+            "size": 0,
+            "stems": 500,
+            "total": 50.0,
+            "method": ""
+          },
+          {
+            "variety": "YELLOW",
+            "size": 0,
+            "stems": 500,
+            "total": 50.0,
+            "method": ""
+          }
+        ],
         "sample_rescued": []
       },
       {
@@ -7870,31 +7969,52 @@
         "file": "02 - 075-67682230 - MULTIFLORA MULTIFLORA.pdf",
         "detected_as": "Multiflora",
         "fmt": "multiflora",
-        "parsed_lines": 0,
-        "rescued_lines": 1,
+        "parsed_lines": 1,
+        "rescued_lines": 0,
         "header_total": 130.0,
-        "sum_line_total": 0,
-        "header_ok": false,
+        "sum_line_total": 130.0,
+        "header_ok": true,
         "error": "",
         "invoice": "A2580501",
-        "diff_pct": 100.0,
-        "sample_parsed": [],
-        "sample_rescued": [
-          "40 -R OSJSS ROSE 40cm LPK Jessica 25 St(Stems) 2 Half 250 500 0.2600 130.0000 1.00"
-        ]
+        "diff_pct": 0.0,
+        "sample_parsed": [
+          {
+            "variety": "JESSICA",
+            "size": 40,
+            "stems": 500,
+            "total": 130.0,
+            "method": ""
+          }
+        ],
+        "sample_rescued": []
       },
       {
         "file": "02 - 729- 4457 1424 (387) - MULTIFLORA A2367333.pdf",
         "detected_as": "Multiflora",
         "fmt": "multiflora",
-        "parsed_lines": 0,
+        "parsed_lines": 2,
         "rescued_lines": 0,
         "header_total": 0.0,
-        "sum_line_total": 0,
+        "sum_line_total": 520.0,
         "header_ok": null,
         "error": "",
         "invoice": "",
-        "sample_parsed": [],
+        "sample_parsed": [
+          {
+            "variety": "MOONLIGHT",
+            "size": 0,
+            "stems": 2300,
+            "total": 345.0,
+            "method": ""
+          },
+          {
+            "variety": "MOONLIGHT",
+            "size": 0,
+            "stems": 2500,
+            "total": 175.0,
+            "method": ""
+          }
+        ],
         "sample_rescued": []
       },
       {
@@ -7940,27 +8060,49 @@
   },
   {
     "folder": "MYSTIC",
-    "verdict": "NO_PARSEA",
+    "verdict": "OK",
     "samples": 5,
     "detected": 5,
-    "parsed_any": 1,
-    "total_parsed": 7,
+    "parsed_any": 5,
+    "total_parsed": 36,
     "total_rescued": 0,
-    "totals_ok": 1,
+    "totals_ok": 5,
     "samples_raw": [
       {
         "file": "01 - 075-67712271 - MYSTIC MYSTIC2.pdf",
         "detected_as": "Mystic Flowers",
         "fmt": "mystic",
-        "parsed_lines": 0,
+        "parsed_lines": 26,
         "rescued_lines": 0,
         "header_total": 360.0,
-        "sum_line_total": 0,
-        "header_ok": false,
+        "sum_line_total": 360.0,
+        "header_ok": true,
         "error": "",
         "invoice": "0000281780",
-        "diff_pct": 100.0,
-        "sample_parsed": [],
+        "diff_pct": 0.0,
+        "sample_parsed": [
+          {
+            "variety": "BRIGHTON",
+            "size": 50,
+            "stems": 100,
+            "total": 30.0,
+            "method": ""
+          },
+          {
+            "variety": "FRUTTETO",
+            "size": 50,
+            "stems": 50,
+            "total": 15.0,
+            "method": ""
+          },
+          {
+            "variety": "PINK MONDIAL",
+            "size": 50,
+            "stems": 50,
+            "total": 15.0,
+            "method": ""
+          }
+        ],
         "sample_rescued": []
       },
       {
@@ -7977,21 +8119,21 @@
         "diff_pct": 0.0,
         "sample_parsed": [
           {
-            "variety": "FREEDOM N/A",
+            "variety": "FREEDOM",
             "size": 50,
             "stems": 100,
             "total": 30.0,
             "method": ""
           },
           {
-            "variety": "HIGH & MAGIC N/A",
+            "variety": "HIGH & MAGIC",
             "size": 50,
             "stems": 20,
             "total": 6.0,
             "method": ""
           },
           {
-            "variety": "MAGIC TIMES N/A",
+            "variety": "MAGIC TIMES",
             "size": 50,
             "stems": 20,
             "total": 6.0,
@@ -8004,45 +8146,69 @@
         "file": "02 - 139-47856513 - MYSTIC MYSTIC1.pdf",
         "detected_as": "Mystic Flowers",
         "fmt": "mystic",
-        "parsed_lines": 0,
+        "parsed_lines": 1,
         "rescued_lines": 0,
         "header_total": 1152.0,
-        "sum_line_total": 0,
-        "header_ok": false,
+        "sum_line_total": 1152.0,
+        "header_ok": true,
         "error": "",
         "invoice": "0000281778",
-        "diff_pct": 100.0,
-        "sample_parsed": [],
+        "diff_pct": 0.0,
+        "sample_parsed": [
+          {
+            "variety": "GYP NATURAL XLENCE 750 G",
+            "size": 80,
+            "stems": 4800,
+            "total": 1152.0,
+            "method": ""
+          }
+        ],
         "sample_rescued": []
       },
       {
         "file": "02 - 729-4932 4111 (126) - MYSTIC 0000174165.pdf",
         "detected_as": "Mystic Flowers",
         "fmt": "mystic",
-        "parsed_lines": 0,
+        "parsed_lines": 1,
         "rescued_lines": 0,
         "header_total": 2400.0,
-        "sum_line_total": 0,
-        "header_ok": false,
+        "sum_line_total": 2400.0,
+        "header_ok": true,
         "error": "",
         "invoice": "0000174165",
-        "diff_pct": 100.0,
-        "sample_parsed": [],
+        "diff_pct": 0.0,
+        "sample_parsed": [
+          {
+            "variety": "GYP NATURAL XLENCE 750 G",
+            "size": 80,
+            "stems": 10000,
+            "total": 2400.0,
+            "method": ""
+          }
+        ],
         "sample_rescued": []
       },
       {
         "file": "03 - 075-67714625 - MYSTIC MYSTIC 2.pdf",
         "detected_as": "Mystic Flowers",
         "fmt": "mystic",
-        "parsed_lines": 0,
+        "parsed_lines": 1,
         "rescued_lines": 0,
         "header_total": 2400.0,
-        "sum_line_total": 0,
-        "header_ok": false,
+        "sum_line_total": 2400.0,
+        "header_ok": true,
         "error": "",
         "invoice": "0000280952",
-        "diff_pct": 100.0,
-        "sample_parsed": [],
+        "diff_pct": 0.0,
+        "sample_parsed": [
+          {
+            "variety": "GYP NATURAL XLENCE 750 G",
+            "size": 80,
+            "stems": 10000,
+            "total": 2400.0,
+            "method": ""
+          }
+        ],
         "sample_rescued": []
       }
     ]
@@ -8922,7 +9088,7 @@
     "detected": 5,
     "parsed_any": 3,
     "total_parsed": 14,
-    "total_rescued": 11,
+    "total_rescued": 15,
     "totals_ok": 3,
     "samples_raw": [
       {
@@ -8930,7 +9096,7 @@
         "detected_as": "Premium Flowers Boyacá",
         "fmt": "premiumcol",
         "parsed_lines": 0,
-        "rescued_lines": 0,
+        "rescued_lines": 4,
         "header_total": 240.0,
         "sum_line_total": 0,
         "header_ok": false,
@@ -8938,7 +9104,11 @@
         "invoice": "640",
         "diff_pct": 100.0,
         "sample_parsed": [],
-        "sample_rescued": []
+        "sample_rescued": [
+          "2 HB 600 60 CARNATION MIX VERALEZA 0603.12.7000 ' ORDEN Stems 1200 US$ 0.080 US$ US$",
+          "HB 600 30 CARNATION WHITE VERALEZA 0603.12.7000 ORDEN Stems 600 US$ 0.080 US$ US$",
+          "2 HB 600 60 CARNATION RED RED VERALEZA 0603.12.7000 ' ORDEN Stems 1200 US$ 0.080 US$ US$"
+        ]
       },
       {
         "file": "01 - 996-14255161 - PREMIUM FLOWERS PREMIUM.pdf",
@@ -10250,8 +10420,8 @@
     "verdict": "NO_PARSEA",
     "samples": 5,
     "detected": 5,
-    "parsed_any": 2,
-    "total_parsed": 40,
+    "parsed_any": 3,
+    "total_parsed": 46,
     "total_rescued": 0,
     "totals_ok": 0,
     "samples_raw": [
@@ -10259,24 +10429,32 @@
         "file": "01 - 075-6537 7060 - SAYONARA 64439.pdf",
         "detected_as": "Sayonara",
         "fmt": "sayonara",
-        "parsed_lines": 0,
+        "parsed_lines": 1,
         "rescued_lines": 0,
         "header_total": 0.0,
-        "sum_line_total": 0,
+        "sum_line_total": 228.0,
         "header_ok": null,
         "error": "",
         "invoice": "",
-        "sample_parsed": [],
+        "sample_parsed": [
+          {
+            "variety": "SP CUSHION MIXTO",
+            "size": 70,
+            "stems": 1200,
+            "total": 228.0,
+            "method": ""
+          }
+        ],
         "sample_rescued": []
       },
       {
         "file": "01 - 729-45997276 - SAYONARA SAYONARA.pdf",
         "detected_as": "Sayonara",
         "fmt": "sayonara",
-        "parsed_lines": 15,
+        "parsed_lines": 17,
         "rescued_lines": 0,
         "header_total": 0.0,
-        "sum_line_total": 1064.0,
+        "sum_line_total": 1176.0,
         "header_ok": null,
         "error": "",
         "invoice": "83368",
@@ -10329,7 +10507,7 @@
         "sum_line_total": 0,
         "header_ok": null,
         "error": "",
-        "invoice": "83202",
+        "invoice": "",
         "sample_parsed": [],
         "sample_rescued": []
       },
@@ -10337,10 +10515,10 @@
         "file": "03 - 729-45996941 - SAYONARA SAYONARA 83155.pdf",
         "detected_as": "Sayonara",
         "fmt": "sayonara",
-        "parsed_lines": 25,
+        "parsed_lines": 28,
         "rescued_lines": 0,
         "header_total": 0.0,
-        "sum_line_total": 646.0,
+        "sum_line_total": 814.0,
         "header_ok": null,
         "error": "",
         "invoice": "83155",
@@ -10700,11 +10878,11 @@
   },
   {
     "folder": "STAMPSY",
-    "verdict": "TOTALES_MAL",
+    "verdict": "NO_PARSEA",
     "samples": 5,
     "detected": 5,
-    "parsed_any": 5,
-    "total_parsed": 11,
+    "parsed_any": 0,
+    "total_parsed": 0,
     "total_rescued": 0,
     "totals_ok": 0,
     "samples_raw": [
@@ -10712,149 +10890,81 @@
         "file": "01 - 075-67714625 - STAMPSY STAMPSY (2).pdf",
         "detected_as": "Stampsybox",
         "fmt": "mystic",
-        "parsed_lines": 3,
+        "parsed_lines": 0,
         "rescued_lines": 0,
         "header_total": 0.0,
-        "sum_line_total": 90.0,
+        "sum_line_total": 0,
         "header_ok": null,
         "error": "",
         "invoice": "",
-        "sample_parsed": [
-          {
-            "variety": "REEMBONCHE FRUTTETO",
-            "size": 50,
-            "stems": 100,
-            "total": 30.0,
-            "method": ""
-          },
-          {
-            "variety": "REEMBONCHE NECTARINE",
-            "size": 50,
-            "stems": 100,
-            "total": 30.0,
-            "method": ""
-          },
-          {
-            "variety": "REEMBONCHE SILANTOI",
-            "size": 50,
-            "stems": 100,
-            "total": 30.0,
-            "method": ""
-          }
-        ],
+        "sample_parsed": [],
         "sample_rescued": []
       },
       {
         "file": "01 - 729-4932 5124 (248) - STAMPSYBOX 0000119423.pdf",
         "detected_as": "Stampsybox",
         "fmt": "mystic",
-        "parsed_lines": 1,
+        "parsed_lines": 0,
         "rescued_lines": 0,
         "header_total": 0.0,
-        "sum_line_total": 112.0,
+        "sum_line_total": 0,
         "header_ok": null,
         "error": "",
         "invoice": "",
-        "sample_parsed": [
-          {
-            "variety": "NECTARINE",
-            "size": 50,
-            "stems": 400,
-            "total": 112.00000000000001,
-            "method": ""
-          }
-        ],
+        "sample_parsed": [],
         "sample_rescued": []
       },
       {
         "file": "02 - 075-6577 1436 (44) - STAMPSY.pdf",
         "detected_as": "Stampsybox",
         "fmt": "mystic",
-        "parsed_lines": 1,
+        "parsed_lines": 0,
         "rescued_lines": 0,
         "header_total": 0.0,
-        "sum_line_total": 112.0,
+        "sum_line_total": 0,
         "header_ok": null,
         "error": "",
         "invoice": "",
-        "sample_parsed": [
-          {
-            "variety": "NECTARINE",
-            "size": 50,
-            "stems": 400,
-            "total": 112.00000000000001,
-            "method": ""
-          }
-        ],
+        "sample_parsed": [],
         "sample_rescued": []
       },
       {
         "file": "02 - 075-67711000 - STAMPSY stampsy.pdf",
         "detected_as": "Stampsybox",
         "fmt": "mystic",
-        "parsed_lines": 1,
+        "parsed_lines": 0,
         "rescued_lines": 0,
         "header_total": 0.0,
-        "sum_line_total": 112.0,
+        "sum_line_total": 0,
         "header_ok": null,
         "error": "",
         "invoice": "",
-        "sample_parsed": [
-          {
-            "variety": "REEEMBONCHE NECTARINE",
-            "size": 50,
-            "stems": 400,
-            "total": 112.00000000000001,
-            "method": ""
-          }
-        ],
+        "sample_parsed": [],
         "sample_rescued": []
       },
       {
         "file": "03 - 075-67714544 - STAMPSY STAMPSY.pdf",
         "detected_as": "Stampsybox",
         "fmt": "mystic",
-        "parsed_lines": 5,
+        "parsed_lines": 0,
         "rescued_lines": 0,
         "header_total": 0.0,
-        "sum_line_total": 180.0,
+        "sum_line_total": 0,
         "header_ok": null,
         "error": "",
         "invoice": "",
-        "sample_parsed": [
-          {
-            "variety": "FRUTTETO",
-            "size": 50,
-            "stems": 150,
-            "total": 45.0,
-            "method": ""
-          },
-          {
-            "variety": "NECTARINE",
-            "size": 50,
-            "stems": 150,
-            "total": 45.0,
-            "method": ""
-          },
-          {
-            "variety": "FRUTTETO",
-            "size": 50,
-            "stems": 100,
-            "total": 30.0,
-            "method": ""
-          }
-        ],
+        "sample_parsed": [],
         "sample_rescued": []
       }
     ]
   },
   {
     "folder": "STAMPSYBOX",
-    "verdict": "TOTALES_MAL",
+    "verdict": "NO_PARSEA",
     "samples": 5,
     "detected": 5,
-    "parsed_any": 5,
-    "total_parsed": 9,
+    "parsed_any": 0,
+    "total_parsed": 0,
     "total_rescued": 0,
     "totals_ok": 0,
     "samples_raw": [
@@ -10862,138 +10972,70 @@
         "file": "01 - 075-67340700 - STAMPSYBOX STAMPSYBOX 0000152681.pdf",
         "detected_as": "Stampsybox",
         "fmt": "mystic",
-        "parsed_lines": 3,
+        "parsed_lines": 0,
         "rescued_lines": 0,
         "header_total": 0.0,
-        "sum_line_total": 90.0,
+        "sum_line_total": 0,
         "header_ok": null,
         "error": "",
         "invoice": "",
-        "sample_parsed": [
-          {
-            "variety": "NECTARINE",
-            "size": 50,
-            "stems": 100,
-            "total": 30.0,
-            "method": ""
-          },
-          {
-            "variety": "OPALA",
-            "size": 50,
-            "stems": 100,
-            "total": 30.0,
-            "method": ""
-          },
-          {
-            "variety": "SILANTOI",
-            "size": 50,
-            "stems": 100,
-            "total": 30.0,
-            "method": ""
-          }
-        ],
+        "sample_parsed": [],
         "sample_rescued": []
       },
       {
         "file": "01 - 729-4932 5124 (248) - STAMPSYBOX 0000119423.pdf",
         "detected_as": "Stampsybox",
         "fmt": "mystic",
-        "parsed_lines": 1,
+        "parsed_lines": 0,
         "rescued_lines": 0,
         "header_total": 0.0,
-        "sum_line_total": 112.0,
+        "sum_line_total": 0,
         "header_ok": null,
         "error": "",
         "invoice": "",
-        "sample_parsed": [
-          {
-            "variety": "NECTARINE",
-            "size": 50,
-            "stems": 400,
-            "total": 112.00000000000001,
-            "method": ""
-          }
-        ],
+        "sample_parsed": [],
         "sample_rescued": []
       },
       {
         "file": "02 - 075-67335822 - STAMPSYBOX STAMPSYBOX.pdf",
         "detected_as": "Stampsybox",
         "fmt": "mystic",
-        "parsed_lines": 1,
+        "parsed_lines": 0,
         "rescued_lines": 0,
         "header_total": 0.0,
-        "sum_line_total": 84.0,
+        "sum_line_total": 0,
         "header_ok": null,
         "error": "",
         "invoice": "",
-        "sample_parsed": [
-          {
-            "variety": "NECTARINE",
-            "size": 50,
-            "stems": 300,
-            "total": 84.00000000000001,
-            "method": ""
-          }
-        ],
+        "sample_parsed": [],
         "sample_rescued": []
       },
       {
         "file": "02 - S. 729-4986 1464 (252) - STAMPSYBOX.pdf",
         "detected_as": "Stampsybox",
         "fmt": "mystic",
-        "parsed_lines": 2,
+        "parsed_lines": 0,
         "rescued_lines": 0,
         "header_total": 0.0,
-        "sum_line_total": 98.0,
+        "sum_line_total": 0,
         "header_ok": null,
         "error": "",
         "invoice": "",
-        "sample_parsed": [
-          {
-            "variety": "MONDIAL",
-            "size": 50,
-            "stems": 200,
-            "total": 56.00000000000001,
-            "method": ""
-          },
-          {
-            "variety": "NECTARINE",
-            "size": 50,
-            "stems": 150,
-            "total": 42.00000000000001,
-            "method": ""
-          }
-        ],
+        "sample_parsed": [],
         "sample_rescued": []
       },
       {
         "file": "03 - 075-67335811 - STAMPSYBOX STAMPSYBOX 0000151309.pdf",
         "detected_as": "Stampsybox",
         "fmt": "mystic",
-        "parsed_lines": 2,
+        "parsed_lines": 0,
         "rescued_lines": 0,
         "header_total": 0.0,
-        "sum_line_total": 90.0,
+        "sum_line_total": 0,
         "header_ok": null,
         "error": "",
         "invoice": "",
-        "sample_parsed": [
-          {
-            "variety": "FRUTTETO",
-            "size": 50,
-            "stems": 150,
-            "total": 45.0,
-            "method": ""
-          },
-          {
-            "variety": "NECTARINE",
-            "size": 50,
-            "stems": 150,
-            "total": 45.0,
-            "method": ""
-          }
-        ],
+        "sample_parsed": [],
         "sample_rescued": []
       }
     ]

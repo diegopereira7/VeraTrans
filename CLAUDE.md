@@ -337,6 +337,24 @@ final de este archivo, en la sección "Historial de sesiones".
 - **Variedades en mixed case**: algunos proveedores (QUALISA, NATUFLOR_SaaS,
   BELLAROSA) usan mixed case ("Vendela", "Freedom") en el PDF. Siempre normalizar
   con `.strip().upper()` antes de guardar en InvoiceLine.
+- **OCR fragmentado por columnas**: si un PDF escaneado tiene columnas
+  apretadas, EasyOCR emite un segmento por celda y `_ocr_extract` antes
+  producía una palabra por línea — lo que rompía regex por fila. Fix:
+  agrupar segmentos por y-centro del bbox (tolerancia 15 px a 300 dpi).
+  Esto desbloquea parsers como MILONGA-scan y debería ayudar a cualquier
+  parser OCR-based a futuro. Se mantiene el orden izquierda→derecha
+  dentro de cada fila por x0.
+- **Un fmt → varios proveedores similares**: cuando al arreglar un parser
+  hereditado (ej. MYSTIC) varios otros mejoran (STAMPSY, STAMPSYBOX,
+  FIORENTINA todos compartían `fmt='mystic'` con su propio template
+  ligeramente distinto). Verificar todos los proveedores que usan el
+  mismo fmt después de cada fix con regex añadiendo fallbacks cuando
+  haya pequeñas diferencias (ej. falta de box_code).
+- **No todos los PDFs son rescatables**: algunas facturas escaneadas
+  salen con caracteres OCR tan corrompidos (`R:ise`, `sr` en vez de `ST`,
+  `1~` en vez de dígito, tokens fragmentados, acentos basura) que ningún
+  regex puede recuperarlas. Aceptar pass_ratio < 100% en esos casos
+  (MILONGA scan, SAYONARA scan).
 
 ## Historial de sesiones
 
@@ -367,6 +385,37 @@ final de este archivo, en la sección "Historial de sesiones".
      rompía tokens como 'R11-BCPI' o `$0.300000I 13.00` (I pegado a dígito/$).
      Fix: `re.split(r'(?<![A-Z])I\s+')` — solo separa cuando la I no está
      precedida por mayúscula. Ahora GLAMOUR extrae 4/4 variedades correctas.
+- **2026-04-15 sesión 4**: Ataque a los 36 parciales. Parsers mejorados:
+  * **MYSTIC** (1/5 → 5/5): reescrito regex para soportar box_codes con
+    dígitos (`R14`, `R19`), block names opcionales (`SORIALES`, `IGLESIAS`),
+    variedades mixed-case (`Gyp Natural Xlence 750 G`), sufijo `N/A`, y
+    detección automática de especie (GYPSOPHILA, ROSES, etc.).
+  * **LA ESTACION / PONDEROSA** (2/5 → 5/5): el regex de VerdesEstacionParser
+    variante B no soportaba labels multi-palabra (`TIPO B`). Fix: `(.*?)`
+    en lugar de `(\S*?)` para capturar label antes de `VERALEZA SLU`.
+  * **MILONGA** (2/5 → 4/5): ColFarmParser ampliado con tolerancia OCR
+    (`Rbse`/`Rcse` por `Rose`, `S1`/`SI`/`Sl` por `ST`, decimales coma).
+    Count de caja opcional, separador `-` opcional entre SPB y size para
+    soportar `FreedomX25 50` pegado. El 5º sample sigue fallando por OCR
+    demasiado corrupto (`R:ise`, `sr`, `1~`).
+  * **MULTIFLORA** (2/5 → 5/5): añadidas variantes B (`N Box/Half/Quarter
+    N N PRICE TOTAL FBE` sin segunda palabra en box_type) y C (`FBE PIECES
+    Half Tall UNITS description UPB St(Stems) PRICE $TOTAL` con $ prefix).
+    Detección de especie CARN/ROSE además de ALSTRO/CHRY/DIANTHUS.
+  * **SAYONARA** (2/5 → 3/5): añadidas keywords `Cushion`/`Button`/`Daisy`/
+    `Cremon`/`Spider` a `_TYPE_MAP` para template nuevo "Pom Europa/Asia
+    White Cushion Bonita". Nuevo `_PACK_RE_B` para formato `6 HB15 1200 240
+    $0.950 $228.00` (btype+spb pegado, stems y bunches invertidos).
+  * **STAMPSY / STAMPSYBOX / FIORENTINA** (0/5 → 5/5): al arreglar MYSTIC,
+    estos tres comparten el mismo fmt='mystic' y se beneficiaron. Añadido
+    fallback `_LINE_RE_NOCODE` para STAMPSYBOX que no tiene box_code
+    (variety va directamente tras `H|Q`).
+  * **Mejora en pdf.py**: `_ocr_extract` ahora agrupa tokens OCR por
+    y-centro del bbox (tolerancia 15 px) en lugar de emitir un token por
+    línea. Desbloquea regex por fila para facturas escaneadas con columnas.
+  * Tabla global: **OK 24→27, NO_PARSEA 36→35**. Los fallos remanentes
+    son casi todos PDFs OCR muy corruptos (irrecuperables con regex) o
+    gaps de totales (cosmético).
 
 ## IMPORTANTE — gotcha con `register` tool
 

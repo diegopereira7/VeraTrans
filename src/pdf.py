@@ -125,11 +125,21 @@ def _ocr_extract(path: str) -> str:
             img_bytes = _preprocess_for_ocr(pix.tobytes("png"))
             # detail=1 devuelve (bbox, text, conf) para poder agregar confianza.
             results = reader.readtext(img_bytes, detail=1, paragraph=False)
+            # Agrupar tokens por línea según y-centro del bbox (tolerancia ~15 px)
+            # para que facturas escaneadas con columnas no queden fragmentadas en
+            # una palabra por línea — esto desbloquea parsers con regex por fila.
+            rows: dict[int, list[tuple[float, str]]] = {}
+            for bbox, text, conf in results:
+                if not text:
+                    continue
+                y_center = (bbox[0][1] + bbox[2][1]) / 2
+                key = int(round(y_center / 15) * 15)
+                rows.setdefault(key, []).append((bbox[0][0], text))
+                confidences.append(float(conf))
             page_lines = []
-            for _bbox, text, conf in results:
-                if text:
-                    page_lines.append(text)
-                    confidences.append(float(conf))
+            for y in sorted(rows.keys()):
+                row = sorted(rows[y], key=lambda t: t[0])
+                page_lines.append(' '.join(t[1] for t in row))
             pages_text.append('\n'.join(page_lines))
         doc.close()
     except Exception as e:

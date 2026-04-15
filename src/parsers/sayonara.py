@@ -25,6 +25,12 @@ class SayonaraParser:
         ('Pom Nov',       'SP NOVELTY',   5),
         ('Pom CDN',       'SP CDN',       5),
         ('Santini',       'SA SANTINI',  25),
+        # Plantilla reciente: "Pom Europa/Asia White Cushion Bonita ..." — palabra clave final
+        ('Cushion',       'SP CUSHION',   5),
+        ('Button',        'SP BUTTON',    5),
+        ('Daisy',         'SP DAISY',     5),
+        ('Cremon',        'BI CREMON',   10),
+        ('Spider',        'BI SPIDER',   10),
     ]
 
     _COLOR_MAP = [
@@ -35,6 +41,9 @@ class SayonaraParser:
     ]
 
     _PACK_RE = re.compile(r'(\d+)\s+(HB|QB)\s+(\d+)\s+([\d,]+)\s+([\d.]+)\s+([\d,.]+)')
+    # Variante con suffix pegado (HB15 = Half Box bunches x 15) y tokens
+    # reordenados: "6 HB15 1200 240 $0.950 $228.00" — (boxes, btype+spb, stems, bunches, price, total)
+    _PACK_RE_B = re.compile(r'(\d+)\s+(HB|QB)(\d+)\s+(\d+)\s+(\d+)\s+\$([\d.]+)\s+\$([\d,.]+)')
     _DETAIL_RE = re.compile(r'Exportacion\s+(.+?)\s+CO-\d+.*?\s+(\d+)\s+([\d.]+)\s*$', re.I)
     _TOTAL_RE = re.compile(r'^Pom\s+\w+\s+Europa\s+[\d,]+\s+[\d,.]+\s*$', re.I)
 
@@ -125,6 +134,7 @@ class SayonaraParser:
 
             prefix, tipo, bunch = detected
             pack_m = self._PACK_RE.search(ln)
+            pack_m_b = None if pack_m else self._PACK_RE_B.search(ln)
             detail_m = self._DETAIL_RE.search(ln)
 
             if pack_m:
@@ -138,6 +148,21 @@ class SayonaraParser:
                     'stems': int(pack_m.group(4).replace(',', '')),
                     'price': float(pack_m.group(5)),
                     'total': float(pack_m.group(6).replace(',', '')),
+                    'label': self._extract_label(ln),
+                    'is_mix': is_mix,
+                    'details': [],
+                }
+                packs.append(current_pack)
+            elif pack_m_b:
+                is_mix = bool(re.search(r'Custom\s+Pack|Mix\b', ln, re.I))
+                current_pack = {
+                    'line': ln, 'tipo': tipo, 'prefix': prefix, 'bunch': bunch,
+                    'boxes': int(pack_m_b.group(1)),
+                    'btype': pack_m_b.group(2).upper(),
+                    'spb': int(pack_m_b.group(3)),
+                    'stems': int(pack_m_b.group(4)),
+                    'price': float(pack_m_b.group(6)),
+                    'total': float(pack_m_b.group(7).replace(',', '')),
                     'label': self._extract_label(ln),
                     'is_mix': is_mix,
                     'details': [],

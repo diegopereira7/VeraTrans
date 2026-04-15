@@ -452,6 +452,14 @@ class BosqueParser:
 class MultifloraParser:
     """FIX: código con espacios (PF -A LS001), múltiples especies (ALSTRO, CHRY, DIANTHUS).
     FIX: formatos Box perfection, Quarter tall, Half tall.
+
+    Soporta tres variantes del template Multiflora:
+      A) Legacy con FBE al final y box_type de 2 palabras:
+         "PF -A LS001 ALSTRO PERFECTION AST ASSORTED ALSTR 1 Box perfection 16 16 3.3000 52.8000 0.25"
+      B) Box_type de 1 palabra con FBE al final:
+         "40 -R OSJSS ROSE 40cm LPK Jessica 25 St(Stems) 2 Half 250 500 0.2600 130.0000 1.00"
+      C) Factura antigua con FBE al inicio y $ en total:
+         "0.50 1 Half Tall 500 CARN Standard YEL Yellow 20 St(Stems) 0.1000 $50.000"
     """
     def parse(self, text:str, pdata:dict):
         h=InvoiceHeader(); h.provider_key=pdata['key']; h.provider_id=pdata['id']; h.provider_name=pdata['name']
@@ -463,36 +471,81 @@ class MultifloraParser:
         lines=[]; text_lines=text.split('\n')
         for i, ln in enumerate(text_lines):
             ln=ln.strip()
-            # Patrón genérico: buscar "N Box/Quarter/Half TYPE N N PRICE TOTAL"
-            # "PF -A LS001 ALSTRO PERFECTION AST ASSORTED ALSTR 1 Box perfection 16 16 3.3000 52.8000 0.25"
-            # "SC -A LSWHI ALSTRO Select WHI WHITE 10ST(Bunches) 0603190107 2 Quarter tall 18 36 1.8000 64.8000 0.50"
-            # "EX -B COGAI CHRY EX SPE Box Chry Special Pack 10(Stems) 1 Half tall 200 200 0.2800 56.0000 0.50"
-            # "70 -D IAGBT DIANTHUS 70cm GRE Green Ball 10st 10 St(Stems) DIANT 1 Half tall 200 200 0.4400 88.0000 0.50"
-            pm=re.search(r'(\d+)\s+(?:Box|Quarter|Half)\s+\w+\s+(\d+)\s+(\d+)\s+([\d.]+)\s+([\d.]+)\s+([\d.]+)',ln)
-            if not pm: continue
-            qty=int(pm.group(1)); upb=int(pm.group(2)); total_units=int(pm.group(3))
-            ppb=float(pm.group(4)); total=float(pm.group(5))
+            # upb_hint: derivar units-per-bunch desde patrón 'N St(Stems)' en la línea
+            upb_hint = None
+            spb_m = re.search(r'(\d+)\s*(?:St|Stems|Bunches)\s*\(', ln, re.I)
+            if spb_m:
+                upb_hint = int(spb_m.group(1))
+            qty = upb = total_units = None
+            ppb = total = 0.0
+            # A) "... N Box/Quarter/Half WORD N N PRICE TOTAL FBE"
+            pm=re.search(r'(\d+)\s+(?:Box|Quarter|Half)\s+\w+\s+(\d+)\s+(\d+)\s+([\d.]+)\s+([\d.]+)\s+([\d.]+)\s*$',ln)
+            if pm:
+                qty = int(pm.group(1)); upb = int(pm.group(2)); total_units = int(pm.group(3))
+                ppb = float(pm.group(4)); total = float(pm.group(5))
+            # B) "... N Box/Quarter/Half N N PRICE TOTAL FBE"  (Half Tall sin segunda palabra)
+            if qty is None:
+                pm = re.search(r'(\d+)\s+(?:Box|Quarter|Half)\s+(\d+)\s+(\d+)\s+([\d.]+)\s+([\d.]+)\s+([\d.]+)\s*$', ln)
+                if pm:
+                    qty = int(pm.group(1)); upb = int(pm.group(2)); total_units = int(pm.group(3))
+                    ppb = float(pm.group(4)); total = float(pm.group(5))
+            # C) "FBE PIECES Half Tall UNITS description UPB St(Stems) PRICE $TOTAL"
+            if qty is None:
+                pm_c = re.search(
+                    r'^([\d.]+)\s+(\d+)\s+(?:Box|Half|Quarter)(?:\s+Tall)?\s+([\d,]+)\s+'
+                    r'.+?(\d+)\s*(?:St|Stems|Bunches)\s*\([^)]+\)\s+'
+                    r'([\d.]+)\s+\$?([\d,.]+)\s*$',
+                    ln)
+                if pm_c:
+                    qty = int(pm_c.group(2))
+                    total_units = int(pm_c.group(3).replace(',', ''))
+                    upb = int(pm_c.group(4))
+                    ppb = float(pm_c.group(5))
+                    total = float(pm_c.group(6).replace(',', ''))
+            if qty is None:
+                continue
+            if upb_hint:
+                upb = upb_hint
             # Detectar especie y variedad del texto de la línea
             sp='ALSTROEMERIA'; var='ASSORTED'; grade='FANCY'; sz=0
-            if 'ALSTRO' in ln.upper():
+            upper=ln.upper()
+            if 'ALSTRO' in upper:
                 sp='ALSTROEMERIA'
-                if 'WHISTLER' in ln.upper(): var='WHISTLER'
-                elif 'WHITE' in ln.upper(): var='WHITE'
-                elif 'SPECIAL' in ln.upper() or 'SPE' in ln.upper(): var='SPECIAL PACK'
+                if 'WHISTLER' in upper: var='WHISTLER'
+                elif 'WHITE' in upper: var='WHITE'
+                elif 'SPECIAL' in upper or 'SPE' in upper: var='SPECIAL PACK'
                 else: var='ASSORTED'
-                if 'SELECT' in ln.upper() or 'SPE ' in ln.upper(): grade='SELECT'
-                elif 'AST' in ln.upper(): grade='FANCY'
+                if 'SELECT' in upper or 'SPE ' in upper: grade='SELECT'
+                elif 'AST' in upper: grade='FANCY'
                 else: grade='FANCY'
-            elif 'CHRY' in ln.upper():
+            elif 'CHRY' in upper:
                 sp='CHRYSANTHEMUM'
-                var='SPECIAL PACK' if 'SPECIAL' in ln.upper() else 'ASSORTED'
+                var='SPECIAL PACK' if 'SPECIAL' in upper else 'ASSORTED'
                 grade=''
-            elif 'DIANTHUS' in ln.upper():
+            elif 'DIANTHUS' in upper:
                 sp='OTHER'
                 dm=re.search(r'DIANTHUS\s+\d+cm\s+\w+\s+([\w\s]+?)(?:\d|St)',ln,re.I)
                 var=dm.group(1).strip().upper() if dm else 'GREEN BALL'
                 sz_m=re.search(r'(\d{2})cm',ln,re.I)
                 sz=int(sz_m.group(1)) if sz_m else 0
+                grade=''
+            elif re.search(r'\bCARN\b', upper):
+                sp='CARNATIONS'
+                gm=re.search(r'\bCARN\s+(\w+)\s+\w{3}\s+([A-Za-z]+)', ln)
+                if gm:
+                    grade = gm.group(1).upper()
+                    var = gm.group(2).upper()
+                if 'MINI' in upper:
+                    sp = 'CARNATIONS'  # tag with variety prefix
+                    var = 'MINI ' + var
+            elif re.search(r'\bROSE\b', upper):
+                sp='ROSES'
+                sz_m = re.search(r'ROSE\s+(\d{2,3})\s*cm', ln, re.I)
+                if sz_m:
+                    sz = int(sz_m.group(1))
+                gm = re.search(r'ROSE\s+\d{2,3}\s*cm\s+\w{3}\s+([A-Za-z][A-Za-z\s]+?)\s+\d+\s*(?:St|Stems|Bunches)', ln, re.I)
+                if gm:
+                    var = gm.group(1).strip().upper()
                 grade=''
             # Label: buscar en la línea siguiente (ej: "NAVARRA", "R11")
             label=''
@@ -942,11 +995,12 @@ class VerdesEstacionParser:
         r'\$\s*([\d,]+)\s+\$\s*([\d,]+)')
 
     # Variante B: "Variety <size> <stems> [LABEL] VERALEZA SLU FRESH CUT ROSES*<spb> CO <hts> $ price $ total"
+    # Label puede ser "R11-Tita", "TIPO B", "MARL", etc. — multi-word posible.
     _RE_B = re.compile(
         r'([A-Za-z][A-Za-z\s\-]+?)\s+'          # variedad (mixed case o upper)
         r'(\d{2,3})\s+'                          # talla sin CM
         r'(\d+)\s+'                              # stems
-        r'(\S*?)\s*'                             # label (puede ser vacío)
+        r'(.*?)\s*'                              # label (puede incluir espacios: "TIPO B")
         r'VERALEZA\s+SLU\s+FRESH\s+CUT\s+ROSES\s*\*\s*(\d+)\s+'
         r'(?:STEMS\s+)?CO\s+\d+\s+'
         r'\$\s*([\d,]+)\s+\$\s*([\d,]+)')
@@ -1230,10 +1284,21 @@ class ColFarmParser:
     Boxes Description Box# Gr. BoxID Tariff UnxBox TotalUn Un Price Total
     Ejemplo: "1 H Rose Frutteto X 25 - 40 143213 40 0603.11.00.00 300 300 ST 0.25 75.00"
     Continuación (mixed box): "Rose White X 10 - 50 50 70 70 ST 0.30"
+
+    Tolera OCR: 'Rbse'/'Rcse' por 'Rose', 'S1'/'SI'/'Sl'/"'ST" por 'ST',
+    decimales con coma ('0,31') y espacios pegados ('NenaX25-50').
     """
+    # Alias de Rose con tolerancia OCR: Rose, Rbse, Rcse, Ros
+    _ROSE = r'(?:Rose|Rbse|Rcse|Ros)'
+    # Unidad: ST, S1, SI, Sl, 'ST, ST'
+    _UNIT = r"(?:ST|S1|SI|Sl|'?ST'?)"
+
     @staticmethod
     def _money(s: str) -> float:
-        """Parse money value: handles '3,900.00' and '75.00'."""
+        """Parse money value: handles '3,900.00', '75.00', '0,31'."""
+        s = s.strip()
+        if ',' in s and '.' not in s:
+            return float(s.replace(',', '.'))
         return float(s.replace(',', ''))
 
     def parse(self, text: str, pdata: dict):
@@ -1253,15 +1318,17 @@ class ColFarmParser:
         for ln in text.split('\n'):
             ln = ln.strip()
             # Línea principal: "1 H Rose Frutteto X 25 - 40 ... 300 300 ST 0.25 75.00"
+            # Soporta 'RoseFrutteto' pegado, OCR 'Rbse'/'Rcse', unidad ST/S1/Sl,
+            # decimales con coma, conteo de caja opcional (sub-líneas OCR sin prefijo).
             pm = re.search(
-                r'\d+\s+(H|Q)\s+Rose?\s*(.+?)\s+X\s*(\d+)\s*-\s*(\d{2,3})\s+.+?\s+(\d+)\s+(\d+)\s+ST\s+([\d.]+)\s+([\d,.]+)',
+                rf'(?:\d+\s+)?(H|Q)\s+{self._ROSE}\s*(.+?)\s*X\s*(\d+)\s*[-_]?\s+(\d{{2,3}})\s+.+?\s+(\d+)\s+(\d+)\s+{self._UNIT}\s+([\d,.]+)\s+([\d,.]+)',
                 ln, re.I)
             if pm:
                 box_type = 'HB' if pm.group(1).upper() == 'H' else 'QB'
                 var = pm.group(2).strip().upper()
                 spb = int(pm.group(3)); sz = int(pm.group(4))
                 stems_box = int(pm.group(5)); stems_total = int(pm.group(6))
-                price = float(pm.group(7)); total = self._money(pm.group(8))
+                price = self._money(pm.group(7)); total = self._money(pm.group(8))
                 # Skip "Rosemix"/"assorted" lines — their sub-lines follow
                 if re.match(r'(?:ROSEMIX|ASSORTED|SURTID)', var, re.I):
                     continue
@@ -1273,13 +1340,13 @@ class ColFarmParser:
                 continue
             # Línea principal sin X-SPB: "1 H Rose assorted 142985 50 GONZA X 10 ... 200 200 ST 0.30 60.00"
             pm2 = re.search(
-                r'\d+\s+(H|Q)\s+Rose?\s*(.+?)\s+\d{5,}\s+(\d{2,3})\s+.+?\s+(\d+)\s+(\d+)\s+ST\s+([\d.]+)\s+([\d,.]+)',
+                rf'\d+\s+(H|Q)\s+{self._ROSE}\s*(.+?)\s+\d{{5,}}\s+(\d{{2,3}})\s+.+?\s+(\d+)\s+(\d+)\s+{self._UNIT}\s+([\d,.]+)\s+([\d,.]+)',
                 ln, re.I)
             if pm2:
                 box_type = 'HB' if pm2.group(1).upper() == 'H' else 'QB'
                 var = pm2.group(2).strip().upper()
                 sz = int(pm2.group(3))
-                stems_total = int(pm2.group(5)); price = float(pm2.group(6)); total = self._money(pm2.group(7))
+                stems_total = int(pm2.group(5)); price = self._money(pm2.group(6)); total = self._money(pm2.group(7))
                 if re.match(r'(?:ROSEMIX|ASSORTED|SURTID)', var, re.I):
                     continue
                 il = InvoiceLine(raw_description=ln, species='ROSES', variety=var, origin='COL',
@@ -1290,12 +1357,12 @@ class ColFarmParser:
             # Continuación (sub-línea mixed box): "NenaX25-50 50 25 25 ST 0.28"
             # o "Rose White X 10 - 50 50 70 70 ST 0.30"
             pm3 = re.search(
-                r'(?:Rose\s+)?([A-Za-z][A-Za-z\s.\-/&]*?)\s*X\s*(\d+)\s*-?\s*(\d{2,3})\s+\d{2,3}\s+(\d+)\s+(\d+)\s+ST\s+([\d.]+)',
+                rf'(?:{self._ROSE}\s+)?([A-Za-z][A-Za-z\s.\-/&]*?)\s*X\s*(\d+)\s*[-_:]?\s*(\d{{2,3}})\s+\d{{2,3}}\s+(\d+)\s+(\d+)\s+{self._UNIT}\s+([\d,.]+)',
                 ln, re.I)
             if pm3:
                 var = pm3.group(1).strip().upper()
                 spb = int(pm3.group(2)); sz = int(pm3.group(3))
-                stems = int(pm3.group(5)); price = float(pm3.group(6))
+                stems = int(pm3.group(5)); price = self._money(pm3.group(6))
                 total = round(stems * price, 2)
                 # Colors without variety name = surtido mixto in a mixed box
                 _COLORS_ONLY = {'WHITE','RED','PINK','YELLOW','ORANGE','CREAM','PEACH',
