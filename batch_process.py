@@ -22,7 +22,7 @@ sys.stdout.reconfigure(encoding='utf-8')
 sys.stderr.reconfigure(encoding='utf-8')
 
 from src.config import SQL_FILE, SYNS_FILE, HIST_FILE, BASE_DIR
-from src.pdf import detect_provider, get_last_ocr_confidence
+from src.pdf import detect_provider, get_last_ocr_confidence, get_last_extraction
 from src.parsers import FORMAT_PARSERS
 from src.articulos import ArticulosLoader
 from src.sinonimos import SynonymStore
@@ -92,10 +92,21 @@ def _process_single_pdf(
     lines = split_mixed_boxes(lines)
     rescued = rescue_unparsed_lines(pdata['text'], lines)
 
-    # Propaga la confianza del OCR a cada línea ANTES de matchear.
+    # Propaga las señales de extracción a cada línea ANTES de matchear.
     ocr_conf = get_last_ocr_confidence()
-    for l in lines + rescued:
+    extraction = get_last_extraction()
+    ext_conf = extraction.confidence if extraction else ocr_conf
+    ext_source = extraction.source if extraction else 'native'
+    ext_engine = extraction.ocr_engine if extraction else ''
+    ext_degraded = bool(extraction and extraction.degraded)
+    for l in lines:
         l.ocr_confidence = ocr_conf
+        l.extraction_confidence = ext_conf
+        if l.extraction_source == 'native':
+            l.extraction_source = ext_source
+    for l in rescued:
+        l.ocr_confidence = ocr_conf
+        l.extraction_confidence = round(min(l.extraction_confidence, ext_conf), 3)
 
     lines = matcher.match_all(pdata['id'], lines)
     lines = reclassify_assorted(lines)
@@ -152,6 +163,10 @@ def _process_single_pdf(
             'mixed_box':      mixed_box,
             'needs_review':   needs_review,
             'ocr_confidence': ocr_conf,
+            'extraction_confidence': ext_conf,
+            'extraction_source':     ext_source,
+            'extraction_engine':     ext_engine,
+            'extraction_degraded':   ext_degraded,
         },
         'validation':     header_validation,
         'reconciliation': reconciliation,
@@ -172,6 +187,8 @@ def _process_single_pdf(
             'match_status':    l.match_status,
             'match_method':    l.match_method,
             'ocr_confidence':   round(l.ocr_confidence, 3),
+            'extraction_confidence': round(l.extraction_confidence, 3),
+            'extraction_source': l.extraction_source,
             'match_confidence': round(l.match_confidence, 3),
             'validation_errors': list(l.validation_errors),
             'needs_review':     l.match_confidence > 0 and l.match_confidence < 0.80,

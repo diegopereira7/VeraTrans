@@ -71,11 +71,22 @@ class InvoiceLine:
     match_method: str = ''
     # Confianza de extracción y matching (0.0-1.0).
     # ocr_confidence: 1.0 si el texto era nativo del PDF; <1.0 si vino de OCR.
+    #   Se mantiene por compatibilidad con código que lo leía directamente.
+    # extraction_confidence: señal agregada que también tiene en cuenta
+    #   degradación (páginas sin extraer, texto corrupto, mezcla nativo+OCR).
+    #   Puede ser menor que ocr_confidence aunque el OCR fuera bueno si el
+    #   documento requiere revisión por otros motivos.
+    # extraction_source: 'native' | 'mixed' | 'ocr' | 'empty' | 'rescue'.
+    #   'rescue' indica que la línea entró por la red de seguridad (regex
+    #   genérico sobre texto no parseado), no por el parser específico —
+    #   la UI la pinta distinto para no disimular el fallo del parser.
     # match_confidence: se asigna según la etapa del pipeline que resolvió la línea.
     # field_confidence: confianza por campo extraído; permite enviar a revisión
     #                   humana solo los campos inciertos (ver validate.py).
     # validation_errors: lista de reglas cruzadas que fallaron (totales, stems…).
     ocr_confidence: float = 1.0
+    extraction_confidence: float = 1.0
+    extraction_source: str = 'native'
     match_confidence: float = 0.0
     field_confidence: dict = field(default_factory=dict)
     validation_errors: list = field(default_factory=list)

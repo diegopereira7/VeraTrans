@@ -9,7 +9,7 @@ import json
 import sys
 from pathlib import Path
 
-from src.pdf import detect_provider, get_last_ocr_confidence
+from src.pdf import detect_provider, get_last_ocr_confidence, get_last_extraction
 from src.parsers import FORMAT_PARSERS
 from src.articulos import ArticulosLoader
 from src.sinonimos import SynonymStore
@@ -98,12 +98,28 @@ def _process_with_lines(pdf_path: str, pdata: dict, header, lines) -> dict:
     rescued = rescue_unparsed_lines(pdata.get('text', ''), lines)
     pdf_name = Path(pdf_path).name if pdf_path else ''
 
-    # Propaga la confianza del OCR a cada línea ANTES de matchear — el matcher
-    # combina match_confidence con ocr_confidence para bajar el score de
-    # facturas escaneadas.
+    # Propaga la confianza del OCR y la señal de extracción a cada línea
+    # ANTES de matchear — el matcher combina match_confidence con
+    # ocr_confidence y extraction_confidence para bajar el score en
+    # facturas escaneadas o con fuentes mixtas.
     ocr_conf = get_last_ocr_confidence()
-    for l in lines + rescued:
+    extraction = get_last_extraction()
+    ext_conf = extraction.confidence if extraction else ocr_conf
+    ext_source = extraction.source if extraction else 'native'
+    ext_engine = extraction.ocr_engine if extraction else ''
+    ext_degraded = bool(extraction and extraction.degraded)
+    for l in lines:
         l.ocr_confidence = ocr_conf
+        l.extraction_confidence = ext_conf
+        # No pisar el 'rescue' que marca rescue_unparsed_lines.
+        if l.extraction_source == 'native':
+            l.extraction_source = ext_source
+    for l in rescued:
+        l.ocr_confidence = ocr_conf
+        # rescued ya trae extraction_source='rescue' y confianza baja;
+        # la multiplicamos por la confianza general para degradar más si
+        # encima el PDF era OCR malo.
+        l.extraction_confidence = round(min(l.extraction_confidence, ext_conf), 3)
 
     lines = matcher.match_all(pdata.get('id', 0), lines, invoice=pdf_name)
     lines = reclassify_assorted(lines)
@@ -176,6 +192,10 @@ def _process_with_lines(pdf_path: str, pdata: dict, header, lines) -> dict:
             'mixed_box':    mixed_box,
             'needs_review': needs_review,
             'ocr_confidence': ocr_conf,
+            'extraction_confidence': ext_conf,
+            'extraction_source': ext_source,
+            'extraction_engine': ext_engine,
+            'extraction_degraded': ext_degraded,
         },
         'validation':     header_validation,
         'reconciliation': reconciliation,
@@ -202,6 +222,8 @@ def _serialize_line(l) -> dict:
         'match_status':    l.match_status,
         'match_method':    l.match_method,
         'ocr_confidence':   round(l.ocr_confidence, 3),
+        'extraction_confidence': round(l.extraction_confidence, 3),
+        'extraction_source': l.extraction_source,
         'match_confidence': round(l.match_confidence, 3),
         'field_confidence': l.field_confidence,
         'validation_errors': list(l.validation_errors),

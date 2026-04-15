@@ -18,7 +18,15 @@ src/
 ├── sinonimos.py      Diccionario persistente de mappings aprendidos
 ├── historial.py      Registro de facturas procesadas
 ├── matcher.py        Pipeline de 7 etapas + confidence scoring por método
-├── pdf.py            pdfplumber → pdftotext → EasyOCR (con preproceso OpenCV)
+├── extraction.py     Router de extracción con triage por página:
+│                       - diagnóstico nativo vs escaneado vs mixto
+│                       - OCRmyPDF+Tesseract como rama principal
+│                       - EasyOCR como fallback (+ preproceso OpenCV)
+│                       - ExtractionResult agrega señal de fiabilidad
+│                       - extract_rows_by_coords helper reusable
+├── pdf.py            Wrapper delgado sobre extraction.py — mantiene API
+│                     pública (extract_text, get_last_ocr_confidence,
+│                     detect_provider) y añade get_last_extraction().
 ├── validate.py       Reglas cruzadas (stems, totales, line_total vs stems*price)
 ├── reconciliation.py Delta de precio vs histórico ≥ últimas 20 hojas/proveedor
 ├── llm_fallback.py   Claude Haiku para líneas sin_parser (opcional, API key)
@@ -49,9 +57,21 @@ web/
 
 Cada factura recorre este pipeline **idéntico** tanto en individual como en lote:
 
-1. **Extracción de texto** — [src/pdf.py](src/pdf.py) `extract_text()`
-   - pdfplumber (nativo) → pdftotext → EasyOCR con preproceso OpenCV (denoise + deskew + binarización adaptativa)
-   - Publica `get_last_ocr_confidence()` (1.0 si nativo, 0.x si OCR)
+1. **Extracción de texto** — [src/pdf.py](src/pdf.py) → [src/extraction.py](src/extraction.py)
+   - Triage por página: pdfplumber intenta extraer texto; si una página está
+     por debajo de un umbral de caracteres útiles o ratio alfanumérico, se
+     marca ``scan``. Resto de páginas: ``native``.
+   - Si todo es nativo → salida directa (rápido).
+   - Si hay ``scan``: intenta **OCRmyPDF** (genera PDF con capa OCR
+     Tesseract, se relee con pdfplumber). Si OCRmyPDF no está disponible
+     cae a OCR per-page: **Tesseract directo** (pytesseract) → **EasyOCR**
+     (último recurso), con preproceso OpenCV (denoise + deskew + binarización
+     adaptativa). EasyOCR agrupa segmentos por y-centro del bbox.
+   - Publica dos señales:
+     - `get_last_ocr_confidence()`: 1.0 si nativo, 0.x si OCR (compat API).
+     - `get_last_extraction()`: :class:`ExtractionResult` con
+       ``confidence``, ``source`` (``native|mixed|ocr|empty``),
+       ``ocr_engine`` (``ocrmypdf|tesseract|easyocr``) y ``degraded``.
 2. **Detección de proveedor** — `detect_provider()` busca en `PROVIDERS[*].patterns`
 3. **Parser específico** — `FORMAT_PARSERS[fmt].parse(text, provider_data)` devuelve `(InvoiceHeader, [InvoiceLine])`
 4. **Split mixed boxes** — separa `RED/YELLOW` en dos líneas
@@ -71,8 +91,17 @@ raw_description, species, variety, grade, origin, size, stems_per_bunch,
 bunches, stems, price_per_stem, price_per_bunch, line_total, label, farm,
 box_type, provider_key,
 articulo_id, articulo_name, match_status, match_method,
-ocr_confidence, match_confidence, field_confidence, validation_errors
+ocr_confidence, extraction_confidence, extraction_source,
+match_confidence, field_confidence, validation_errors
 ```
+
+Campos de extracción (añadidos en sesión 5, todos con defaults seguros):
+- `extraction_confidence` (0.0–1.0): señal agregada de la extracción
+  completa del PDF, no solo del OCR. Una página mixta nativo+OCR puede
+  dar 0.92 aunque el OCR en sí fuera bueno.
+- `extraction_source`: `native` | `mixed` | `ocr` | `empty` | `rescue`.
+  Las líneas capturadas por `rescue_unparsed_lines` llevan `rescue`
+  para que la UI las pinte distinto — no disimular fallos del parser.
 
 - `match_status`: `ok | sin_match | sin_parser | pendiente | mixed_box | llm_extraido`
 - `species`: `ROSES | CARNATIONS | HYDRANGEAS | ALSTROEMERIA | GYPSOPHILA | CHRYSANTHEMUM | OTHER`
@@ -197,10 +226,15 @@ Nuevas tarjetas + badges añadidos a [web/assets/app.js](web/assets/app.js):
 - **A Revisar**: líneas con `match_confidence < 0.80` OR `sin_match` OR `sin_parser` OR `llm_extraido` OR con `validation_errors`. Excluye `mixed_box`.
 - **Totales**: ✓ si `sum_lines ≈ header.total ±1%`, si no muestra diff en rojo
 - **Precio Anómalo**: precios con >15% desvío vs histórico del proveedor
-- **OCR**: aparece solo si el PDF es escaneado; muestra % confianza media
+- **Extracción OCR/Mixta**: aparece solo si la extracción no fue 100% nativa.
+  Muestra % de confianza agregada + tooltip con motor usado (ocrmypdf /
+  tesseract / easyocr) y si hubo páginas degradadas. Reemplaza al antiguo
+  badge "OCR" que solo distinguía nativo/OCR sin detalle.
 - **Omitidos** (lote): cuenta archivos filtrados por SKIP_PATTERNS, con detalle expandible
 
-Clases CSS de fila: `row-sin-parser` (ámbar), `row-sin-match` (rosa), `row-has-error` (rojo borde), `row-low-conf` (naranja borde).
+Clases CSS de fila: `row-sin-parser` (ámbar), `row-rescue` (lila
+discontinuo — línea recuperada por regex genérico), `row-sin-match`
+(rosa), `row-has-error` (rojo borde), `row-low-conf` (naranja borde).
 
 ## SKIP_PATTERNS del batch
 
@@ -350,6 +384,26 @@ final de este archivo, en la sección "Historial de sesiones".
   ligeramente distinto). Verificar todos los proveedores que usan el
   mismo fmt después de cada fix con regex añadiendo fallbacks cuando
   haya pequeñas diferencias (ej. falta de box_code).
+- **Routing de extracción antes de OCR**: no todos los PDFs necesitan
+  OCR, y correr OCR "por si acaso" es lento y a veces peor. El router en
+  `src/extraction.py` hace un triage página a página: si pdfplumber
+  devuelve ≥40 chars con ≥35% alfanuméricos, la página es nativa. Si
+  no, se marca `scan`. El resultado final puede ser `native`, `mixed` o
+  `ocr` — la UI y el matcher usan esa distinción.
+- **OCRmyPDF > EasyOCR para escaneados normales**: OCRmyPDF preserva el
+  orden de columnas mucho mejor que EasyOCR per-page porque usa
+  Tesseract con la geometría original del PDF. Lo usamos primero si está
+  disponible; EasyOCR queda solo como último recurso o para PDFs
+  problemáticos.
+- **Nunca marcar "igual de fiable" un PDF nativo y uno OCRizado**: el
+  pipeline ahora multiplica `match_confidence` también por
+  `extraction_confidence`, así un PDF mixto con una página OCR mala
+  arrastra el score aunque la línea concreta haya matcheado por el
+  método más fuerte (sinónimo, exacto).
+- **Rescue no debe camuflar fallos**: las líneas capturadas por
+  `rescue_unparsed_lines` ahora llevan `extraction_source='rescue'` y
+  `extraction_confidence=0.60`. La UI las pinta en lila discontinuo
+  para que el operador vea que el parser específico no las capturó.
 - **No todos los PDFs son rescatables**: algunas facturas escaneadas
   salen con caracteres OCR tan corrompidos (`R:ise`, `sr` en vez de `ST`,
   `1~` en vez de dígito, tokens fragmentados, acentos basura) que ningún
@@ -385,6 +439,29 @@ final de este archivo, en la sección "Historial de sesiones".
      rompía tokens como 'R11-BCPI' o `$0.300000I 13.00` (I pegado a dígito/$).
      Fix: `re.split(r'(?<![A-Z])I\s+')` — solo separa cuando la I no está
      precedida por mayúscula. Ahora GLAMOUR extrae 4/4 variedades correctas.
+- **2026-04-15 sesión 5**: Refuerzo transversal de la capa de extracción
+  (no se tocan parsers). Cambios:
+  * **Nuevo módulo `src/extraction.py`** con routing diagnóstico:
+    triage página a página (nativa vs escaneada), OCRmyPDF+Tesseract
+    como rama principal, Tesseract per-page y EasyOCR como fallback,
+    `ExtractionResult` con `source`, `confidence`, `ocr_engine`,
+    `degraded`, y helper reusable `extract_rows_by_coords()`.
+  * **`src/pdf.py` refactor**: ahora es wrapper delgado del router;
+    API pública intacta (`extract_text`, `get_last_ocr_confidence`,
+    `detect_provider`, `extract_tables`) y añade `get_last_extraction()`
+    para que el pipeline acceda a las señales finas sin cambios en
+    callers existentes.
+  * **`InvoiceLine.extraction_confidence` + `extraction_source`** con
+    defaults seguros (`1.0` / `'native'`). El matcher multiplica el
+    score por `extraction_confidence` además de `ocr_confidence`.
+  * **Rescue marcado como `extraction_source='rescue'`** con
+    `extraction_confidence=0.60`. Nueva clase CSS `row-rescue` (lila
+    discontinuo) en `web/assets/style.css` y `web/assets/app.js`.
+  * **UI**: el stat card "OCR" se convierte en "Extracción OCR/Mixta"
+    con tooltip indicando motor y si hubo degradación.
+  * Cobertura: **OK 27→30, NO_PARSEA 35→31**. El triage desbloquea
+    PDFs mixtos que antes se marcaban nativos vacíos (se saltaba la
+    rama OCR) o escaneados que nunca llegaban a Tesseract.
 - **2026-04-15 sesión 4**: Ataque a los 36 parciales. Parsers mejorados:
   * **MYSTIC** (1/5 → 5/5): reescrito regex para soportar box_codes con
     dígitos (`R14`, `R19`), block names opcionales (`SORIALES`, `IGLESIAS`),

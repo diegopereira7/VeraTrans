@@ -261,12 +261,17 @@ class Matcher:
         out = []
         for l in lines:
             matched = self.match_line(provider_id, l, invoice=invoice)
-            # Confidence del matching combinada con la del OCR.
+            # Confidence del matching combinada con la del OCR y la de la
+            # extracción general del PDF — para que un documento con una
+            # página degradada o mixta baje el score incluso si la línea
+            # concreta matcheó por el método más fuerte.
             if matched.match_status == 'ok':
                 base = _confidence_for_method(matched.match_method)
             else:
                 base = 0.0
-            matched.match_confidence = round(base * matched.ocr_confidence, 3)
+            ocr = matched.ocr_confidence if matched.ocr_confidence > 0 else 1.0
+            ext = matched.extraction_confidence if matched.extraction_confidence > 0 else 1.0
+            matched.match_confidence = round(base * ocr * ext, 3)
             out.append(matched)
         return out
 
@@ -347,6 +352,11 @@ def rescue_unparsed_lines(text: str, parsed_lines: list[InvoiceLine]) -> list[In
             match_status='sin_parser',
             match_method='',
         )
+        # La red de seguridad NO debe disimular fallos del parser específico:
+        # marcamos extraction_source='rescue' para que la UI las pinte como
+        # "recuperadas" y no igual que una línea parseada normal.
+        il.extraction_source = 'rescue'
+        il.extraction_confidence = 0.60
         rescued.append(il)
     return rescued
 

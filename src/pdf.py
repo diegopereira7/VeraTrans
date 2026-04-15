@@ -1,9 +1,23 @@
 """Extracción de texto de PDFs y detección de proveedor.
 
-Flujo de extracción:
-1. pdfplumber (texto nativo del PDF — rápido y preciso)
-2. pdftotext / poppler (fallback si no hay pdfplumber)
-3. OCR con EasyOCR (fallback para PDFs escaneados sin texto)
+Esta capa es ahora un **wrapper delgado** sobre :mod:`src.extraction`, que
+implementa el routing con diagnóstico previo (nativo vs escaneado vs mixto),
+OCRmyPDF+Tesseract como rama principal y EasyOCR como fallback. Ver
+``src/extraction.py`` para los detalles de la política.
+
+Se mantienen intactas las APIs históricas para no romper llamantes:
+
+    - ``extract_text(path) -> str``
+    - ``get_last_ocr_confidence() -> float``
+    - ``extract_tables(path) -> list[list[list[str]]]``
+    - ``detect_provider(path) -> dict | None``
+
+Se añade:
+
+    - ``get_last_extraction() -> ExtractionResult | None`` para quienes
+      quieran acceder a las señales finas (fuente por página, motor OCR,
+      degradación). El pipeline individual/batch las propaga a las líneas
+      para que la UI muestre fiabilidad de extracción como señal propia.
 """
 from __future__ import annotations
 
@@ -12,6 +26,11 @@ import subprocess
 from typing import Optional
 
 from src.config import PROVIDERS
+from src.extraction import (
+    ExtractionResult,
+    extract as _extract_result,
+    extract_rows_by_coords,  # re-export para parsers
+)
 
 logger = logging.getLogger(__name__)
 
@@ -21,184 +40,76 @@ try:
 except ImportError:
     HAS_PDFPLUMBER = False
 
-# OCR lazy-loaded: solo se carga si se necesita (primer PDF sin texto)
-_ocr_reader = None
 
-# Último score medio de confianza OCR (0.0-1.0). 1.0 = texto nativo.
-# Lo expone get_last_ocr_confidence() para que el pipeline propague la
-# incertidumbre a cada InvoiceLine sin tener que reestructurar la API.
-_last_ocr_confidence: float = 1.0
+# Último resultado completo de extracción (incluye texto, fuente por página,
+# motor OCR, degradado). Lo mantenemos como variable-módulo por compatibilidad
+# con el patrón ``get_last_ocr_confidence()`` que ya usaba procesar_pdf.py y
+# batch_process.py. Un único threading model asumido (el pipeline no procesa
+# dos PDFs a la vez dentro del mismo proceso).
+_last_extraction: Optional[ExtractionResult] = None
 
 
 def get_last_ocr_confidence() -> float:
-    """Confianza media del último extract_text() (1.0 si fue texto nativo)."""
-    return _last_ocr_confidence
+    """Confianza media del último extract_text() (1.0 si fue texto nativo).
 
-
-def _get_ocr_reader():
-    """Lazy-load del reader EasyOCR. Solo se inicializa una vez."""
-    global _ocr_reader
-    if _ocr_reader is None:
-        try:
-            import easyocr
-            logger.info("Inicializando EasyOCR (primera vez, puede tardar)...")
-            _ocr_reader = easyocr.Reader(['en', 'es'], gpu=False, verbose=False)
-            logger.info("EasyOCR listo.")
-        except ImportError:
-            logger.warning("EasyOCR no instalado. pip install easyocr")
-            _ocr_reader = False  # sentinel: intentado pero no disponible
-    return _ocr_reader if _ocr_reader is not False else None
-
-
-def _preprocess_for_ocr(img_bytes: bytes) -> bytes:
-    """Mejora la imagen antes de pasarla al OCR.
-
-    Aplica: grayscale → denoise (bilateral) → binarización adaptativa → deskew.
-    Reduce errores de OCR en escaneos ruidosos o ligeramente inclinados,
-    que es justo el escenario donde una sola pasada de LLM vision falla
-    con mayor frecuencia (ver anyformat.ai/es/blog/anyformat-chatgpt-wont-cutit).
-
-    Si OpenCV/numpy no están instalados devuelve los bytes originales —
-    el preproceso es "best effort", nunca bloquea el OCR.
+    Se conserva por compatibilidad — el valor se deriva de
+    ``_last_extraction.confidence`` si la extracción fue OCR/mixta, o 1.0
+    si fue texto nativo puro.
     """
-    try:
-        import cv2
-        import numpy as np
-    except ImportError:
-        return img_bytes
-    try:
-        arr = np.frombuffer(img_bytes, dtype=np.uint8)
-        img = cv2.imdecode(arr, cv2.IMREAD_COLOR)
-        if img is None:
-            return img_bytes
-        gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
-        # Denoise preservando bordes (bilateral barato para documentos).
-        gray = cv2.bilateralFilter(gray, 5, 35, 35)
-        # Binarización adaptativa — robusta a iluminación desigual.
-        bw = cv2.adaptiveThreshold(
-            gray, 255, cv2.ADAPTIVE_THRESH_GAUSSIAN_C,
-            cv2.THRESH_BINARY, 31, 15,
-        )
-        # Deskew: coordenadas de píxeles oscuros → ángulo de rotación mínimo.
-        coords = np.column_stack(np.where(bw < 128))
-        if len(coords) > 50:
-            angle = cv2.minAreaRect(coords)[-1]
-            if angle < -45:
-                angle = -(90 + angle)
-            else:
-                angle = -angle
-            if abs(angle) > 0.3:
-                h, w = bw.shape
-                M = cv2.getRotationMatrix2D((w // 2, h // 2), angle, 1.0)
-                bw = cv2.warpAffine(bw, M, (w, h),
-                                    flags=cv2.INTER_CUBIC,
-                                    borderMode=cv2.BORDER_REPLICATE)
-        _, buf = cv2.imencode('.png', bw)
-        return buf.tobytes()
-    except Exception as e:
-        logger.debug("Preproceso OCR falló, uso imagen original: %s", e)
-        return img_bytes
+    if _last_extraction is None:
+        return 1.0
+    if _last_extraction.source == 'native':
+        return 1.0
+    return _last_extraction.confidence
 
 
-def _ocr_extract(path: str) -> str:
-    """Extrae texto de un PDF escaneado usando OCR (EasyOCR + PyMuPDF).
-
-    Además del texto, calcula el score medio de confianza y lo publica en
-    _last_ocr_confidence para que el pipeline lo propague a cada línea.
-    """
-    global _last_ocr_confidence
-    reader = _get_ocr_reader()
-    if not reader:
-        return ''
-    try:
-        import fitz  # PyMuPDF
-    except ImportError:
-        logger.warning("PyMuPDF no instalado. pip install PyMuPDF")
-        return ''
-
-    pages_text = []
-    confidences: list[float] = []
-    try:
-        doc = fitz.open(path)
-        for page_num in range(len(doc)):
-            pix = doc[page_num].get_pixmap(dpi=300)
-            img_bytes = _preprocess_for_ocr(pix.tobytes("png"))
-            # detail=1 devuelve (bbox, text, conf) para poder agregar confianza.
-            results = reader.readtext(img_bytes, detail=1, paragraph=False)
-            # Agrupar tokens por línea según y-centro del bbox (tolerancia ~15 px)
-            # para que facturas escaneadas con columnas no queden fragmentadas en
-            # una palabra por línea — esto desbloquea parsers con regex por fila.
-            rows: dict[int, list[tuple[float, str]]] = {}
-            for bbox, text, conf in results:
-                if not text:
-                    continue
-                y_center = (bbox[0][1] + bbox[2][1]) / 2
-                key = int(round(y_center / 15) * 15)
-                rows.setdefault(key, []).append((bbox[0][0], text))
-                confidences.append(float(conf))
-            page_lines = []
-            for y in sorted(rows.keys()):
-                row = sorted(rows[y], key=lambda t: t[0])
-                page_lines.append(' '.join(t[1] for t in row))
-            pages_text.append('\n'.join(page_lines))
-        doc.close()
-    except Exception as e:
-        logger.warning("OCR falló para %s: %s", path, e)
-        return ''
-
-    text = '\n'.join(pages_text)
-    if confidences:
-        _last_ocr_confidence = round(sum(confidences) / len(confidences), 3)
-        logger.info("OCR extrajo %d caracteres de %s (confianza media %.2f)",
-                    len(text), path, _last_ocr_confidence)
-    return text
+def get_last_extraction() -> Optional[ExtractionResult]:
+    """Devuelve el último ExtractionResult, o None si aún no se extrajo nada."""
+    return _last_extraction
 
 
 def extract_text(path: str) -> str:
-    """Extrae el texto completo de un PDF.
+    """Extrae el texto completo de un PDF (API pública, retrocompatible).
 
-    Flujo: pdfplumber → pdftotext → OCR (EasyOCR).
-
-    Args:
-        path: Ruta al fichero PDF.
-
-    Returns:
-        Texto completo del PDF.
+    Internamente llama a :func:`src.extraction.extract` que elige estrategia
+    por página. Si el router no está disponible (p.ej. pdfplumber sin instalar)
+    cae al fallback de ``pdftotext``.
 
     Raises:
-        RuntimeError: Si no hay herramientas de extracción disponibles.
+        RuntimeError: Si no hay ninguna herramienta de extracción disponible.
     """
-    global _last_ocr_confidence
-    # 1. pdfplumber (texto nativo)
-    if HAS_PDFPLUMBER:
-        with pdfplumber.open(path) as p:
-            text = '\n'.join(pg.extract_text() or '' for pg in p.pages)
-        if text.strip():
-            _last_ocr_confidence = 1.0  # texto nativo → confianza máxima
-            return text
-        # Texto vacío → intentar OCR
-        logger.info("pdfplumber no extrajo texto de %s, intentando OCR...", path)
-        ocr_text = _ocr_extract(path)
-        if ocr_text.strip():
-            return ocr_text
-        return text  # devolver vacío si OCR también falla
+    global _last_extraction
+    try:
+        result = _extract_result(path)
+    except Exception as e:
+        logger.warning("Router de extracción falló en %s: %s", path, e)
+        result = None
 
-    # 2. pdftotext fallback
+    if result and result.text.strip():
+        _last_extraction = result
+        return result.text
+
+    # Fallback: pdftotext como último recurso
     try:
         r = subprocess.run(
             ['pdftotext', '-layout', path, '-'],
             capture_output=True, text=True, timeout=15,
         )
         if r.returncode == 0 and r.stdout.strip():
-            _last_ocr_confidence = 1.0
+            from src.extraction import PageExtraction
+            _last_extraction = ExtractionResult(
+                text=r.stdout,
+                pages=[PageExtraction(text=r.stdout, source='native',
+                                      confidence=1.0, char_count=len(r.stdout))],
+                confidence=1.0, source='native', ocr_engine='',
+            )
             return r.stdout
     except (FileNotFoundError, subprocess.TimeoutExpired):
         pass
 
-    # 3. OCR como último recurso
-    ocr_text = _ocr_extract(path)
-    if ocr_text.strip():
-        return ocr_text
+    if result is not None:
+        _last_extraction = result
+        return result.text  # puede ser '' — que el pipeline decida
 
     raise RuntimeError("Instala pdfplumber (pip install pdfplumber) o poppler-utils")
 
@@ -207,11 +118,9 @@ def extract_tables(path: str) -> list[list[list[str]]]:
     """Extrae tablas estructuradas de un PDF con pdfplumber.
 
     Devuelve una lista de tablas (una por tabla detectada en todas las páginas),
-    donde cada tabla es una lista de filas, y cada fila una lista de celdas
-    (strings, posibles valores vacíos). Los parsers que operen sobre facturas
-    tabulares pueden usarlo en lugar de regex sobre texto plano — evita el
-    problema clásico de "tablas aplanadas" (columnas mal alineadas al usar
-    solo extract_text).
+    donde cada tabla es una lista de filas, y cada fila una lista de celdas.
+    Los parsers que operen sobre facturas tabulares pueden usarlo en lugar de
+    regex sobre texto plano — evita el problema clásico de "tablas aplanadas".
 
     Devuelve [] si pdfplumber no está instalado o el PDF no tiene tablas.
     """
@@ -222,10 +131,8 @@ def extract_tables(path: str) -> list[list[list[str]]]:
         with pdfplumber.open(path) as p:
             for page in p.pages:
                 for tbl in page.extract_tables() or []:
-                    # Normalizar celdas a str, colapsar None → ''
                     norm = [[('' if c is None else str(c).strip()) for c in row]
                             for row in tbl]
-                    # Descarta tablas vacías y falsos positivos de 1 celda.
                     if any(any(c for c in row) for row in norm) and len(norm) > 1:
                         tables.append(norm)
     except Exception as e:
@@ -253,3 +160,10 @@ def detect_provider(path: str) -> Optional[dict]:
             if pat.lower() in text_lower:
                 return {**pdata, 'key': pkey, 'text': text}
     return None
+
+
+__all__ = [
+    'extract_text', 'extract_tables', 'extract_rows_by_coords',
+    'detect_provider',
+    'get_last_ocr_confidence', 'get_last_extraction',
+]

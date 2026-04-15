@@ -378,6 +378,16 @@ tr.row-low-conf:hover td {
     background: #fef3c7;
 }
 
+/* Fila recuperada por el rescue (parser específico falló, regex genérico la
+   capturó). Pinta distinto para no camuflar el fallo del parser específico. */
+tr.row-rescue {
+    background: #f5f3ff;
+    border-left: 3px dashed #8b5cf6;
+}
+tr.row-rescue:hover td {
+    background: #ede9fe;
+}
+
 /* Dots de aviso junto al índice de la línea. */
 .conf-dot {
     display: inline-block;

@@ -204,6 +204,10 @@ document.addEventListener('DOMContentLoaded', () => {
         const sinParser = s.sin_parser || 0;
         const needsReview = s.needs_review || 0;
         const ocrConf = typeof s.ocr_confidence === 'number' ? s.ocr_confidence : 1.0;
+        const extConf = typeof s.extraction_confidence === 'number' ? s.extraction_confidence : ocrConf;
+        const extSource = s.extraction_source || 'native';
+        const extEngine = s.extraction_engine || '';
+        const extDegraded = s.extraction_degraded === true;
         const val = data.validation || {};
         const rec = data.reconciliation || {};
         const headerOk = val.header_ok !== false;
@@ -243,11 +247,11 @@ document.addEventListener('DOMContentLoaded', () => {
                 <div class="stat-value">${anomalies}</div>
                 <div class="stat-label">Precio Anómalo</div>
             </div>` : ''}
-            ${ocrConf < 1.0 ? `
-            <div class="stat-card ${ocrConf < 0.75 ? 'warning' : ''}"
-                 title="Este PDF venía escaneado; la extracción usó OCR. Valor más bajo = más probable que haya errores.">
-                <div class="stat-value">${Math.round(ocrConf * 100)}%</div>
-                <div class="stat-label">OCR</div>
+            ${extSource !== 'native' ? `
+            <div class="stat-card ${extConf < 0.75 || extDegraded ? 'warning' : ''}"
+                 title="Fuente de la extracción: ${extSource}${extEngine ? ' (' + extEngine + ')' : ''}. Confianza agregada ${Math.round(extConf * 100)}%${extDegraded ? ' — alguna página quedó degradada.' : '.'}">
+                <div class="stat-value">${Math.round(extConf * 100)}%</div>
+                <div class="stat-label">Extracción ${extSource === 'ocr' ? 'OCR' : extSource === 'mixed' ? 'Mixta' : extSource}</div>
             </div>` : ''}
         `;
 
@@ -273,12 +277,14 @@ document.addEventListener('DOMContentLoaded', () => {
         const tbody = document.querySelector('#linesTable tbody');
         tbody.innerHTML = flatLines.map((l, i) => {
             const synKey = `${window._currentProviderId}|${l.species||''}|${l.variety||''}|${l.size||0}|${l.stems_per_bunch||0}|${l.grade||''}`;
-            // Clase de fila: sin_parser > sin_match > validation errors > low confidence
+            // Clase de fila: sin_parser > rescue > sin_match > validation errors > low confidence
             const hasErrors = l.validation_errors && l.validation_errors.length > 0;
             const needsRev = l.needs_review === true;
+            const isRescue = l.extraction_source === 'rescue';
             const priceDelta = window._priceDeltas && l.articulo_id ? window._priceDeltas[l.articulo_id] : null;
             let rowClass = '';
             if (l.match_status === 'sin_parser') rowClass = 'row-sin-parser';
+            else if (isRescue) rowClass = 'row-rescue';
             else if (l.match_status !== 'ok') rowClass = 'row-sin-match';
             else if (hasErrors) rowClass = 'row-has-error';
             else if (needsRev) rowClass = 'row-low-conf';

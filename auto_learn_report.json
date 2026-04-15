@@ -2976,32 +2976,46 @@
   },
   {
     "folder": "ECOFLOR",
-    "verdict": "NO_PARSEA",
+    "verdict": "TOTALES_MAL",
     "samples": 5,
     "detected": 5,
-    "parsed_any": 4,
-    "total_parsed": 9,
+    "parsed_any": 5,
+    "total_parsed": 52,
     "total_rescued": 0,
-    "totals_ok": 0,
+    "totals_ok": 2,
     "samples_raw": [
       {
         "file": "01 - 075-67712271 - ECOFLOR ECOFLOR.pdf",
         "detected_as": "Ecoflor Groupchile",
         "fmt": "mystic",
-        "parsed_lines": 1,
+        "parsed_lines": 8,
         "rescued_lines": 0,
         "header_total": 724.5,
-        "sum_line_total": 101.5,
+        "sum_line_total": 667.0,
         "header_ok": false,
         "error": "",
         "invoice": "0000080942",
-        "diff_pct": 85.99,
+        "diff_pct": 7.94,
         "sample_parsed": [
           {
-            "variety": "PURPLE",
+            "variety": "MONDIAL",
             "size": 50,
-            "stems": 350,
-            "total": 101.5,
+            "stems": 300,
+            "total": 87.0,
+            "method": ""
+          },
+          {
+            "variety": "MONDIAL",
+            "size": 50,
+            "stems": 300,
+            "total": 87.0,
+            "method": ""
+          },
+          {
+            "variety": "EXPLORER",
+            "size": 50,
+            "stems": 300,
+            "total": 87.0,
             "method": ""
           }
         ],
@@ -3011,35 +3025,71 @@
         "file": "01 - 729-4932 4111 (126) - ECOFLOR 0000051298.pdf",
         "detected_as": "Ecoflor Groupchile",
         "fmt": "mystic",
-        "parsed_lines": 0,
+        "parsed_lines": 4,
         "rescued_lines": 0,
         "header_total": 195.0,
-        "sum_line_total": 0,
-        "header_ok": false,
+        "sum_line_total": 195.0,
+        "header_ok": true,
         "error": "",
         "invoice": "0000051298",
-        "diff_pct": 100.0,
-        "sample_parsed": [],
+        "diff_pct": 0.0,
+        "sample_parsed": [
+          {
+            "variety": "IGUANA",
+            "size": 50,
+            "stems": 125,
+            "total": 37.5,
+            "method": ""
+          },
+          {
+            "variety": "IGUANA",
+            "size": 50,
+            "stems": 125,
+            "total": 37.5,
+            "method": ""
+          },
+          {
+            "variety": "ENGAGEMENT",
+            "size": 50,
+            "stems": 100,
+            "total": 30.0,
+            "method": ""
+          }
+        ],
         "sample_rescued": []
       },
       {
         "file": "02 - 075-67711000 - ECOFLOR ECOFLOR.pdf",
         "detected_as": "Ecoflor Groupchile",
         "fmt": "mystic",
-        "parsed_lines": 1,
+        "parsed_lines": 12,
         "rescued_lines": 0,
         "header_total": 724.5,
-        "sum_line_total": 101.5,
+        "sum_line_total": 667.0,
         "header_ok": false,
         "error": "",
         "invoice": "0000080709",
-        "diff_pct": 85.99,
+        "diff_pct": 7.94,
         "sample_parsed": [
           {
-            "variety": "PURPLE",
+            "variety": "MONDIAL",
             "size": 50,
-            "stems": 350,
-            "total": 101.5,
+            "stems": 300,
+            "total": 87.0,
+            "method": ""
+          },
+          {
+            "variety": "MONDIAL",
+            "size": 50,
+            "stems": 150,
+            "total": 43.5,
+            "method": ""
+          },
+          {
+            "variety": "MONDIAL",
+            "size": 50,
+            "stems": 75,
+            "total": 21.75,
             "method": ""
           }
         ],
@@ -3049,14 +3099,14 @@
         "file": "02 - 729-4984 6860 (44) - ECOFLOR 51140.pdf",
         "detected_as": "Ecoflor Groupchile",
         "fmt": "mystic",
-        "parsed_lines": 6,
+        "parsed_lines": 18,
         "rescued_lines": 0,
         "header_total": 168.0,
-        "sum_line_total": 30.8,
-        "header_ok": false,
+        "sum_line_total": 168.0,
+        "header_ok": true,
         "error": "",
         "invoice": "0000051140",
-        "diff_pct": 81.67,
+        "diff_pct": 0.0,
         "sample_parsed": [
           {
             "variety": "SWEET",
@@ -3066,17 +3116,17 @@
             "method": ""
           },
           {
-            "variety": "PURPLE",
+            "variety": "ENGAGEMENT",
             "size": 50,
             "stems": 20,
             "total": 5.6,
             "method": ""
           },
           {
-            "variety": "MAGIC",
+            "variety": "JESSICA",
             "size": 50,
-            "stems": 20,
-            "total": 5.6,
+            "stems": 30,
+            "total": 8.4,
             "method": ""
           }
         ],
@@ -3086,20 +3136,34 @@
         "file": "03 - 075-67714500 - ECOFLOR ECOFLOR.pdf",
         "detected_as": "Ecoflor Groupchile",
         "fmt": "mystic",
-        "parsed_lines": 1,
+        "parsed_lines": 10,
         "rescued_lines": 0,
         "header_total": 724.5,
-        "sum_line_total": 101.5,
+        "sum_line_total": 667.0,
         "header_ok": false,
         "error": "",
         "invoice": "0000080480",
-        "diff_pct": 85.99,
+        "diff_pct": 7.94,
         "sample_parsed": [
           {
-            "variety": "PURPLE",
+            "variety": "MONDIAL",
             "size": 50,
-            "stems": 350,
-            "total": 101.5,
+            "stems": 75,
+            "total": 21.75,
+            "method": ""
+          },
+          {
+            "variety": "MONDIAL",
+            "size": 70,
+            "stems": 225,
+            "total": 65.25,
+            "method": ""
+          },
+          {
+            "variety": "MONDIAL",
+            "size": 50,
+            "stems": 300,
+            "total": 87.0,
             "method": ""
           }
         ],
@@ -3877,32 +3941,46 @@
   },
   {
     "folder": "FIORENTINA",
-    "verdict": "NO_PARSEA",
+    "verdict": "OK",
     "samples": 5,
     "detected": 5,
-    "parsed_any": 4,
-    "total_parsed": 22,
+    "parsed_any": 5,
+    "total_parsed": 48,
     "total_rescued": 0,
-    "totals_ok": 1,
+    "totals_ok": 5,
     "samples_raw": [
       {
         "file": "01 - 369-99022674 - FIORENTINA FIORENTINA (2).pdf",
         "detected_as": "Fiorentina Flowers",
         "fmt": "mystic",
-        "parsed_lines": 1,
+        "parsed_lines": 6,
         "rescued_lines": 0,
         "header_total": 555.0,
-        "sum_line_total": 75.0,
-        "header_ok": false,
+        "sum_line_total": 555.0,
+        "header_ok": true,
         "error": "",
         "invoice": "0000141933",
-        "diff_pct": 86.49,
+        "diff_pct": 0.0,
         "sample_parsed": [
           {
-            "variety": "ABSOLUT IN PINK",
-            "size": 60,
-            "stems": 250,
-            "total": 75.0,
+            "variety": "MONDIAL",
+            "size": 50,
+            "stems": 300,
+            "total": 96.0,
+            "method": ""
+          },
+          {
+            "variety": "MONDIAL",
+            "size": 50,
+            "stems": 300,
+            "total": 96.0,
+            "method": ""
+          },
+          {
+            "variety": "MONDIAL",
+            "size": 50,
+            "stems": 300,
+            "total": 96.0,
             "method": ""
           }
         ],
@@ -3912,34 +3990,34 @@
         "file": "01 - 729-4932 4111 (126) - FIORENTINA 0000087799.pdf",
         "detected_as": "Fiorentina Flowers",
         "fmt": "mystic",
-        "parsed_lines": 9,
+        "parsed_lines": 15,
         "rescued_lines": 0,
         "header_total": 468.0,
-        "sum_line_total": 240.0,
-        "header_ok": false,
+        "sum_line_total": 468.0,
+        "header_ok": true,
         "error": "",
         "invoice": "0000087799",
-        "diff_pct": 48.72,
+        "diff_pct": 0.0,
         "sample_parsed": [
           {
             "variety": "FRUTETTO",
-            "size": 50,
-            "stems": 300,
-            "total": 90.0,
-            "method": ""
-          },
-          {
-            "variety": "COOL WATER",
-            "size": 50,
+            "size": 60,
             "stems": 50,
-            "total": 15.0,
+            "total": 16.0,
             "method": ""
           },
           {
-            "variety": "CHERRY BRANDY",
-            "size": 50,
-            "stems": 25,
-            "total": 7.5,
+            "variety": "MONDIAL",
+            "size": 60,
+            "stems": 150,
+            "total": 48.0,
+            "method": ""
+          },
+          {
+            "variety": "SILANTOI",
+            "size": 60,
+            "stems": 50,
+            "total": 16.0,
             "method": ""
           }
         ],
@@ -3986,34 +4064,34 @@
         "file": "02 - 729-4984 6926 (84) - FIORENTINA 0000087799.pdf",
         "detected_as": "Fiorentina Flowers",
         "fmt": "mystic",
-        "parsed_lines": 9,
+        "parsed_lines": 15,
         "rescued_lines": 0,
         "header_total": 468.0,
-        "sum_line_total": 240.0,
-        "header_ok": false,
+        "sum_line_total": 468.0,
+        "header_ok": true,
         "error": "",
         "invoice": "0000087799",
-        "diff_pct": 48.72,
+        "diff_pct": 0.0,
         "sample_parsed": [
           {
             "variety": "FRUTETTO",
-            "size": 50,
-            "stems": 300,
-            "total": 90.0,
-            "method": ""
-          },
-          {
-            "variety": "COOL WATER",
-            "size": 50,
+            "size": 60,
             "stems": 50,
-            "total": 15.0,
+            "total": 16.0,
             "method": ""
           },
           {
-            "variety": "CHERRY BRANDY",
-            "size": 50,
-            "stems": 25,
-            "total": 7.5,
+            "variety": "MONDIAL",
+            "size": 60,
+            "stems": 150,
+            "total": 48.0,
+            "method": ""
+          },
+          {
+            "variety": "SILANTOI",
+            "size": 60,
+            "stems": 50,
+            "total": 16.0,
             "method": ""
           }
         ],
@@ -4023,15 +4101,37 @@
         "file": "03 - 075-67714544 - FIORENTINA FIORENTINA.pdf",
         "detected_as": "Fiorentina Flowers",
         "fmt": "mystic",
-        "parsed_lines": 0,
+        "parsed_lines": 9,
         "rescued_lines": 0,
         "header_total": 791.0,
-        "sum_line_total": 0,
-        "header_ok": false,
+        "sum_line_total": 791.0,
+        "header_ok": true,
         "error": "",
         "invoice": "0000141297",
-        "diff_pct": 100.0,
-        "sample_parsed": [],
+        "diff_pct": 0.0,
+        "sample_parsed": [
+          {
+            "variety": "MONDIAL",
+            "size": 40,
+            "stems": 350,
+            "total": 80.5,
+            "method": ""
+          },
+          {
+            "variety": "MONDIAL",
+            "size": 40,
+            "stems": 350,
+            "total": 80.5,
+            "method": ""
+          },
+          {
+            "variety": "MONDIAL",
+            "size": 50,
+            "stems": 300,
+            "total": 90.0,
+            "method": ""
+          }
+        ],
         "sample_rescued": []
       }
     ]
@@ -10878,164 +10978,310 @@
   },
   {
     "folder": "STAMPSY",
-    "verdict": "NO_PARSEA",
+    "verdict": "OK",
     "samples": 5,
     "detected": 5,
-    "parsed_any": 0,
-    "total_parsed": 0,
+    "parsed_any": 5,
+    "total_parsed": 11,
     "total_rescued": 0,
-    "totals_ok": 0,
+    "totals_ok": 5,
     "samples_raw": [
       {
         "file": "01 - 075-67714625 - STAMPSY STAMPSY (2).pdf",
         "detected_as": "Stampsybox",
         "fmt": "mystic",
-        "parsed_lines": 0,
+        "parsed_lines": 3,
         "rescued_lines": 0,
-        "header_total": 0.0,
-        "sum_line_total": 0,
-        "header_ok": null,
+        "header_total": 90.0,
+        "sum_line_total": 90.0,
+        "header_ok": true,
         "error": "",
         "invoice": "",
-        "sample_parsed": [],
+        "diff_pct": 0.0,
+        "sample_parsed": [
+          {
+            "variety": "FRUTTETO",
+            "size": 50,
+            "stems": 100,
+            "total": 30.0,
+            "method": ""
+          },
+          {
+            "variety": "NECTARINE",
+            "size": 50,
+            "stems": 100,
+            "total": 30.0,
+            "method": ""
+          },
+          {
+            "variety": "SILANTOI",
+            "size": 50,
+            "stems": 100,
+            "total": 30.0,
+            "method": ""
+          }
+        ],
         "sample_rescued": []
       },
       {
         "file": "01 - 729-4932 5124 (248) - STAMPSYBOX 0000119423.pdf",
         "detected_as": "Stampsybox",
         "fmt": "mystic",
-        "parsed_lines": 0,
+        "parsed_lines": 1,
         "rescued_lines": 0,
-        "header_total": 0.0,
-        "sum_line_total": 0,
-        "header_ok": null,
+        "header_total": 112.0,
+        "sum_line_total": 112.0,
+        "header_ok": true,
         "error": "",
         "invoice": "",
-        "sample_parsed": [],
+        "diff_pct": 0.0,
+        "sample_parsed": [
+          {
+            "variety": "NECTARINE",
+            "size": 50,
+            "stems": 400,
+            "total": 112.0,
+            "method": ""
+          }
+        ],
         "sample_rescued": []
       },
       {
         "file": "02 - 075-6577 1436 (44) - STAMPSY.pdf",
         "detected_as": "Stampsybox",
         "fmt": "mystic",
-        "parsed_lines": 0,
+        "parsed_lines": 1,
         "rescued_lines": 0,
-        "header_total": 0.0,
-        "sum_line_total": 0,
-        "header_ok": null,
+        "header_total": 112.0,
+        "sum_line_total": 112.0,
+        "header_ok": true,
         "error": "",
         "invoice": "",
-        "sample_parsed": [],
+        "diff_pct": 0.0,
+        "sample_parsed": [
+          {
+            "variety": "NECTARINE",
+            "size": 50,
+            "stems": 400,
+            "total": 112.0,
+            "method": ""
+          }
+        ],
         "sample_rescued": []
       },
       {
         "file": "02 - 075-67711000 - STAMPSY stampsy.pdf",
         "detected_as": "Stampsybox",
         "fmt": "mystic",
-        "parsed_lines": 0,
+        "parsed_lines": 1,
         "rescued_lines": 0,
-        "header_total": 0.0,
-        "sum_line_total": 0,
-        "header_ok": null,
+        "header_total": 112.0,
+        "sum_line_total": 112.0,
+        "header_ok": true,
         "error": "",
         "invoice": "",
-        "sample_parsed": [],
+        "diff_pct": 0.0,
+        "sample_parsed": [
+          {
+            "variety": "NECTARINE",
+            "size": 50,
+            "stems": 400,
+            "total": 112.0,
+            "method": ""
+          }
+        ],
         "sample_rescued": []
       },
       {
         "file": "03 - 075-67714544 - STAMPSY STAMPSY.pdf",
         "detected_as": "Stampsybox",
         "fmt": "mystic",
-        "parsed_lines": 0,
+        "parsed_lines": 5,
         "rescued_lines": 0,
-        "header_total": 0.0,
-        "sum_line_total": 0,
-        "header_ok": null,
+        "header_total": 180.0,
+        "sum_line_total": 180.0,
+        "header_ok": true,
         "error": "",
         "invoice": "",
-        "sample_parsed": [],
+        "diff_pct": 0.0,
+        "sample_parsed": [
+          {
+            "variety": "FRUTTETO",
+            "size": 50,
+            "stems": 150,
+            "total": 45.0,
+            "method": ""
+          },
+          {
+            "variety": "NECTARINE",
+            "size": 50,
+            "stems": 150,
+            "total": 45.0,
+            "method": ""
+          },
+          {
+            "variety": "FRUTTETO",
+            "size": 50,
+            "stems": 100,
+            "total": 30.0,
+            "method": ""
+          }
+        ],
         "sample_rescued": []
       }
     ]
   },
   {
     "folder": "STAMPSYBOX",
-    "verdict": "NO_PARSEA",
+    "verdict": "OK",
     "samples": 5,
     "detected": 5,
-    "parsed_any": 0,
-    "total_parsed": 0,
+    "parsed_any": 5,
+    "total_parsed": 9,
     "total_rescued": 0,
-    "totals_ok": 0,
+    "totals_ok": 5,
     "samples_raw": [
       {
         "file": "01 - 075-67340700 - STAMPSYBOX STAMPSYBOX 0000152681.pdf",
         "detected_as": "Stampsybox",
         "fmt": "mystic",
-        "parsed_lines": 0,
+        "parsed_lines": 3,
         "rescued_lines": 0,
-        "header_total": 0.0,
-        "sum_line_total": 0,
-        "header_ok": null,
+        "header_total": 90.0,
+        "sum_line_total": 90.0,
+        "header_ok": true,
         "error": "",
         "invoice": "",
-        "sample_parsed": [],
+        "diff_pct": 0.0,
+        "sample_parsed": [
+          {
+            "variety": "NECTARINE",
+            "size": 50,
+            "stems": 100,
+            "total": 30.0,
+            "method": ""
+          },
+          {
+            "variety": "OPALA",
+            "size": 50,
+            "stems": 100,
+            "total": 30.0,
+            "method": ""
+          },
+          {
+            "variety": "SILANTOI",
+            "size": 50,
+            "stems": 100,
+            "total": 30.0,
+            "method": ""
+          }
+        ],
         "sample_rescued": []
       },
       {
         "file": "01 - 729-4932 5124 (248) - STAMPSYBOX 0000119423.pdf",
         "detected_as": "Stampsybox",
         "fmt": "mystic",
-        "parsed_lines": 0,
+        "parsed_lines": 1,
         "rescued_lines": 0,
-        "header_total": 0.0,
-        "sum_line_total": 0,
-        "header_ok": null,
+        "header_total": 112.0,
+        "sum_line_total": 112.0,
+        "header_ok": true,
         "error": "",
         "invoice": "",
-        "sample_parsed": [],
+        "diff_pct": 0.0,
+        "sample_parsed": [
+          {
+            "variety": "NECTARINE",
+            "size": 50,
+            "stems": 400,
+            "total": 112.0,
+            "method": ""
+          }
+        ],
         "sample_rescued": []
       },
       {
         "file": "02 - 075-67335822 - STAMPSYBOX STAMPSYBOX.pdf",
         "detected_as": "Stampsybox",
         "fmt": "mystic",
-        "parsed_lines": 0,
+        "parsed_lines": 1,
         "rescued_lines": 0,
-        "header_total": 0.0,
-        "sum_line_total": 0,
-        "header_ok": null,
+        "header_total": 84.0,
+        "sum_line_total": 84.0,
+        "header_ok": true,
         "error": "",
         "invoice": "",
-        "sample_parsed": [],
+        "diff_pct": 0.0,
+        "sample_parsed": [
+          {
+            "variety": "NECTARINE",
+            "size": 50,
+            "stems": 300,
+            "total": 84.0,
+            "method": ""
+          }
+        ],
         "sample_rescued": []
       },
       {
         "file": "02 - S. 729-4986 1464 (252) - STAMPSYBOX.pdf",
         "detected_as": "Stampsybox",
         "fmt": "mystic",
-        "parsed_lines": 0,
+        "parsed_lines": 2,
         "rescued_lines": 0,
-        "header_total": 0.0,
-        "sum_line_total": 0,
-        "header_ok": null,
+        "header_total": 98.0,
+        "sum_line_total": 98.0,
+        "header_ok": true,
         "error": "",
         "invoice": "",
-        "sample_parsed": [],
+        "diff_pct": 0.0,
+        "sample_parsed": [
+          {
+            "variety": "MONDIAL",
+            "size": 50,
+            "stems": 200,
+            "total": 56.0,
+            "method": ""
+          },
+          {
+            "variety": "NECTARINE",
+            "size": 50,
+            "stems": 150,
+            "total": 42.0,
+            "method": ""
+          }
+        ],
         "sample_rescued": []
       },
       {
         "file": "03 - 075-67335811 - STAMPSYBOX STAMPSYBOX 0000151309.pdf",
         "detected_as": "Stampsybox",
         "fmt": "mystic",
-        "parsed_lines": 0,
+        "parsed_lines": 2,
         "rescued_lines": 0,
-        "header_total": 0.0,
-        "sum_line_total": 0,
-        "header_ok": null,
+        "header_total": 90.0,
+        "sum_line_total": 90.0,
+        "header_ok": true,
         "error": "",
         "invoice": "",
-        "sample_parsed": [],
+        "diff_pct": 0.0,
+        "sample_parsed": [
+          {
+            "variety": "FRUTTETO",
+            "size": 50,
+            "stems": 150,
+            "total": 45.0,
+            "method": ""
+          },
+          {
+            "variety": "NECTARINE",
+            "size": 50,
+            "stems": 150,
+            "total": 45.0,
+            "method": ""
+          }
+        ],
         "sample_rescued": []
       }
     ]
