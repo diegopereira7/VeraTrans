@@ -358,3 +358,21 @@ final de este archivo, en la sección "Historial de sesiones".
   auto_conejera), AGROSANALFONSO+GLAMOUR (nuevo auto_agrosanalfonso para su
   template `I`-separado), ROSABELLA (nuevo auto_rosabella). De 37 NO_PARSEA
   quedan 36 parsers con gaps parciales documentados en auto_learn_report.json.
+- **2026-04-15 sesión 3 (fixes)**: Reportes del usuario:
+  1) CONEJERA aún no parseaba porque `register` no actualizó `fmt='turflor'→
+     'auto_conejera'` (su regex solo toca stubs con fmt='unknown'). Fix manual
+     en config.py. Ahora 8/9 líneas parsean, la 9ª es un resumen científico
+     del pie de factura, no producto.
+  2) GLAMOUR recortaba variety a fragmentos ('AL', 'GHTON') porque `split('I')`
+     rompía tokens como 'R11-BCPI' o `$0.300000I 13.00` (I pegado a dígito/$).
+     Fix: `re.split(r'(?<![A-Z])I\s+')` — solo separa cuando la I no está
+     precedida por mayúscula. Ahora GLAMOUR extrae 4/4 variedades correctas.
+
+## IMPORTANTE — gotcha con `register` tool
+
+`python tools/auto_learn_parsers.py register <key> <fmt>` solo actualiza el
+`fmt` de un proveedor si estaba en `fmt='unknown'`. Si el proveedor ya tenía
+otro fmt (ej: 'turflor' heredado pero roto), hay que **editar config.py a
+mano** o el nuevo parser queda huérfano (escrito en disco pero nadie lo
+llama). El comando imprime `AVISO: no se encontró fmt="unknown"` cuando
+pasa, pero es fácil pasarlo por alto.

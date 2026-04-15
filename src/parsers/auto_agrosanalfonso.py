@@ -67,8 +67,12 @@ class AutoParser:
                 continue
             if 'TOTAL' in s[:10].upper() or 'PIECES' in s[:10].upper():
                 continue
-            # Split por 'I' respetando espacios
-            cells = [c.strip() for c in s.split('I')]
+            # Split por 'I' pero sin romper tokens con I interna (BCPI, HBSJM).
+            # Regla: la 'I' es separador si NO está precedida por letra mayúscula.
+            # Cubre '75I ST', '$0.300000I 13.00' (I tras dígito o $) y
+            # ' I ' (espacios a ambos lados) a la vez.
+            stripped = re.sub(r'^I\s+|\s+I$', '', s)
+            cells = [c.strip() for c in re.split(r'(?<![A-Z])I\s+', stripped)]
             # Estructura esperada ≥8 celdas tras split:
             # [box_num | type_code | stems | 'ST' | farm_code | description | price | volumen | weight | total]
             if len(cells) < 8:
