@@ -48,31 +48,28 @@ python procesar_pdf.py facturas/CANTIZA.pdf
 
 ## Estructura
 
-```
-src/
-├── config.py          Constantes, rutas, proveedores, mapas de color
-├── models.py          InvoiceHeader, InvoiceLine, excepciones
-├── articulos.py       Carga e indexación de artículos desde dump SQL
-├── sinonimos.py       Diccionario de sinónimos persistente
-├── historial.py       Registro de facturas procesadas
-├── matcher.py         Pipeline de matching (5 etapas) + postproceso
-├── pdf.py             Extracción de texto PDF y detección de proveedor
-└── parsers/           27 parsers específicos por proveedor
-    ├── __init__.py    Registry FORMAT_PARSERS
-    ├── cantiza.py     CantizaParser
-    ├── colibri.py     ColibriParser
-    ├── golden.py      GoldenParser
-    ├── latin.py       LatinParser
-    └── ...            (ver src/parsers/ para la lista completa)
+Para el árbol completo y actualizado (módulos `src/`, parsers por
+proveedor, pipeline end-to-end, convenciones), consulta
+[`CLAUDE.md`](CLAUDE.md) → sección *"Cómo está organizado el código"*.
+Se mantiene siempre al día porque forma parte del protocolo de cada
+sesión de trabajo.
 
-cli.py                 Entry point CLI interactivo
-procesar_pdf.py        Entry point web (JSON a stdout)
-exportar_excel.py      Exportación a Excel
-web/                   Frontend PHP/JS/CSS
-```
+Entry points principales:
+- `cli.py` — CLI interactivo
+- `procesar_pdf.py` — procesamiento individual (JSON a stdout)
+- `batch_process.py` — procesamiento masivo (Excel consolidado)
+- `web/` — frontend PHP+JS
 
 ## Tests
 
 ```bash
 python -m pytest tests/ -v
 ```
+
+## Documentación
+
+- [`CLAUDE.md`](CLAUDE.md) — estado real del código, arquitectura,
+  convenciones, lecciones aprendidas, historial de sesiones.
+- [`SETUP.md`](SETUP.md) — instalación detallada.
+- [`docs/`](docs/README.md) — documentación operativa (roadmap,
+  checklist, futuros manuales y golden set).

@@ -15,6 +15,8 @@ y planificación.
 | Saber el **estado real del código** ahora mismo (arquitectura, pipeline, convenciones, lecciones, historial de sesiones) | [`CLAUDE.md`](../CLAUDE.md) | raíz |
 | Saber **qué hacer a continuación** con prompts ejecutables | [`roadmap/roadmap.md`](roadmap/roadmap.md) | `docs/roadmap/` |
 | Ver **por dónde voy** de un vistazo | [`roadmap/checklist.md`](roadmap/checklist.md) | `docs/roadmap/` |
+| Manuales de operador (revisión, flujo diario) — reservado | [`manuals/`](manuals/README.md) | `docs/manuals/` |
+| Golden set de verdad-terreno — reservado hasta Paso 2 | [`golden-set/`](golden-set/README.md) | `docs/golden-set/` |
 
 ## División de responsabilidades
 
