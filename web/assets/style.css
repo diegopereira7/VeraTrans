@@ -388,6 +388,16 @@ tr.row-rescue:hover td {
     background: #ede9fe;
 }
 
+/* Línea leída razonablemente pero con match ambiguo (varios candidatos
+   plausibles o evidencia insuficiente). Requiere confirmación humana. */
+tr.row-ambiguous {
+    background: #fef3c7;
+    border-left: 3px solid #eab308;
+}
+tr.row-ambiguous:hover td {
+    background: #fde68a;
+}
+
 /* Dots de aviso junto al índice de la línea. */
 .conf-dot {
     display: inline-block;

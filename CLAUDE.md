@@ -76,7 +76,22 @@ Cada factura recorre este pipeline **idéntico** tanto en individual como en lot
 3. **Parser específico** — `FORMAT_PARSERS[fmt].parse(text, provider_data)` devuelve `(InvoiceHeader, [InvoiceLine])`
 4. **Split mixed boxes** — separa `RED/YELLOW` en dos líneas
 5. **Rescate** — regex genérico para líneas que el parser no cazó → `match_status='sin_parser'`
-6. **Matching** — [src/matcher.py](src/matcher.py) 7 etapas: sinónimo → priorizada (variedad+talla+marca) → delegación (Life) → color-strip (rosas) → exacta → marca → fuzzy ≥90%. Asigna `match_confidence`.
+6. **Matching** — [src/matcher.py](src/matcher.py) **scoring por evidencia**
+   (sesión 6). Los antiguos 7 etapas siguen existiendo pero como
+   *generadores de candidatos*, no como decisores finales:
+   - Se recolectan candidatos de: sinónimo, búsqueda priorizada, delegación,
+     color-strip, exact, branded, rose EC/COL, fuzzy top-5.
+   - Se aplican **vetos estructurales**: species/origin/size incompatibles
+     descartan el candidato — ni un sinónimo manual puede saltarse esto.
+   - Se puntúa cada candidato con features reales (variety, size, species,
+     origin, spb, marca en nombre, histórico del proveedor, trust del
+     sinónimo) + prior débil por método.
+   - Se penaliza marca ajena (`foreign_brand` -0.25) para evitar asignar
+     un artículo con marca FIORENTINA a un proveedor MYSTIC cuando hay
+     genéricos disponibles.
+   - Gana el candidato con score más alto SI tiene margen suficiente
+     sobre el 2º (0.05 si top1 ≥ 0.90, 0.10 si no). Con margen escaso
+     entra en `ambiguous_match`.
 7. **LLM fallback** — para sin_parser, si hay `ANTHROPIC_API_KEY` (no-op sin clave)
 8. **Validación cruzada** — `stems == bunches × spb`, `line_total ≈ stems × price`, `sum(lines) ≈ header.total`
 9. **Reconciliación** — precio vs media histórica del proveedor (desvío >15% = anómalo)
@@ -103,7 +118,26 @@ Campos de extracción (añadidos en sesión 5, todos con defaults seguros):
   Las líneas capturadas por `rescue_unparsed_lines` llevan `rescue`
   para que la UI las pinte distinto — no disimular fallos del parser.
 
-- `match_status`: `ok | sin_match | sin_parser | pendiente | mixed_box | llm_extraido`
+Campos de vinculación (sesión 6, scoring por evidencia):
+- `link_confidence` (0.0–1.0): confianza aislada del vínculo con el
+  artículo ERP, independiente de la calidad de extracción. Es la señal
+  que el matcher usa para decidir auto-vinculación.
+- `match_confidence`: sigue existiendo por retro-compat. Ahora se calcula
+  como `link_confidence × ocr_confidence × extraction_confidence` — si
+  alguna de las 3 baja, el score final lo refleja.
+- `candidate_margin`: score top1 menos score top2. Margen < 0.05 con
+  top1 ≥ 0.90, o margen < 0.10 si no, dispara `ambiguous_match`.
+- `candidate_count`: nº de candidatos que pasaron los vetos.
+- `match_reasons` / `match_penalties`: lista trazable de features que
+  aportaron o restaron al score del ganador (ej. `variety_match`,
+  `size_exact`, `provider_history(4)`, `foreign_brand(FIORENTINA)`).
+- `top_candidates`: lista resumen ≤3 mejores para ofrecer alternativas
+  en la UI.
+
+- `match_status`: `ok | ambiguous_match | sin_match | sin_parser | pendiente | mixed_box | llm_extraido`
+  - `ambiguous_match`: línea leída razonablemente (>0.50 link) pero el
+    artículo exacto no está claro (2 candidatos plausibles con margen
+    < 0.10, o ganador entre 0.50–0.70 de score). Cuenta como needs_review.
 - `species`: `ROSES | CARNATIONS | HYDRANGEAS | ALSTROEMERIA | GYPSOPHILA | CHRYSANTHEMUM | OTHER`
 - `origin`: `EC | COL | otros` (determina `ROSA EC` vs `ROSA COL` en `expected_name()`)
 - Decimales: muchos proveedores usan coma (0,30) no punto. Normalizar con `.replace(',', '.')` o `.replace(',', '')` según contexto.
@@ -233,8 +267,13 @@ Nuevas tarjetas + badges añadidos a [web/assets/app.js](web/assets/app.js):
 - **Omitidos** (lote): cuenta archivos filtrados por SKIP_PATTERNS, con detalle expandible
 
 Clases CSS de fila: `row-sin-parser` (ámbar), `row-rescue` (lila
-discontinuo — línea recuperada por regex genérico), `row-sin-match`
+discontinuo — línea recuperada por regex genérico), `row-ambiguous`
+(amarillo — match ambiguo o evidencia insuficiente), `row-sin-match`
 (rosa), `row-has-error` (rojo borde), `row-low-conf` (naranja borde).
+
+Cada fila lleva un `title=` con las `match_reasons` y `match_penalties`
+que decidieron el vínculo, más el `candidate_margin`. Es la forma rápida
+de que el operador entienda "ganó por X, perdió puntos por Y".
 
 ## SKIP_PATTERNS del batch
 
@@ -250,25 +289,73 @@ En [batch_process.py:297](batch_process.py#L297) — filenames que contienen est
 
 ## Confidence scoring (calibración aprendida)
 
-Valores en [src/matcher.py:_METHOD_CONFIDENCE](src/matcher.py), sobre 1.0:
+**Sistema nuevo por evidencia (sesión 6).** El `link_confidence` se construye
+sumando features sobre 1.0:
 
-| Método | Score |
+| Feature | Aporte |
 |---|---|
-| sinónimo | 1.00 |
-| sinónimo→marca | 0.98 |
-| exacto | 0.95 |
-| marca | 0.90 |
-| delegación (Life Flowers) | 0.80 |
-| color-strip | 0.75 |
-| fuzzy NN% | NN/100 |
+| `variety_match` (alguna palabra ≥3 chars coincide) | +0.30 |
+| `size_exact` | +0.20 |
+| `size_close` (±10cm) | +0.05 |
+| `species_match` | +0.15 |
+| `origin_match` (rosas/claveles) | +0.10 |
+| `spb_match` | +0.10 |
+| `brand_in_name(pkey)` | +0.10 |
+| `provider_history(≥3)` | +0.10 |
+| `provider_history(1–2)` | +0.05 |
+| `synonym_trust × 0.25` | ≤ +0.25 |
+| `method_prior` | +0.04–0.12 |
+| `fuzzy hint_score × 0.15` | ≤ +0.15 |
 
-Reglas que **bajan** el score automáticamente:
-- `validation_errors` no vacío → cap a 0.70
-- Delta de precio >15% histórico → cap a 0.70
-- Delta >30% → cap a 0.55
-- OCR < 1.0 → multiplica el score (escaneos siempre tendrán menos confianza)
+Penalizaciones (suaves — el candidato puede seguir compitiendo):
 
-Umbral de "A Revisar": < 0.80.
+| Penalización | Resta |
+|---|---|
+| `variety_no_overlap` | −0.10 |
+| `foreign_brand(X)` (marca ajena al proveedor) | −0.25 |
+| `weak_synonym` (trust < 0.60) | mark-only |
+| `tie_top2_margin(X)` | mark-only (dispara ambiguous) |
+| `low_evidence(X)` (ganador < 0.70) | mark-only (dispara ambiguous) |
+
+Umbrales:
+- `link_confidence ≥ 0.70` con margen suficiente → `ok` automático.
+- `0.50 ≤ link_confidence < 0.70` o margen insuficiente → `ambiguous_match`.
+- `link_confidence < 0.50` → `sin_match`.
+
+**Vetos duros** (descartan el candidato, nunca solo penalizan):
+- `species_mismatch` (ROSES↔CARNATIONS etc.)
+- `origin_mismatch` (EC↔COL para rosas/claveles)
+- `size_mismatch` (diferencia > 10cm)
+
+Un sinónimo manual NO puede saltarse un veto duro; si lo activa, el
+sinónimo pasa a status `ambiguo` y se incrementa `times_corrected`.
+
+**Fiabilidad de sinónimos** (feature `synonym_trust`):
+
+| Status | Trust base |
+|---|---|
+| `manual_confirmado` | 0.98 |
+| `aprendido_confirmado` | 0.85 |
+| `aprendido_en_prueba` | 0.55 |
+| `ambiguo` | 0.30 |
+| `rechazado` | 0.00 (se descarta como candidato) |
+
+Cada `times_corrected` resta 0.15 del trust; cada `times_confirmed` ≥ 2
+añade 0.05 hasta el tope del status.
+
+Reglas que siguen bajando el score automáticamente:
+- `validation_errors` no vacío → `link_confidence` y `match_confidence`
+  capados a 0.70.
+- OCR/extracción < 1.0 → multiplica `match_confidence` (link queda
+  intacto para poder diferenciar problema de lectura vs de vinculación).
+
+Umbral de "A Revisar" sigue siendo 0.80 en `match_confidence`; ahora
+además cualquier `ambiguous_match` cuenta como revisión.
+
+**Compatibilidad legacy**: `_METHOD_CONFIDENCE` y
+`_confidence_for_method()` siguen existiendo en `matcher.py` por si
+algún script externo los importa, pero el motor interno ya no los usa
+como driver principal — solo como prior débil entre 0.04 y 0.12.
 
 ## Cosas que no hay que hacer
 
@@ -439,6 +526,40 @@ final de este archivo, en la sección "Historial de sesiones".
      rompía tokens como 'R11-BCPI' o `$0.300000I 13.00` (I pegado a dígito/$).
      Fix: `re.split(r'(?<![A-Z])I\s+')` — solo separa cuando la I no está
      precedida por mayúscula. Ahora GLAMOUR extrae 4/4 variedades correctas.
+- **2026-04-15 sesión 6**: Scoring de matching por evidencia. Cambios clave:
+  * **Candidatos vs ganador**: los generadores antiguos (sinónimo,
+    priority, branded, delegation, color-strip, exact, rose, fuzzy) dejan
+    de "ganar" por llegar primero. Ahora todos proponen candidatos y un
+    único scorer de features decide.
+  * **Vetos estructurales**: species/origin/size incompatibles descartan
+    el candidato. Un sinónimo que active un veto pasa a status `ambiguo`.
+  * **Penalty por marca ajena**: nombres con marca distinta al proveedor
+    (`ROSA BRIGHTON 50CM 25U FIORENTINA` siendo proveedor MYSTIC) reciben
+    −0.25 para que ganen genéricos o versiones con la marca correcta.
+  * **Estado `ambiguous_match`**: línea bien leída sin vínculo claro →
+    amarillo en UI, cuenta como needs_review, no auto-vincula.
+  * **`InvoiceLine` gana** `link_confidence`, `candidate_margin`,
+    `candidate_count`, `match_reasons`, `match_penalties`,
+    `top_candidates` (todos con defaults seguros).
+  * **`SynonymStore` gana** metadatos de fiabilidad: `status`,
+    `times_used`, `times_confirmed`, `times_corrected`, `first_seen_at`,
+    `last_confirmed_at`. Método `trust_score()` deriva 0–1 a partir de
+    status + contadores. Un sinónimo `aprendido_en_prueba` ya no vale
+    1.00 por defecto — ahora 0.55 y el sistema lo gestiona como tal.
+    Nuevas APIs: `mark_used`, `mark_confirmed`, `mark_corrected`.
+  * **Prior histórico por proveedor**: `provider_article_usage()` cuenta
+    sinónimos del mismo proveedor apuntando al artículo. Si ≥3, +0.10;
+    si ≥1, +0.05. Señal simple pero efectiva.
+  * **Margen adaptativo**: candidatos dominantes (score ≥ 0.90) necesitan
+    solo 0.05 de margen sobre el 2º; candidatos en zona media 0.70–0.90
+    necesitan 0.10.
+  * **UI**: nuevo stat card "Ambiguas", clase `row-ambiguous`, tooltip
+    por fila con reasons + penalties + margin.
+  * **Compat**: `_METHOD_CONFIDENCE` y `_confidence_for_method()` siguen
+    siendo importables; el sistema interno ya no depende de ellos.
+  * Validación: OK 30/82, NO_PARSEA 30/82. Test MYSTIC ahora asigna
+    correctamente al artículo genérico `ROSA EC BRIGHTON 50CM 25U` en
+    vez de la variante `FIORENTINA`.
 - **2026-04-15 sesión 5**: Refuerzo transversal de la capa de extracción
   (no se tocan parsers). Cambios:
   * **Nuevo módulo `src/extraction.py`** con routing diagnóstico:

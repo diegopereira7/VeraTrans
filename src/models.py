@@ -88,6 +88,26 @@ class InvoiceLine:
     extraction_confidence: float = 1.0
     extraction_source: str = 'native'
     match_confidence: float = 0.0
+    # link_confidence: confianza de VINCULACIÓN (qué tan bien encaja el artículo
+    #   ERP con la línea, según evidencia: especie, talla, origen, marca,
+    #   histórico del proveedor, fiabilidad del sinónimo, margen frente al 2º).
+    #   Es la señal que la UI debería usar para decidir "a revisar". A
+    #   diferencia de match_confidence (que es producto de todas las confianzas)
+    #   link_confidence aísla solo el vínculo, sin que la extracción degradada
+    #   lo arrastre.
+    # candidate_margin: diferencia de score entre el mejor candidato y el 2º.
+    #   Margen < 0.10 indica empate práctico y la línea se marca ambigua.
+    # candidate_count: número de candidatos considerados tras los vetos.
+    # match_reasons / match_penalties: features que aportaron o restaron al
+    #   score del candidato ganador. Trazabilidad para el operador humano.
+    # top_candidates: lista resumen {id, nombre, score, reasons} con los ≤3
+    #   mejores candidatos para que la UI pueda ofrecerlos alternativos.
+    link_confidence: float = 0.0
+    candidate_margin: float = 0.0
+    candidate_count: int = 0
+    match_reasons: list = field(default_factory=list)
+    match_penalties: list = field(default_factory=list)
+    top_candidates: list = field(default_factory=list)
     field_confidence: dict = field(default_factory=dict)
     validation_errors: list = field(default_factory=list)
 

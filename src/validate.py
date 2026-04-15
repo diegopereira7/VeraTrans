@@ -70,8 +70,12 @@ def validate_invoice(header: InvoiceHeader,
             l.validation_errors = errs
             per_line_err_count += 1
             # Una línea con errores de validación no puede ser de confianza
-            # alta, da igual cómo haya matcheado.
+            # alta, da igual cómo haya matcheado. Bajamos tanto
+            # match_confidence (señal legacy) como link_confidence (la
+            # nueva señal de enlace) para que la UI reaccione a ambas.
             l.match_confidence = min(l.match_confidence, 0.70)
+            if hasattr(l, 'link_confidence'):
+                l.link_confidence = min(l.link_confidence, 0.70)
 
     # R3: sum(line_total) ≈ header.total
     sum_lines = round(sum(l.line_total for l in lines), 2)

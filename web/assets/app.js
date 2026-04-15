@@ -203,6 +203,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const s = data.stats;
         const sinParser = s.sin_parser || 0;
         const needsReview = s.needs_review || 0;
+        const ambiguous = s.ambiguous || 0;
         const ocrConf = typeof s.ocr_confidence === 'number' ? s.ocr_confidence : 1.0;
         const extConf = typeof s.extraction_confidence === 'number' ? s.extraction_confidence : ocrConf;
         const extSource = s.extraction_source || 'native';
@@ -230,6 +231,12 @@ document.addEventListener('DOMContentLoaded', () => {
             <div class="stat-card warning">
                 <div class="stat-value">${sinParser}</div>
                 <div class="stat-label">No Parseadas</div>
+            </div>` : ''}
+            ${ambiguous > 0 ? `
+            <div class="stat-card warning"
+                 title="Líneas leídas razonablemente pero con varios candidatos plausibles o evidencia insuficiente. Requieren confirmación humana antes de auto-vincular.">
+                <div class="stat-value">${ambiguous}</div>
+                <div class="stat-label">Ambiguas</div>
             </div>` : ''}
             <div class="stat-card ${needsReview > 0 ? 'warning' : 'success'}"
                  title="Líneas con confianza < 80%. Revisa estas antes de generar la orden.">
@@ -277,19 +284,25 @@ document.addEventListener('DOMContentLoaded', () => {
         const tbody = document.querySelector('#linesTable tbody');
         tbody.innerHTML = flatLines.map((l, i) => {
             const synKey = `${window._currentProviderId}|${l.species||''}|${l.variety||''}|${l.size||0}|${l.stems_per_bunch||0}|${l.grade||''}`;
-            // Clase de fila: sin_parser > rescue > sin_match > validation errors > low confidence
+            // Clase de fila: sin_parser > rescue > ambiguous > sin_match > validation errors > low confidence
             const hasErrors = l.validation_errors && l.validation_errors.length > 0;
             const needsRev = l.needs_review === true;
             const isRescue = l.extraction_source === 'rescue';
+            const isAmbiguous = l.match_status === 'ambiguous_match';
             const priceDelta = window._priceDeltas && l.articulo_id ? window._priceDeltas[l.articulo_id] : null;
             let rowClass = '';
             if (l.match_status === 'sin_parser') rowClass = 'row-sin-parser';
             else if (isRescue) rowClass = 'row-rescue';
-            else if (l.match_status !== 'ok') rowClass = 'row-sin-match';
+            else if (isAmbiguous) rowClass = 'row-ambiguous';
+            else if (l.match_status !== 'ok' && l.match_status !== 'mixed_box') rowClass = 'row-sin-match';
             else if (hasErrors) rowClass = 'row-has-error';
             else if (needsRev) rowClass = 'row-low-conf';
+            // Tooltip de razones/penalizaciones del scoring por evidencia
+            const reasonsTxt = (l.match_reasons && l.match_reasons.length ? 'Evidencia: ' + l.match_reasons.join(', ') : '')
+                + (l.match_penalties && l.match_penalties.length ? ' | Penalizaciones: ' + l.match_penalties.join(', ') : '')
+                + (typeof l.candidate_margin === 'number' ? ' | margen top1-top2: ' + l.candidate_margin.toFixed(2) : '');
             return `
-            <tr class="${rowClass}" data-idx="${i}" data-syn-key="${esc(synKey)}">
+            <tr class="${rowClass}" data-idx="${i}" data-syn-key="${esc(synKey)}"${reasonsTxt ? ' title="' + esc(reasonsTxt) + '"' : ''}>
                 <td>${i+1}${confDot(l, priceDelta, hasErrors)}</td>
                 <td title="${esc(l.raw)}">${esc((l.raw||'').substring(0, 55))}${(l.raw||'').length > 55 ? '...' : ''}</td>
                 <td>${esc(l.species)}</td>

@@ -147,6 +147,7 @@ def _process_with_lines(pdf_path: str, pdata: dict, header, lines) -> dict:
     ok_count = sum(1 for l in lines if l.match_status == 'ok')
     no_parser = sum(1 for l in lines if l.match_status == 'sin_parser')
     mixed_box = sum(1 for l in lines if l.match_status == 'mixed_box')
+    ambiguous = sum(1 for l in lines if l.match_status == 'ambiguous_match')
 
     # Registrar en historial
     try:
@@ -163,12 +164,13 @@ def _process_with_lines(pdf_path: str, pdata: dict, header, lines) -> dict:
     raw_lines = _serialize_lines(lines)
     grouped_lines = _group_mixed_boxes(raw_lines)
 
-    # "A Revisar" = todo lo que no está verde: sin match, sin parser, extraído
-    # por LLM, o match ok con baja confianza. Las cajas mixtas (mixed_box)
-    # se excluyen porque son un estado conocido y aceptado, no un problema.
+    # "A Revisar" = todo lo que no está verde. `ambiguous_match` siempre
+    # cuenta (por definición la línea está leída pero el artículo concreto
+    # no está claro) además de las cubiertas en sesiones anteriores.
     needs_review = sum(
         1 for l in lines
-        if l.match_status in ('sin_match', 'sin_parser', 'llm_extraido')
+        if l.match_status in ('sin_match', 'sin_parser', 'llm_extraido',
+                              'ambiguous_match')
            or (l.match_status == 'ok' and 0 < l.match_confidence < 0.80)
            or (l.match_status == 'ok' and l.validation_errors)
     )
@@ -187,9 +189,10 @@ def _process_with_lines(pdf_path: str, pdata: dict, header, lines) -> dict:
         'stats': {
             'total_lineas': len(lines),
             'ok':           ok_count,
-            'sin_match':    len(lines) - ok_count - no_parser - mixed_box,
+            'sin_match':    len(lines) - ok_count - no_parser - mixed_box - ambiguous,
             'sin_parser':   no_parser,
             'mixed_box':    mixed_box,
+            'ambiguous':    ambiguous,
             'needs_review': needs_review,
             'ocr_confidence': ocr_conf,
             'extraction_confidence': ext_conf,
@@ -225,9 +228,16 @@ def _serialize_line(l) -> dict:
         'extraction_confidence': round(l.extraction_confidence, 3),
         'extraction_source': l.extraction_source,
         'match_confidence': round(l.match_confidence, 3),
+        'link_confidence':  round(getattr(l, 'link_confidence', 0.0), 3),
+        'candidate_margin': round(getattr(l, 'candidate_margin', 0.0), 3),
+        'candidate_count':  getattr(l, 'candidate_count', 0),
+        'match_reasons':    list(getattr(l, 'match_reasons', []) or []),
+        'match_penalties':  list(getattr(l, 'match_penalties', []) or []),
+        'top_candidates':   list(getattr(l, 'top_candidates', []) or []),
         'field_confidence': l.field_confidence,
         'validation_errors': list(l.validation_errors),
-        'needs_review':     l.match_confidence > 0 and l.match_confidence < 0.80,
+        'needs_review':     (l.match_status == 'ambiguous_match')
+                            or (l.match_confidence > 0 and l.match_confidence < 0.80),
     }
 
 

@@ -849,16 +849,14 @@
         "detected_as": "Flores de Aposentos",
         "fmt": "aposentos",
         "parsed_lines": 0,
-        "rescued_lines": 1,
+        "rescued_lines": 0,
         "header_total": 0,
         "sum_line_total": 0,
         "header_ok": null,
         "error": "",
         "invoice": "",
         "sample_parsed": [],
-        "sample_rescued": [
-          "6000 CARNATIONS ILIAS YELLOW DUTY FREE FANCY CO-0603129000 0.1600 960.00"
-        ]
+        "sample_rescued": []
       },
       {
         "file": "01 - 996-14255161 - APOSENTOS APOSENTOS.pdf",
@@ -906,14 +904,16 @@
         "detected_as": "Flores de Aposentos",
         "fmt": "aposentos",
         "parsed_lines": 0,
-        "rescued_lines": 0,
+        "rescued_lines": 1,
         "header_total": 0,
         "sum_line_total": 0,
         "header_ok": null,
         "error": "",
         "invoice": "",
         "sample_parsed": [],
-        "sample_rescued": []
+        "sample_rescued": [
+          "5 Taba 2500 CLAVEL SURTIDO DUTY FREE — FANCY 0 CO-0603129000 0.1600 400.00"
+        ]
       },
       {
         "file": "02 - 729-45937522 - APOSENTOS APOSENTOS.pdf",
@@ -1288,7 +1288,7 @@
         "diff_pct": 100.0,
         "sample_parsed": [],
         "sample_rescued": [
-          "15   A 500 7500 CONSUMER BUNCH CARNATION FANCY FCY MIX CB S2 0.180 1,350.00"
+          "15 H 500 7500 | CONSUMER BUNCH CARNATION FANCY FCY MIX CB S?2 0.180 1,350.00"
         ]
       },
       {
@@ -1727,7 +1727,7 @@
         "fmt": "cantiza",
         "parsed_lines": 0,
         "rescued_lines": 0,
-        "header_total": 885.0,
+        "header_total": 85.0,
         "sum_line_total": 0,
         "header_ok": false,
         "error": "",
@@ -1838,7 +1838,7 @@
     "detected": 5,
     "parsed_any": 4,
     "total_parsed": 19,
-    "total_rescued": 0,
+    "total_rescued": 1,
     "totals_ok": 1,
     "samples_raw": [
       {
@@ -1883,15 +1883,16 @@
         "detected_as": "CEAN Global",
         "fmt": "auto_cean",
         "parsed_lines": 0,
-        "rescued_lines": 0,
-        "header_total": 992.5,
+        "rescued_lines": 1,
+        "header_total": 0.0,
         "sum_line_total": 0,
-        "header_ok": false,
+        "header_ok": null,
         "error": "",
-        "invoice": "2057",
-        "diff_pct": 100.0,
+        "invoice": "",
         "sample_parsed": [],
-        "sample_rescued": []
+        "sample_rescued": [
+          "| 1 [CARNATION WHITE SHORT 1.800,00 | Und. 3 HB 0,09) 162,00"
+        ]
       },
       {
         "file": "02 - 1. 729-4465 5516 (173) - CEAN.pdf",
@@ -7528,49 +7529,28 @@
     "verdict": "NO_PARSEA",
     "samples": 5,
     "detected": 5,
-    "parsed_any": 4,
-    "total_parsed": 29,
-    "total_rescued": 13,
-    "totals_ok": 0,
+    "parsed_any": 3,
+    "total_parsed": 20,
+    "total_rescued": 22,
+    "totals_ok": 1,
     "samples_raw": [
       {
         "file": "01 - 996-14255161 - MILONGA FLOWERS MILONGA.pdf",
         "detected_as": "Flores Milonga",
         "fmt": "colfarm",
-        "parsed_lines": 9,
-        "rescued_lines": 4,
-        "header_total": 0.0,
-        "sum_line_total": 1382.5,
-        "header_ok": null,
+        "parsed_lines": 0,
+        "rescued_lines": 13,
+        "header_total": 1567.75,
+        "sum_line_total": 0,
+        "header_ok": false,
         "error": "",
         "invoice": "INV-008992",
-        "sample_parsed": [
-          {
-            "variety": "MI",
-            "size": 50,
-            "stems": 325,
-            "total": 100.75,
-            "method": ""
-          },
-          {
-            "variety": "NENA",
-            "size": 50,
-            "stems": 25,
-            "total": 7.75,
-            "method": ""
-          },
-          {
-            "variety": "EXPLORER",
-            "size": 50,
-            "stems": 50,
-            "total": 15.5,
-            "method": ""
-          }
-        ],
+        "diff_pct": 100.0,
+        "sample_parsed": [],
         "sample_rescued": [
-          "Rose PatzX25 - 50 117263 50 150' 150 ST 0.31 46.50",
-          "Rose Dream Peace X25 - 50 117264 50 150 150 ST 0.31 46.50",
-          "Rose Playa Blanca X25 - 50 117265 50 Xx 150 150 ST 0.40 60.00"
+          "1 | H ¡Rose mix 117247 50 X 325 325| ST | 0.31 100.75",
+          "1 H ¡Rose Freedom X25 - 40 117248 40 X 300 300| ST 0.25 75.00",
+          "5 | H |Rose Freedom X2- 550 i ee 50 * 300 . 1500| ST | 0.29 435.00"
         ]
       },
       {
@@ -7579,11 +7559,12 @@
         "fmt": "colfarm",
         "parsed_lines": 3,
         "rescued_lines": 1,
-        "header_total": 0.0,
+        "header_total": 692.5,
         "sum_line_total": 692.5,
-        "header_ok": null,
+        "header_ok": true,
         "error": "",
         "invoice": "INV-003058",
+        "diff_pct": 0.0,
         "sample_parsed": [
           {
             "variety": "FREEDOM",
@@ -7593,7 +7574,7 @@
             "method": ""
           },
           {
-            "variety": "MNDIAL",
+            "variety": "MONDIAL",
             "size": 50,
             "stems": 300,
             "total": 96.0,
@@ -7608,7 +7589,7 @@
           }
         ],
         "sample_rescued": [
-          "Rose Rosoidea Rose 2350.00 94 8 692.50"
+          "Rose Rosoidea Rose 2350.00 94 8 4 692.50"
         ]
       },
       {
@@ -9032,9 +9013,9 @@
   },
   {
     "folder": "PONDEROSA",
-    "verdict": "NO_PARSEA",
+    "verdict": "NO_DETECTADO",
     "samples": 5,
-    "detected": 5,
+    "detected": 4,
     "parsed_any": 3,
     "total_parsed": 198,
     "total_rescued": 0,
@@ -9042,17 +9023,14 @@
     "samples_raw": [
       {
         "file": "01 - 075-6537 6964 (334) - PONDEROSA 378.pdf",
-        "detected_as": "Verdes La Estacion / Ponderosa",
-        "fmt": "verdesestacion",
+        "detected_as": "",
+        "fmt": "",
         "parsed_lines": 0,
         "rescued_lines": 0,
-        "header_total": 0.0,
+        "header_total": 0,
         "sum_line_total": 0,
         "header_ok": null,
-        "error": "",
-        "invoice": "",
-        "sample_parsed": [],
-        "sample_rescued": []
+        "error": "no detectado por config.py"
       },
       {
         "file": "01 - 996-14255161 - PONDEROSA PONDEROSA.pdf",
@@ -9138,7 +9116,7 @@
         "sum_line_total": 0,
         "header_ok": null,
         "error": "",
-        "invoice": "",
+        "invoice": "1",
         "sample_parsed": [],
         "sample_rescued": []
       },
@@ -9205,9 +9183,9 @@
         "diff_pct": 100.0,
         "sample_parsed": [],
         "sample_rescued": [
-          "2 HB 600 60 CARNATION MIX VERALEZA 0603.12.7000 ' ORDEN Stems 1200 US$ 0.080 US$ US$",
-          "HB 600 30 CARNATION WHITE VERALEZA 0603.12.7000 ORDEN Stems 600 US$ 0.080 US$ US$",
-          "2 HB 600 60 CARNATION RED RED VERALEZA 0603.12.7000 ' ORDEN Stems 1200 US$ 0.080 US$ US$"
+          "2 HB 600 60 CARNATION MIX VERALEZA 0603.12.7000 ORDEN Stems 1200 US$ 0.080 US$ US$",
+          "1 HB 600 30 CARNATION WHITE VERALEZA 0603.12.7000 ORDEN Stems 600 US$ 0.080 US$ US$",
+          "2 HB 600 60 CARNATION RED RED VERALEZA 0603.12.7000 ORDEN Stems 1200 US$ 0.080 US$ US$"
         ]
       },
       {
@@ -10607,7 +10585,7 @@
         "sum_line_total": 0,
         "header_ok": null,
         "error": "",
-        "invoice": "",
+        "invoice": "83202",
         "sample_parsed": [],
         "sample_rescued": []
       },
