@@ -118,5 +118,435 @@
     "headers": [],
     "confianza": 0.6,
     "timestamp": "2026-04-15T09:28:36.244283"
+  },
+  "C:\\Users\\diego.pereira\\Desktop\\DOC VERA\\FACTURAS IMPORTACION\\PROVEEDORES\\AGRINAG\\01 - 729-4984 6860 (44) - AGRINAG 40252207.pdf": {
+    "hash_estructura": "2ee711a9e1e0",
+    "proveedor_candidato": "CUSTOMER INVOICE 40252207",
+    "keywords": [
+      "INVOICE",
+      "S.A.S"
+    ],
+    "num_paginas": 1,
+    "tiene_tablas": true,
+    "num_columnas": 10,
+    "headers": [
+      "to bill customer",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      ""
+    ],
+    "confianza": 0.6,
+    "timestamp": "2026-04-15T10:45:50.450403"
+  },
+  "C:\\Users\\diego.pereira\\Desktop\\DOC VERA\\FACTURAS IMPORTACION\\PROVEEDORES\\BELLAROSA\\01 - 729-4932 4995 (232) - BELLAROSA 5113129.pdf": {
+    "hash_estructura": "020a70ba6635",
+    "proveedor_candidato": "CUSTOMER INVOICE 5113129",
+    "keywords": [
+      "INVOICE",
+      "S.A"
+    ],
+    "num_paginas": 1,
+    "tiene_tablas": true,
+    "num_columnas": 2,
+    "headers": [
+      "incoterm",
+      "fob uio"
+    ],
+    "confianza": 0.5,
+    "timestamp": "2026-04-15T10:46:26.963215"
+  },
+  "C:\\Users\\diego.pereira\\Desktop\\DOC VERA\\FACTURAS IMPORTACION\\PROVEEDORES\\CEAN GLOBAL\\01 - 075-6537 7060 - CEAN 1793.pdf": {
+    "hash_estructura": "64afc5843797",
+    "proveedor_candidato": "Factura Electrónica De Venta",
+    "keywords": [
+      "FACTURA",
+      "SAS",
+      "SLU"
+    ],
+    "num_paginas": 1,
+    "tiene_tablas": true,
+    "num_columnas": 16,
+    "headers": [
+      "cliente",
+      "",
+      "veraleza slu",
+      "",
+      "",
+      "",
+      "",
+      "incortem",
+      "",
+      "",
+      "",
+      "fca",
+      "",
+      "",
+      "",
+      ""
+    ],
+    "confianza": 0.6,
+    "timestamp": "2026-04-15T10:46:45.539451"
+  },
+  "C:\\Users\\diego.pereira\\Desktop\\DOC VERA\\FACTURAS IMPORTACION\\PROVEEDORES\\DAFLOR\\01 - 075-6537 6964 (334) - DAFLOR 26423.pdf": {
+    "hash_estructura": "fe29560293a2",
+    "proveedor_candidato": "Grower Name & Address",
+    "keywords": [
+      "GROWER",
+      "INVOICE",
+      "SAS"
+    ],
+    "num_paginas": 1,
+    "tiene_tablas": true,
+    "num_columnas": 1,
+    "headers": [
+      ""
+    ],
+    "confianza": 0.4,
+    "timestamp": "2026-04-15T10:47:34.874639"
+  },
+  "C:\\Users\\diego.pereira\\Desktop\\DOC VERA\\FACTURAS IMPORTACION\\PROVEEDORES\\EL CAMPANARIO\\01 - 729-4932 4995 (232) - EL CAMPANARIO 108206.pdf": {
+    "hash_estructura": "40dca9efcd2e",
+    "proveedor_candidato": "INVOICE # 0000108206",
+    "keywords": [
+      "FARM",
+      "INVOICE",
+      "SL"
+    ],
+    "num_paginas": 1,
+    "tiene_tablas": true,
+    "num_columnas": 10,
+    "headers": [
+      "el campanario de santa anita scc ruc 0591717758001 city lasso country ecuador",
+      "",
+      "",
+      "",
+      "address via lasso toacaso km7 12 barrio farm phone pbx 59333700120 email ventas1starosescom web wwwstarosescom",
+      "",
+      "",
+      "",
+      "",
+      ""
+    ],
+    "confianza": 0.6499999999999999,
+    "timestamp": "2026-04-15T10:47:35.335769"
+  },
+  "C:\\Users\\diego.pereira\\Desktop\\DOC VERA\\FACTURAS IMPORTACION\\PROVEEDORES\\ELITE\\01 - 075-6537 6964 (334) - ELITE 1626083.pdf": {
+    "hash_estructura": "fbbeeeb22149",
+    "proveedor_candidato": "FLORA CONCEPT LLC",
+    "keywords": [
+      "INVOICE",
+      "LLC",
+      "SL"
+    ],
+    "num_paginas": 2,
+    "tiene_tablas": true,
+    "num_columnas": 1,
+    "headers": [
+      "customer information"
+    ],
+    "confianza": 0.7000000000000001,
+    "timestamp": "2026-04-15T10:47:35.643200"
+  },
+  "C:\\Users\\diego.pereira\\Desktop\\DOC VERA\\FACTURAS IMPORTACION\\PROVEEDORES\\FARIN\\01 - 729-4932 4111 (126) - FARIN 376.pdf": {
+    "hash_estructura": "bfbd392efd52",
+    "proveedor_candidato": "FARIN ROSES",
+    "keywords": [
+      "INVOICE",
+      "ROSES",
+      "SL"
+    ],
+    "num_paginas": 1,
+    "tiene_tablas": false,
+    "num_columnas": 0,
+    "headers": [],
+    "confianza": 0.6,
+    "timestamp": "2026-04-15T10:47:35.798503"
+  },
+  "C:\\Users\\diego.pereira\\Desktop\\DOC VERA\\FACTURAS IMPORTACION\\PROVEEDORES\\FESO\\01 - 729-4537 5330 (166) - FESO 2282 EXCELLENT.pdf": {
+    "hash_estructura": "90518f220292",
+    "proveedor_candidato": "EXCELLENT CARGO SERVICE",
+    "keywords": [
+      "FACTURA",
+      "SAS"
+    ],
+    "num_paginas": 1,
+    "tiene_tablas": true,
+    "num_columnas": 7,
+    "headers": [
+      "tem",
+      "descripcin",
+      "bodega",
+      "cantidad",
+      "impto rete",
+      "vr total usd",
+      "vr total cop"
+    ],
+    "confianza": 0.8999999999999999,
+    "timestamp": "2026-04-15T10:47:36.213413"
+  },
+  "C:\\Users\\diego.pereira\\Desktop\\DOC VERA\\FACTURAS IMPORTACION\\PROVEEDORES\\FLORELOY\\01 - 729-4984 6860 (44) - FLORELOY 241289.pdf": {
+    "hash_estructura": "2551a6a4b9db",
+    "proveedor_candidato": "FLORELOY",
+    "keywords": [
+      "INVOICE",
+      "SL"
+    ],
+    "num_paginas": 1,
+    "tiene_tablas": true,
+    "num_columnas": 9,
+    "headers": [
+      "code",
+      "boxes",
+      "type box",
+      "total stems",
+      "stems bunch",
+      "total bunch",
+      "varietieslength",
+      "unit price",
+      "total price"
+    ],
+    "confianza": 0.7999999999999999,
+    "timestamp": "2026-04-15T10:47:36.752795"
+  },
+  "C:\\Users\\diego.pereira\\Desktop\\DOC VERA\\FACTURAS IMPORTACION\\PROVEEDORES\\GREENGROWERS\\01 - 729-4932 4122 (194) - GREENGROWERS 0000109469.pdf": {
+    "hash_estructura": "b25e867761ee",
+    "proveedor_candidato": "INVOICE # 0000109469",
+    "keywords": [
+      "FARM",
+      "INVOICE",
+      "S.A.S",
+      "SL"
+    ],
+    "num_paginas": 1,
+    "tiene_tablas": true,
+    "num_columnas": 10,
+    "headers": [
+      "greengrowers sas ruc 0591759590001 city lasso country ecuador",
+      "",
+      "",
+      "",
+      "address via lasso toacaso km7 12 barrio farm phone pbx 59333700120 email ventas1starosescom web wwwstarosescom",
+      "",
+      "",
+      "",
+      "",
+      ""
+    ],
+    "confianza": 0.8,
+    "timestamp": "2026-04-15T10:47:37.461765"
+  },
+  "C:\\Users\\diego.pereira\\Desktop\\DOC VERA\\FACTURAS IMPORTACION\\PROVEEDORES\\MOUNTAIN\\01 - 729-4932 4111 (126) - MOUNTAIN 8166.pdf": {
+    "hash_estructura": "86cf935894d0",
+    "proveedor_candidato": "MOUNTAIN FRESH FLOWERS",
+    "keywords": [
+      "FLOWERS",
+      "INVOICE",
+      "S.L"
+    ],
+    "num_paginas": 1,
+    "tiene_tablas": true,
+    "num_columnas": 5,
+    "headers": [
+      "incoterm country code consignee name and address",
+      "",
+      "",
+      "",
+      ""
+    ],
+    "confianza": 0.6,
+    "timestamp": "2026-04-15T10:48:01.298438"
+  },
+  "C:\\Users\\diego.pereira\\Desktop\\DOC VERA\\FACTURAS IMPORTACION\\PROVEEDORES\\MULTIFLORA\\01 - 075-6537 6964 (334) - MULTIFLORA A2365234.pdf": {
+    "hash_estructura": "abf053476722",
+    "proveedor_candidato": "Nro. A2365234",
+    "keywords": [
+      "LTDA",
+      "SLU"
+    ],
+    "num_paginas": 1,
+    "tiene_tablas": true,
+    "num_columnas": 4,
+    "headers": [
+      "date",
+      "customer",
+      "customer code",
+      "awb"
+    ],
+    "confianza": 0.5,
+    "timestamp": "2026-04-15T10:48:01.437329"
+  },
+  "C:\\Users\\diego.pereira\\Desktop\\DOC VERA\\FACTURAS IMPORTACION\\PROVEEDORES\\NATIVE BLOOMS\\01 - 729-4985 6586 (134) - NATIVE.pdf": {
+    "hash_estructura": "418d7facfd4f",
+    "proveedor_candidato": "Shipper Name and Address Farm Code Date",
+    "keywords": [
+      "FARM",
+      "INVOICE",
+      "S.A"
+    ],
+    "num_paginas": 1,
+    "tiene_tablas": true,
+    "num_columnas": 12,
+    "headers": [
+      "shipper name and address farm co",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "date",
+      "",
+      "",
+      ""
+    ],
+    "confianza": 0.44999999999999996,
+    "timestamp": "2026-04-15T10:48:01.966036"
+  },
+  "C:\\Users\\diego.pereira\\Desktop\\DOC VERA\\FACTURAS IMPORTACION\\PROVEEDORES\\NATUFLOR\\01 - 729-4984 6860 (44) - NATUFLOR 95116645.pdf": {
+    "hash_estructura": "020a70ba6635",
+    "proveedor_candidato": "CUSTOMER INVOICE 95116645",
+    "keywords": [
+      "INVOICE",
+      "S.A.S"
+    ],
+    "num_paginas": 1,
+    "tiene_tablas": true,
+    "num_columnas": 2,
+    "headers": [
+      "incoterm",
+      "fob uio"
+    ],
+    "confianza": 0.5,
+    "timestamp": "2026-04-15T10:48:02.154125"
+  },
+  "C:\\Users\\diego.pereira\\Desktop\\DOC VERA\\FACTURAS IMPORTACION\\PROVEEDORES\\PONDEROSA\\01 - 075-6537 6964 (334) - PONDEROSA 378.pdf": {
+    "hash_estructura": "97952d6a8df4",
+    "proveedor_candidato": "CLIENTE",
+    "keywords": [
+      "SLU"
+    ],
+    "num_paginas": 1,
+    "tiene_tablas": false,
+    "num_columnas": 0,
+    "headers": [],
+    "confianza": 0.2,
+    "timestamp": "2026-04-15T10:48:45.012740"
+  },
+  "C:\\Users\\diego.pereira\\Desktop\\DOC VERA\\FACTURAS IMPORTACION\\PROVEEDORES\\PRESTIGE ROSES\\01 - 7. 729-4477 0843 (303) - PRESTIGE 6193.pdf": {
+    "hash_estructura": "97952d6a8df4",
+    "proveedor_candidato": "PRESTIGE",
+    "keywords": [
+      "ROSES"
+    ],
+    "num_paginas": 1,
+    "tiene_tablas": false,
+    "num_columnas": 0,
+    "headers": [],
+    "confianza": 0.1,
+    "timestamp": "2026-04-15T10:49:54.817511"
+  },
+  "C:\\Users\\diego.pereira\\Desktop\\DOC VERA\\FACTURAS IMPORTACION\\PROVEEDORES\\QUALISA\\01 - 729-4932 5161 (211) - QUALISA 5492205.pdf": {
+    "hash_estructura": "13ae02aeb8e6",
+    "proveedor_candidato": "CUSTOMER INVOICE 5492205",
+    "keywords": [
+      "INVOICE",
+      "S.A"
+    ],
+    "num_paginas": 1,
+    "tiene_tablas": true,
+    "num_columnas": 2,
+    "headers": [
+      "incoterm",
+      "fob uio"
+    ],
+    "confianza": 0.5,
+    "timestamp": "2026-04-15T10:49:55.237101"
+  },
+  "C:\\Users\\diego.pereira\\Desktop\\DOC VERA\\FACTURAS IMPORTACION\\PROVEEDORES\\SAN FRANCISCO\\01 - 729-4457 1785 - SAN FRANCISCO.pdf": {
+    "hash_estructura": "aabbdf73d21f",
+    "proveedor_candidato": "GROWER NAME INVOICE 114788",
+    "keywords": [
+      "FARM",
+      "GROWER",
+      "INVOICE",
+      "SAS",
+      "SLU"
+    ],
+    "num_paginas": 1,
+    "tiene_tablas": false,
+    "num_columnas": 0,
+    "headers": [],
+    "confianza": 0.6,
+    "timestamp": "2026-04-15T11:09:13.473274"
+  },
+  "C:\\Users\\diego.pereira\\Desktop\\DOC VERA\\FACTURAS IMPORTACION\\PROVEEDORES\\SAN JORGE\\01 - 729-9025 6670 (112) - SAN JORGE.pdf": {
+    "hash_estructura": "c2ba067a52f2",
+    "proveedor_candidato": "SAN JORGE ROSES AND FEELINGS SCC",
+    "keywords": [
+      "INVOICE",
+      "ROSES",
+      "SLU"
+    ],
+    "num_paginas": 1,
+    "tiene_tablas": true,
+    "num_columnas": 5,
+    "headers": [
+      "consignee mark veraleza phone fax address truck date truck 00000000",
+      "",
+      "",
+      "",
+      ""
+    ],
+    "confianza": 0.7499999999999999,
+    "timestamp": "2026-04-15T11:09:13.695167"
+  },
+  "C:\\Users\\diego.pereira\\Desktop\\DOC VERA\\FACTURAS IMPORTACION\\PROVEEDORES\\UNIQUE\\01 - 996-1252 2871 (146) - UNIQUE.pdf": {
+    "hash_estructura": "4d21be6203d0",
+    "proveedor_candidato": "UNIQUE EXPORT SAS",
+    "keywords": [
+      "INVOICE",
+      "SAS",
+      "SLU"
+    ],
+    "num_paginas": 1,
+    "tiene_tablas": true,
+    "num_columnas": 11,
+    "headers": [
+      "hits no",
+      "description",
+      "brand box",
+      "box type",
+      "pcs",
+      "full",
+      "packing",
+      "tstems",
+      "unit",
+      "unit price",
+      "total value"
+    ],
+    "confianza": 0.9,
+    "timestamp": "2026-04-15T10:49:57.870692"
+  },
+  "C:\\Users\\diego.pereira\\Desktop\\DOC VERA\\FACTURAS IMPORTACION\\PROVEEDORES\\ZORRO\\01 - 729- 4457 1424 (387) - ZORRO 805.pdf": {
+    "hash_estructura": "431266112fcf",
+    "proveedor_candidato": "PROFORMA",
+    "keywords": [
+      "FLORES",
+      "S.A.S",
+      "SLU"
+    ],
+    "num_paginas": 1,
+    "tiene_tablas": false,
+    "num_columnas": 0,
+    "headers": [],
+    "confianza": 0.6,
+    "timestamp": "2026-04-15T11:09:16.188066"
   }
 }

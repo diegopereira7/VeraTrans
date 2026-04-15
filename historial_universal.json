@@ -188,7 +188,7 @@
     "lineas": 13,
     "ok": 12,
     "sin_match": 1,
-    "fecha": "2026-04-15 09:47",
+    "fecha": "2026-04-15 10:04",
     "pdf_path": "C:\\verabuy-traductor\\batch_uploads\\20260415074719_659d4da3\\ROSELY_002001000326087.pdf"
   },
   "83155": {
@@ -300,14 +300,14 @@
     "fecha": "2026-03-30 17:09"
   },
   "": {
-    "pdf": "FLORSANI_002001000543894.pdf",
-    "provider": "Florsani",
+    "pdf": "1776252508_CONEJERA_FE047941.pdf",
+    "provider": "Flores La Conejera",
     "total_usd": 0.0,
-    "lineas": 20,
-    "ok": 20,
+    "lineas": 9,
+    "ok": 0,
     "sin_match": 0,
-    "fecha": "2026-04-15 09:47",
-    "pdf_path": "C:\\verabuy-traductor\\batch_uploads\\20260415074719_659d4da3\\FLORSANI_002001000543894.pdf"
+    "fecha": "2026-04-15 13:30",
+    "pdf_path": "C:\\verabuy-traductor\\web\\uploads\\1776252508_CONEJERA_FE047941.pdf"
   },
   "7.149": {
     "pdf": "000 full.pdf",
@@ -451,7 +451,8 @@
     "lineas": 2,
     "ok": 2,
     "sin_match": 0,
-    "fecha": "2026-03-30 17:10"
+    "fecha": "2026-04-15 09:59",
+    "pdf_path": "C:\\verabuy-traductor\\batch_uploads\\20260415075900_307ed8bf\\MALIMA.pdf"
   },
   "25055697": {
     "pdf": "SEMANA_2_075-6764_3601_(63)_CANTIZA.pdf",
@@ -3810,7 +3811,7 @@
     "lineas": 13,
     "ok": 7,
     "sin_match": 1,
-    "fecha": "2026-04-15 09:38",
+    "fecha": "2026-04-15 10:04",
     "pdf_path": "C:\\verabuy-traductor\\web\\uploads\\1776238711_DAFLOR.pdf"
   },
   "A2571217": {
@@ -8019,13 +8020,14 @@
     "fecha": "2026-03-28 11:03"
   },
   "0000281780": {
-    "pdf": "SEMANA_13_075-6771_2271_ALLIANCE_Falta_Florsani_MYSTIC2.pdf",
+    "pdf": "01 - 075-67712271 - MYSTIC MYSTIC2.pdf",
     "provider": "Mystic Flowers",
     "total_usd": 360.0,
-    "lineas": 0,
-    "ok": 0,
-    "sin_match": 0,
-    "fecha": "2026-03-28 11:03"
+    "lineas": 26,
+    "ok": 19,
+    "sin_match": 7,
+    "fecha": "2026-04-15 16:13",
+    "pdf_path": "C:\\Users\\diego.pereira\\Desktop\\DOC VERA\\FACTURAS IMPORTACION\\PROVEEDORES\\MYSTIC\\01 - 075-67712271 - MYSTIC MYSTIC2.pdf"
   },
   "25061663": {
     "pdf": "SEMANA_13_075-6771_2271_ALLIANCE_Falta_Florsani_VALTHO.pdf",
@@ -15782,5 +15784,85 @@
     "sin_match": 0,
     "fecha": "2026-04-15 09:47",
     "pdf_path": "C:\\verabuy-traductor\\batch_uploads\\20260415074719_659d4da3\\ROSALEDA_00000708.pdf"
+  },
+  "859": {
+    "pdf": "1776249976_PONDEROSA.pdf",
+    "provider": "Verdes La Estacion / Ponderosa",
+    "total_usd": 2415.5,
+    "lineas": 67,
+    "ok": 64,
+    "sin_match": 3,
+    "fecha": "2026-04-15 12:46",
+    "pdf_path": "C:\\verabuy-traductor\\web\\uploads\\1776249976_PONDEROSA.pdf"
+  },
+  "224879": {
+    "pdf": "1776252408_AGROSAN_879.pdf",
+    "provider": "Agro San Alfonso (Glamour)",
+    "total_usd": 125.0,
+    "lineas": 2,
+    "ok": 2,
+    "sin_match": 0,
+    "fecha": "2026-04-15 13:26",
+    "pdf_path": "C:\\verabuy-traductor\\web\\uploads\\1776252408_AGROSAN_879.pdf"
+  },
+  "231597": {
+    "pdf": "1776252441_GLAMOUR_231597.pdf",
+    "provider": "Agro San Alfonso (Glamour)",
+    "total_usd": 58.0,
+    "lineas": 4,
+    "ok": 4,
+    "sin_match": 0,
+    "fecha": "2026-04-15 13:31",
+    "pdf_path": "C:\\verabuy-traductor\\web\\uploads\\1776252441_GLAMOUR_231597.pdf"
+  },
+  "755": {
+    "pdf": "1776252553_ROSABELLA.pdf",
+    "provider": "Rosabella",
+    "total_usd": 112.0,
+    "lineas": 1,
+    "ok": 1,
+    "sin_match": 0,
+    "fecha": "2026-04-15 13:29",
+    "pdf_path": "C:\\verabuy-traductor\\web\\uploads\\1776252553_ROSABELLA.pdf"
+  },
+  "FE047941": {
+    "pdf": "1776252508_CONEJERA_FE047941.pdf",
+    "provider": "Flores La Conejera",
+    "total_usd": 320.0,
+    "lineas": 9,
+    "ok": 2,
+    "sin_match": 6,
+    "fecha": "2026-04-15 13:30",
+    "pdf_path": "C:\\verabuy-traductor\\web\\uploads\\1776252508_CONEJERA_FE047941.pdf"
+  },
+  "INV-003160": {
+    "pdf": "02 - S. 729-4494 1525 (211) - MILONGA.pdf",
+    "provider": "Flores Milonga",
+    "total_usd": 0.0,
+    "lineas": 1,
+    "ok": 0,
+    "sin_match": 0,
+    "fecha": "2026-04-15 15:58",
+    "pdf_path": "C:\\Users\\diego.pereira\\Desktop\\DOC VERA\\FACTURAS IMPORTACION\\PROVEEDORES\\MILONGA FLOWERS\\02 - S. 729-4494 1525 (211) - MILONGA.pdf"
+  },
+  "608": {
+    "pdf": "01 - 729-4509 5470 (217) - LA ESTACION 608.pdf",
+    "provider": "Verdes La Estacion / Ponderosa",
+    "total_usd": 3669.5,
+    "lineas": 51,
+    "ok": 42,
+    "sin_match": 9,
+    "fecha": "2026-04-15 16:20",
+    "pdf_path": "C:\\Users\\diego.pereira\\Desktop\\DOC VERA\\FACTURAS IMPORTACION\\PROVEEDORES\\LA ESTACION\\01 - 729-4509 5470 (217) - LA ESTACION 608.pdf"
+  },
+  "FE042138": {
+    "pdf": "01 - 729-4509 6004 (415) - CONEJERA.pdf",
+    "provider": "Flores La Conejera",
+    "total_usd": 40.0,
+    "lineas": 3,
+    "ok": 0,
+    "sin_match": 0,
+    "fecha": "2026-04-15 16:21",
+    "pdf_path": "C:\\Users\\diego.pereira\\Desktop\\DOC VERA\\FACTURAS IMPORTACION\\PROVEEDORES\\CONEJERA\\01 - 729-4509 6004 (415) - CONEJERA.pdf"
   }
 }
