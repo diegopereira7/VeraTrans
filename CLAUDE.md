@@ -146,6 +146,22 @@ Output JSON con métricas por muestra:
   `ALLIANCE`, `DSV`, `EXCELE CARGA`, `LOGIZTIK`, `REAL CARGA`, `SAFTEC`, `VERALEZA` (la buyer),
   `FESO` (EXCELLENT CARGO SERVICE SAS, carguero)
 
+### Resultado de evaluación masiva (sesión 3)
+
+Corriendo `python tools/evaluate_all.py` sobre las 82 carpetas:
+
+- **OK (24)**: detectado + parseado + totales cuadran. No tocar.
+- **TOTALES_MAL (22)**: parsea bien pero `header.total` no se extrae del PDF
+  (muchos parsers no tienen regex de total de cabecera). Cosmético: la suma de
+  líneas está bien, solo falla la validación cruzada. Impacto real bajo.
+- **NO_PARSEA (36)**: alguna muestra retorna 0 líneas o <60% parse. Prioridad alta.
+  Incluye CANTIZA (3/5), COLIBRI (5/5 pero totales mal), DAFLOR (3/5), GOLDEN (ok),
+  MYSTIC (1/5), LATIN (3/5), etc. Requiere revisión caso por caso.
+- **NO_DETECTADO (0)**: todos los patterns matchean.
+
+Ver [auto_learn_report.json](auto_learn_report.json) para detalle por proveedor
+y muestra (qué PDFs fallan, qué líneas rescata el fallback).
+
 **Carpeta de entrenamiento** del usuario (ruta fija):
 ```
 C:\Users\diego.pereira\Desktop\DOC VERA\FACTURAS IMPORTACION\PROVEEDORES
@@ -170,6 +186,9 @@ Contiene subcarpeta por proveedor con 5 facturas nuevas + 2 antiguas (para regre
 | `auto_zorro` | ZORRO | single-sample overfit acceptable; tolera OCR 'l'→'1', 'ASSORTEO'→'ASSORTED' |
 | `auto_cean` | CEAN GLOBAL | factura electrónica COL; colores inglés→español via `translate_carnation_color` |
 | `auto_elite` | ELITE | Alstroemeria parent + sub-líneas solo-stems heredando price |
+| `auto_conejera` | FLORES LA CONEJERA | factura electrónica COL; translate_carnation_color para colores EN→ES |
+| `auto_agrosanalfonso` | AGROSANALFONSO, GLAMOUR | template `I`-separado; GLAMOUR = marca comercial de AgroSanAlfonso |
+| `auto_rosabella` | ROSABELLA | layout lineal simple; "ABC" abreviatura de "ASSORTED" |
 
 ## Signals al usuario (UI)
 
@@ -333,3 +352,9 @@ final de este archivo, en la sección "Historial de sesiones".
   con tolerancia OCR) +CEAN (4/5 factura electrónica COL con traducción colores)
   +ELITE (4/5 Alstroemeria parent/sub-líneas). FESO descartado por ser carguero
   (EXCELLENT CARGO SERVICE SAS), añadido a SKIP_PATTERNS. **0 stubs pendientes.**
+- **2026-04-15 sesión 3**: Evaluación masiva de los 66 parsers heredados con
+  nuevo script `tools/evaluate_all.py`. Arreglados los 4 parsers completamente
+  rotos (0 líneas parseadas): CONEJERA (era fmt='turflor' incorrecto, nuevo
+  auto_conejera), AGROSANALFONSO+GLAMOUR (nuevo auto_agrosanalfonso para su
+  template `I`-separado), ROSABELLA (nuevo auto_rosabella). De 37 NO_PARSEA
+  quedan 36 parsers con gaps parciales documentados en auto_learn_report.json.

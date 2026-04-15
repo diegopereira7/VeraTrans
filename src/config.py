@@ -156,8 +156,8 @@ PROVIDERS = {
     'conejera': {'id': 90010,     'name': 'Flores La Conejera',       'fmt': 'turflor',      'patterns': ['FLORES LA CONEJERA', 'LA CONEJERA']},
     'iwa': {'id': 90022,     'name': 'IWA Flowers',              'fmt': 'iwa',          'patterns': ['IWA FLOWERS', 'IWA7']},
     'timana': {'id': 90039,     'name': 'Flores Timana',            'fmt': 'timana',       'patterns': ['FLORES TIMANA', 'florestimana']},
-    'rosabella': {'id': 90032,     'name': 'Rosabella',                'fmt': 'rosaleda',     'patterns': ['rosabella.ec', 'ROSABELLA']},
-    'agrosanalfonso': {'id': 90002,  'name': 'Agro San Alfonso',         'fmt': 'rosaleda',     'patterns': ['AGROSANALFONSO', 'SANALFONSO']},
+    'rosabella': {'id': 90032,     'name': 'Rosabella',                'fmt': 'auto_rosabella', 'patterns': ['rosabella.ec', 'ROSABELLA', 'teresita@rosabella']},
+    'agrosanalfonso': {'id': 90002,  'name': 'Agro San Alfonso (Glamour)','fmt': 'auto_agrosanalfonso', 'patterns': ['AGROSANALFONSO', 'SANALFONSO', 'AGROSANALFONSOS.A.', '1791289714']},
     # Stubs — proveedores detectados sin parser (TODO: crear parser cuando haya ejemplos)
     'victoria': {'id': 90043,     'name': 'Flores de la Victoria',    'fmt': 'unknown',      'patterns': ['FLORES DE LA VICTORIA']},
     'milagro_finca': {'id': 2652, 'name': 'El Milagro de las Flores', 'fmt': 'auto_milagro',      'patterns': ['EL MILAGRO DE LAS FLORES', 'elmilagro.co', '830.144.787']},

@@ -80,7 +80,14 @@ from src.parsers.auto_cean import AutoParser as auto_cean_Parser
 
 from src.parsers.auto_elite import AutoParser as auto_elite_Parser
 
+from src.parsers.auto_conejera import AutoParser as auto_conejera_Parser
+from src.parsers.auto_agrosanalfonso import AutoParser as auto_agrosanalfonso_Parser
+from src.parsers.auto_rosabella import AutoParser as auto_rosabella_Parser
+
 FORMAT_PARSERS = {
+    'auto_rosabella': auto_rosabella_Parser(),
+    'auto_agrosanalfonso': auto_agrosanalfonso_Parser(),
+    'auto_conejera': auto_conejera_Parser(),
     'auto_elite': auto_elite_Parser(),
     'auto_cean': auto_cean_Parser(),
     'auto_zorro': auto_zorro_Parser(),
