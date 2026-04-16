@@ -347,6 +347,12 @@ reales de revisión, que solo se puede hacer en producción real.
 - [ ] Actualización continua de `CLAUDE.md`
 - [ ] Limpieza de backlog resuelto / obsoleto
 
+## Backlog de optimización
+- [ ] **Optimizar velocidad del matcher** — actualmente ~6.5s para 43 líneas
+  (match_all evalúa muchos candidatos por línea contra 42k artículos).
+  Ideas: indexar artículos por variety+size, precalcular brand set,
+  limitar candidatos fuzzy. No es urgente pero mejora la UX.
+
 ---
 
 ## Próximo bloque recomendado
