@@ -6,13 +6,12 @@ from src.models import InvoiceHeader, InvoiceLine
 
 
 class LifeParser:
-    """Life Flowers: two line types:
-    1. Box line: "HB 1 0.50 MARL Explorer 50CM 20 16 320 0.28 89.60"
-    2. Continuation: "Pink Floyd 50CM 20 8 160 0.28 44.80"
+    """Life Flowers: two layout variants:
 
-    The delegation (MARL, RODRIGO PEREIRA, etc.) appears between box prefix and variety.
-    We capture DELEGATION + VARIETY together as the variety field, then the matcher's
-    delegation stripping logic separates them for matching.
+    Variant A (2026+): "HB 1 0.50 MARL Explorer 50CM 20 16 320 0.28 89.60"
+    Variant B (2024):  Agrivaldani-style "1 - 1 BRUNA S.O 1 HALF EXPLORER 60 25 6 150 0.32 48.00"
+
+    If variant A doesn't parse anything, falls back to AgrivaldaniParser.
     """
     def parse(self, text: str, pdata: dict):
         h = InvoiceHeader()
@@ -66,5 +65,11 @@ class LifeParser:
                                  stems=stems, price_per_stem=price,
                                  line_total=round(price * stems, 2))
                 lines.append(il)
+
+        # Fallback: si el formato A no parseó nada, intentar con AgrivaldaniParser
+        # (Life Flowers usaba el template Agrivaldani en 2024)
+        if not lines:
+            from src.parsers.agrivaldani import AgrivaldaniParser
+            return AgrivaldaniParser().parse(text, pdata)
 
         return h, lines

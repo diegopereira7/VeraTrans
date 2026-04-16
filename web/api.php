@@ -48,6 +48,12 @@ switch ($action) {
     case 'save_synonym':
         handleSaveSynonym();
         break;
+    case 'confirm_match':
+        handleConfirmMatch();
+        break;
+    case 'correct_match':
+        handleCorrectMatch();
+        break;
     case 'update_synonym':
         handleUpdateSynonym();
         break;
@@ -370,6 +376,143 @@ function handleSaveSynonym(): void
     ]);
 
     echo json_encode(['ok' => true, 'message' => 'Sinónimo guardado']);
+}
+
+/**
+ * Confirmar match — el operador acepta que el artículo asignado es correcto.
+ * Promueve el sinónimo: aprendido_en_prueba → aprendido_confirmado.
+ * Body JSON: { key: "provider_id|species|variety|size|spb|grade", articulo_id: int }
+ */
+function handleConfirmMatch(): void
+{
+    $input = json_decode(file_get_contents('php://input'), true);
+    if (!$input || empty($input['key'])) {
+        echo json_encode(['ok' => false, 'error' => 'Datos incompletos']);
+        return;
+    }
+    $key = $input['key'];
+    $artId = (int)($input['articulo_id'] ?? 0);
+
+    $data = [];
+    if (file_exists(SYNONYMS_FILE)) {
+        $data = json_decode(file_get_contents(SYNONYMS_FILE), true) ?? [];
+    }
+    if (!isset($data[$key])) {
+        echo json_encode(['ok' => false, 'error' => 'Sinónimo no encontrado']);
+        return;
+    }
+    $entry = &$data[$key];
+    // Solo confirmar si el articulo_id coincide
+    if ($artId && (int)($entry['articulo_id'] ?? 0) !== $artId) {
+        echo json_encode(['ok' => false, 'error' => 'articulo_id no coincide con el sinónimo']);
+        return;
+    }
+    $entry['times_confirmed'] = (int)($entry['times_confirmed'] ?? 0) + 1;
+    $entry['last_confirmed_at'] = date('c');
+    // Ascenso de status
+    $status = $entry['status'] ?? 'aprendido_en_prueba';
+    if (in_array($status, ['aprendido_en_prueba', ''], true)) {
+        $entry['status'] = 'aprendido_confirmado';
+    }
+    // Persist
+    $json = json_encode($data, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
+    $tmp = SYNONYMS_FILE . '.tmp';
+    file_put_contents($tmp, $json);
+    rename($tmp, SYNONYMS_FILE);
+
+    echo json_encode([
+        'ok' => true,
+        'message' => 'Match confirmado',
+        'new_status' => $entry['status'],
+        'times_confirmed' => $entry['times_confirmed'],
+    ]);
+}
+
+/**
+ * Corregir match — el operador cambia el artículo. Degrada el sinónimo
+ * viejo y guarda el nuevo como manual-web.
+ * Body JSON: { key, old_articulo_id, new_articulo_id, new_articulo_name,
+ *              provider_id, species, variety, size, stems_per_bunch, grade }
+ */
+function handleCorrectMatch(): void
+{
+    $input = json_decode(file_get_contents('php://input'), true);
+    if (!$input || empty($input['key']) || empty($input['new_articulo_id'])) {
+        echo json_encode(['ok' => false, 'error' => 'Datos incompletos']);
+        return;
+    }
+    $key       = $input['key'];
+    $oldArtId  = (int)($input['old_articulo_id'] ?? 0);
+    $newArtId  = (int)$input['new_articulo_id'];
+    $newArtName = $input['new_articulo_name'] ?? '';
+
+    $data = [];
+    if (file_exists(SYNONYMS_FILE)) {
+        $data = json_decode(file_get_contents(SYNONYMS_FILE), true) ?? [];
+    }
+
+    // Degradar el sinónimo viejo si existe y coincide
+    if (isset($data[$key]) && $oldArtId && (int)($data[$key]['articulo_id'] ?? 0) === $oldArtId) {
+        $data[$key]['times_corrected'] = (int)($data[$key]['times_corrected'] ?? 0) + 1;
+        if ((int)$data[$key]['times_corrected'] >= 2) {
+            $data[$key]['status'] = 'rechazado';
+        } else {
+            $data[$key]['status'] = 'ambiguo';
+        }
+    }
+
+    // Guardar el sinónimo nuevo (sobreescribe el viejo con el artículo correcto)
+    $data[$key] = array_merge($data[$key] ?? [], [
+        'articulo_id'     => $newArtId,
+        'articulo_name'   => $newArtName,
+        'origen'          => 'manual-web',
+        'provider_id'     => (int)($input['provider_id'] ?? 0),
+        'species'         => $input['species'] ?? '',
+        'variety'         => $input['variety'] ?? '',
+        'size'            => (int)($input['size'] ?? 0),
+        'stems_per_bunch' => (int)($input['stems_per_bunch'] ?? 0),
+        'grade'           => $input['grade'] ?? '',
+        'status'          => 'manual_confirmado',
+        'times_confirmed' => 1,
+        'last_confirmed_at' => date('c'),
+    ]);
+
+    // MySQL sync para el nuevo
+    $parts = explode('|', $key);
+    $provId = isset($parts[0]) ? (int)$parts[0] : 0;
+    $especie = $parts[1] ?? '';
+    $variety = $parts[2] ?? '';
+    $talla = isset($parts[3]) ? (int)$parts[3] : 0;
+    $spb = isset($parts[4]) ? (int)$parts[4] : 0;
+    $grado = $parts[5] ?? '';
+    $db = get_db();
+    if ($db) {
+        $stmt = $db->prepare(
+            "INSERT INTO sinonimos
+                (clave, id_proveedor, nombre_factura, especie, talla,
+                 stems_per_bunch, grado, id_articulo, nombre_articulo, origen)
+             VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, 'manual')
+             ON DUPLICATE KEY UPDATE
+                id_articulo     = VALUES(id_articulo),
+                nombre_articulo = VALUES(nombre_articulo),
+                origen          = 'manual'"
+        );
+        $stmt->bind_param('sissiisis', $key, $provId, $variety, $especie, $talla, $spb, $grado, $newArtId, $newArtName);
+        $stmt->execute();
+    }
+
+    // Persist JSON
+    $json = json_encode($data, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
+    $tmp = SYNONYMS_FILE . '.tmp';
+    file_put_contents($tmp, $json);
+    rename($tmp, SYNONYMS_FILE);
+
+    echo json_encode([
+        'ok' => true,
+        'message' => 'Match corregido',
+        'new_articulo_id' => $newArtId,
+        'new_articulo_name' => $newArtName,
+    ]);
 }
 
 /**

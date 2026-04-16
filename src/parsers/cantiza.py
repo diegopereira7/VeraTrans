@@ -21,25 +21,27 @@ class CantizaParser:
         for raw in text.split('\n'):
             ln=raw.strip()
             if not ln: continue
-            bm=re.search(r'HB\s+CAN[- ]?([\dX.]+)',ln)
-            if bm: btype=f"HB CAN-{bm.group(1)}"
+            # Box type: "HB CAN-XXX" o "HB RN-XXX"
+            bm=re.search(r'(HB|QB)\s+\w+[- ]?([\dX.]+)',ln)
+            if bm: btype=f"{bm.group(1)} {bm.group(0).split()[1]}"
             if re.search(r'MIXED\s+BOX',ln):
                 lm=re.search(r'\$[\d.]+\s+([A-Z][\w\s\-]*?)\s*$',ln)
                 if lm:
                     raw2=lm.group(1).strip()
                     if raw2 and raw2!='TOTALS': label=re.split(r'\s{4,}',raw2)[0].strip()
-                fm=re.search(r'(C\d+)\s+\d+\s+\$',ln)
-                if fm: farm=fm.group(1)
+                fm=re.search(r'([A-Z]\w*\s*\d*)\s+\d+\s+\$',ln)
+                if fm: farm=fm.group(1).strip()
                 continue
-            pm=re.search(r'([\w][\w\s.\']*?)\s+(\d+)CM\s+N\s+(\d+)ST\s+CZ',ln)
+            # Sub-líneas: "VARIETY SIZECM N SPBST FARMCODE" — CZ (Cantiza), RN (Rosa Nova), etc.
+            pm=re.search(r'([\w][\w\s.\']*?)\s+(\d+)CM\s+N\s+(\d+)ST\s+[A-Z]{1,4}\b',ln)
             if not pm: continue
             var=re.sub(r'^[\d*X.]+\s+','',pm.group(1).strip()).strip()
             var=re.sub(r'\([\d*X.]+\)','',var).strip()
             if not var: continue
             sz,spb=int(pm.group(2)),int(pm.group(3))
-            fm2=re.search(r'(?:ROSES|CARNATION)\s+([A-Z][A-Z0-9]*(?:-\d+)?)',ln)
-            if fm2: farm=fm2.group(1).upper()
-            nm=re.search(r'(?:[A-Z][A-Z0-9]*(?:-\d+)?)\s+(\d+)\s+\$([\d.]+)\s+(\d+)\s+\$([\d.]+)\s+\$([\d.]+)',ln)
+            fm2=re.search(r'(?:ROSES|CARNATION)\s+([A-Z][\w\s]*?)(?:\s+\d+\s+\$)',ln)
+            if fm2: farm=fm2.group(1).strip().upper()
+            nm=re.search(r'(\d+)\s+\$([\d.]+)\s+(\d+)\s+\$([\d.]+)\s+\$([\d.]+)',ln)
             bunches=int(nm.group(1)) if nm else 0
             ppb=float(nm.group(2)) if nm else 0.0
             stems=int(nm.group(3)) if nm else 0

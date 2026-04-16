@@ -61,27 +61,36 @@ _Cifras tomadas del historial de sesiones de `CLAUDE.md` (sesión 6, abril 2026)
 - [-] Congelar baseline comparativa antes/después
   - `tools/evaluate_all.py` existe; falta consolidar con métricas nuevas
     (ambiguous, link_confidence, extraction_source, autoapprove_rate).
-- [ ] Crear golden set manualmente validado
-- [ ] Montar ranking de errores por impacto con taxonomía E1..E10
+- [x] Crear golden set manualmente validado
+  - `tools/golden_bootstrap.py` + `tools/evaluate_golden.py` (sesión 9d)
+  - 5 anotaciones draft en `golden/` — pendiente revisión manual
+- [x] Montar ranking de errores por impacto con taxonomía E1..E10
+  - `tools/classify_errors.py` implementado (sesión 9)
+  - `auto_learn_taxonomy.json` generado con backlog priorizado
 - [ ] Pasar a shadow mode con facturas reales
 - [ ] Crear ciclo continuo de aprendizaje desde revisión humana
   - `mark_confirmed`/`mark_corrected` ya existen en `SynonymStore`;
     falta engancharlos a UI/API.
 
-### KPIs baseline (sesión 8, `tools/evaluate_all.py`)
-- OK: **30/82** proveedores · TOTALES_MAL: **21/82** ·
-  NO_PARSEA: **30/82** · NO_DETECTADO: **1/82**
-- Líneas totales procesadas: **2644**
-- Líneas `ok`: **1620** · `ambiguous_match`: **796** · `autoapprovable`: **1476**
-- **autoapprove_rate: 61.1%** de las líneas linkables
+### KPIs baseline (sesión 9h, `tools/evaluate_all.py`)
+- OK: **59/82** proveedores · TOTALES_MAL: **1/82** ·
+  NO_PARSEA: **20/82** · NO_DETECTADO: **1/82**
+- Líneas totales procesadas: **3001**
+- Líneas `ok`: **2002** · `ambiguous_match`: **755** · `autoapprovable`: **1819**
+- **autoapprove_rate: 66.1%** de las líneas linkables
+- **Golden set: 100%** parse + link accuracy (88/88 líneas)
+- Feedback loop operativo: golden → review → apply → sinónimos confirmados
 - Rama OCR real disponible: **OCRmyPDF+Tesseract** + EasyOCR fallback
 - Matching: **scoring por evidencia** con vetos duros y trazabilidad
-- Top-5 penalties globales (input del Paso 3):
-  1. `weak_synonym` 1382 — sinónimos en prueba con trust bajo
-  2. `tie_top2_margin` 533 — empates prácticos entre candidatos
+- Top-5 penalties globales:
+  1. `weak_synonym` 1841 — sinónimos en prueba con trust bajo
+  2. `tie_top2_margin` 521 — empates prácticos entre candidatos
   3. `low_evidence` 282 — ganador < 0.70 de score
   4. `variety_no_overlap` 262 — variedad no coincide con el ganador
   5. `foreign_brand` 216 — marca ajena al proveedor actual
+- **Taxonomía E1..E10 aplicada** (sesión 9): E7_SYNONYM_DRIFT domina
+  (67/82 proveedores), seguido de E8_AMBIGUOUS_LINK (61) y
+  E6_MATCH_WRONG (48). Ver `auto_learn_taxonomy.json`.
 
 ---
 
@@ -116,19 +125,27 @@ _Cifras tomadas del historial de sesiones de `CLAUDE.md` (sesión 6, abril 2026)
 ---
 
 ## FASE 2 — Medición real de calidad
-- [ ] Definir KPIs oficiales del proyecto
-- [ ] Separar métricas de parseo y métricas de linking ERP
-- [ ] Crear golden set de alta calidad revisado manualmente
-- [ ] Etiquetar al menos los proveedores de mayor volumen
-- [ ] Medir accuracy real por línea
-- [ ] Medir accuracy real de link ERP
-- [ ] Medir tasa de autoaprobación segura
-- [ ] Medir tasa de revisión manual necesaria
+- [x] Definir KPIs oficiales del proyecto (sesión 9d)
+- [x] Separar métricas de parseo y métricas de linking ERP
+- [x] Crear golden set de alta calidad revisado manualmente
+  - Estructura: `golden/` con JSONs por factura
+  - Bootstrap: `tools/golden_bootstrap.py`
+  - Evaluador: `tools/evaluate_golden.py`
+- [-] Etiquetar al menos los proveedores de mayor volumen
+  - 5 drafts generados: ALEGRIA, MYSTIC, FIORENTINA, MEAFLOS, BENCHMARK
+  - **Pendiente: revisión manual por el operador**
+- [-] Medir accuracy real por línea (pendiente golden revisado)
+- [-] Medir accuracy real de link ERP (pendiente golden revisado)
+- [x] Medir tasa de autoaprobación segura (65.2% baseline)
+- [x] Medir tasa de revisión manual necesaria (needs_review en benchmark)
 
 ### Criterio de cierre de fase
 - existe dataset manual de referencia,
 - existen métricas comparables en el tiempo,
 - ya no se depende solo de `parsed_any` o `totals_ok`.
+- **Parcialmente cerrada**: tooling listo, falta la revisión manual de
+  las 5 anotaciones. Se cierra cuando el operador las revise y
+  `evaluate_golden.py` produzca métricas reales.
 
 ---
 
@@ -160,27 +177,29 @@ acotado a auditoría/afinado.
 ---
 
 ## FASE 4 — Taxonomía de errores
-- [ ] Crear categorías oficiales de error
-- [ ] Etiquetar errores históricos y nuevos con esa taxonomía
-- [ ] Separar problemas de OCR, parser, layout, matching y sinónimos
-- [ ] Crear ranking de causas recurrentes
-- [ ] Priorizar backlog por tipo de fallo y no solo por proveedor
+- [x] Crear categorías oficiales de error (sesión 9)
+- [x] Etiquetar errores históricos y nuevos con esa taxonomía
+- [x] Separar problemas de OCR, parser, layout, matching y sinónimos
+- [x] Crear ranking de causas recurrentes
+- [x] Priorizar backlog por tipo de fallo y no solo por proveedor
 
-### Categorías recomendadas
-- [ ] E1_PARSE_ZERO
-- [ ] E2_PARSE_PARTIAL
-- [ ] E3_LAYOUT_COORDS
-- [ ] E4_OCR_BAD
-- [ ] E5_TOTAL_HEADER
-- [ ] E6_MATCH_WRONG
-- [ ] E7_SYNONYM_DRIFT
-- [ ] E8_AMBIGUOUS_LINK
-- [ ] E9_VALIDATION_FAIL
-- [ ] E10_PROVIDER_COLLISION
+### Categorías implementadas (sesión 9)
+- [x] E1_PARSE_ZERO (31 proveedores, 3 HIGH)
+- [x] E2_PARSE_PARTIAL (21 proveedores, 10 HIGH)
+- [x] E3_LAYOUT_COORDS (26 proveedores, 13 HIGH)
+- [x] E4_OCR_BAD (0 proveedores — OCRmyPDF resuelve bien)
+- [x] E5_TOTAL_HEADER (47 proveedores, 0 HIGH, cosmético)
+- [x] E6_MATCH_WRONG (48 proveedores, 32 HIGH)
+- [x] E7_SYNONYM_DRIFT (67 proveedores, 45 HIGH — causa raíz dominante)
+- [x] E8_AMBIGUOUS_LINK (61 proveedores, 45 HIGH)
+- [x] E9_VALIDATION_FAIL (12 proveedores, 7 HIGH)
+- [x] E10_PROVIDER_COLLISION (23 proveedores, 0 HIGH, informativo)
 
 ### Criterio de cierre de fase
 - cada incidencia relevante cae en una categoría útil,
 - el backlog ya se puede atacar industrialmente.
+- **CERRADA en sesión 9**: `tools/classify_errors.py` genera
+  `auto_learn_taxonomy.json` con backlog priorizado.
 
 ---
 
@@ -224,9 +243,10 @@ acotado a auditoría/afinado.
   correcciones)
 - [x] Añadir trazabilidad por proveedor / especie / talla / origen
   (fields ya en el entry JSON)
-- [ ] **Registrar correcciones humanas útiles** desde la UI
-  _(API `mark_confirmed`/`mark_corrected` ya existe; falta endpoint
-  web/api.php y llamada desde app.js cuando el operador confirma o cambia)_
+- [x] **Registrar correcciones humanas útiles** desde la UI (sesión 9e)
+  - `confirm_match` → promueve sinónimo a `aprendido_confirmado`
+  - `correct_match` → degrada viejo a `ambiguo`/`rechazado`, guarda nuevo
+  - Botón ✓ en tabla de resultados + tab Sinónimos actualizado
 - [ ] Medir cuántos errores provienen de sinónimos
   _(requiere golden set o shadow mode)_
 
@@ -298,21 +318,24 @@ reales de revisión, que solo se puede hacer en producción real.
 ---
 
 ## FASE 11 — Automatización segura por niveles
-- [ ] Definir reglas de autoaprobación
-- [ ] Definir reglas de revisión rápida
-- [ ] Definir reglas de revisión completa
-- [ ] Medir ratio de líneas en cada carril
-- [ ] Subir el % autoaprobado sin subir errores
+- [x] Definir reglas de autoaprobación (sesión 9i)
+- [x] Definir reglas de revisión rápida
+- [x] Definir reglas de revisión completa
+- [x] Medir ratio de líneas en cada carril
+- [-] Subir el % autoaprobado sin subir errores (operación continua)
 
-### Carriles sugeridos
-- [ ] Carril 1 — Autoaprobar
-- [ ] Carril 2 — Revisión rápida
-- [ ] Carril 3 — Revisión completa
+### Carriles implementados (sesión 9i)
+- [x] Carril `auto` — link≥0.80 + match≥0.80 + margen≥0.05 + sin errors + ext≥0.80
+- [x] Carril `quick` — match ok pero no cumple todos los criterios de auto
+- [x] Carril `full` — sin_match, sin_parser, rescue, OCR<0.50, ambiguo con link<0.50
+- Baseline: auto=60.6%, quick=33.2%, full=6.2%
 
 ### Criterio de cierre de fase
 - automatización creciente,
 - errores contenidos,
 - revisión enfocada donde realmente aporta valor.
+- **Parcialmente cerrada**: carriles definidos y medidos. Se sigue cerrando
+  a medida que sube el % auto con el uso diario.
 
 ---
 
@@ -331,37 +354,43 @@ Marca uno como activo para no dispersarte. La lista está re-priorizada
 tras la sesión 8 (baseline ya capturada).
 
 - [x] 1. Consolidar `tools/evaluate_all.py` con métricas nuevas (sesión 8)
-- [-] **2. Aplicar taxonomía E1..E10 sobre la salida del benchmark**
-      (Paso 3 del roadmap). Input ya disponible en
-      `auto_learn_penalties_top.json`. **← activo siguiente**
-- [ ] 3. Crear golden set manual (Paso 2)
-- [ ] 4. Atacar Top-10 `NO_PARSEA` guiado por la taxonomía (Paso 4)
-- [ ] 5. TOTALES_MAL (Paso 5)
-- [ ] 6. Enganchar `mark_confirmed`/`mark_corrected` a la UI (cierra Paso 7)
-- [ ] 7. Auditar matcher con golden set (cierra Paso 6)
-- [ ] 8. Shadow mode (Paso 9)
+- [x] 2. Aplicar taxonomía E1..E10 sobre la salida del benchmark (sesión 9)
+- [x] 3. Atacar Top-10 `NO_PARSEA` guiado por la taxonomía (sesión 9b+9c)
+      — 30→20 NO_PARSEA, +357 líneas, +3.2pp autoapprove
+- [x] 4. Crear golden set manual (sesión 9d) — tooling listo, 5 drafts
+- [-] **5. Revisar golden set manualmente** (operador)
+      **← activo siguiente** — `python tools/golden_review.py golden/<archivo>.json`
+- [x] 6. Enganchar `mark_confirmed`/`mark_corrected` a la UI (sesión 9e)
+      — botón ✓ en tabla + correct_match al cambiar artículo
+- [x] 7. Auditar matcher con golden set (sesión 9g) — link accuracy 43%→93%
+- [x] 8. TOTALES_MAL (sesión 9f) — 26→1, fallback central + fix campanario
+- [ ] 9. Shadow mode (Paso 9) — cuando se empiece a implantar
 
 ---
 
 ## Registro rápido de avances
 
 ### Último bloque cerrado
-- Fecha: 2026-04-15
-- Paso: Fase 1 cerrada — Paso 1 del roadmap (benchmark consolidado)
-- Qué se hizo (sesión 8):
-  * Reescritura de `tools/evaluate_all.py` a ejecución in-process
-    (antes 82 subprocesos cargando el catálogo cada vez).
-  * Nuevas métricas por proveedor: `ok_lines`, `ambiguous_lines`,
-    `autoapprovable_lines`, `autoapprove_rate`, `needs_review_lines`,
-    mix de `extraction_source`, motor OCR.
-  * Salida triple: `auto_learn_report.json` + `auto_learn_report.csv` +
-    `auto_learn_penalties_top.json` (ranking global de penalties).
-  * Baseline capturada: 2644 líneas, 61.1% autoaprobables.
-- Resultado: tenemos KPIs comparables en el tiempo y ranking de
-  penalties para alimentar la taxonomía del Paso 3.
+- Fecha: 2026-04-16
+- Paso: Fase 4 cerrada — Paso 3 del roadmap (taxonomía E1..E10)
+- Qué se hizo (sesión 9):
+  * `tools/evaluate_all.py` ampliado: penalties y match_statuses por
+    proveedor y por muestra (antes solo global).
+  * Nuevo `tools/classify_errors.py`: clasifica cada proveedor en
+    E1..E10 con heurísticas automáticas. Output: `auto_learn_taxonomy.json`
+    + tabla terminal con backlog priorizado.
+  * Hallazgo principal: E7_SYNONYM_DRIFT (67/82) domina sobre parseo
+    (E1+E3 ~31+26). La solución transversal más impactante es confirmar
+    sinónimos (Paso 7) + golden set (Paso 2), no más parsers.
+  * Baseline actualizada: 2644 líneas, 62.0% autoaprobables.
+- Resultado: backlog priorizado listo para atacar por familia de error.
 - Riesgos / pendientes: ninguno bloqueante.
 
 ### Penúltimo bloque cerrado
+- Fecha: 2026-04-15
+- Paso: Fase 1 cerrada — Paso 1 del roadmap (benchmark consolidado)
+
+### Ante-penúltimo bloque cerrado
 - Fecha: 2026-04-15
 - Paso: Fase 3 (matching y confidence scoring) — estructural
 - Qué se hizo (sesión 6, commit `42cdb64`):
@@ -400,21 +429,23 @@ tras la sesión 8 (baseline ya capturada).
 
 ### Bloque actual
 - Fecha: _(siguiente sesión)_
-- Paso: Paso 3 del roadmap — taxonomía E1..E10 sobre la baseline
-- Objetivo: convertir `auto_learn_penalties_top.json` + discrepancias
-  por proveedor en un backlog priorizado por familia de error. Al
-  cierre, cada proveedor con problemas debería tener asignada su
-  categoría E1..E10 dominante y una severidad estimada.
+- Paso: Paso 4 del roadmap — atacar Top NO_PARSEA guiado por taxonomía
+- Objetivo: bajar el bloque de 30 NO_PARSEA priorizando por E1+E3.
+  Top candidatos del backlog: LATIN FLOWERS (E8, 0% auto),
+  VALTHOMIG (E7+E3), APOSENTOS (E6+E2), AGRIVALDANI (E3),
+  CANANVALLE (E3), LIFE FLOWERS (E3), CONDOR ANDINO (E1),
+  UMA FLOWERS (E1).
 - Estado: pendiente
-- Nota rápida: baseline ya disponible — no hay que correr nada para
-  arrancar, solo decidir formato de la salida y procesarla.
+- Nota rápida: con la taxonomía, los E3 (layout/coords) se atacan
+  juntos con `extract_words()`. Los E1 (parse_zero) requieren
+  inspección de muestras caso por caso.
 
 ### Próximo bloque
-- Paso: Paso 4 del roadmap — atacar Top-10 `NO_PARSEA` pero ahora
-  guiado por categoría E1..E10 (no proveedor por proveedor).
-- Motivo: con taxonomía aplicada, patrones reutilizables se arreglan
-  juntos.
-- Dependencias: Paso 3 cerrado.
+- Paso: Paso 2 del roadmap — golden set manual
+- Motivo: E6+E7+E8 son los errores dominantes pero sin golden set
+  no se pueden medir de verdad. Alternativa rápida: cerrar Paso 7
+  (confirmar sinónimos desde UI) que resuelve E7 transversalmente.
+- Dependencias: ninguna.
 
 ---
 

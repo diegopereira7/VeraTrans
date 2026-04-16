@@ -83,6 +83,20 @@ def run(pdf_path: str) -> dict:
     pdata['pdf_path'] = pdf_path
 
     header, lines = parser.parse(pdata['text'], pdata)
+
+    # Fallback central: si el parser no extrajo header.total o extrajo un valor
+    # claramente incorrecto, derivar de suma de líneas. Muchos parsers heredados
+    # no tienen regex de total, o capturan un número equivocado del PDF.
+    if lines:
+        sum_lines = round(sum(l.line_total for l in lines if l.line_total), 2)
+        if not header.total:
+            header.total = sum_lines
+        elif sum_lines and header.total:
+            ratio = header.total / sum_lines if sum_lines else 999
+            if ratio > 10 or ratio < 0.1:
+                # Total extraído es >10x o <0.1x la suma — claramente incorrecto
+                header.total = sum_lines
+
     return _process_with_lines(pdf_path, pdata, header, lines)
 
 
@@ -238,6 +252,7 @@ def _serialize_line(l) -> dict:
         'validation_errors': list(l.validation_errors),
         'needs_review':     (l.match_status == 'ambiguous_match')
                             or (l.match_confidence > 0 and l.match_confidence < 0.80),
+        'review_lane':      l.review_lane or 'quick',
     }
 
 

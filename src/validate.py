@@ -87,6 +87,9 @@ def validate_invoice(header: InvoiceHeader,
         if diff > _TOL_HEADER:
             header_ok = False
 
+    # Asignar carriles de revisión a cada línea
+    classify_review_lanes(lines)
+
     return {
         'sum_lines': sum_lines,
         'header_total': header.total,
@@ -95,3 +98,54 @@ def validate_invoice(header: InvoiceHeader,
         'lines_with_errors': per_line_err_count,
         'total_lines': len(lines),
     }
+
+
+# ── Carriles de revisión ──────────────────────────────────────────────────
+
+# Umbrales para carril 'auto' (autoaprobable sin revisión humana).
+# Todos deben cumplirse simultáneamente.
+_AUTO_LINK_MIN = 0.80        # link_confidence mínima
+_AUTO_MATCH_MIN = 0.80       # match_confidence mínima
+_AUTO_MARGIN_MIN = 0.05      # margen top1-top2 mínimo
+
+
+def classify_review_lane(line: InvoiceLine) -> str:
+    """Clasifica una línea en su carril de revisión.
+
+    Carriles:
+      'auto'  — autoaprobable. Evidencia fuerte, sin errores, sin ambigüedad.
+      'quick' — revisión rápida. Match razonable pero no sólido.
+      'full'  — revisión completa. Problema claro que requiere intervención.
+
+    El carril es explicable: cada regla se puede verificar mirando los campos.
+    """
+    status = line.match_status or ''
+
+    # ── Carril FULL: problemas claros ─────────────────────────────────
+    if status in ('sin_match', 'sin_parser', 'llm_extraido'):
+        return 'full'
+    if line.extraction_source == 'rescue':
+        return 'full'
+    if line.extraction_confidence < 0.50:
+        return 'full'
+    if status == 'ambiguous_match' and line.link_confidence < 0.50:
+        return 'full'
+
+    # ── Carril AUTO: todo sólido ──────────────────────────────────────
+    if (status == 'ok'
+            and line.link_confidence >= _AUTO_LINK_MIN
+            and line.match_confidence >= _AUTO_MATCH_MIN
+            and line.candidate_margin >= _AUTO_MARGIN_MIN
+            and not line.validation_errors
+            and line.extraction_source != 'rescue'
+            and line.extraction_confidence >= 0.80):
+        return 'auto'
+
+    # ── Carril QUICK: el resto ────────────────────────────────────────
+    return 'quick'
+
+
+def classify_review_lanes(lines: Iterable[InvoiceLine]) -> None:
+    """Asigna review_lane a cada línea (muta in-place)."""
+    for l in lines:
+        l.review_lane = classify_review_lane(l)

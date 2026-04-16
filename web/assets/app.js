@@ -204,6 +204,10 @@ document.addEventListener('DOMContentLoaded', () => {
         const sinParser = s.sin_parser || 0;
         const needsReview = s.needs_review || 0;
         const ambiguous = s.ambiguous || 0;
+        // Contar carriles de revisión
+        const laneAuto = flatLines.filter(l => l.review_lane === 'auto').length;
+        const laneQuick = flatLines.filter(l => l.review_lane === 'quick').length;
+        const laneFull = flatLines.filter(l => l.review_lane === 'full').length;
         const ocrConf = typeof s.ocr_confidence === 'number' ? s.ocr_confidence : 1.0;
         const extConf = typeof s.extraction_confidence === 'number' ? s.extraction_confidence : ocrConf;
         const extSource = s.extraction_source || 'native';
@@ -242,6 +246,11 @@ document.addEventListener('DOMContentLoaded', () => {
                  title="Líneas con confianza < 80%. Revisa estas antes de generar la orden.">
                 <div class="stat-value">${needsReview}</div>
                 <div class="stat-label">A Revisar</div>
+            </div>
+            <div class="stat-card success"
+                 title="Carriles: Auto=${laneAuto} (sin revisión) · Quick=${laneQuick} (revisión rápida) · Full=${laneFull} (revisión completa)">
+                <div class="stat-value">${laneAuto}/${flatLines.length}</div>
+                <div class="stat-label">Auto ${flatLines.length ? Math.round(laneAuto/flatLines.length*100) : 0}%</div>
             </div>
             <div class="stat-card ${headerOk ? 'success' : 'danger'}"
                  title="Suma de líneas vs total de factura.${headerDiff ? ' Diferencia: ' + headerDiff.toFixed(2) + ' USD' : ''}">
@@ -313,8 +322,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 <td><input class="edit-input edit-line" data-idx="${i}" data-field="price_per_stem" type="number" step="0.001" value="${num(l.price_per_stem||0)}"/></td>
                 <td><input class="edit-input edit-line" data-idx="${i}" data-field="line_total" type="number" step="0.01" value="${num(l.line_total||0)}"/></td>
                 <td>${l.articulo_id ? `<strong>${l.articulo_id}</strong> ${esc(l.articulo_name||'')}` : '<em>-</em>'}</td>
-                <td>${matchBadge(l.match_status, l.match_method)}${confBadge(l.match_confidence)}</td>
-                <td style="white-space:nowrap"><input class="edit-input edit-art" data-idx="${i}" placeholder="ID o Fref" style="width:70px;display:inline-block" value="${l.articulo_id||''}"/><button class="btn-icon line-delete" data-idx="${i}" title="Eliminar línea" style="color:var(--danger);font-size:14px;vertical-align:middle">✕</button></td>
+                <td>${matchBadge(l.match_status, l.match_method)}${confBadge(l.match_confidence)}${laneBadge(l.review_lane)}</td>
+                <td style="white-space:nowrap"><input class="edit-input edit-art" data-idx="${i}" placeholder="ID o Fref" style="width:70px;display:inline-block" value="${l.articulo_id||''}"/>${l.articulo_id ? `<button class="btn-icon line-confirm" data-idx="${i}" title="Confirmar match correcto" style="color:var(--success);font-size:14px;vertical-align:middle">✓</button>` : ''}<button class="btn-icon line-delete" data-idx="${i}" title="Eliminar línea" style="color:var(--danger);font-size:14px;vertical-align:middle">✕</button></td>
             </tr>`;
         }).join('');
 
@@ -337,6 +346,30 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         });
 
+        // Confirm match button (✓)
+        document.querySelectorAll('.line-confirm').forEach(btn => {
+            btn.addEventListener('click', async () => {
+                const idx = parseInt(btn.dataset.idx);
+                const tr = btn.closest('tr');
+                const synKey = tr.dataset.synKey;
+                const line = window._flatLines[idx];
+                if (!line.articulo_id) return;
+                try {
+                    const r = await fetch('api.php?action=confirm_match', {
+                        method: 'POST', headers: {'Content-Type':'application/json'},
+                        body: JSON.stringify({ key: synKey, articulo_id: line.articulo_id })
+                    });
+                    const d = await r.json();
+                    if (d.ok) {
+                        btn.textContent = '✓✓';
+                        btn.style.color = '#2d8a4e';
+                        btn.title = `Confirmado (${d.times_confirmed}x) — ${d.new_status}`;
+                        btn.disabled = true;
+                    }
+                } catch(e) { /* silent */ }
+            });
+        });
+
         // Article lookup on Enter or change in the art column
         document.querySelectorAll('.edit-art').forEach(input => {
             const handler = async () => {
@@ -348,21 +381,28 @@ document.addEventListener('DOMContentLoaded', () => {
                     const r = await fetch(`api.php?action=lookup_article&id=${encodeURIComponent(val)}`);
                     const d = await r.json();
                     if (d.ok) {
-                        window._flatLines[idx].articulo_id = d.id;
-                        window._flatLines[idx].articulo_name = d.nombre;
-                        window._flatLines[idx].match_status = 'ok';
+                        const line = window._flatLines[idx];
+                        const synKey = tr.dataset.synKey;
+                        const oldArtId = line.articulo_id || 0;
+                        line.articulo_id = d.id;
+                        line.articulo_name = d.nombre;
+                        line.match_status = 'ok';
                         tr.querySelectorAll('td')[9].innerHTML = `<strong>${d.id}</strong> ${esc(d.nombre)}`;
                         tr.querySelectorAll('td')[10].innerHTML = '<span class="badge badge-manual">manual-web</span>';
                         tr.classList.remove('row-sin-match');
                         input.value = d.id;
-                        // Save synonym
-                        const synKey = tr.dataset.synKey;
-                        const line = window._flatLines[idx];
-                        await fetch('api.php?action=save_synonym', {
-                            method:'POST', headers:{'Content-Type':'application/json'},
-                            body: JSON.stringify({key:synKey, articulo_id:d.id, articulo_name:d.nombre,
+                        // Correct (degrada sinónimo viejo) o save (nuevo)
+                        const action = oldArtId && oldArtId !== d.id ? 'correct_match' : 'save_synonym';
+                        const body = action === 'correct_match'
+                            ? { key:synKey, old_articulo_id:oldArtId, new_articulo_id:d.id, new_articulo_name:d.nombre,
                                 provider_id:window._currentProviderId, species:line.species,
-                                variety:line.variety, size:line.size, stems_per_bunch:line.stems_per_bunch, grade:line.grade||''})
+                                variety:line.variety, size:line.size, stems_per_bunch:line.stems_per_bunch, grade:line.grade||'' }
+                            : { key:synKey, articulo_id:d.id, articulo_name:d.nombre,
+                                provider_id:window._currentProviderId, species:line.species,
+                                variety:line.variety, size:line.size, stems_per_bunch:line.stems_per_bunch, grade:line.grade||'' };
+                        await fetch(`api.php?action=${action}`, {
+                            method:'POST', headers:{'Content-Type':'application/json'},
+                            body: JSON.stringify(body)
                         });
                     } else {
                         tr.querySelectorAll('td')[9].innerHTML = `<em style="color:var(--danger)">${esc(d.error)}</em>`;
@@ -438,6 +478,14 @@ document.addEventListener('DOMContentLoaded', () => {
         if (typeof conf !== 'number' || conf <= 0 || conf >= 0.80) return '';
         const cls = conf < 0.60 ? 'badge-sin-match' : 'badge-fuzzy';
         return ` <span class="badge ${cls}" title="Confianza del match: ${Math.round(conf * 100)}%. Revisar manualmente.">${Math.round(conf * 100)}%</span>`;
+    }
+
+    // Badge de carril de revisión
+    function laneBadge(lane) {
+        if (lane === 'auto') return ' <span class="badge badge-ok" title="Autoaprobable — no necesita revisión">AUTO</span>';
+        if (lane === 'quick') return ' <span class="badge badge-fuzzy" title="Revisión rápida — razonablemente bueno">QUICK</span>';
+        if (lane === 'full') return ' <span class="badge badge-sin-match" title="Revisión completa — problema claro">FULL</span>';
+        return '';
     }
 
     // Dot de estado junto al índice: rojo si errores, naranja si low conf, azul si delta precio.
@@ -774,11 +822,13 @@ document.addEventListener('DOMContentLoaded', () => {
         const nid = parseInt(document.getElementById('synNewArtId').value);
         const nm = document.getElementById('synNewArtName').value;
         if (!nid || nm === '(no encontrado)') { alert('Busca un artículo válido primero'); return; }
-        const body = { key: synActiveSyn.key, articulo_id: nid, articulo_name: nm,
+        const oldArtId = synActiveSyn.articulo_id || 0;
+        const body = { key: synActiveSyn.key, old_articulo_id: oldArtId,
+            new_articulo_id: nid, new_articulo_name: nm,
             provider_id: synActiveSyn.provider_id, species: synActiveSyn.species,
             variety: synActiveSyn.variety, size: synActiveSyn.size,
             stems_per_bunch: synActiveSyn.stems_per_bunch, grade: synActiveSyn.grade || '' };
-        const r = await fetch('api.php?action=save_synonym', {
+        const r = await fetch('api.php?action=correct_match', {
             method: 'POST', headers: {'Content-Type':'application/json'}, body: JSON.stringify(body) });
         const d = await r.json();
         if (d.ok) { synActiveSyn.articulo_id = nid; synActiveSyn.articulo_name = nm;
@@ -798,15 +848,12 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     window.synDoMarkOk = async function() {
-        const body = { key: synActiveSyn.key, articulo_id: synActiveSyn.articulo_id,
-            articulo_name: synActiveSyn.articulo_name, provider_id: synActiveSyn.provider_id,
-            species: synActiveSyn.species, variety: synActiveSyn.variety,
-            size: synActiveSyn.size, stems_per_bunch: synActiveSyn.stems_per_bunch,
-            grade: synActiveSyn.grade || '' };
-        const r = await fetch('api.php?action=save_synonym', {
+        const body = { key: synActiveSyn.key, articulo_id: synActiveSyn.articulo_id };
+        const r = await fetch('api.php?action=confirm_match', {
             method: 'POST', headers: {'Content-Type':'application/json'}, body: JSON.stringify(body) });
         const d = await r.json();
-        if (d.ok) { synActiveSyn.origen = 'manual-web'; synUpdateKPIs(); synRenderTable(); }
+        if (d.ok) { synActiveSyn.status = d.new_status; synActiveSyn.times_confirmed = d.times_confirmed;
+            synUpdateKPIs(); synRenderTable(); }
         else { alert(d.error || 'Error'); }
     };
 

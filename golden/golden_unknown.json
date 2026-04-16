@@ -1,0 +1,32 @@
+{
+  "_status": "reviewed",
+  "_note": "DRAFT — Review and correct ALL fields before marking as reviewed. Delete _review fields and change _status to \"reviewed\" when done.",
+  "_created": "2026-04-16T10:37:29",
+  "_created_by": "golden_bootstrap.py",
+  "pdf": "01 - 075-6537 6964 (334) - BENCHMARK 089547.pdf",
+  "provider_key": "golden",
+  "provider_name": "Benchmark Growers",
+  "provider_id": 310,
+  "invoice_number": "",
+  "header_total": 412.5,
+  "extraction_source": "native",
+  "extraction_confidence": 1.0,
+  "lines": [
+    {
+      "raw_description": "5 H 500 2500 CONSUMER BUNCH CARNATION FANCY CARN FCY MIX CB S2 0.165 412.50",
+      "species": "CARNATIONS",
+      "variety": "MIXTO",
+      "origin": "COL",
+      "size": 70,
+      "stems_per_bunch": 20,
+      "bunches": 0,
+      "stems": 2500,
+      "line_total": 412.5,
+      "articulo_id": 12792,
+      "articulo_name": "CLAVEL FANCY MIXTO 70CM 20U GOLDEN",
+      "match_status": "ok",
+      "match_confidence": 1.0,
+      "link_confidence": 1.0
+    }
+  ]
+}

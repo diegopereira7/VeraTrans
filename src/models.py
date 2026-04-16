@@ -110,6 +110,12 @@ class InvoiceLine:
     top_candidates: list = field(default_factory=list)
     field_confidence: dict = field(default_factory=dict)
     validation_errors: list = field(default_factory=list)
+    # review_lane: carril de revisión asignado post-matching.
+    #   'auto'     — autoaprobable, no necesita revisión humana
+    #   'quick'    — revisión rápida, razonablemente bueno pero no sólido
+    #   'full'     — revisión completa, problema claro
+    # Se asigna con classify_review_lane() después de validación.
+    review_lane: str = ''
 
     def expected_name(self) -> str:
         """Construye el nombre esperado en VeraBuy según especie y origen.

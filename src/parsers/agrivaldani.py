@@ -21,7 +21,10 @@ class AgrivaldaniParser:
     """
     _NOISE = re.compile(r'^(TOTAL|FOB|USD|ORDER|BOX|TYPE|VARIETIES|STEMS|PRICE|BUNCH|CARPE\s+DIEM\s+STEMS)', re.I)
     _BTYPE = re.compile(r'\b(QUARTER|HALF|FULL)\b', re.I)
-    _VARONLY = re.compile(r'^([A-Z][A-Z\s.\-/]{2,25}?)\s+(\d+)\s*$')  # "CARROUSEL  1"
+    # Admite acentos/ñ en variedades (ej: PIÑA COLADA CRAFTED)
+    _V = r'[A-ZÀ-ÖØ-Ý\u00D1\u00F1]'  # mayúsculas + acentos + Ñ/ñ
+    _VC = r'[A-ZÀ-ÖØ-Ý\u00D1\u00F1\s.\-/&]'
+    _VARONLY = re.compile(r'^(' + _V + _VC + r'{2,25}?)\s+(\d+)\s*$')
 
     def parse(self, text:str, pdata:dict):
         h=InvoiceHeader(); h.provider_key=pdata['key']; h.provider_id=pdata['id']; h.provider_name=pdata['name']
@@ -57,11 +60,11 @@ class AgrivaldaniParser:
             # "FREEDOM 40 25 12 300 0.22 22.00"  /  "E. BLACK 50 25 1 25 0.30 15.00"
             # "HIGH & MAGIC 50 25 1 25 0.34 8.50"
             pm=re.search(
-                r'^([A-Z][A-Z\s.\-/&]{1,28}?)\s+'  # variedad (admite puntos, espacios, &, -, /)
+                r'^(' + self._V + self._VC + r'{1,28}?)\s+'  # variedad (admite acentos/ñ)
                 r'(\d{2})\s+(\d{2})\s+'              # CM  SPB
                 r'\d*\s*(\d+)\s+'                    # (bunches?)  stems
                 r'([\d.]+)\s+([\d.]+)',               # price  total
-                clean, re.I
+                clean
             )
             if pm:
                 candidate=pm.group(1).strip()
@@ -84,10 +87,10 @@ class AgrivaldaniParser:
             # -- Patron B: variedad + bunches + stems + price + total (sin CM/SPB) --
             # "M. DARK BLUE  1  25  0.90  22.50"  -- hereda CM/SPB del contexto
             pm2=re.search(
-                r'^([A-Z][A-Z\s.\-/&]{1,28}?)\s+'   # variedad
+                r'^(' + self._V + self._VC + r'{1,28}?)\s+'  # variedad (admite acentos/ñ)
                 r'(\d{1,3})\s+(\d{1,3})\s+'     # bunches  stems
                 r'([\d.]+)\s+([\d.]+)',           # price  total
-                clean, re.I
+                clean
             )
             if pm2 and current_sz:
                 candidate=pm2.group(1).strip()

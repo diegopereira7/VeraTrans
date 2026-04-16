@@ -139,7 +139,8 @@ class AutoParser:
             header.hawb = m.group(1)
         m = _TOTAL_RE.search(text)
         if m:
-            header.total = _num(m.group(1))
+            # Total Invoice usa formato USD (punto decimal), no europeo
+            header.total = float(m.group(1).replace(',', ''))
 
         lines: list[InvoiceLine] = []
         last_box_type = ''

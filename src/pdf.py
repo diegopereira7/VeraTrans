@@ -143,6 +143,12 @@ def extract_tables(path: str) -> list[list[list[str]]]:
 def detect_provider(path: str) -> Optional[dict]:
     """Detecta el proveedor de un PDF por patrones en su contenido.
 
+    Busca todos los patterns de PROVIDERS y devuelve el proveedor cuyo
+    pattern aparece **más temprano** en el texto (la cabecera del PDF
+    siempre contiene el nombre del emisor, los patterns de otros
+    proveedores pueden aparecer más abajo como referencia al cliente o
+    a una orden interna).
+
     Args:
         path: Ruta al fichero PDF.
 
@@ -155,10 +161,19 @@ def detect_provider(path: str) -> Optional[dict]:
         logger.warning("No se pudo extraer texto de %s: %s", path, e)
         return None
     text_lower = text.lower()
+    best_pos = len(text_lower) + 1
+    best_key = None
+    best_data = None
     for pkey, pdata in PROVIDERS.items():
         for pat in pdata['patterns']:
-            if pat.lower() in text_lower:
-                return {**pdata, 'key': pkey, 'text': text}
+            idx = text_lower.find(pat.lower())
+            if idx != -1 and idx < best_pos:
+                best_pos = idx
+                best_key = pkey
+                best_data = pdata
+                break  # un match por proveedor es suficiente
+    if best_key is not None:
+        return {**best_data, 'key': best_key, 'text': text}
     return None
 
 

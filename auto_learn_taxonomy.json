@@ -1,0 +1,2920 @@
+[
+  {
+    "folder": "PONDEROSA",
+    "verdict": "NO_DETECTADO",
+    "dominant_category": "E7_SYNONYM_DRIFT",
+    "severity": "HIGH",
+    "categories": [
+      {
+        "category": "E7_SYNONYM_DRIFT",
+        "severity": "HIGH",
+        "reason": "191/198 líneas con sinónimo débil (96% del total)",
+        "impact": 191
+      },
+      {
+        "category": "E6_MATCH_WRONG",
+        "severity": "HIGH",
+        "reason": "6 líneas con señales de match incorrecto (foreign_brand=6)",
+        "impact": 6
+      },
+      {
+        "category": "E8_AMBIGUOUS_LINK",
+        "severity": "HIGH",
+        "reason": "32 líneas ambiguas (ambiguous_match=32, tie_top2_margin=26, low_evidence=6)",
+        "impact": 32
+      },
+      {
+        "category": "E1_PARSE_ZERO",
+        "severity": "MEDIUM",
+        "reason": "1/5 muestras sin ninguna línea parseada",
+        "impact": 1
+      }
+    ],
+    "priority_score": 77.3,
+    "total_lines": 198,
+    "autoapprove_rate": 0.838
+  },
+  {
+    "folder": "LA ESTACION",
+    "verdict": "OK",
+    "dominant_category": "E7_SYNONYM_DRIFT",
+    "severity": "HIGH",
+    "categories": [
+      {
+        "category": "E7_SYNONYM_DRIFT",
+        "severity": "HIGH",
+        "reason": "189/205 líneas con sinónimo débil (92% del total)",
+        "impact": 189
+      },
+      {
+        "category": "E8_AMBIGUOUS_LINK",
+        "severity": "HIGH",
+        "reason": "57 líneas ambiguas (ambiguous_match=57, tie_top2_margin=55, low_evidence=2)",
+        "impact": 57
+      },
+      {
+        "category": "E6_MATCH_WRONG",
+        "severity": "HIGH",
+        "reason": "12 líneas con señales de match incorrecto (foreign_brand=7, variety_no_overlap=5)",
+        "impact": 12
+      }
+    ],
+    "priority_score": 76.6,
+    "total_lines": 205,
+    "autoapprove_rate": 0.71
+  },
+  {
+    "folder": "LATIN FLOWERS",
+    "verdict": "NO_PARSEA",
+    "dominant_category": "E8_AMBIGUOUS_LINK",
+    "severity": "HIGH",
+    "categories": [
+      {
+        "category": "E8_AMBIGUOUS_LINK",
+        "severity": "HIGH",
+        "reason": "91 líneas ambiguas (ambiguous_match=91, tie_top2_margin=91)",
+        "impact": 91
+      },
+      {
+        "category": "E3_LAYOUT_COORDS",
+        "severity": "HIGH",
+        "reason": "2 muestras nativas sin parsear — probable problema de layout/columnas",
+        "impact": 2
+      },
+      {
+        "category": "E1_PARSE_ZERO",
+        "severity": "MEDIUM",
+        "reason": "2/5 muestras sin ninguna línea parseada",
+        "impact": 2
+      }
+    ],
+    "priority_score": 57.5,
+    "total_lines": 91,
+    "autoapprove_rate": 0.0
+  },
+  {
+    "folder": "COLIBRI",
+    "verdict": "TOTALES_MAL",
+    "dominant_category": "E6_MATCH_WRONG",
+    "severity": "HIGH",
+    "categories": [
+      {
+        "category": "E6_MATCH_WRONG",
+        "severity": "HIGH",
+        "reason": "55 líneas con señales de match incorrecto (variety_no_overlap=55)",
+        "impact": 55
+      },
+      {
+        "category": "E7_SYNONYM_DRIFT",
+        "severity": "HIGH",
+        "reason": "61/80 líneas con sinónimo débil (76% del total)",
+        "impact": 61
+      },
+      {
+        "category": "E8_AMBIGUOUS_LINK",
+        "severity": "HIGH",
+        "reason": "47 líneas ambiguas (ambiguous_match=47, tie_top2_margin=1, low_evidence=46)",
+        "impact": 47
+      },
+      {
+        "category": "E9_VALIDATION_FAIL",
+        "severity": "HIGH",
+        "reason": "10 líneas con errores de validación cruzada",
+        "impact": 10
+      },
+      {
+        "category": "E5_TOTAL_HEADER",
+        "severity": "MEDIUM",
+        "reason": "5/5 muestras parseadas con header.total incorrecto",
+        "impact": 5
+      }
+    ],
+    "priority_score": 54.5,
+    "total_lines": 80,
+    "autoapprove_rate": 0.197
+  },
+  {
+    "folder": "MULTIFLORA",
+    "verdict": "TOTALES_MAL",
+    "dominant_category": "E6_MATCH_WRONG",
+    "severity": "HIGH",
+    "categories": [
+      {
+        "category": "E6_MATCH_WRONG",
+        "severity": "HIGH",
+        "reason": "35 líneas con señales de match incorrecto (foreign_brand=18, variety_no_overlap=17)",
+        "impact": 35
+      },
+      {
+        "category": "E9_VALIDATION_FAIL",
+        "severity": "HIGH",
+        "reason": "26 líneas con errores de validación cruzada",
+        "impact": 26
+      },
+      {
+        "category": "E2_PARSE_PARTIAL",
+        "severity": "LOW",
+        "reason": "1 líneas rescatadas vs 26 parseadas (ratio 4%)",
+        "impact": 1
+      },
+      {
+        "category": "E5_TOTAL_HEADER",
+        "severity": "MEDIUM",
+        "reason": "4/5 muestras parseadas con header.total incorrecto",
+        "impact": 4
+      }
+    ],
+    "priority_score": 44.5,
+    "total_lines": 26,
+    "autoapprove_rate": 0.0
+  },
+  {
+    "folder": "VALTHOMIG",
+    "verdict": "NO_PARSEA",
+    "dominant_category": "E7_SYNONYM_DRIFT",
+    "severity": "HIGH",
+    "categories": [
+      {
+        "category": "E7_SYNONYM_DRIFT",
+        "severity": "HIGH",
+        "reason": "53/63 líneas con sinónimo débil (84% del total)",
+        "impact": 53
+      },
+      {
+        "category": "E6_MATCH_WRONG",
+        "severity": "HIGH",
+        "reason": "19 líneas con señales de match incorrecto (foreign_brand=16, variety_no_overlap=3)",
+        "impact": 19
+      },
+      {
+        "category": "E3_LAYOUT_COORDS",
+        "severity": "HIGH",
+        "reason": "2 muestras nativas sin parsear — probable problema de layout/columnas",
+        "impact": 2
+      },
+      {
+        "category": "E1_PARSE_ZERO",
+        "severity": "MEDIUM",
+        "reason": "2/5 muestras sin ninguna línea parseada",
+        "impact": 2
+      },
+      {
+        "category": "E8_AMBIGUOUS_LINK",
+        "severity": "HIGH",
+        "reason": "7 líneas ambiguas (ambiguous_match=7, tie_top2_margin=7)",
+        "impact": 7
+      },
+      {
+        "category": "E10_PROVIDER_COLLISION",
+        "severity": "LOW",
+        "reason": "Comparte fmt=\"cantiza\" con cantiza, valtho",
+        "impact": 0
+      }
+    ],
+    "priority_score": 41.5,
+    "total_lines": 63,
+    "autoapprove_rate": 0.667
+  },
+  {
+    "folder": "ROSALEDA",
+    "verdict": "NO_PARSEA",
+    "dominant_category": "E7_SYNONYM_DRIFT",
+    "severity": "HIGH",
+    "categories": [
+      {
+        "category": "E7_SYNONYM_DRIFT",
+        "severity": "HIGH",
+        "reason": "87/93 líneas con sinónimo débil (94% del total)",
+        "impact": 87
+      },
+      {
+        "category": "E6_MATCH_WRONG",
+        "severity": "HIGH",
+        "reason": "13 líneas con señales de match incorrecto (foreign_brand=12, variety_no_overlap=1)",
+        "impact": 13
+      },
+      {
+        "category": "E3_LAYOUT_COORDS",
+        "severity": "HIGH",
+        "reason": "2 muestras nativas sin parsear — probable problema de layout/columnas",
+        "impact": 2
+      },
+      {
+        "category": "E1_PARSE_ZERO",
+        "severity": "MEDIUM",
+        "reason": "2/5 muestras sin ninguna línea parseada",
+        "impact": 2
+      },
+      {
+        "category": "E8_AMBIGUOUS_LINK",
+        "severity": "HIGH",
+        "reason": "6 líneas ambiguas (ambiguous_match=6, tie_top2_margin=4, low_evidence=2)",
+        "impact": 6
+      },
+      {
+        "category": "E9_VALIDATION_FAIL",
+        "severity": "HIGH",
+        "reason": "5 líneas con errores de validación cruzada",
+        "impact": 5
+      },
+      {
+        "category": "E5_TOTAL_HEADER",
+        "severity": "LOW",
+        "reason": "1/3 muestras parseadas con header.total incorrecto",
+        "impact": 1
+      },
+      {
+        "category": "E10_PROVIDER_COLLISION",
+        "severity": "LOW",
+        "reason": "Comparte fmt=\"rosaleda\" con hacienda, rosadex",
+        "impact": 0
+      }
+    ],
+    "priority_score": 40.9,
+    "total_lines": 93,
+    "autoapprove_rate": 0.828
+  },
+  {
+    "folder": "CANTIZA",
+    "verdict": "NO_PARSEA",
+    "dominant_category": "E7_SYNONYM_DRIFT",
+    "severity": "HIGH",
+    "categories": [
+      {
+        "category": "E7_SYNONYM_DRIFT",
+        "severity": "HIGH",
+        "reason": "81/96 líneas con sinónimo débil (84% del total)",
+        "impact": 81
+      },
+      {
+        "category": "E6_MATCH_WRONG",
+        "severity": "HIGH",
+        "reason": "18 líneas con señales de match incorrecto (foreign_brand=15, variety_no_overlap=3)",
+        "impact": 18
+      },
+      {
+        "category": "E1_PARSE_ZERO",
+        "severity": "MEDIUM",
+        "reason": "2/5 muestras sin ninguna línea parseada",
+        "impact": 2
+      },
+      {
+        "category": "E8_AMBIGUOUS_LINK",
+        "severity": "HIGH",
+        "reason": "16 líneas ambiguas (ambiguous_match=16, tie_top2_margin=14, low_evidence=2)",
+        "impact": 16
+      },
+      {
+        "category": "E3_LAYOUT_COORDS",
+        "severity": "MEDIUM",
+        "reason": "1 muestras nativas sin parsear — probable problema de layout/columnas",
+        "impact": 1
+      },
+      {
+        "category": "E2_PARSE_PARTIAL",
+        "severity": "LOW",
+        "reason": "2 líneas rescatadas vs 96 parseadas (ratio 2%)",
+        "impact": 2
+      },
+      {
+        "category": "E5_TOTAL_HEADER",
+        "severity": "LOW",
+        "reason": "1/3 muestras parseadas con header.total incorrecto",
+        "impact": 1
+      },
+      {
+        "category": "E10_PROVIDER_COLLISION",
+        "severity": "LOW",
+        "reason": "Comparte fmt=\"cantiza\" con valtho",
+        "impact": 0
+      }
+    ],
+    "priority_score": 38.8,
+    "total_lines": 96,
+    "autoapprove_rate": 0.716
+  },
+  {
+    "folder": "APOSENTOS",
+    "verdict": "NO_PARSEA",
+    "dominant_category": "E6_MATCH_WRONG",
+    "severity": "HIGH",
+    "categories": [
+      {
+        "category": "E6_MATCH_WRONG",
+        "severity": "HIGH",
+        "reason": "21 líneas con señales de match incorrecto (variety_no_overlap=21)",
+        "impact": 21
+      },
+      {
+        "category": "E8_AMBIGUOUS_LINK",
+        "severity": "HIGH",
+        "reason": "20 líneas ambiguas (ambiguous_match=20, low_evidence=20)",
+        "impact": 20
+      },
+      {
+        "category": "E1_PARSE_ZERO",
+        "severity": "MEDIUM",
+        "reason": "2/5 muestras sin ninguna línea parseada",
+        "impact": 2
+      },
+      {
+        "category": "E2_PARSE_PARTIAL",
+        "severity": "MEDIUM",
+        "reason": "8 líneas rescatadas vs 25 parseadas (ratio 24%)",
+        "impact": 8
+      },
+      {
+        "category": "E7_SYNONYM_DRIFT",
+        "severity": "MEDIUM",
+        "reason": "5/25 líneas con sinónimo débil (20% del total)",
+        "impact": 5
+      }
+    ],
+    "priority_score": 37.5,
+    "total_lines": 25,
+    "autoapprove_rate": 0.16
+  },
+  {
+    "folder": "FLORSANI",
+    "verdict": "NO_PARSEA",
+    "dominant_category": "E6_MATCH_WRONG",
+    "severity": "HIGH",
+    "categories": [
+      {
+        "category": "E6_MATCH_WRONG",
+        "severity": "HIGH",
+        "reason": "20 líneas con señales de match incorrecto (foreign_brand=20)",
+        "impact": 20
+      },
+      {
+        "category": "E8_AMBIGUOUS_LINK",
+        "severity": "HIGH",
+        "reason": "20 líneas ambiguas (ambiguous_match=20, low_evidence=20)",
+        "impact": 20
+      },
+      {
+        "category": "E1_PARSE_ZERO",
+        "severity": "MEDIUM",
+        "reason": "1/5 muestras sin ninguna línea parseada",
+        "impact": 1
+      },
+      {
+        "category": "E3_LAYOUT_COORDS",
+        "severity": "MEDIUM",
+        "reason": "1 muestras nativas sin parsear — probable problema de layout/columnas",
+        "impact": 1
+      },
+      {
+        "category": "E2_PARSE_PARTIAL",
+        "severity": "LOW",
+        "reason": "1 líneas rescatadas vs 20 parseadas (ratio 5%)",
+        "impact": 1
+      },
+      {
+        "category": "E5_TOTAL_HEADER",
+        "severity": "MEDIUM",
+        "reason": "4/4 muestras parseadas con header.total incorrecto",
+        "impact": 4
+      }
+    ],
+    "priority_score": 37.0,
+    "total_lines": 20,
+    "autoapprove_rate": 0.0
+  },
+  {
+    "folder": "OLIMPO",
+    "verdict": "TOTALES_MAL",
+    "dominant_category": "E7_SYNONYM_DRIFT",
+    "severity": "HIGH",
+    "categories": [
+      {
+        "category": "E7_SYNONYM_DRIFT",
+        "severity": "HIGH",
+        "reason": "44/51 líneas con sinónimo débil (86% del total)",
+        "impact": 44
+      },
+      {
+        "category": "E6_MATCH_WRONG",
+        "severity": "HIGH",
+        "reason": "15 líneas con señales de match incorrecto (foreign_brand=2, variety_no_overlap=13)",
+        "impact": 15
+      },
+      {
+        "category": "E8_AMBIGUOUS_LINK",
+        "severity": "HIGH",
+        "reason": "19 líneas ambiguas (ambiguous_match=19, tie_top2_margin=8, low_evidence=11)",
+        "impact": 19
+      },
+      {
+        "category": "E9_VALIDATION_FAIL",
+        "severity": "HIGH",
+        "reason": "19 líneas con errores de validación cruzada",
+        "impact": 19
+      },
+      {
+        "category": "E5_TOTAL_HEADER",
+        "severity": "MEDIUM",
+        "reason": "3/5 muestras parseadas con header.total incorrecto",
+        "impact": 3
+      },
+      {
+        "category": "E10_PROVIDER_COLLISION",
+        "severity": "LOW",
+        "reason": "Comparte fmt=\"alegria\" con alegria, fairis, latina, ceres, laila, tierraverde",
+        "impact": 0
+      }
+    ],
+    "priority_score": 37.0,
+    "total_lines": 51,
+    "autoapprove_rate": 0.34
+  },
+  {
+    "folder": "LUXUS",
+    "verdict": "TOTALES_MAL",
+    "dominant_category": "E7_SYNONYM_DRIFT",
+    "severity": "HIGH",
+    "categories": [
+      {
+        "category": "E7_SYNONYM_DRIFT",
+        "severity": "HIGH",
+        "reason": "43/53 líneas con sinónimo débil (81% del total)",
+        "impact": 43
+      },
+      {
+        "category": "E6_MATCH_WRONG",
+        "severity": "HIGH",
+        "reason": "16 líneas con señales de match incorrecto (foreign_brand=14, variety_no_overlap=2)",
+        "impact": 16
+      },
+      {
+        "category": "E8_AMBIGUOUS_LINK",
+        "severity": "HIGH",
+        "reason": "10 líneas ambiguas (ambiguous_match=10, tie_top2_margin=6, low_evidence=4)",
+        "impact": 10
+      },
+      {
+        "category": "E5_TOTAL_HEADER",
+        "severity": "MEDIUM",
+        "reason": "5/5 muestras parseadas con header.total incorrecto",
+        "impact": 5
+      },
+      {
+        "category": "E10_PROVIDER_COLLISION",
+        "severity": "LOW",
+        "reason": "Comparte fmt=\"agrivaldani\" con agrivaldani",
+        "impact": 0
+      }
+    ],
+    "priority_score": 36.5,
+    "total_lines": 53,
+    "autoapprove_rate": 0.585
+  },
+  {
+    "folder": "TIERRA VERDE",
+    "verdict": "OK",
+    "dominant_category": "E7_SYNONYM_DRIFT",
+    "severity": "HIGH",
+    "categories": [
+      {
+        "category": "E7_SYNONYM_DRIFT",
+        "severity": "HIGH",
+        "reason": "42/66 líneas con sinónimo débil (64% del total)",
+        "impact": 42
+      },
+      {
+        "category": "E6_MATCH_WRONG",
+        "severity": "HIGH",
+        "reason": "16 líneas con señales de match incorrecto (foreign_brand=3, variety_no_overlap=13)",
+        "impact": 16
+      },
+      {
+        "category": "E8_AMBIGUOUS_LINK",
+        "severity": "HIGH",
+        "reason": "23 líneas ambiguas (ambiguous_match=23, tie_top2_margin=10, low_evidence=13)",
+        "impact": 23
+      },
+      {
+        "category": "E10_PROVIDER_COLLISION",
+        "severity": "LOW",
+        "reason": "Comparte fmt=\"alegria\" con alegria, olimpo, fairis, latina, ceres, laila, tierraverde",
+        "impact": 0
+      }
+    ],
+    "priority_score": 36.0,
+    "total_lines": 66,
+    "autoapprove_rate": 0.631
+  },
+  {
+    "folder": "TURFLOR",
+    "verdict": "TOTALES_MAL",
+    "dominant_category": "E6_MATCH_WRONG",
+    "severity": "HIGH",
+    "categories": [
+      {
+        "category": "E6_MATCH_WRONG",
+        "severity": "HIGH",
+        "reason": "17 líneas con señales de match incorrecto (variety_no_overlap=17)",
+        "impact": 17
+      },
+      {
+        "category": "E2_PARSE_PARTIAL",
+        "severity": "MEDIUM",
+        "reason": "7 líneas rescatadas vs 32 parseadas (ratio 18%)",
+        "impact": 7
+      },
+      {
+        "category": "E8_AMBIGUOUS_LINK",
+        "severity": "HIGH",
+        "reason": "8 líneas ambiguas (ambiguous_match=8, low_evidence=8)",
+        "impact": 8
+      },
+      {
+        "category": "E7_SYNONYM_DRIFT",
+        "severity": "MEDIUM",
+        "reason": "7/32 líneas con sinónimo débil (22% del total)",
+        "impact": 7
+      },
+      {
+        "category": "E5_TOTAL_HEADER",
+        "severity": "MEDIUM",
+        "reason": "3/5 muestras parseadas con header.total incorrecto",
+        "impact": 3
+      }
+    ],
+    "priority_score": 35.5,
+    "total_lines": 32,
+    "autoapprove_rate": 0.467
+  },
+  {
+    "folder": "DAFLOR",
+    "verdict": "NO_PARSEA",
+    "dominant_category": "E6_MATCH_WRONG",
+    "severity": "HIGH",
+    "categories": [
+      {
+        "category": "E6_MATCH_WRONG",
+        "severity": "HIGH",
+        "reason": "15 líneas con señales de match incorrecto (foreign_brand=9, variety_no_overlap=6)",
+        "impact": 15
+      },
+      {
+        "category": "E2_PARSE_PARTIAL",
+        "severity": "HIGH",
+        "reason": "15 líneas rescatadas vs 24 parseadas (ratio 38%)",
+        "impact": 15
+      },
+      {
+        "category": "E1_PARSE_ZERO",
+        "severity": "MEDIUM",
+        "reason": "2/5 muestras sin ninguna línea parseada",
+        "impact": 2
+      },
+      {
+        "category": "E3_LAYOUT_COORDS",
+        "severity": "MEDIUM",
+        "reason": "1 muestras nativas sin parsear — probable problema de layout/columnas",
+        "impact": 1
+      },
+      {
+        "category": "E8_AMBIGUOUS_LINK",
+        "severity": "HIGH",
+        "reason": "7 líneas ambiguas (ambiguous_match=7, tie_top2_margin=2, low_evidence=5)",
+        "impact": 7
+      },
+      {
+        "category": "E5_TOTAL_HEADER",
+        "severity": "MEDIUM",
+        "reason": "3/3 muestras parseadas con header.total incorrecto",
+        "impact": 3
+      }
+    ],
+    "priority_score": 34.5,
+    "total_lines": 24,
+    "autoapprove_rate": 0.0
+  },
+  {
+    "folder": "MILAGRO",
+    "verdict": "NO_PARSEA",
+    "dominant_category": "E7_SYNONYM_DRIFT",
+    "severity": "HIGH",
+    "categories": [
+      {
+        "category": "E7_SYNONYM_DRIFT",
+        "severity": "HIGH",
+        "reason": "39/62 líneas con sinónimo débil (63% del total)",
+        "impact": 39
+      },
+      {
+        "category": "E6_MATCH_WRONG",
+        "severity": "HIGH",
+        "reason": "12 líneas con señales de match incorrecto (foreign_brand=1, variety_no_overlap=11)",
+        "impact": 12
+      },
+      {
+        "category": "E8_AMBIGUOUS_LINK",
+        "severity": "HIGH",
+        "reason": "23 líneas ambiguas (ambiguous_match=23, tie_top2_margin=11, low_evidence=12)",
+        "impact": 23
+      },
+      {
+        "category": "E1_PARSE_ZERO",
+        "severity": "MEDIUM",
+        "reason": "1/5 muestras sin ninguna línea parseada",
+        "impact": 1
+      },
+      {
+        "category": "E3_LAYOUT_COORDS",
+        "severity": "MEDIUM",
+        "reason": "1 muestras nativas sin parsear — probable problema de layout/columnas",
+        "impact": 1
+      },
+      {
+        "category": "E5_TOTAL_HEADER",
+        "severity": "MEDIUM",
+        "reason": "3/4 muestras parseadas con header.total incorrecto",
+        "impact": 3
+      }
+    ],
+    "priority_score": 34.5,
+    "total_lines": 62,
+    "autoapprove_rate": 0.629
+  },
+  {
+    "folder": "EL CAMPANARIO",
+    "verdict": "TOTALES_MAL",
+    "dominant_category": "E6_MATCH_WRONG",
+    "severity": "HIGH",
+    "categories": [
+      {
+        "category": "E6_MATCH_WRONG",
+        "severity": "HIGH",
+        "reason": "12 líneas con señales de match incorrecto (foreign_brand=9, variety_no_overlap=3)",
+        "impact": 12
+      },
+      {
+        "category": "E7_SYNONYM_DRIFT",
+        "severity": "HIGH",
+        "reason": "19/49 líneas con sinónimo débil (39% del total)",
+        "impact": 19
+      },
+      {
+        "category": "E8_AMBIGUOUS_LINK",
+        "severity": "HIGH",
+        "reason": "11 líneas ambiguas (ambiguous_match=11, tie_top2_margin=8, low_evidence=3)",
+        "impact": 11
+      },
+      {
+        "category": "E5_TOTAL_HEADER",
+        "severity": "MEDIUM",
+        "reason": "5/5 muestras parseadas con header.total incorrecto",
+        "impact": 5
+      },
+      {
+        "category": "E10_PROVIDER_COLLISION",
+        "severity": "LOW",
+        "reason": "Comparte fmt=\"auto_campanario\" con campanario, greengrowers",
+        "impact": 0
+      }
+    ],
+    "priority_score": 33.0,
+    "total_lines": 49,
+    "autoapprove_rate": 0.633
+  },
+  {
+    "folder": "NATUFLOR",
+    "verdict": "OK",
+    "dominant_category": "E6_MATCH_WRONG",
+    "severity": "HIGH",
+    "categories": [
+      {
+        "category": "E6_MATCH_WRONG",
+        "severity": "HIGH",
+        "reason": "12 líneas con señales de match incorrecto (foreign_brand=5, variety_no_overlap=7)",
+        "impact": 12
+      },
+      {
+        "category": "E7_SYNONYM_DRIFT",
+        "severity": "HIGH",
+        "reason": "20/41 líneas con sinónimo débil (49% del total)",
+        "impact": 20
+      },
+      {
+        "category": "E8_AMBIGUOUS_LINK",
+        "severity": "HIGH",
+        "reason": "24 líneas ambiguas (ambiguous_match=24, tie_top2_margin=17, low_evidence=10)",
+        "impact": 24
+      }
+    ],
+    "priority_score": 33.0,
+    "total_lines": 41,
+    "autoapprove_rate": 0.273
+  },
+  {
+    "folder": "FIORENTINA",
+    "verdict": "OK",
+    "dominant_category": "E6_MATCH_WRONG",
+    "severity": "HIGH",
+    "categories": [
+      {
+        "category": "E6_MATCH_WRONG",
+        "severity": "HIGH",
+        "reason": "10 líneas con señales de match incorrecto (foreign_brand=4, variety_no_overlap=6)",
+        "impact": 10
+      },
+      {
+        "category": "E7_SYNONYM_DRIFT",
+        "severity": "HIGH",
+        "reason": "32/48 líneas con sinónimo débil (67% del total)",
+        "impact": 32
+      },
+      {
+        "category": "E8_AMBIGUOUS_LINK",
+        "severity": "HIGH",
+        "reason": "16 líneas ambiguas (ambiguous_match=16, tie_top2_margin=14, low_evidence=2)",
+        "impact": 16
+      }
+    ],
+    "priority_score": 32.0,
+    "total_lines": 48,
+    "autoapprove_rate": 0.5
+  },
+  {
+    "folder": "ROSELY",
+    "verdict": "TOTALES_MAL",
+    "dominant_category": "E7_SYNONYM_DRIFT",
+    "severity": "HIGH",
+    "categories": [
+      {
+        "category": "E7_SYNONYM_DRIFT",
+        "severity": "HIGH",
+        "reason": "34/50 líneas con sinónimo débil (68% del total)",
+        "impact": 34
+      },
+      {
+        "category": "E8_AMBIGUOUS_LINK",
+        "severity": "HIGH",
+        "reason": "15 líneas ambiguas (ambiguous_match=15, tie_top2_margin=15, low_evidence=1)",
+        "impact": 15
+      },
+      {
+        "category": "E5_TOTAL_HEADER",
+        "severity": "MEDIUM",
+        "reason": "5/5 muestras parseadas con header.total incorrecto",
+        "impact": 5
+      }
+    ],
+    "priority_score": 32.0,
+    "total_lines": 50,
+    "autoapprove_rate": 0.694
+  },
+  {
+    "folder": "SAYONARA",
+    "verdict": "NO_PARSEA",
+    "dominant_category": "E9_VALIDATION_FAIL",
+    "severity": "HIGH",
+    "categories": [
+      {
+        "category": "E9_VALIDATION_FAIL",
+        "severity": "HIGH",
+        "reason": "46 líneas con errores de validación cruzada",
+        "impact": 46
+      },
+      {
+        "category": "E8_AMBIGUOUS_LINK",
+        "severity": "HIGH",
+        "reason": "38 líneas ambiguas (ambiguous_match=38, tie_top2_margin=38)",
+        "impact": 38
+      },
+      {
+        "category": "E7_SYNONYM_DRIFT",
+        "severity": "HIGH",
+        "reason": "27/46 líneas con sinónimo débil (59% del total)",
+        "impact": 27
+      },
+      {
+        "category": "E1_PARSE_ZERO",
+        "severity": "MEDIUM",
+        "reason": "2/5 muestras sin ninguna línea parseada",
+        "impact": 2
+      },
+      {
+        "category": "E3_LAYOUT_COORDS",
+        "severity": "MEDIUM",
+        "reason": "1 muestras nativas sin parsear — probable problema de layout/columnas",
+        "impact": 1
+      },
+      {
+        "category": "E5_TOTAL_HEADER",
+        "severity": "MEDIUM",
+        "reason": "3/3 muestras parseadas con header.total incorrecto",
+        "impact": 3
+      }
+    ],
+    "priority_score": 32.0,
+    "total_lines": 46,
+    "autoapprove_rate": 0.0
+  },
+  {
+    "folder": "VALLE VERDE",
+    "verdict": "TOTALES_MAL",
+    "dominant_category": "E6_MATCH_WRONG",
+    "severity": "HIGH",
+    "categories": [
+      {
+        "category": "E6_MATCH_WRONG",
+        "severity": "HIGH",
+        "reason": "10 líneas con señales de match incorrecto (foreign_brand=10)",
+        "impact": 10
+      },
+      {
+        "category": "E7_SYNONYM_DRIFT",
+        "severity": "HIGH",
+        "reason": "30/33 líneas con sinónimo débil (91% del total)",
+        "impact": 30
+      },
+      {
+        "category": "E8_AMBIGUOUS_LINK",
+        "severity": "MEDIUM",
+        "reason": "3 líneas ambiguas (ambiguous_match=3, tie_top2_margin=3)",
+        "impact": 3
+      },
+      {
+        "category": "E5_TOTAL_HEADER",
+        "severity": "MEDIUM",
+        "reason": "5/5 muestras parseadas con header.total incorrecto",
+        "impact": 5
+      },
+      {
+        "category": "E10_PROVIDER_COLLISION",
+        "severity": "LOW",
+        "reason": "Comparte fmt=\"valleverde\" con valleverde, solpacific",
+        "impact": 0
+      }
+    ],
+    "priority_score": 32.0,
+    "total_lines": 33,
+    "autoapprove_rate": 0.606
+  },
+  {
+    "folder": "VUELVEN",
+    "verdict": "OK",
+    "dominant_category": "E6_MATCH_WRONG",
+    "severity": "HIGH",
+    "categories": [
+      {
+        "category": "E6_MATCH_WRONG",
+        "severity": "HIGH",
+        "reason": "10 líneas con señales de match incorrecto (foreign_brand=4, variety_no_overlap=6)",
+        "impact": 10
+      },
+      {
+        "category": "E2_PARSE_PARTIAL",
+        "severity": "HIGH",
+        "reason": "15 líneas rescatadas vs 24 parseadas (ratio 38%)",
+        "impact": 15
+      },
+      {
+        "category": "E8_AMBIGUOUS_LINK",
+        "severity": "HIGH",
+        "reason": "16 líneas ambiguas (ambiguous_match=16, tie_top2_margin=8, low_evidence=8)",
+        "impact": 16
+      },
+      {
+        "category": "E7_SYNONYM_DRIFT",
+        "severity": "MEDIUM",
+        "reason": "6/24 líneas con sinónimo débil (25% del total)",
+        "impact": 6
+      },
+      {
+        "category": "E5_TOTAL_HEADER",
+        "severity": "MEDIUM",
+        "reason": "2/5 muestras parseadas con header.total incorrecto",
+        "impact": 2
+      },
+      {
+        "category": "E10_PROVIDER_COLLISION",
+        "severity": "LOW",
+        "reason": "Comparte fmt=\"colfarm\" con circasia, milonga",
+        "impact": 0
+      }
+    ],
+    "priority_score": 32.0,
+    "total_lines": 24,
+    "autoapprove_rate": 0.273
+  },
+  {
+    "folder": "MOUNTAIN",
+    "verdict": "NO_PARSEA",
+    "dominant_category": "E1_PARSE_ZERO",
+    "severity": "HIGH",
+    "categories": [
+      {
+        "category": "E1_PARSE_ZERO",
+        "severity": "HIGH",
+        "reason": "3/5 muestras sin ninguna línea parseada",
+        "impact": 3
+      },
+      {
+        "category": "E3_LAYOUT_COORDS",
+        "severity": "HIGH",
+        "reason": "3 muestras nativas sin parsear — probable problema de layout/columnas",
+        "impact": 3
+      },
+      {
+        "category": "E2_PARSE_PARTIAL",
+        "severity": "HIGH",
+        "reason": "3 líneas rescatadas vs 2 parseadas (ratio 60%)",
+        "impact": 3
+      }
+    ],
+    "priority_score": 31.5,
+    "total_lines": 2,
+    "autoapprove_rate": 0.5
+  },
+  {
+    "folder": "MALIMA",
+    "verdict": "NO_PARSEA",
+    "dominant_category": "E6_MATCH_WRONG",
+    "severity": "HIGH",
+    "categories": [
+      {
+        "category": "E6_MATCH_WRONG",
+        "severity": "HIGH",
+        "reason": "8 líneas con señales de match incorrecto (foreign_brand=8)",
+        "impact": 8
+      },
+      {
+        "category": "E1_PARSE_ZERO",
+        "severity": "MEDIUM",
+        "reason": "1/5 muestras sin ninguna línea parseada",
+        "impact": 1
+      },
+      {
+        "category": "E3_LAYOUT_COORDS",
+        "severity": "MEDIUM",
+        "reason": "1 muestras nativas sin parsear — probable problema de layout/columnas",
+        "impact": 1
+      },
+      {
+        "category": "E8_AMBIGUOUS_LINK",
+        "severity": "HIGH",
+        "reason": "8 líneas ambiguas (ambiguous_match=8, low_evidence=8)",
+        "impact": 8
+      },
+      {
+        "category": "E5_TOTAL_HEADER",
+        "severity": "MEDIUM",
+        "reason": "2/4 muestras parseadas con header.total incorrecto",
+        "impact": 2
+      }
+    ],
+    "priority_score": 31.0,
+    "total_lines": 8,
+    "autoapprove_rate": 0.0
+  },
+  {
+    "folder": "CEAN GLOBAL",
+    "verdict": "NO_PARSEA",
+    "dominant_category": "E6_MATCH_WRONG",
+    "severity": "HIGH",
+    "categories": [
+      {
+        "category": "E6_MATCH_WRONG",
+        "severity": "HIGH",
+        "reason": "7 líneas con señales de match incorrecto (foreign_brand=4, variety_no_overlap=3)",
+        "impact": 7
+      },
+      {
+        "category": "E1_PARSE_ZERO",
+        "severity": "MEDIUM",
+        "reason": "1/5 muestras sin ninguna línea parseada",
+        "impact": 1
+      },
+      {
+        "category": "E8_AMBIGUOUS_LINK",
+        "severity": "HIGH",
+        "reason": "6 líneas ambiguas (ambiguous_match=6, tie_top2_margin=6)",
+        "impact": 6
+      },
+      {
+        "category": "E7_SYNONYM_DRIFT",
+        "severity": "MEDIUM",
+        "reason": "6/19 líneas con sinónimo débil (32% del total)",
+        "impact": 6
+      },
+      {
+        "category": "E9_VALIDATION_FAIL",
+        "severity": "MEDIUM",
+        "reason": "4 líneas con errores de validación cruzada",
+        "impact": 4
+      },
+      {
+        "category": "E2_PARSE_PARTIAL",
+        "severity": "LOW",
+        "reason": "1 líneas rescatadas vs 19 parseadas (ratio 5%)",
+        "impact": 1
+      },
+      {
+        "category": "E5_TOTAL_HEADER",
+        "severity": "MEDIUM",
+        "reason": "3/4 muestras parseadas con header.total incorrecto",
+        "impact": 3
+      }
+    ],
+    "priority_score": 30.5,
+    "total_lines": 19,
+    "autoapprove_rate": 0.5
+  },
+  {
+    "folder": "ELITE",
+    "verdict": "NO_PARSEA",
+    "dominant_category": "E6_MATCH_WRONG",
+    "severity": "HIGH",
+    "categories": [
+      {
+        "category": "E6_MATCH_WRONG",
+        "severity": "HIGH",
+        "reason": "6 líneas con señales de match incorrecto (variety_no_overlap=6)",
+        "impact": 6
+      },
+      {
+        "category": "E1_PARSE_ZERO",
+        "severity": "MEDIUM",
+        "reason": "1/5 muestras sin ninguna línea parseada",
+        "impact": 1
+      },
+      {
+        "category": "E3_LAYOUT_COORDS",
+        "severity": "MEDIUM",
+        "reason": "1 muestras nativas sin parsear — probable problema de layout/columnas",
+        "impact": 1
+      },
+      {
+        "category": "E2_PARSE_PARTIAL",
+        "severity": "LOW",
+        "reason": "1 líneas rescatadas vs 44 parseadas (ratio 2%)",
+        "impact": 1
+      }
+    ],
+    "priority_score": 30.0,
+    "total_lines": 44,
+    "autoapprove_rate": 0.0
+  },
+  {
+    "folder": "LA HACIENDA",
+    "verdict": "TOTALES_MAL",
+    "dominant_category": "E6_MATCH_WRONG",
+    "severity": "HIGH",
+    "categories": [
+      {
+        "category": "E6_MATCH_WRONG",
+        "severity": "HIGH",
+        "reason": "6 líneas con señales de match incorrecto (foreign_brand=5, variety_no_overlap=1)",
+        "impact": 6
+      },
+      {
+        "category": "E7_SYNONYM_DRIFT",
+        "severity": "HIGH",
+        "reason": "29/33 líneas con sinónimo débil (88% del total)",
+        "impact": 29
+      },
+      {
+        "category": "E8_AMBIGUOUS_LINK",
+        "severity": "HIGH",
+        "reason": "5 líneas ambiguas (ambiguous_match=5, tie_top2_margin=4, low_evidence=1)",
+        "impact": 5
+      },
+      {
+        "category": "E9_VALIDATION_FAIL",
+        "severity": "MEDIUM",
+        "reason": "2 líneas con errores de validación cruzada",
+        "impact": 2
+      },
+      {
+        "category": "E5_TOTAL_HEADER",
+        "severity": "MEDIUM",
+        "reason": "4/5 muestras parseadas con header.total incorrecto",
+        "impact": 4
+      },
+      {
+        "category": "E10_PROVIDER_COLLISION",
+        "severity": "LOW",
+        "reason": "Comparte fmt=\"rosaleda\" con rosaleda, hacienda, rosadex",
+        "impact": 0
+      }
+    ],
+    "priority_score": 30.0,
+    "total_lines": 33,
+    "autoapprove_rate": 0.688
+  },
+  {
+    "folder": "SAN FRANCISCO",
+    "verdict": "OK",
+    "dominant_category": "E6_MATCH_WRONG",
+    "severity": "HIGH",
+    "categories": [
+      {
+        "category": "E6_MATCH_WRONG",
+        "severity": "HIGH",
+        "reason": "6 líneas con señales de match incorrecto (foreign_brand=4, variety_no_overlap=2)",
+        "impact": 6
+      },
+      {
+        "category": "E2_PARSE_PARTIAL",
+        "severity": "MEDIUM",
+        "reason": "1 líneas rescatadas vs 6 parseadas (ratio 14%)",
+        "impact": 1
+      },
+      {
+        "category": "E8_AMBIGUOUS_LINK",
+        "severity": "MEDIUM",
+        "reason": "4 líneas ambiguas (ambiguous_match=4, low_evidence=4)",
+        "impact": 4
+      }
+    ],
+    "priority_score": 30.0,
+    "total_lines": 6,
+    "autoapprove_rate": 0.0
+  },
+  {
+    "folder": "BOSQUE",
+    "verdict": "TOTALES_MAL",
+    "dominant_category": "E6_MATCH_WRONG",
+    "severity": "HIGH",
+    "categories": [
+      {
+        "category": "E6_MATCH_WRONG",
+        "severity": "HIGH",
+        "reason": "5 líneas con señales de match incorrecto (foreign_brand=2, variety_no_overlap=3)",
+        "impact": 5
+      },
+      {
+        "category": "E9_VALIDATION_FAIL",
+        "severity": "HIGH",
+        "reason": "7 líneas con errores de validación cruzada",
+        "impact": 7
+      },
+      {
+        "category": "E7_SYNONYM_DRIFT",
+        "severity": "LOW",
+        "reason": "4/7 líneas con sinónimo débil (57% del total)",
+        "impact": 4
+      },
+      {
+        "category": "E5_TOTAL_HEADER",
+        "severity": "MEDIUM",
+        "reason": "5/5 muestras parseadas con header.total incorrecto",
+        "impact": 5
+      }
+    ],
+    "priority_score": 29.5,
+    "total_lines": 7,
+    "autoapprove_rate": 0.0
+  },
+  {
+    "folder": "MONTEROSA",
+    "verdict": "TOTALES_MAL",
+    "dominant_category": "E6_MATCH_WRONG",
+    "severity": "HIGH",
+    "categories": [
+      {
+        "category": "E6_MATCH_WRONG",
+        "severity": "HIGH",
+        "reason": "5 líneas con señales de match incorrecto (variety_no_overlap=5)",
+        "impact": 5
+      },
+      {
+        "category": "E2_PARSE_PARTIAL",
+        "severity": "HIGH",
+        "reason": "16 líneas rescatadas vs 20 parseadas (ratio 44%)",
+        "impact": 16
+      },
+      {
+        "category": "E7_SYNONYM_DRIFT",
+        "severity": "HIGH",
+        "reason": "15/20 líneas con sinónimo débil (75% del total)",
+        "impact": 15
+      },
+      {
+        "category": "E8_AMBIGUOUS_LINK",
+        "severity": "HIGH",
+        "reason": "13 líneas ambiguas (ambiguous_match=13, tie_top2_margin=8, low_evidence=5)",
+        "impact": 13
+      },
+      {
+        "category": "E9_VALIDATION_FAIL",
+        "severity": "MEDIUM",
+        "reason": "2 líneas con errores de validación cruzada",
+        "impact": 2
+      },
+      {
+        "category": "E5_TOTAL_HEADER",
+        "severity": "MEDIUM",
+        "reason": "5/5 muestras parseadas con header.total incorrecto",
+        "impact": 5
+      }
+    ],
+    "priority_score": 29.5,
+    "total_lines": 20,
+    "autoapprove_rate": 0.35
+  },
+  {
+    "folder": "MYSTIC",
+    "verdict": "OK",
+    "dominant_category": "E6_MATCH_WRONG",
+    "severity": "HIGH",
+    "categories": [
+      {
+        "category": "E6_MATCH_WRONG",
+        "severity": "HIGH",
+        "reason": "5 líneas con señales de match incorrecto (foreign_brand=4, variety_no_overlap=1)",
+        "impact": 5
+      },
+      {
+        "category": "E7_SYNONYM_DRIFT",
+        "severity": "HIGH",
+        "reason": "29/36 líneas con sinónimo débil (81% del total)",
+        "impact": 29
+      },
+      {
+        "category": "E8_AMBIGUOUS_LINK",
+        "severity": "HIGH",
+        "reason": "10 líneas ambiguas (ambiguous_match=10, tie_top2_margin=3, low_evidence=7)",
+        "impact": 10
+      },
+      {
+        "category": "E9_VALIDATION_FAIL",
+        "severity": "MEDIUM",
+        "reason": "2 líneas con errores de validación cruzada",
+        "impact": 2
+      }
+    ],
+    "priority_score": 29.5,
+    "total_lines": 36,
+    "autoapprove_rate": 0.694
+  },
+  {
+    "folder": "CERESFARMS",
+    "verdict": "OK",
+    "dominant_category": "E7_SYNONYM_DRIFT",
+    "severity": "HIGH",
+    "categories": [
+      {
+        "category": "E7_SYNONYM_DRIFT",
+        "severity": "HIGH",
+        "reason": "49/61 líneas con sinónimo débil (80% del total)",
+        "impact": 49
+      },
+      {
+        "category": "E6_MATCH_WRONG",
+        "severity": "MEDIUM",
+        "reason": "2 líneas con señales de match incorrecto (variety_no_overlap=2)",
+        "impact": 2
+      },
+      {
+        "category": "E8_AMBIGUOUS_LINK",
+        "severity": "HIGH",
+        "reason": "12 líneas ambiguas (ambiguous_match=12, tie_top2_margin=12)",
+        "impact": 12
+      }
+    ],
+    "priority_score": 27.6,
+    "total_lines": 61,
+    "autoapprove_rate": 0.77
+  },
+  {
+    "folder": "ECOFLOR",
+    "verdict": "TOTALES_MAL",
+    "dominant_category": "E7_SYNONYM_DRIFT",
+    "severity": "HIGH",
+    "categories": [
+      {
+        "category": "E7_SYNONYM_DRIFT",
+        "severity": "HIGH",
+        "reason": "24/52 líneas con sinónimo débil (46% del total)",
+        "impact": 24
+      },
+      {
+        "category": "E8_AMBIGUOUS_LINK",
+        "severity": "HIGH",
+        "reason": "28 líneas ambiguas (ambiguous_match=28, tie_top2_margin=24, low_evidence=4)",
+        "impact": 28
+      },
+      {
+        "category": "E6_MATCH_WRONG",
+        "severity": "MEDIUM",
+        "reason": "4 líneas con señales de match incorrecto (foreign_brand=3, variety_no_overlap=1)",
+        "impact": 4
+      },
+      {
+        "category": "E5_TOTAL_HEADER",
+        "severity": "MEDIUM",
+        "reason": "3/5 muestras parseadas con header.total incorrecto",
+        "impact": 3
+      },
+      {
+        "category": "E10_PROVIDER_COLLISION",
+        "severity": "LOW",
+        "reason": "Comparte fmt=\"mystic\" con mystic, fiorentina, stampsy, florifrut",
+        "impact": 0
+      }
+    ],
+    "priority_score": 27.0,
+    "total_lines": 52,
+    "autoapprove_rate": 0.462
+  },
+  {
+    "folder": "BENCHMARK",
+    "verdict": "NO_PARSEA",
+    "dominant_category": "E7_SYNONYM_DRIFT",
+    "severity": "HIGH",
+    "categories": [
+      {
+        "category": "E7_SYNONYM_DRIFT",
+        "severity": "HIGH",
+        "reason": "45/45 líneas con sinónimo débil (100% del total)",
+        "impact": 45
+      },
+      {
+        "category": "E1_PARSE_ZERO",
+        "severity": "MEDIUM",
+        "reason": "1/5 muestras sin ninguna línea parseada",
+        "impact": 1
+      },
+      {
+        "category": "E8_AMBIGUOUS_LINK",
+        "severity": "HIGH",
+        "reason": "7 líneas ambiguas (ambiguous_match=7, tie_top2_margin=7)",
+        "impact": 7
+      },
+      {
+        "category": "E2_PARSE_PARTIAL",
+        "severity": "LOW",
+        "reason": "4 líneas rescatadas vs 45 parseadas (ratio 8%)",
+        "impact": 4
+      },
+      {
+        "category": "E5_TOTAL_HEADER",
+        "severity": "LOW",
+        "reason": "1/4 muestras parseadas con header.total incorrecto",
+        "impact": 1
+      }
+    ],
+    "priority_score": 26.2,
+    "total_lines": 45,
+    "autoapprove_rate": 0.844
+  },
+  {
+    "folder": "AGRIVALDANI",
+    "verdict": "NO_PARSEA",
+    "dominant_category": "E3_LAYOUT_COORDS",
+    "severity": "HIGH",
+    "categories": [
+      {
+        "category": "E3_LAYOUT_COORDS",
+        "severity": "HIGH",
+        "reason": "2 muestras nativas sin parsear — probable problema de layout/columnas",
+        "impact": 2
+      },
+      {
+        "category": "E1_PARSE_ZERO",
+        "severity": "MEDIUM",
+        "reason": "2/5 muestras sin ninguna línea parseada",
+        "impact": 2
+      },
+      {
+        "category": "E7_SYNONYM_DRIFT",
+        "severity": "MEDIUM",
+        "reason": "5/9 líneas con sinónimo débil (56% del total)",
+        "impact": 5
+      },
+      {
+        "category": "E8_AMBIGUOUS_LINK",
+        "severity": "MEDIUM",
+        "reason": "4 líneas ambiguas (ambiguous_match=4, tie_top2_margin=4)",
+        "impact": 4
+      },
+      {
+        "category": "E5_TOTAL_HEADER",
+        "severity": "MEDIUM",
+        "reason": "3/3 muestras parseadas con header.total incorrecto",
+        "impact": 3
+      },
+      {
+        "category": "E10_PROVIDER_COLLISION",
+        "severity": "LOW",
+        "reason": "Comparte fmt=\"agrivaldani\" con luxus",
+        "impact": 0
+      }
+    ],
+    "priority_score": 25.0,
+    "total_lines": 9,
+    "autoapprove_rate": 0.556
+  },
+  {
+    "folder": "CONEJERA",
+    "verdict": "OK",
+    "dominant_category": "E2_PARSE_PARTIAL",
+    "severity": "HIGH",
+    "categories": [
+      {
+        "category": "E2_PARSE_PARTIAL",
+        "severity": "HIGH",
+        "reason": "8 líneas rescatadas vs 13 parseadas (ratio 38%)",
+        "impact": 8
+      },
+      {
+        "category": "E6_MATCH_WRONG",
+        "severity": "MEDIUM",
+        "reason": "4 líneas con señales de match incorrecto (variety_no_overlap=4)",
+        "impact": 4
+      },
+      {
+        "category": "E8_AMBIGUOUS_LINK",
+        "severity": "HIGH",
+        "reason": "7 líneas ambiguas (ambiguous_match=7, tie_top2_margin=7)",
+        "impact": 7
+      }
+    ],
+    "priority_score": 25.0,
+    "total_lines": 13,
+    "autoapprove_rate": 0.222
+  },
+  {
+    "folder": "LIFE FLOWERS",
+    "verdict": "NO_PARSEA",
+    "dominant_category": "E3_LAYOUT_COORDS",
+    "severity": "HIGH",
+    "categories": [
+      {
+        "category": "E3_LAYOUT_COORDS",
+        "severity": "HIGH",
+        "reason": "2 muestras nativas sin parsear — probable problema de layout/columnas",
+        "impact": 2
+      },
+      {
+        "category": "E7_SYNONYM_DRIFT",
+        "severity": "HIGH",
+        "reason": "14/24 líneas con sinónimo débil (58% del total)",
+        "impact": 14
+      },
+      {
+        "category": "E1_PARSE_ZERO",
+        "severity": "MEDIUM",
+        "reason": "2/5 muestras sin ninguna línea parseada",
+        "impact": 2
+      },
+      {
+        "category": "E8_AMBIGUOUS_LINK",
+        "severity": "HIGH",
+        "reason": "13 líneas ambiguas (ambiguous_match=13, tie_top2_margin=13)",
+        "impact": 13
+      },
+      {
+        "category": "E5_TOTAL_HEADER",
+        "severity": "MEDIUM",
+        "reason": "3/3 muestras parseadas con header.total incorrecto",
+        "impact": 3
+      }
+    ],
+    "priority_score": 25.0,
+    "total_lines": 24,
+    "autoapprove_rate": 0.458
+  },
+  {
+    "folder": "MAXIFLORES",
+    "verdict": "OK",
+    "dominant_category": "E8_AMBIGUOUS_LINK",
+    "severity": "HIGH",
+    "categories": [
+      {
+        "category": "E8_AMBIGUOUS_LINK",
+        "severity": "HIGH",
+        "reason": "26 líneas ambiguas (ambiguous_match=26, tie_top2_margin=8, low_evidence=20)",
+        "impact": 26
+      },
+      {
+        "category": "E7_SYNONYM_DRIFT",
+        "severity": "HIGH",
+        "reason": "11/37 líneas con sinónimo débil (30% del total)",
+        "impact": 11
+      },
+      {
+        "category": "E6_MATCH_WRONG",
+        "severity": "MEDIUM",
+        "reason": "2 líneas con señales de match incorrecto (variety_no_overlap=2)",
+        "impact": 2
+      }
+    ],
+    "priority_score": 25.0,
+    "total_lines": 37,
+    "autoapprove_rate": 0.212
+  },
+  {
+    "folder": "LAILA",
+    "verdict": "OK",
+    "dominant_category": "E6_MATCH_WRONG",
+    "severity": "HIGH",
+    "categories": [
+      {
+        "category": "E6_MATCH_WRONG",
+        "severity": "HIGH",
+        "reason": "13 líneas con señales de match incorrecto (foreign_brand=5, variety_no_overlap=8)",
+        "impact": 13
+      },
+      {
+        "category": "E7_SYNONYM_DRIFT",
+        "severity": "HIGH",
+        "reason": "35/50 líneas con sinónimo débil (70% del total)",
+        "impact": 35
+      },
+      {
+        "category": "E8_AMBIGUOUS_LINK",
+        "severity": "HIGH",
+        "reason": "12 líneas ambiguas (ambiguous_match=12, low_evidence=12)",
+        "impact": 12
+      },
+      {
+        "category": "E10_PROVIDER_COLLISION",
+        "severity": "LOW",
+        "reason": "Comparte fmt=\"alegria\" con alegria, olimpo, fairis, latina, ceres, tierraverde",
+        "impact": 0
+      }
+    ],
+    "priority_score": 23.4,
+    "total_lines": 50,
+    "autoapprove_rate": 0.745
+  },
+  {
+    "folder": "GOLDEN",
+    "verdict": "OK",
+    "dominant_category": "E7_SYNONYM_DRIFT",
+    "severity": "HIGH",
+    "categories": [
+      {
+        "category": "E7_SYNONYM_DRIFT",
+        "severity": "HIGH",
+        "reason": "36/38 líneas con sinónimo débil (95% del total)",
+        "impact": 36
+      },
+      {
+        "category": "E8_AMBIGUOUS_LINK",
+        "severity": "HIGH",
+        "reason": "9 líneas ambiguas (ambiguous_match=9, tie_top2_margin=9)",
+        "impact": 9
+      }
+    ],
+    "priority_score": 23.1,
+    "total_lines": 38,
+    "autoapprove_rate": 0.763
+  },
+  {
+    "folder": "GREENGROWERS",
+    "verdict": "TOTALES_MAL",
+    "dominant_category": "E7_SYNONYM_DRIFT",
+    "severity": "HIGH",
+    "categories": [
+      {
+        "category": "E7_SYNONYM_DRIFT",
+        "severity": "HIGH",
+        "reason": "15/31 líneas con sinónimo débil (48% del total)",
+        "impact": 15
+      },
+      {
+        "category": "E6_MATCH_WRONG",
+        "severity": "MEDIUM",
+        "reason": "4 líneas con señales de match incorrecto (foreign_brand=3, variety_no_overlap=1)",
+        "impact": 4
+      },
+      {
+        "category": "E8_AMBIGUOUS_LINK",
+        "severity": "HIGH",
+        "reason": "10 líneas ambiguas (ambiguous_match=10, tie_top2_margin=10)",
+        "impact": 10
+      },
+      {
+        "category": "E5_TOTAL_HEADER",
+        "severity": "MEDIUM",
+        "reason": "5/5 muestras parseadas con header.total incorrecto",
+        "impact": 5
+      },
+      {
+        "category": "E10_PROVIDER_COLLISION",
+        "severity": "LOW",
+        "reason": "Comparte fmt=\"auto_campanario\" con campanario",
+        "impact": 0
+      }
+    ],
+    "priority_score": 22.5,
+    "total_lines": 31,
+    "autoapprove_rate": 0.6
+  },
+  {
+    "folder": "MEAFLOS",
+    "verdict": "OK",
+    "dominant_category": "E7_SYNONYM_DRIFT",
+    "severity": "HIGH",
+    "categories": [
+      {
+        "category": "E7_SYNONYM_DRIFT",
+        "severity": "HIGH",
+        "reason": "34/41 líneas con sinónimo débil (83% del total)",
+        "impact": 34
+      },
+      {
+        "category": "E6_MATCH_WRONG",
+        "severity": "MEDIUM",
+        "reason": "2 líneas con señales de match incorrecto (foreign_brand=2)",
+        "impact": 2
+      },
+      {
+        "category": "E8_AMBIGUOUS_LINK",
+        "severity": "HIGH",
+        "reason": "7 líneas ambiguas (ambiguous_match=7, tie_top2_margin=5, low_evidence=2)",
+        "impact": 7
+      },
+      {
+        "category": "E5_TOTAL_HEADER",
+        "severity": "LOW",
+        "reason": "1/5 muestras parseadas con header.total incorrecto",
+        "impact": 1
+      }
+    ],
+    "priority_score": 22.4,
+    "total_lines": 41,
+    "autoapprove_rate": 0.829
+  },
+  {
+    "folder": "MILONGA FLOWERS",
+    "verdict": "NO_PARSEA",
+    "dominant_category": "E2_PARSE_PARTIAL",
+    "severity": "HIGH",
+    "categories": [
+      {
+        "category": "E2_PARSE_PARTIAL",
+        "severity": "HIGH",
+        "reason": "22 líneas rescatadas vs 20 parseadas (ratio 52%)",
+        "impact": 22
+      },
+      {
+        "category": "E6_MATCH_WRONG",
+        "severity": "HIGH",
+        "reason": "8 líneas con señales de match incorrecto (foreign_brand=2, variety_no_overlap=6)",
+        "impact": 8
+      },
+      {
+        "category": "E7_SYNONYM_DRIFT",
+        "severity": "HIGH",
+        "reason": "14/20 líneas con sinónimo débil (70% del total)",
+        "impact": 14
+      },
+      {
+        "category": "E1_PARSE_ZERO",
+        "severity": "MEDIUM",
+        "reason": "2/5 muestras sin ninguna línea parseada",
+        "impact": 2
+      },
+      {
+        "category": "E3_LAYOUT_COORDS",
+        "severity": "MEDIUM",
+        "reason": "1 muestras nativas sin parsear — probable problema de layout/columnas",
+        "impact": 1
+      },
+      {
+        "category": "E8_AMBIGUOUS_LINK",
+        "severity": "MEDIUM",
+        "reason": "4 líneas ambiguas (ambiguous_match=4, tie_top2_margin=2, low_evidence=2)",
+        "impact": 4
+      },
+      {
+        "category": "E5_TOTAL_HEADER",
+        "severity": "MEDIUM",
+        "reason": "2/3 muestras parseadas con header.total incorrecto",
+        "impact": 2
+      },
+      {
+        "category": "E10_PROVIDER_COLLISION",
+        "severity": "LOW",
+        "reason": "Comparte fmt=\"colfarm\" con circasia, vuelven, milonga",
+        "impact": 0
+      }
+    ],
+    "priority_score": 22.4,
+    "total_lines": 20,
+    "autoapprove_rate": 0.75
+  },
+  {
+    "folder": "ART ROSES",
+    "verdict": "NO_PARSEA",
+    "dominant_category": "E1_PARSE_ZERO",
+    "severity": "HIGH",
+    "categories": [
+      {
+        "category": "E1_PARSE_ZERO",
+        "severity": "HIGH",
+        "reason": "3/5 muestras sin ninguna línea parseada",
+        "impact": 3
+      },
+      {
+        "category": "E3_LAYOUT_COORDS",
+        "severity": "HIGH",
+        "reason": "3 muestras nativas sin parsear — probable problema de layout/columnas",
+        "impact": 3
+      },
+      {
+        "category": "E7_SYNONYM_DRIFT",
+        "severity": "HIGH",
+        "reason": "10/14 líneas con sinónimo débil (71% del total)",
+        "impact": 10
+      },
+      {
+        "category": "E6_MATCH_WRONG",
+        "severity": "MEDIUM",
+        "reason": "3 líneas con señales de match incorrecto (foreign_brand=3)",
+        "impact": 3
+      },
+      {
+        "category": "E8_AMBIGUOUS_LINK",
+        "severity": "MEDIUM",
+        "reason": "4 líneas ambiguas (ambiguous_match=4, tie_top2_margin=1, low_evidence=3)",
+        "impact": 4
+      },
+      {
+        "category": "E5_TOTAL_HEADER",
+        "severity": "LOW",
+        "reason": "1/2 muestras parseadas con header.total incorrecto",
+        "impact": 1
+      },
+      {
+        "category": "E10_PROVIDER_COLLISION",
+        "severity": "LOW",
+        "reason": "Comparte fmt=\"mystic\" con mystic, fiorentina, stampsy, ecoflor, florifrut",
+        "impact": 0
+      }
+    ],
+    "priority_score": 22.0,
+    "total_lines": 14,
+    "autoapprove_rate": 0.714
+  },
+  {
+    "folder": "FLORIFRUT",
+    "verdict": "NO_PARSEA",
+    "dominant_category": "E1_PARSE_ZERO",
+    "severity": "HIGH",
+    "categories": [
+      {
+        "category": "E1_PARSE_ZERO",
+        "severity": "HIGH",
+        "reason": "3/5 muestras sin ninguna línea parseada",
+        "impact": 3
+      },
+      {
+        "category": "E3_LAYOUT_COORDS",
+        "severity": "HIGH",
+        "reason": "3 muestras nativas sin parsear — probable problema de layout/columnas",
+        "impact": 3
+      },
+      {
+        "category": "E7_SYNONYM_DRIFT",
+        "severity": "HIGH",
+        "reason": "10/12 líneas con sinónimo débil (83% del total)",
+        "impact": 10
+      },
+      {
+        "category": "E6_MATCH_WRONG",
+        "severity": "MEDIUM",
+        "reason": "2 líneas con señales de match incorrecto (foreign_brand=2)",
+        "impact": 2
+      },
+      {
+        "category": "E8_AMBIGUOUS_LINK",
+        "severity": "MEDIUM",
+        "reason": "2 líneas ambiguas (ambiguous_match=2, low_evidence=2)",
+        "impact": 2
+      },
+      {
+        "category": "E5_TOTAL_HEADER",
+        "severity": "MEDIUM",
+        "reason": "2/2 muestras parseadas con header.total incorrecto",
+        "impact": 2
+      },
+      {
+        "category": "E10_PROVIDER_COLLISION",
+        "severity": "LOW",
+        "reason": "Comparte fmt=\"mystic\" con mystic, fiorentina, stampsy, ecoflor",
+        "impact": 0
+      }
+    ],
+    "priority_score": 22.0,
+    "total_lines": 12,
+    "autoapprove_rate": 0.833
+  },
+  {
+    "folder": "NATIVE BLOOMS",
+    "verdict": "NO_PARSEA",
+    "dominant_category": "E7_SYNONYM_DRIFT",
+    "severity": "HIGH",
+    "categories": [
+      {
+        "category": "E7_SYNONYM_DRIFT",
+        "severity": "HIGH",
+        "reason": "13/30 líneas con sinónimo débil (43% del total)",
+        "impact": 13
+      },
+      {
+        "category": "E1_PARSE_ZERO",
+        "severity": "MEDIUM",
+        "reason": "1/5 muestras sin ninguna línea parseada",
+        "impact": 1
+      },
+      {
+        "category": "E3_LAYOUT_COORDS",
+        "severity": "MEDIUM",
+        "reason": "1 muestras nativas sin parsear — probable problema de layout/columnas",
+        "impact": 1
+      },
+      {
+        "category": "E8_AMBIGUOUS_LINK",
+        "severity": "HIGH",
+        "reason": "8 líneas ambiguas (ambiguous_match=8, tie_top2_margin=8)",
+        "impact": 8
+      },
+      {
+        "category": "E5_TOTAL_HEADER",
+        "severity": "MEDIUM",
+        "reason": "2/4 muestras parseadas con header.total incorrecto",
+        "impact": 2
+      }
+    ],
+    "priority_score": 21.5,
+    "total_lines": 30,
+    "autoapprove_rate": 0.619
+  },
+  {
+    "folder": "CONDOR ANDINO",
+    "verdict": "NO_PARSEA",
+    "dominant_category": "E1_PARSE_ZERO",
+    "severity": "MEDIUM",
+    "categories": [
+      {
+        "category": "E1_PARSE_ZERO",
+        "severity": "MEDIUM",
+        "reason": "2/5 muestras sin ninguna línea parseada",
+        "impact": 2
+      },
+      {
+        "category": "E3_LAYOUT_COORDS",
+        "severity": "MEDIUM",
+        "reason": "1 muestras nativas sin parsear — probable problema de layout/columnas",
+        "impact": 1
+      }
+    ],
+    "priority_score": 21.0,
+    "total_lines": 3,
+    "autoapprove_rate": 0.0
+  },
+  {
+    "folder": "UMA FLOWERS",
+    "verdict": "NO_PARSEA",
+    "dominant_category": "E1_PARSE_ZERO",
+    "severity": "MEDIUM",
+    "categories": [
+      {
+        "category": "E1_PARSE_ZERO",
+        "severity": "MEDIUM",
+        "reason": "2/5 muestras sin ninguna línea parseada",
+        "impact": 2
+      },
+      {
+        "category": "E7_SYNONYM_DRIFT",
+        "severity": "HIGH",
+        "reason": "10/15 líneas con sinónimo débil (67% del total)",
+        "impact": 10
+      },
+      {
+        "category": "E3_LAYOUT_COORDS",
+        "severity": "MEDIUM",
+        "reason": "1 muestras nativas sin parsear — probable problema de layout/columnas",
+        "impact": 1
+      },
+      {
+        "category": "E8_AMBIGUOUS_LINK",
+        "severity": "HIGH",
+        "reason": "5 líneas ambiguas (ambiguous_match=5, low_evidence=5)",
+        "impact": 5
+      },
+      {
+        "category": "E5_TOTAL_HEADER",
+        "severity": "MEDIUM",
+        "reason": "3/3 muestras parseadas con header.total incorrecto",
+        "impact": 3
+      }
+    ],
+    "priority_score": 21.0,
+    "total_lines": 15,
+    "autoapprove_rate": 0.0
+  },
+  {
+    "folder": "LA ALEGRIA",
+    "verdict": "OK",
+    "dominant_category": "E7_SYNONYM_DRIFT",
+    "severity": "HIGH",
+    "categories": [
+      {
+        "category": "E7_SYNONYM_DRIFT",
+        "severity": "HIGH",
+        "reason": "68/69 líneas con sinónimo débil (99% del total)",
+        "impact": 68
+      }
+    ],
+    "priority_score": 19.6,
+    "total_lines": 69,
+    "autoapprove_rate": 0.986
+  },
+  {
+    "folder": "ALKAVAT",
+    "verdict": "TOTALES_MAL",
+    "dominant_category": "E6_MATCH_WRONG",
+    "severity": "MEDIUM",
+    "categories": [
+      {
+        "category": "E6_MATCH_WRONG",
+        "severity": "MEDIUM",
+        "reason": "3 líneas con señales de match incorrecto (foreign_brand=3)",
+        "impact": 3
+      },
+      {
+        "category": "E8_AMBIGUOUS_LINK",
+        "severity": "HIGH",
+        "reason": "6 líneas ambiguas (ambiguous_match=6, tie_top2_margin=4, low_evidence=2)",
+        "impact": 6
+      },
+      {
+        "category": "E7_SYNONYM_DRIFT",
+        "severity": "MEDIUM",
+        "reason": "9/15 líneas con sinónimo débil (60% del total)",
+        "impact": 9
+      },
+      {
+        "category": "E5_TOTAL_HEADER",
+        "severity": "MEDIUM",
+        "reason": "5/5 muestras parseadas con header.total incorrecto",
+        "impact": 5
+      },
+      {
+        "category": "E10_PROVIDER_COLLISION",
+        "severity": "LOW",
+        "reason": "Comparte fmt=\"valleverde\" con valleverde, solpacific",
+        "impact": 0
+      }
+    ],
+    "priority_score": 19.5,
+    "total_lines": 15,
+    "autoapprove_rate": 0.533
+  },
+  {
+    "folder": "SAN JORGE",
+    "verdict": "OK",
+    "dominant_category": "E6_MATCH_WRONG",
+    "severity": "MEDIUM",
+    "categories": [
+      {
+        "category": "E6_MATCH_WRONG",
+        "severity": "MEDIUM",
+        "reason": "3 líneas con señales de match incorrecto (foreign_brand=3)",
+        "impact": 3
+      },
+      {
+        "category": "E8_AMBIGUOUS_LINK",
+        "severity": "HIGH",
+        "reason": "7 líneas ambiguas (ambiguous_match=7, tie_top2_margin=4, low_evidence=3)",
+        "impact": 7
+      },
+      {
+        "category": "E7_SYNONYM_DRIFT",
+        "severity": "MEDIUM",
+        "reason": "9/16 líneas con sinónimo débil (56% del total)",
+        "impact": 9
+      },
+      {
+        "category": "E9_VALIDATION_FAIL",
+        "severity": "HIGH",
+        "reason": "6 líneas con errores de validación cruzada",
+        "impact": 6
+      }
+    ],
+    "priority_score": 19.5,
+    "total_lines": 16,
+    "autoapprove_rate": 0.312
+  },
+  {
+    "folder": "STARFLOWERS",
+    "verdict": "OK",
+    "dominant_category": "E6_MATCH_WRONG",
+    "severity": "MEDIUM",
+    "categories": [
+      {
+        "category": "E6_MATCH_WRONG",
+        "severity": "MEDIUM",
+        "reason": "3 líneas con señales de match incorrecto (foreign_brand=3)",
+        "impact": 3
+      },
+      {
+        "category": "E8_AMBIGUOUS_LINK",
+        "severity": "MEDIUM",
+        "reason": "4 líneas ambiguas (ambiguous_match=4, low_evidence=4)",
+        "impact": 4
+      },
+      {
+        "category": "E5_TOTAL_HEADER",
+        "severity": "LOW",
+        "reason": "1/5 muestras parseadas con header.total incorrecto",
+        "impact": 1
+      }
+    ],
+    "priority_score": 19.5,
+    "total_lines": 5,
+    "autoapprove_rate": 0.2
+  },
+  {
+    "folder": "SOLPACIFIC",
+    "verdict": "TOTALES_MAL",
+    "dominant_category": "E6_MATCH_WRONG",
+    "severity": "MEDIUM",
+    "categories": [
+      {
+        "category": "E6_MATCH_WRONG",
+        "severity": "MEDIUM",
+        "reason": "2 líneas con señales de match incorrecto (variety_no_overlap=2)",
+        "impact": 2
+      },
+      {
+        "category": "E8_AMBIGUOUS_LINK",
+        "severity": "HIGH",
+        "reason": "5 líneas ambiguas (ambiguous_match=5, tie_top2_margin=3, low_evidence=2)",
+        "impact": 5
+      },
+      {
+        "category": "E7_SYNONYM_DRIFT",
+        "severity": "LOW",
+        "reason": "4/9 líneas con sinónimo débil (44% del total)",
+        "impact": 4
+      },
+      {
+        "category": "E5_TOTAL_HEADER",
+        "severity": "MEDIUM",
+        "reason": "5/5 muestras parseadas con header.total incorrecto",
+        "impact": 5
+      },
+      {
+        "category": "E10_PROVIDER_COLLISION",
+        "severity": "LOW",
+        "reason": "Comparte fmt=\"valleverde\" con valleverde",
+        "impact": 0
+      }
+    ],
+    "priority_score": 19.0,
+    "total_lines": 9,
+    "autoapprove_rate": 0.444
+  },
+  {
+    "folder": "ZORRO",
+    "verdict": "OK",
+    "dominant_category": "E6_MATCH_WRONG",
+    "severity": "MEDIUM",
+    "categories": [
+      {
+        "category": "E6_MATCH_WRONG",
+        "severity": "MEDIUM",
+        "reason": "2 líneas con señales de match incorrecto (variety_no_overlap=2)",
+        "impact": 2
+      }
+    ],
+    "priority_score": 19.0,
+    "total_lines": 2,
+    "autoapprove_rate": 0.0
+  },
+  {
+    "folder": "GLAMOUR",
+    "verdict": "OK",
+    "dominant_category": "E7_SYNONYM_DRIFT",
+    "severity": "HIGH",
+    "categories": [
+      {
+        "category": "E7_SYNONYM_DRIFT",
+        "severity": "HIGH",
+        "reason": "22/28 líneas con sinónimo débil (79% del total)",
+        "impact": 22
+      },
+      {
+        "category": "E8_AMBIGUOUS_LINK",
+        "severity": "HIGH",
+        "reason": "6 líneas ambiguas (ambiguous_match=6, tie_top2_margin=5, low_evidence=1)",
+        "impact": 6
+      }
+    ],
+    "priority_score": 18.2,
+    "total_lines": 28,
+    "autoapprove_rate": 0.786
+  },
+  {
+    "folder": "CANANVALLE",
+    "verdict": "NO_PARSEA",
+    "dominant_category": "E3_LAYOUT_COORDS",
+    "severity": "HIGH",
+    "categories": [
+      {
+        "category": "E3_LAYOUT_COORDS",
+        "severity": "HIGH",
+        "reason": "2 muestras nativas sin parsear — probable problema de layout/columnas",
+        "impact": 2
+      },
+      {
+        "category": "E7_SYNONYM_DRIFT",
+        "severity": "HIGH",
+        "reason": "14/20 líneas con sinónimo débil (70% del total)",
+        "impact": 14
+      },
+      {
+        "category": "E1_PARSE_ZERO",
+        "severity": "MEDIUM",
+        "reason": "2/5 muestras sin ninguna línea parseada",
+        "impact": 2
+      },
+      {
+        "category": "E8_AMBIGUOUS_LINK",
+        "severity": "HIGH",
+        "reason": "5 líneas ambiguas (ambiguous_match=5, tie_top2_margin=5)",
+        "impact": 5
+      },
+      {
+        "category": "E5_TOTAL_HEADER",
+        "severity": "MEDIUM",
+        "reason": "2/3 muestras parseadas con header.total incorrecto",
+        "impact": 2
+      },
+      {
+        "category": "E10_PROVIDER_COLLISION",
+        "severity": "LOW",
+        "reason": "Comparte fmt=\"custinv\" con trebol, much, naranjo",
+        "impact": 0
+      }
+    ],
+    "priority_score": 17.5,
+    "total_lines": 20,
+    "autoapprove_rate": 0.722
+  },
+  {
+    "folder": "FLORAROMA",
+    "verdict": "NO_PARSEA",
+    "dominant_category": "E7_SYNONYM_DRIFT",
+    "severity": "HIGH",
+    "categories": [
+      {
+        "category": "E7_SYNONYM_DRIFT",
+        "severity": "HIGH",
+        "reason": "48/49 líneas con sinónimo débil (98% del total)",
+        "impact": 48
+      },
+      {
+        "category": "E3_LAYOUT_COORDS",
+        "severity": "HIGH",
+        "reason": "2 muestras nativas sin parsear — probable problema de layout/columnas",
+        "impact": 2
+      },
+      {
+        "category": "E1_PARSE_ZERO",
+        "severity": "MEDIUM",
+        "reason": "2/5 muestras sin ninguna línea parseada",
+        "impact": 2
+      },
+      {
+        "category": "E6_MATCH_WRONG",
+        "severity": "MEDIUM",
+        "reason": "2 líneas con señales de match incorrecto (foreign_brand=1, variety_no_overlap=1)",
+        "impact": 2
+      },
+      {
+        "category": "E5_TOTAL_HEADER",
+        "severity": "MEDIUM",
+        "reason": "3/3 muestras parseadas con header.total incorrecto",
+        "impact": 3
+      }
+    ],
+    "priority_score": 15.6,
+    "total_lines": 49,
+    "autoapprove_rate": 0.959
+  },
+  {
+    "folder": "TESSA",
+    "verdict": "NO_PARSEA",
+    "dominant_category": "E7_SYNONYM_DRIFT",
+    "severity": "HIGH",
+    "categories": [
+      {
+        "category": "E7_SYNONYM_DRIFT",
+        "severity": "HIGH",
+        "reason": "13/16 líneas con sinónimo débil (81% del total)",
+        "impact": 13
+      },
+      {
+        "category": "E1_PARSE_ZERO",
+        "severity": "MEDIUM",
+        "reason": "1/5 muestras sin ninguna línea parseada",
+        "impact": 1
+      },
+      {
+        "category": "E3_LAYOUT_COORDS",
+        "severity": "MEDIUM",
+        "reason": "1 muestras nativas sin parsear — probable problema de layout/columnas",
+        "impact": 1
+      },
+      {
+        "category": "E8_AMBIGUOUS_LINK",
+        "severity": "MEDIUM",
+        "reason": "3 líneas ambiguas (ambiguous_match=3, tie_top2_margin=3)",
+        "impact": 3
+      },
+      {
+        "category": "E5_TOTAL_HEADER",
+        "severity": "MEDIUM",
+        "reason": "4/4 muestras parseadas con header.total incorrecto",
+        "impact": 4
+      }
+    ],
+    "priority_score": 15.0,
+    "total_lines": 16,
+    "autoapprove_rate": 0.812
+  },
+  {
+    "folder": "IWA",
+    "verdict": "TOTALES_MAL",
+    "dominant_category": "E2_PARSE_PARTIAL",
+    "severity": "HIGH",
+    "categories": [
+      {
+        "category": "E2_PARSE_PARTIAL",
+        "severity": "HIGH",
+        "reason": "32 líneas rescatadas vs 21 parseadas (ratio 60%)",
+        "impact": 32
+      },
+      {
+        "category": "E7_SYNONYM_DRIFT",
+        "severity": "HIGH",
+        "reason": "21/21 líneas con sinónimo débil (100% del total)",
+        "impact": 21
+      },
+      {
+        "category": "E5_TOTAL_HEADER",
+        "severity": "MEDIUM",
+        "reason": "5/5 muestras parseadas con header.total incorrecto",
+        "impact": 5
+      },
+      {
+        "category": "E9_VALIDATION_FAIL",
+        "severity": "LOW",
+        "reason": "1 líneas con errores de validación cruzada",
+        "impact": 1
+      }
+    ],
+    "priority_score": 14.8,
+    "total_lines": 21,
+    "autoapprove_rate": 0.952
+  },
+  {
+    "folder": "FARIN",
+    "verdict": "OK",
+    "dominant_category": "E8_AMBIGUOUS_LINK",
+    "severity": "HIGH",
+    "categories": [
+      {
+        "category": "E8_AMBIGUOUS_LINK",
+        "severity": "HIGH",
+        "reason": "5 líneas ambiguas (ambiguous_match=5, tie_top2_margin=5)",
+        "impact": 5
+      }
+    ],
+    "priority_score": 14.5,
+    "total_lines": 6,
+    "autoapprove_rate": 0.167
+  },
+  {
+    "folder": "STAMPSY",
+    "verdict": "OK",
+    "dominant_category": "E8_AMBIGUOUS_LINK",
+    "severity": "HIGH",
+    "categories": [
+      {
+        "category": "E8_AMBIGUOUS_LINK",
+        "severity": "HIGH",
+        "reason": "5 líneas ambiguas (ambiguous_match=5, tie_top2_margin=5)",
+        "impact": 5
+      },
+      {
+        "category": "E7_SYNONYM_DRIFT",
+        "severity": "MEDIUM",
+        "reason": "6/11 líneas con sinónimo débil (55% del total)",
+        "impact": 6
+      }
+    ],
+    "priority_score": 14.5,
+    "total_lines": 11,
+    "autoapprove_rate": 0.545
+  },
+  {
+    "folder": "STAMPSYBOX",
+    "verdict": "OK",
+    "dominant_category": "E7_SYNONYM_DRIFT",
+    "severity": "MEDIUM",
+    "categories": [
+      {
+        "category": "E7_SYNONYM_DRIFT",
+        "severity": "MEDIUM",
+        "reason": "6/9 líneas con sinónimo débil (67% del total)",
+        "impact": 6
+      },
+      {
+        "category": "E8_AMBIGUOUS_LINK",
+        "severity": "MEDIUM",
+        "reason": "3 líneas ambiguas (ambiguous_match=3, tie_top2_margin=3)",
+        "impact": 3
+      }
+    ],
+    "priority_score": 13.0,
+    "total_lines": 9,
+    "autoapprove_rate": 0.667
+  },
+  {
+    "folder": "UTOPIA",
+    "verdict": "OK",
+    "dominant_category": "E7_SYNONYM_DRIFT",
+    "severity": "MEDIUM",
+    "categories": [
+      {
+        "category": "E7_SYNONYM_DRIFT",
+        "severity": "MEDIUM",
+        "reason": "6/6 líneas con sinónimo débil (100% del total)",
+        "impact": 6
+      }
+    ],
+    "priority_score": 13.0,
+    "total_lines": 6,
+    "autoapprove_rate": 0.0
+  },
+  {
+    "folder": "TIMANA",
+    "verdict": "NO_PARSEA",
+    "dominant_category": "E2_PARSE_PARTIAL",
+    "severity": "HIGH",
+    "categories": [
+      {
+        "category": "E2_PARSE_PARTIAL",
+        "severity": "HIGH",
+        "reason": "22 líneas rescatadas vs 5 parseadas (ratio 81%)",
+        "impact": 22
+      },
+      {
+        "category": "E3_LAYOUT_COORDS",
+        "severity": "HIGH",
+        "reason": "2 muestras nativas sin parsear — probable problema de layout/columnas",
+        "impact": 2
+      },
+      {
+        "category": "E1_PARSE_ZERO",
+        "severity": "MEDIUM",
+        "reason": "2/5 muestras sin ninguna línea parseada",
+        "impact": 2
+      },
+      {
+        "category": "E7_SYNONYM_DRIFT",
+        "severity": "MEDIUM",
+        "reason": "5/5 líneas con sinónimo débil (100% del total)",
+        "impact": 5
+      },
+      {
+        "category": "E5_TOTAL_HEADER",
+        "severity": "MEDIUM",
+        "reason": "3/3 muestras parseadas con header.total incorrecto",
+        "impact": 3
+      }
+    ],
+    "priority_score": 12.8,
+    "total_lines": 5,
+    "autoapprove_rate": 1.0
+  },
+  {
+    "folder": "EL PROGRESO",
+    "verdict": "TOTALES_MAL",
+    "dominant_category": "E7_SYNONYM_DRIFT",
+    "severity": "MEDIUM",
+    "categories": [
+      {
+        "category": "E7_SYNONYM_DRIFT",
+        "severity": "MEDIUM",
+        "reason": "5/8 líneas con sinónimo débil (62% del total)",
+        "impact": 5
+      },
+      {
+        "category": "E8_AMBIGUOUS_LINK",
+        "severity": "MEDIUM",
+        "reason": "3 líneas ambiguas (ambiguous_match=3, tie_top2_margin=3)",
+        "impact": 3
+      },
+      {
+        "category": "E5_TOTAL_HEADER",
+        "severity": "MEDIUM",
+        "reason": "5/5 muestras parseadas con header.total incorrecto",
+        "impact": 5
+      }
+    ],
+    "priority_score": 12.5,
+    "total_lines": 8,
+    "autoapprove_rate": 0.625
+  },
+  {
+    "folder": "PREMIUM FLOWERS",
+    "verdict": "NO_PARSEA",
+    "dominant_category": "E6_MATCH_WRONG",
+    "severity": "HIGH",
+    "categories": [
+      {
+        "category": "E6_MATCH_WRONG",
+        "severity": "HIGH",
+        "reason": "6 líneas con señales de match incorrecto (variety_no_overlap=6)",
+        "impact": 6
+      },
+      {
+        "category": "E2_PARSE_PARTIAL",
+        "severity": "HIGH",
+        "reason": "15 líneas rescatadas vs 14 parseadas (ratio 52%)",
+        "impact": 15
+      },
+      {
+        "category": "E1_PARSE_ZERO",
+        "severity": "MEDIUM",
+        "reason": "2/5 muestras sin ninguna línea parseada",
+        "impact": 2
+      },
+      {
+        "category": "E3_LAYOUT_COORDS",
+        "severity": "MEDIUM",
+        "reason": "1 muestras nativas sin parsear — probable problema de layout/columnas",
+        "impact": 1
+      },
+      {
+        "category": "E8_AMBIGUOUS_LINK",
+        "severity": "LOW",
+        "reason": "0 líneas ambiguas (low_evidence=3)",
+        "impact": 0
+      }
+    ],
+    "priority_score": 12.0,
+    "total_lines": 14,
+    "autoapprove_rate": 1.0
+  },
+  {
+    "folder": "PRESTIGE ROSES",
+    "verdict": "NO_PARSEA",
+    "dominant_category": "E6_MATCH_WRONG",
+    "severity": "HIGH",
+    "categories": [
+      {
+        "category": "E6_MATCH_WRONG",
+        "severity": "HIGH",
+        "reason": "5 líneas con señales de match incorrecto (foreign_brand=1, variety_no_overlap=4)",
+        "impact": 5
+      },
+      {
+        "category": "E1_PARSE_ZERO",
+        "severity": "MEDIUM",
+        "reason": "2/5 muestras sin ninguna línea parseada",
+        "impact": 2
+      },
+      {
+        "category": "E7_SYNONYM_DRIFT",
+        "severity": "MEDIUM",
+        "reason": "5/9 líneas con sinónimo débil (56% del total)",
+        "impact": 5
+      },
+      {
+        "category": "E5_TOTAL_HEADER",
+        "severity": "MEDIUM",
+        "reason": "3/3 muestras parseadas con header.total incorrecto",
+        "impact": 3
+      },
+      {
+        "category": "E8_AMBIGUOUS_LINK",
+        "severity": "LOW",
+        "reason": "0 líneas ambiguas (low_evidence=3)",
+        "impact": 0
+      }
+    ],
+    "priority_score": 11.8,
+    "total_lines": 9,
+    "autoapprove_rate": 1.0
+  },
+  {
+    "folder": "AGROSANALFONSO",
+    "verdict": "OK",
+    "dominant_category": "E7_SYNONYM_DRIFT",
+    "severity": "HIGH",
+    "categories": [
+      {
+        "category": "E7_SYNONYM_DRIFT",
+        "severity": "HIGH",
+        "reason": "27/30 líneas con sinónimo débil (90% del total)",
+        "impact": 27
+      },
+      {
+        "category": "E8_AMBIGUOUS_LINK",
+        "severity": "MEDIUM",
+        "reason": "3 líneas ambiguas (ambiguous_match=3, tie_top2_margin=2, low_evidence=1)",
+        "impact": 3
+      }
+    ],
+    "priority_score": 11.4,
+    "total_lines": 30,
+    "autoapprove_rate": 0.9
+  },
+  {
+    "folder": "CIRCASIA",
+    "verdict": "NO_PARSEA",
+    "dominant_category": "E2_PARSE_PARTIAL",
+    "severity": "HIGH",
+    "categories": [
+      {
+        "category": "E2_PARSE_PARTIAL",
+        "severity": "HIGH",
+        "reason": "12 líneas rescatadas vs 8 parseadas (ratio 60%)",
+        "impact": 12
+      },
+      {
+        "category": "E3_LAYOUT_COORDS",
+        "severity": "HIGH",
+        "reason": "2 muestras nativas sin parsear — probable problema de layout/columnas",
+        "impact": 2
+      },
+      {
+        "category": "E1_PARSE_ZERO",
+        "severity": "MEDIUM",
+        "reason": "2/5 muestras sin ninguna línea parseada",
+        "impact": 2
+      },
+      {
+        "category": "E7_SYNONYM_DRIFT",
+        "severity": "MEDIUM",
+        "reason": "7/8 líneas con sinónimo débil (88% del total)",
+        "impact": 7
+      },
+      {
+        "category": "E10_PROVIDER_COLLISION",
+        "severity": "LOW",
+        "reason": "Comparte fmt=\"colfarm\" con vuelven, milonga",
+        "impact": 0
+      }
+    ],
+    "priority_score": 10.8,
+    "total_lines": 8,
+    "autoapprove_rate": 0.875
+  },
+  {
+    "folder": "NEUSA",
+    "verdict": "TOTALES_MAL",
+    "dominant_category": "E7_SYNONYM_DRIFT",
+    "severity": "HIGH",
+    "categories": [
+      {
+        "category": "E7_SYNONYM_DRIFT",
+        "severity": "HIGH",
+        "reason": "24/24 líneas con sinónimo débil (100% del total)",
+        "impact": 24
+      },
+      {
+        "category": "E5_TOTAL_HEADER",
+        "severity": "MEDIUM",
+        "reason": "5/5 muestras parseadas con header.total incorrecto",
+        "impact": 5
+      }
+    ],
+    "priority_score": 10.8,
+    "total_lines": 24,
+    "autoapprove_rate": 1.0
+  },
+  {
+    "folder": "ALUNA",
+    "verdict": "TOTALES_MAL",
+    "dominant_category": "E7_SYNONYM_DRIFT",
+    "severity": "HIGH",
+    "categories": [
+      {
+        "category": "E7_SYNONYM_DRIFT",
+        "severity": "HIGH",
+        "reason": "22/22 líneas con sinónimo débil (100% del total)",
+        "impact": 22
+      },
+      {
+        "category": "E5_TOTAL_HEADER",
+        "severity": "MEDIUM",
+        "reason": "5/5 muestras parseadas con header.total incorrecto",
+        "impact": 5
+      }
+    ],
+    "priority_score": 10.4,
+    "total_lines": 22,
+    "autoapprove_rate": 1.0
+  },
+  {
+    "folder": "ROSADEX",
+    "verdict": "TOTALES_MAL",
+    "dominant_category": "E7_SYNONYM_DRIFT",
+    "severity": "HIGH",
+    "categories": [
+      {
+        "category": "E7_SYNONYM_DRIFT",
+        "severity": "HIGH",
+        "reason": "22/22 líneas con sinónimo débil (100% del total)",
+        "impact": 22
+      },
+      {
+        "category": "E5_TOTAL_HEADER",
+        "severity": "MEDIUM",
+        "reason": "5/5 muestras parseadas con header.total incorrecto",
+        "impact": 5
+      },
+      {
+        "category": "E10_PROVIDER_COLLISION",
+        "severity": "LOW",
+        "reason": "Comparte fmt=\"rosaleda\" con rosaleda, hacienda",
+        "impact": 0
+      }
+    ],
+    "priority_score": 10.4,
+    "total_lines": 22,
+    "autoapprove_rate": 1.0
+  },
+  {
+    "folder": "AGRINAG",
+    "verdict": "OK",
+    "dominant_category": "E8_AMBIGUOUS_LINK",
+    "severity": "MEDIUM",
+    "categories": [
+      {
+        "category": "E8_AMBIGUOUS_LINK",
+        "severity": "MEDIUM",
+        "reason": "4 líneas ambiguas (ambiguous_match=4, tie_top2_margin=2, low_evidence=2)",
+        "impact": 4
+      },
+      {
+        "category": "E7_SYNONYM_DRIFT",
+        "severity": "LOW",
+        "reason": "4/8 líneas con sinónimo débil (50% del total)",
+        "impact": 4
+      }
+    ],
+    "priority_score": 10.0,
+    "total_lines": 8,
+    "autoapprove_rate": 0.5
+  },
+  {
+    "folder": "UNIQUE",
+    "verdict": "NO_PARSEA",
+    "dominant_category": "E3_LAYOUT_COORDS",
+    "severity": "HIGH",
+    "categories": [
+      {
+        "category": "E3_LAYOUT_COORDS",
+        "severity": "HIGH",
+        "reason": "2 muestras nativas sin parsear — probable problema de layout/columnas",
+        "impact": 2
+      },
+      {
+        "category": "E1_PARSE_ZERO",
+        "severity": "MEDIUM",
+        "reason": "2/5 muestras sin ninguna línea parseada",
+        "impact": 2
+      },
+      {
+        "category": "E6_MATCH_WRONG",
+        "severity": "MEDIUM",
+        "reason": "4 líneas con señales de match incorrecto (variety_no_overlap=4)",
+        "impact": 4
+      },
+      {
+        "category": "E2_PARSE_PARTIAL",
+        "severity": "MEDIUM",
+        "reason": "2 líneas rescatadas vs 8 parseadas (ratio 20%)",
+        "impact": 2
+      },
+      {
+        "category": "E7_SYNONYM_DRIFT",
+        "severity": "LOW",
+        "reason": "4/8 líneas con sinónimo débil (50% del total)",
+        "impact": 4
+      },
+      {
+        "category": "E8_AMBIGUOUS_LINK",
+        "severity": "LOW",
+        "reason": "0 líneas ambiguas (low_evidence=4)",
+        "impact": 0
+      },
+      {
+        "category": "E5_TOTAL_HEADER",
+        "severity": "LOW",
+        "reason": "1/3 muestras parseadas con header.total incorrecto",
+        "impact": 1
+      },
+      {
+        "category": "E10_PROVIDER_COLLISION",
+        "severity": "LOW",
+        "reason": "Comparte fmt=\"unique\" con unique_export",
+        "impact": 0
+      }
+    ],
+    "priority_score": 10.0,
+    "total_lines": 8,
+    "autoapprove_rate": 1.0
+  },
+  {
+    "folder": "ROSABELLA",
+    "verdict": "OK",
+    "dominant_category": "E8_AMBIGUOUS_LINK",
+    "severity": "MEDIUM",
+    "categories": [
+      {
+        "category": "E8_AMBIGUOUS_LINK",
+        "severity": "MEDIUM",
+        "reason": "3 líneas ambiguas (ambiguous_match=3, tie_top2_margin=3)",
+        "impact": 3
+      }
+    ],
+    "priority_score": 9.5,
+    "total_lines": 5,
+    "autoapprove_rate": 0.0
+  },
+  {
+    "folder": "SECORE",
+    "verdict": "TOTALES_MAL",
+    "dominant_category": "E7_SYNONYM_DRIFT",
+    "severity": "HIGH",
+    "categories": [
+      {
+        "category": "E7_SYNONYM_DRIFT",
+        "severity": "HIGH",
+        "reason": "13/13 líneas con sinónimo débil (100% del total)",
+        "impact": 13
+      },
+      {
+        "category": "E2_PARSE_PARTIAL",
+        "severity": "MEDIUM",
+        "reason": "4 líneas rescatadas vs 13 parseadas (ratio 24%)",
+        "impact": 4
+      },
+      {
+        "category": "E5_TOTAL_HEADER",
+        "severity": "MEDIUM",
+        "reason": "5/5 muestras parseadas con header.total incorrecto",
+        "impact": 5
+      }
+    ],
+    "priority_score": 8.6,
+    "total_lines": 13,
+    "autoapprove_rate": 0.923
+  },
+  {
+    "folder": "INFINITY",
+    "verdict": "OK",
+    "dominant_category": "E7_SYNONYM_DRIFT",
+    "severity": "HIGH",
+    "categories": [
+      {
+        "category": "E7_SYNONYM_DRIFT",
+        "severity": "HIGH",
+        "reason": "11/15 líneas con sinónimo débil (73% del total)",
+        "impact": 11
+      },
+      {
+        "category": "E6_MATCH_WRONG",
+        "severity": "MEDIUM",
+        "reason": "4 líneas con señales de match incorrecto (variety_no_overlap=4)",
+        "impact": 4
+      }
+    ],
+    "priority_score": 8.2,
+    "total_lines": 15,
+    "autoapprove_rate": 1.0
+  },
+  {
+    "folder": "FLORELOY",
+    "verdict": "OK",
+    "dominant_category": "E7_SYNONYM_DRIFT",
+    "severity": "MEDIUM",
+    "categories": [
+      {
+        "category": "E7_SYNONYM_DRIFT",
+        "severity": "MEDIUM",
+        "reason": "8/9 líneas con sinónimo débil (89% del total)",
+        "impact": 8
+      }
+    ],
+    "priority_score": 5.6,
+    "total_lines": 9,
+    "autoapprove_rate": 0.889
+  },
+  {
+    "folder": "EQR",
+    "verdict": "OK",
+    "dominant_category": "E7_SYNONYM_DRIFT",
+    "severity": "MEDIUM",
+    "categories": [
+      {
+        "category": "E7_SYNONYM_DRIFT",
+        "severity": "MEDIUM",
+        "reason": "7/8 líneas con sinónimo débil (88% del total)",
+        "impact": 7
+      },
+      {
+        "category": "E5_TOTAL_HEADER",
+        "severity": "LOW",
+        "reason": "1/5 muestras parseadas con header.total incorrecto",
+        "impact": 1
+      }
+    ],
+    "priority_score": 5.4,
+    "total_lines": 8,
+    "autoapprove_rate": 0.875
+  },
+  {
+    "folder": "BELLAROSA",
+    "verdict": "OK",
+    "dominant_category": "E7_SYNONYM_DRIFT",
+    "severity": "MEDIUM",
+    "categories": [
+      {
+        "category": "E7_SYNONYM_DRIFT",
+        "severity": "MEDIUM",
+        "reason": "5/5 líneas con sinónimo débil (100% del total)",
+        "impact": 5
+      }
+    ],
+    "priority_score": 5.0,
+    "total_lines": 5,
+    "autoapprove_rate": 1.0
+  },
+  {
+    "folder": "QUALISA",
+    "verdict": "OK",
+    "dominant_category": "E7_SYNONYM_DRIFT",
+    "severity": "LOW",
+    "categories": [
+      {
+        "category": "E7_SYNONYM_DRIFT",
+        "severity": "LOW",
+        "reason": "3/3 líneas con sinónimo débil (100% del total)",
+        "impact": 3
+      }
+    ],
+    "priority_score": 2.6,
+    "total_lines": 3,
+    "autoapprove_rate": 1.0
+  }
+]

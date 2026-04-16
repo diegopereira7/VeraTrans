@@ -71,6 +71,7 @@ def _eval_one_pdf(pdf: Path, matcher: Matcher, global_penalties: Counter) -> dic
         'detected_as': '', 'fmt': '',
         'parsed_lines': 0, 'rescued_lines': 0,
         'ok_lines': 0, 'ambiguous_lines': 0, 'sin_match_lines': 0,
+        'sin_parser_lines': 0,
         'header_total': 0.0, 'sum_line_total': 0.0,
         'header_ok': None, 'diff_pct': None,
         'extraction_source': '', 'extraction_engine': '',
@@ -79,6 +80,8 @@ def _eval_one_pdf(pdf: Path, matcher: Matcher, global_penalties: Counter) -> dic
         'autoapprovable_lines': 0,
         'needs_review_lines': 0,
         'validation_errors_lines': 0,
+        'penalties': {},
+        'match_statuses': {},
         'invoice': '',
         'error': '',
     }
@@ -109,6 +112,17 @@ def _eval_one_pdf(pdf: Path, matcher: Matcher, global_penalties: Counter) -> dic
         rescued = rescue_unparsed_lines(pdata['text'], lines)
         valid = [l for l in lines if l.variety and (l.stems or l.line_total)]
 
+        # Fallback central: derivar header.total de suma de líneas si el parser
+        # no lo extrajo o extrajo un valor claramente incorrecto (>10x o <0.1x)
+        if lines:
+            _sum = round(sum(l.line_total for l in lines if l.line_total), 2)
+            if not header.total:
+                header.total = _sum
+            elif _sum and header.total:
+                _ratio = header.total / _sum if _sum else 999
+                if _ratio > 10 or _ratio < 0.1:
+                    header.total = _sum
+
         entry['invoice'] = header.invoice_number
         entry['header_total'] = header.total
         entry['parsed_lines'] = len(valid)
@@ -133,13 +147,18 @@ def _eval_one_pdf(pdf: Path, matcher: Matcher, global_penalties: Counter) -> dic
         validate_invoice(header, matched)
 
         link_scores = []
+        sample_penalties: Counter = Counter()
+        sample_statuses: Counter = Counter()
         for l in matched:
+            sample_statuses[l.match_status or 'unknown'] += 1
             if l.match_status == 'ok':
                 entry['ok_lines'] += 1
             elif l.match_status == 'ambiguous_match':
                 entry['ambiguous_lines'] += 1
             elif l.match_status == 'sin_match':
                 entry['sin_match_lines'] += 1
+            elif l.match_status == 'sin_parser':
+                entry['sin_parser_lines'] += 1
             if l.validation_errors:
                 entry['validation_errors_lines'] += 1
             if l.link_confidence and l.link_confidence > 0:
@@ -157,11 +176,19 @@ def _eval_one_pdf(pdf: Path, matcher: Matcher, global_penalties: Counter) -> dic
                     or (l.match_status == 'ok' and 0 < l.match_confidence < 0.80)
                     or (l.match_status == 'ok' and l.validation_errors)):
                 entry['needs_review_lines'] += 1
-            # Agregar penalties al ranking global
+            # Agregar penalties al ranking (global + por muestra)
             for p in (l.match_penalties or []):
                 # Normalizar "foreign_brand(XXX)" → "foreign_brand" para ranking
                 head = p.split('(', 1)[0].strip()
                 global_penalties[head] += 1
+                sample_penalties[head] += 1
+        entry['penalties'] = dict(sample_penalties)
+        entry['match_statuses'] = dict(sample_statuses)
+        # Contar carriles de revisión
+        lane_counts = Counter(l.review_lane or 'quick' for l in matched)
+        entry['lane_auto'] = lane_counts.get('auto', 0)
+        entry['lane_quick'] = lane_counts.get('quick', 0)
+        entry['lane_full'] = lane_counts.get('full', 0)
 
         if link_scores:
             entry['avg_link_confidence'] = round(
@@ -181,6 +208,7 @@ def _aggregate(folder_name: str, sample_entries: list[dict]) -> dict:
     total_ok = sum(s['ok_lines'] for s in sample_entries)
     total_ambig = sum(s['ambiguous_lines'] for s in sample_entries)
     total_sinm = sum(s['sin_match_lines'] for s in sample_entries)
+    total_sinp = sum(s.get('sin_parser_lines', 0) for s in sample_entries)
     total_auto = sum(s['autoapprovable_lines'] for s in sample_entries)
     total_review = sum(s['needs_review_lines'] for s in sample_entries)
     total_valerrs = sum(s['validation_errors_lines'] for s in sample_entries)
@@ -194,6 +222,15 @@ def _aggregate(folder_name: str, sample_entries: list[dict]) -> dict:
     engine_counter = Counter(s['extraction_engine'] or '-'
                              for s in sample_entries)
 
+    # Penalties agregadas por proveedor (no solo global)
+    prov_penalties: Counter = Counter()
+    prov_statuses: Counter = Counter()
+    for s in sample_entries:
+        for pen, cnt in s.get('penalties', {}).items():
+            prov_penalties[pen] += cnt
+        for st, cnt in s.get('match_statuses', {}).items():
+            prov_statuses[st] += cnt
+
     metrics = {
         'samples':              n,
         'detected':             sum(1 for s in sample_entries if s['detected_as']),
@@ -204,12 +241,15 @@ def _aggregate(folder_name: str, sample_entries: list[dict]) -> dict:
         'ok_lines':             total_ok,
         'ambiguous_lines':      total_ambig,
         'sin_match_lines':      total_sinm,
+        'sin_parser_lines':     total_sinp,
         'autoapprovable_lines': total_auto,
         'autoapprove_rate':     round(autoapprove_rate, 3),
         'needs_review_lines':   total_review,
         'validation_errors_lines': total_valerrs,
         'extraction_source_mix': dict(src_counter),
         'extraction_engine_mix': dict(engine_counter),
+        'penalties':            dict(prov_penalties.most_common()),
+        'match_statuses':       dict(prov_statuses),
     }
     return metrics
 
@@ -287,6 +327,7 @@ def main():
         'folder', 'verdict', 'samples', 'detected', 'parsed_any',
         'totals_ok', 'total_parsed', 'total_rescued',
         'ok_lines', 'ambiguous_lines', 'sin_match_lines',
+        'sin_parser_lines',
         'autoapprovable_lines', 'autoapprove_rate',
         'needs_review_lines', 'validation_errors_lines',
     ]

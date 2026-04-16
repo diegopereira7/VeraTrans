@@ -113,10 +113,12 @@ _SIZE_TOL = 10  # cm
 
 
 _FOREIGN_BRANDS_CACHE: Optional[set[str]] = None
+# Patrón de sufijos que NO son marcas (tamaños, unidades, orígenes)
+_NOT_BRAND_RE = re.compile(r'^(\d+|CM|\d+CM|\d+U|EC|COL|BICOLOR|DIRECT|FARM)$', re.I)
 
 
 def _known_brands() -> set[str]:
-    """Conjunto de marcas conocidas (key.upper() de PROVIDERS). Cacheado.
+    """Conjunto de marcas conocidas: PROVIDERS keys + marcas extraídas del catálogo.
 
     Se usa para detectar cuándo un artículo "ROSA BRIGHTON 50CM 25U
     FIORENTINA" lleva marca, y así poder penalizar si esa marca NO es la
@@ -127,10 +129,15 @@ def _known_brands() -> set[str]:
         try:
             from src.config import PROVIDERS
             brands = {k.upper() for k in PROVIDERS.keys()}
-            # Añadir también variantes comunes que aparecen en nombres ERP
-            # pero cuya key de PROVIDERS es distinta.
+            # Añadir nombres de PROVIDERS (no solo keys) como variantes
+            for pdata in PROVIDERS.values():
+                for w in pdata.get('name', '').upper().split():
+                    if len(w) >= 4 and not _NOT_BRAND_RE.match(w):
+                        brands.add(w)
+            # Añadir variantes hardcodeadas que no se derivan de PROVIDERS
             brands.update({'FIORENTINA', 'MYSTIC', 'STAMPSY', 'CANTIZA',
-                           'CERES', 'GOLDEN', 'LATIN', 'AGRIVALDANI'})
+                           'CERES', 'GOLDEN', 'LATIN', 'AGRIVALDANI',
+                           'SCARLET', 'MONTEROSAS', 'PONDEROSA', 'SANTOS'})
             _FOREIGN_BRANDS_CACHE = brands
         except Exception:
             _FOREIGN_BRANDS_CACHE = set()
@@ -300,8 +307,15 @@ def _score_candidate(line: InvoiceLine, cand: Candidate,
 
     # — Marca/proveedor en nombre del artículo
     pkey = (line.provider_key or '').upper()
-    if pkey and pkey in nombre:
-        score += 0.10
+    # Comprobar si el nombre del artículo contiene la marca del proveedor.
+    # Para keys multi-palabra (verdesestacion→"VERDES"), comprobar también
+    # la última palabra significativa del provider_name.
+    pname_tokens = {t for t in (line.provider_key or '').upper().split('_') if len(t) >= 4}
+    own_brand_match = pkey and pkey in nombre
+    if not own_brand_match:
+        own_brand_match = any(t in nombre for t in pname_tokens)
+    if own_brand_match:
+        score += 0.25
         reasons.append(f'brand_in_name({pkey})')
     else:
         # Penalizar si el artículo lleva marca de OTRO proveedor — evita
