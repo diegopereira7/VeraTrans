@@ -205,9 +205,15 @@ document.addEventListener('DOMContentLoaded', () => {
         const needsReview = s.needs_review || 0;
         const ambiguous = s.ambiguous || 0;
         // Contar carriles de revisión
-        const laneAuto = flatLines.filter(l => l.review_lane === 'auto').length;
-        const laneQuick = flatLines.filter(l => l.review_lane === 'quick').length;
-        const laneFull = flatLines.filter(l => l.review_lane === 'full').length;
+        // Contar carriles: se calcula sobre data.lines (flat) ya que flatLines aún no existe
+        const allLines = [];
+        (data.lines || []).forEach(l => {
+            if (l.children) l.children.forEach(c => allLines.push(c));
+            else allLines.push(l);
+        });
+        const laneAuto = allLines.filter(l => l.review_lane === 'auto').length;
+        const laneQuick = allLines.filter(l => l.review_lane === 'quick').length;
+        const laneFull = allLines.filter(l => l.review_lane === 'full').length;
         const ocrConf = typeof s.ocr_confidence === 'number' ? s.ocr_confidence : 1.0;
         const extConf = typeof s.extraction_confidence === 'number' ? s.extraction_confidence : ocrConf;
         const extSource = s.extraction_source || 'native';
@@ -249,8 +255,8 @@ document.addEventListener('DOMContentLoaded', () => {
             </div>
             <div class="stat-card success"
                  title="Carriles: Auto=${laneAuto} (sin revisión) · Quick=${laneQuick} (revisión rápida) · Full=${laneFull} (revisión completa)">
-                <div class="stat-value">${laneAuto}/${flatLines.length}</div>
-                <div class="stat-label">Auto ${flatLines.length ? Math.round(laneAuto/flatLines.length*100) : 0}%</div>
+                <div class="stat-value">${laneAuto}/${allLines.length}</div>
+                <div class="stat-label">Auto ${allLines.length ? Math.round(laneAuto/allLines.length*100) : 0}%</div>
             </div>
             <div class="stat-card ${headerOk ? 'success' : 'danger'}"
                  title="Suma de líneas vs total de factura.${headerDiff ? ' Diferencia: ' + headerDiff.toFixed(2) + ' USD' : ''}">
