@@ -238,7 +238,8 @@ def _hard_vetoes(line: InvoiceLine, art: dict) -> list[str]:
 def _score_candidate(line: InvoiceLine, cand: Candidate,
                      syn_entry: Optional[dict] = None,
                      provider_id: int = 0,
-                     syn_store: Optional[SynonymStore] = None) -> None:
+                     syn_store: Optional[SynonymStore] = None,
+                     art_loader: Optional[ArticulosLoader] = None) -> None:
     """Rellena cand.score / cand.reasons / cand.penalties con evidencia real.
 
     Features:
@@ -307,22 +308,21 @@ def _score_candidate(line: InvoiceLine, cand: Candidate,
 
     # — Marca/proveedor en nombre del artículo
     pkey = (line.provider_key or '').upper()
-    # Comprobar si el nombre del artículo contiene la marca del proveedor.
-    # Para keys multi-palabra (verdesestacion→"VERDES"), comprobar también
-    # la última palabra significativa del provider_name.
-    pname_tokens = {t for t in (line.provider_key or '').upper().split('_') if len(t) >= 4}
-    own_brand_match = pkey and pkey in nombre
-    if not own_brand_match:
-        own_brand_match = any(t in nombre for t in pname_tokens)
+    # Marca propia: pkey + brand_by_provider del catálogo
+    own_brands = set()
+    if pkey:
+        own_brands.add(pkey)
+    if art_loader and provider_id:
+        catalog_brand = art_loader.brand_by_provider.get(provider_id)
+        if catalog_brand:
+            own_brands.add(catalog_brand.upper())
+    own_brand_match = any(b in nombre for b in own_brands if b)
     if own_brand_match:
         score += 0.25
         reasons.append(f'brand_in_name({pkey})')
     else:
-        # Penalizar si el artículo lleva marca de OTRO proveedor — evita
-        # asignar "ROSA BRIGHTON 50CM 25U FIORENTINA" a un proveedor MYSTIC
-        # cuando hay genéricos o variantes con la marca correcta.
         foreign_brand = _detect_foreign_brand(nombre, pkey)
-        if foreign_brand:
+        if foreign_brand and foreign_brand not in own_brands:
             score -= 0.25
             penalties.append(f'foreign_brand({foreign_brand})')
 
@@ -599,7 +599,24 @@ class Matcher:
         for c in viable:
             s = syn_entry if c.source == 'synonym' else None
             _score_candidate(line, c, syn_entry=s,
-                             provider_id=provider_id, syn_store=self.syn)
+                             provider_id=provider_id, syn_store=self.syn,
+                             art_loader=self.art)
+
+        # Brand boost: si existe un candidato con la marca propia del
+        # proveedor en el nombre Y tiene variety+size match, promoverlo.
+        # Regla de negocio: el artículo con marca propia SIEMPRE gana
+        # sobre genéricos o marcas ajenas con la misma variedad+talla.
+        # Score > 1.0 garantiza que gana cualquier empate.
+        own_brand = (self.art.brand_by_provider.get(provider_id) or '').upper()
+        if own_brand:
+            for c in viable:
+                nombre = (c.articulo.get('nombre') or '').upper()
+                if (own_brand in nombre
+                        and 'variety_match' in c.reasons
+                        and ('size_exact' in c.reasons or 'size_close' in c.reasons)):
+                    c.score = max(c.score, 1.05)
+                    if 'brand_boost' not in c.reasons:
+                        c.reasons.append('brand_boost')
 
         viable.sort(key=lambda c: c.score, reverse=True)
         line.candidate_count = len(viable)
