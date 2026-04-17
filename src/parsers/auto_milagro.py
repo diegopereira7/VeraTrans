@@ -68,6 +68,28 @@ def _num(s: str) -> float:
     return float(s.replace(',', '')) if s else 0.0
 
 
+def _ocr_normalize(raw: str) -> str:
+    """Normaliza ruido OCR de facturas MILAGRO escaneadas muy mal.
+    ``~OSES``→``ROSES``, ``FREE DOM``→``FREEDOM``, ``SO`` pegado a CM/size→``50``,
+    ``25(``→``250`` / ``0.28(``→``0.280`` (paréntesis OCR de un cero),
+    ``�`` (U+FFFD) → ``-`` cuando separa spb y size.
+    """
+    if not raw:
+        return raw
+    s = raw
+    s = re.sub(r'~OSES\b', 'ROSES', s)
+    s = re.sub(r'FREE\s+DOM\b', 'FREEDOM', s, flags=re.I)
+    # Varios chars basura que el OCR usa como separador tipo `-`:
+    # U+FFFD (replacement), U+2022 (bullet), U+00B0 (°), U+00B7 (·)
+    s = re.sub(r'[\ufffd\u2022\u00b0\u00b7]', '-', s)
+    # "SO"/"S0" en posición de size (entre `-` o `X` y resto): "25 - SO"
+    s = re.sub(r'(?<=\s)-\s*S[O0](?=\s)', '- 50', s)
+    s = re.sub(r'(?<=\s)S[O0]\s+(?=\d{5,6})', '50 ', s)  # "SO 000001" → "50 000001"
+    # `0.28(` / `25(` : `(` basura final que OCR confundió con un `0`
+    s = re.sub(r'(\d)\(\B', r'\g<1>0', s)
+    return s
+
+
 class AutoParser:
     fmt_key = 'auto_milagro'
 
@@ -77,6 +99,7 @@ class AutoParser:
             provider_name=provider_data.get('name', ''),
             provider_key=provider_data.get('key', ''),
         )
+        text = '\n'.join(_ocr_normalize(ln) for ln in text.split('\n'))
         m = _INVOICE_RE.search(text)
         if m:
             header.invoice_number = m.group(1)

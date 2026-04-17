@@ -10,6 +10,66 @@ Para lecciones transversales reutilizables, ver [`lessons.md`](lessons.md).
 
 ---
 
+## 2026-04-17 — sesión 9q: IWA mixed_box reclassify + CANTIZA/MILAGRO/MILONGA + fuzzy cache + golden drafts
+
+Cuatro frentes de mejora en paralelo para acabar con el backlog que
+quedó de 9p.
+
+- **[src/matcher.py](../src/matcher.py) → `reclassify_assorted`**:
+  ampliado el regex `_ASSORTED_RE` con `SURTIDO\s+MIXTO`, `ASSORTED\s+(ROSA|ROSE|COLOR)`,
+  `MIXTO`. Las líneas IWA con `SURTIDO MIXTO` y `ASSORTED ROSA` que
+  quedaban en ambiguous_match ahora se reclasifican automáticamente
+  como `mixed_box` (más honesto: son cajas mixtas sin detalle). IWA
+  ambig 19→2 (−17 líneas a mixed_box). A nivel global, −40 ambig.
+- **[src/parsers/cantiza.py](../src/parsers/cantiza.py)**: OCR
+  cleanup específico para el sample `01 - V. 075-6577 1440`:
+  `S0CM`/`SOCM` → `50CM`, `N255T`/`N 2351` → `N 25ST`, pipes `|`
+  a espacios. Relaxación del regex para aceptar `N\s*(\d+)ST`.
+  CANTIZA NO_PARSEA → OK (100 líneas, 95 ok, 3 ambig).
+- **[src/parsers/otros.py](../src/parsers/otros.py) → ColFarmParser**:
+  amplié aliases OCR `_ROSE` (`R:ise`, `R:lse`, `Rlse`, `Rlese`,
+  `R|se`) y `_UNIT` (`SR`). Pre-normalización: `¡`/`!` a espacios,
+  `\d+[~\.]` entre stems y ST como ruido, normalizar variantes
+  Rose a `Rose` con `re.sub` antes del regex principal. Header
+  fallback adicional (`TOTAL (Dolares)` y `Vlr.Total FCA BOGOTA`).
+  MILONGA NO_PARSEA → TOTALES_MAL, 02b (heavy OCR) 0→5 líneas.
+- **[src/parsers/auto_milagro.py](../src/parsers/auto_milagro.py)**:
+  nueva función `_ocr_normalize(line)` aplicada a cada línea del
+  texto antes de los regex. Maneja `~OSES`→`ROSES`, `FREE DOM`→
+  `FREEDOM`, `SO`/`S0` en posición de size→`50`, paréntesis OCR
+  (`0.28(`→`0.280`, `25(`→`250`), y chars basura como separadores
+  (`\ufffd`, `\u2022` bullet, `\u00b0`, `\u00b7`) → `-`. Además
+  `_TOTAL_RE` ya aceptaba coma pero de 9p. MILAGRO NO_PARSEA →
+  TOTALES_MAL (1 sample sigue corrupto irrecuperable; el resto
+  mejora).
+- **[src/articulos.py](../src/articulos.py) → `fuzzy_search`**:
+  optimización doble. (i) Cache por clave `(sp_key, query,
+  threshold)` — una factura repite variedades muchas veces; el
+  cache hit ahorra la comparación completa. (ii) Prefiltro
+  `real_quick_ratio()` (O(1)) y `quick_ratio()` (O(n+m)) antes de
+  `ratio()` (O(n·m)). Reuso de un solo `SequenceMatcher` con
+  `set_seq2` entre comparaciones. Medido sobre MILAGRO 01a (42
+  líneas): ~6.5s antes → ~5.0s ahora (−23%). El prefiltro solo
+  skipea ~2% (los nombres comparten demasiados caracteres con la
+  query); el cache es el ganador cuando hay varieties repetidas.
+- **Golden drafts (+3)**: bootstrapeados con `golden_bootstrap.py`
+  para TIMANA (88112, 15 líneas), BENCHMARK (103685, 32 líneas) y
+  FLORIFRUT/ART ROSES (0001093134, 14 líneas). Pendientes de
+  revisión humana — solo después cuentan en la métrica golden.
+  Se preservó el `golden_unknown.json` original (restaurado desde
+  git tras haberlo sobreescrito por accidente en el bootstrap
+  inicial de BENCHMARK).
+- **Regresión**: golden_eval mantiene 100% (88/88) tras los
+  cambios. MYSTIC/STAMPSY/STAMPSYBOX/FIORENTINA/VUELVEN/CIRCASIA
+  sin cambios en conteo (verificado con parse() manual).
+- **Resultado global**: autoapprove **86.7% → 87.8%** (+1.1pp, la
+  mejor subida de las últimas 3 sesiones). ok 2785 → 2795;
+  ambiguous 268 → 228 (−40, reclassify a mixed_box); líneas
+  totales 3297 → 3309 (+12); needs_review 585 → 548.
+  **Buckets**: OK 70→71 (CANTIZA), NO_PARSEA 10→7 (MILAGRO+
+  MILONGA+CANANVALLE suben a TOTALES_MAL), TOTALES_MAL 1→3.
+  Golden 100% (88/88 reviewed + 3 drafts pendientes).
+
 ## 2026-04-17 — sesión 9p: IWA + PREMIUM + CIRCASIA + ECOFLOR + MILONGA + MILAGRO + PRESTIGE
 
 Quinta tanda de fix sobre el backlog de NO_PARSEA / MUCHO_RESCATE.

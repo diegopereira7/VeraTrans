@@ -21,6 +21,13 @@ class CantizaParser:
         for raw in text.split('\n'):
             ln=raw.strip()
             if not ln: continue
+            # Normaliza OCR típico de esta factura: pipes, tamaños OCR (S0/SO → 50),
+            # `N255T` pegado → `N 25ST`, `2351` (OCR de 25ST) → `25ST`.
+            ln = ln.replace('|', ' ')
+            ln = re.sub(r'\bS[O0](?=CM)', '50', ln)              # S0CM / SOCM → 50CM
+            ln = re.sub(r'\bN(\d{1,2})5?T\b', r'N \g<1>5ST', ln) # N255T → N 25ST
+            ln = re.sub(r'\bN\s*2351\b', 'N 25ST', ln, flags=re.I)
+            ln = re.sub(r'\s{2,}', ' ', ln).strip()
             # Box type: "HB CAN-XXX" o "HB RN-XXX"
             bm=re.search(r'(HB|QB)\s+\w+[- ]?([\dX.]+)',ln)
             if bm: btype=f"{bm.group(1)} {bm.group(0).split()[1]}"
@@ -33,7 +40,8 @@ class CantizaParser:
                 if fm: farm=fm.group(1).strip()
                 continue
             # Sub-líneas: "VARIETY SIZECM N SPBST FARMCODE" — CZ (Cantiza), RN (Rosa Nova), etc.
-            pm=re.search(r'([\w][\w\s.\']*?)\s+(\d+)CM\s+N\s+(\d+)ST\s+[A-Z]{1,4}\b',ln)
+            # `\s*` tras N para aceptar "N255T" pegado (ya normalizado arriba).
+            pm=re.search(r'([\w][\w\s.\']*?)\s+(\d+)CM\s+N\s*(\d+)ST\s+[A-Z]{1,4}\b',ln)
             if not pm: continue
             var=re.sub(r'^[\d*X.]+\s+','',pm.group(1).strip()).strip()
             var=re.sub(r'\([\d*X.]+\)','',var).strip()

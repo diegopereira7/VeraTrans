@@ -1,7 +1,7 @@
 # CLAUDE.md — Guía operativa para el agente
 
-**Última actualización:** 2026-04-17 (sesión 9p)
-**Estado:** 86.7% autoapprove · Golden 100% (88/88) · NO_PARSEA 10
+**Última actualización:** 2026-04-17 (sesión 9q)
+**Estado:** 87.8% autoapprove · Golden 100% (88/88) · NO_PARSEA 7
 
 ---
 
@@ -25,22 +25,26 @@ Web PHP), mismo pipeline Python. Usuario: Ángel Panadero
 
 ## Estado actual (fuente única de verdad)
 
-- **Autoapprove global:** 86.7% (3297 líneas sobre 82 proveedores)
-- **Golden set:** 100% (88/88 líneas con `_status: "reviewed"`)
-- **NO_PARSEA restantes:** 10 proveedores
-- **Buckets:** OK 70 · NO_PARSEA 10 · TOTALES_MAL 1 · NO_DETECTADO 1
-- **Última sesión:** 9p (2026-04-17) — IWA + PREMIUM + CIRCASIA +
-  ECOFLOR + MILONGA + MILAGRO + PRESTIGE
+- **Autoapprove global:** 87.8% (3309 líneas sobre 82 proveedores)
+- **Golden set:** 100% (88/88 líneas con `_status: "reviewed"`) + 3
+  drafts pendientes de revisión humana (timana, benchmark, florifrut)
+- **NO_PARSEA restantes:** 7 proveedores
+- **Buckets:** OK 71 · NO_PARSEA 7 · TOTALES_MAL 3 · NO_DETECTADO 1
+- **Última sesión:** 9q (2026-04-17) — IWA reclassify + CANTIZA/
+  MILAGRO/MILONGA parsers + fuzzy cache + golden drafts
 
 ### Próximos pasos posibles
 
 1. **Shadow mode** (Fase 10) — procesar facturas reales, comparar
    propuesta vs decisión humana, capturar fallos de producción.
-2. **Reducir IWA ambiguous** — 19 líneas SURTIDO MIXTO necesitan
-   sinónimos o regla específica de mixed-box.
-3. **Reducir NO_PARSEA** restantes (CANTIZA, MILAGRO, MILONGA) —
-   quedan con samples OCR-corruptos o formato de bajo volumen.
-4. **Optimizar matcher** (backlog) — ~6.5s para 43 líneas.
+2. **Revisar golden drafts** (timana_88112, benchmark_103685,
+   florifrut_0001093134) — marcar `_status: "reviewed"` tras
+   verificar a mano.
+3. **NO_PARSEA restantes (7)**: CANANVALLE, CEAN GLOBAL, DAFLOR,
+   ELITE, NATIVE BLOOMS, SAYONARA, UNIQUE. OCR duro o match, no
+   parse.
+4. **TOTALES_MAL (3)**: CANTIZA, MILAGRO, MILONGA — parse OK pero
+   sum no cuadra con header en algunos samples.
 3. **Ampliar golden set** a más proveedores para robustecer el
    feedback loop (bootstrap → review → apply → evaluate).
 4. **Optimizar matcher** (backlog) — ~6.5s para 43 líneas contra 42k
@@ -350,6 +354,43 @@ Comandos con flags (`--provider`, `--max-samples`, `--verbose`,
 Solo las 2 últimas sesiones. Todas las anteriores en
 [`docs/sessions.md`](docs/sessions.md).
 
+### 2026-04-17 — sesión 9q: IWA mixed_box + CANTIZA/MILAGRO/MILONGA + fuzzy cache
+
+- **[src/matcher.py](src/matcher.py) → `reclassify_assorted`**:
+  ampliado el regex para aceptar `SURTIDO MIXTO`, `ASSORTED ROSA`,
+  `MIXTO` y variantes de 2 palabras. Reclasifica `ambiguous_match`
+  con variedad claramente "mixed box" a `mixed_box`. IWA ambig
+  19→2, líneas a `mixed_box` = 17.
+- **[src/parsers/cantiza.py](src/parsers/cantiza.py)**: OCR cleanup
+  para sample `01 - V. 075-6577 1440` (N255T→N 25ST, S0/SOCM→50,
+  `2351`→`25ST`, pipes a espacios). CANTIZA NO_PARSEA → OK
+  (100 líneas, 95 ok).
+- **[src/parsers/otros.py](src/parsers/otros.py) → ColFarmParser**:
+  aliases `_ROSE` y `_UNIT` amplicados (R:ise/R:lse/Rlse/SR); pre-
+  normalización OCR (pipes, `¡`/`!`, ruido `\d~` entre stems y ST,
+  Rose-variants → Rose uniform). Header fallback (`TOTAL (Dolares)`
+  y `Vlr.Total FCA BOGOTA`). MILONGA NO_PARSEA → TOTALES_MAL,
+  02b sample 0→5 parsed.
+- **[src/parsers/auto_milagro.py](src/parsers/auto_milagro.py)**:
+  nuevo `_ocr_normalize()` (`~OSES`→`ROSES`, `FREE DOM`→`FREEDOM`,
+  `SO/S0`→`50` contextual, `25(`/`0.28(`→`250`/`0.280` paréntesis
+  OCR de un cero, `\ufffd`/`\u2022`/`\u00b0`/`\u00b7` → `-`).
+  MILAGRO NO_PARSEA → TOTALES_MAL, 02b sample 0→1 parsed.
+- **[src/articulos.py](src/articulos.py) → `fuzzy_search`**: cache
+  por `(sp_key, query, threshold)` + prefiltro con
+  `real_quick_ratio()`/`quick_ratio()` antes de `ratio()`. El cache
+  ayuda en facturas con variedades repetidas; el prefiltro skipea
+  ~2% (aporta poco por naturaleza de los nombres).
+- **Golden set**: +3 drafts (timana_88112, benchmark_103685,
+  florifrut_0001093134) generados con `golden_bootstrap.py` —
+  pendientes de revisión manual para convertirlos en reviewed.
+- **Global**: autoapprove **86.7% → 87.8%** (+1.1pp, mejor sesión
+  de las últimas 3). ok 2785→2795 (+10), ambiguous 268→228 (−40,
+  gracias al reclassify a mixed_box). Líneas totales 3297→3309
+  (+12). **Buckets**: OK 70→71, NO_PARSEA 10→7 (−3), TOTALES_MAL
+  1→3 (CANTIZA→OK; MILAGRO+MILONGA+CANANVALLE suben desde
+  NO_PARSEA). Golden 100% (88/88).
+
 ### 2026-04-17 — sesión 9p: IWA + PREMIUM + CIRCASIA + ECOFLOR + MILONGA + MILAGRO + PRESTIGE
 
 - **[src/parsers/otros.py](src/parsers/otros.py) → IwaParser**:
@@ -383,28 +424,6 @@ Solo las 2 últimas sesiones. Todas las anteriores en
   líneas totales 3219→3297 (+78). Buckets: OK 65→70 (+5),
   NO_PARSEA 13→10 (−3), MUCHO_RESCATE 1→0, TOTALES_MAL 2→1.
   Golden 100%.
-
-### 2026-04-17 — sesión 9o: TIMANA + ART ROSES + BENCHMARK + TESSA parsers
-
-- **[src/parsers/otros.py](src/parsers/otros.py) → TimanaParser**:
-  `OF ` opcional entre size y tariff; sub-líneas de ASSORTED BOX
-  (`ROSE VAR COLOR SIZECM bunches spb price`, sin total) con padre
-  skippeado; deriva `header.total` de `Total FCA` o suma. Sample 01:
-  5→22 líneas, totals_ok 0→5.
-- **[src/parsers/mystic.py](src/parsers/mystic.py)**: `re.I` en ambos
-  regex y admitir mixed-case en variety — desbloquea ART ROSES
-  (FLORIFRUT, fmt mystic) que usa `Mondial`, `Brighton`, etc. ART
-  ROSES: 0/5 OK → 5/5 OK (29 líneas, todas totals_ok).
-- **[src/parsers/golden.py](src/parsers/golden.py) → BENCHMARK**:
-  `price_m` admite coma de miles en el total (`1,350.00`). Sample 01
-  OCR: 0 parsed (rescatado) → 1 parsed OK. Rescued 4→0, totals_ok
-  3/5→5/5.
-- **[src/parsers/otros.py](src/parsers/otros.py) → TessaParser**:
-  añadido prefix opcional `[A-Z][A-Z0-9\-]*\s+` antes de variety para
-  aceptar farm codes como `TESSA-R1`. Comma-in-total en price/label.
-  Sample 02b: 0→4 parsed (diff 100%→0%).
-- **Global**: autoapprove **86.8% → 87.1%** (+0.3pp), ok 2652→2739,
-  líneas totales 3118→3219 (+101). NO_PARSEA ~19→13. Golden 100%.
 
 ---
 

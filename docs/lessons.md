@@ -109,6 +109,24 @@ correspondiente en [`sessions.md`](sessions.md).
   **más temprano** en el texto (la cabecera del PDF siempre tiene el
   emisor), no el primer match por orden de dict.
 
+## Performance y optimización
+
+- **`SequenceMatcher` en fuzzy_search**: dominante cuando el pool
+  supera 5k artículos. Dos optimizaciones cheap que siempre son
+  seguras: (i) cache por `(species_key, query, threshold)` — facturas
+  suelen repetir variedades; (ii) prefiltro `real_quick_ratio()` y
+  `quick_ratio()` antes de `ratio()` completo. En la práctica el
+  prefiltro skipea ~2% (los nombres ERP comparten demasiados chars
+  con la query); el cache aporta más valor. Reutilizar una instancia
+  de `SequenceMatcher` con `set_seq2()` también ayuda marginalmente.
+- **Reclassify > sinónimo nuevo para MIXED**: cuando una línea es
+  claramente mixed box (`SURTIDO MIXTO`, `ASSORTED ROSA`, `MIX`)
+  reclasificar a `match_status = 'mixed_box'` en lugar de dejar
+  `ambiguous_match` / pedir sinónimo. Es más honesto y el operador
+  entiende enseguida que la caja no tiene desglose por variedad.
+  Regex en `reclassify_assorted` (matcher.py). Sesión 9q: IWA 19
+  ambig → 2 ambig + 17 mixed_box.
+
 ## Benchmark y métricas
 
 - **Abrir parsers puede bajar autoapprove_rate temporalmente**. Una

@@ -1594,7 +1594,7 @@
     "size": 70,
     "stems_per_bunch": 20,
     "grade": "FANCY",
-    "raw": "6 H 500 3000 CONSUMER BUNCH CARNATION FANCY BLANCO FCY CB S2 0.165 495.00",
+    "raw": "1 H 500 500 CONSUMER BUNCH CARNATION FANCY ASTURIAS FCY WH CB S2 0.170 85.00",
     "invoice": "",
     "times_used": 0,
     "times_confirmed": 0,
@@ -1613,7 +1613,7 @@
     "size": 70,
     "stems_per_bunch": 20,
     "grade": "FANCY",
-    "raw": "4 H 500 2000 CONSUMER BUNCH CARNATION FANCY RED FCY CB S2 0.190 380.00",
+    "raw": "1 H 500 500 CONSUMER BUNCH CARNATION FANCY R48 FCY RD CB S2 0.170 85.00",
     "invoice": "",
     "times_used": 0,
     "times_confirmed": 0,
@@ -1651,7 +1651,7 @@
     "size": 70,
     "stems_per_bunch": 20,
     "grade": "FANCY",
-    "raw": "4 H 500 2000 CONSUMER BUNCH CARNATION FANCY YELLOW FCY CB S2 0.190 380.00",
+    "raw": "1 H 500 500 CONSUMER BUNCH CARNATION FANCY FCY YW CB S2 0.170 85.00",
     "invoice": "",
     "times_used": 0,
     "times_confirmed": 0,
@@ -1689,7 +1689,7 @@
     "size": 70,
     "stems_per_bunch": 20,
     "grade": "FANCY",
-    "raw": "1 H 500 500 CONSUMER BUNCH CARNATION FANCY ASTURIAS BIC CB S2 0.180 90.00",
+    "raw": "1 H 500 500 CONSUMER BUNCH CARNATION FANCY R45 NOVEDADES+ BICOL CB S2 0.170 85.00",
     "invoice": "",
     "times_used": 0,
     "times_confirmed": 0,
@@ -17194,7 +17194,7 @@
     "raw": "15,00 QB HYD WHITE PREMIUM 350603199010 525 0,48 252,00",
     "invoice": "",
     "status": "ambiguo",
-    "times_corrected": 89
+    "times_corrected": 94
   },
   "440|GYPSOPHILA|GYPSOPHILA XL RAINBOW MIX|80|25|": {
     "articulo_id": 34976,
@@ -17209,7 +17209,7 @@
     "raw": "96632 1 hb 450 Gyp Xl Rainbow Mix 80 cm/750 gr Violeta Flowers 450 25 18 $ 8 ,50 $ 1 53,00",
     "invoice": "",
     "status": "ambiguo",
-    "times_corrected": 17
+    "times_corrected": 18
   },
   "6323|HYDRANGEAS|PREMIUM TENIDA YELLOW|60|1|": {
     "articulo_id": 22735,
@@ -25256,7 +25256,7 @@
   "11391|ROSES|STAR PLATINUM|50|25|": {
     "articulo_id": 36758,
     "articulo_name": "ROSA STAR PLATINIUM 50CM 25U PRESTIGE",
-    "origen": "auto-fuzzy",
+    "origen": "auto",
     "status": "aprendido_en_prueba",
     "provider_id": 11391,
     "species": "ROSES",
@@ -26337,7 +26337,7 @@
     "raw": "ALSTRO (TSTEM ASSORTED SUPERSELEC 1 80 80 .240 19.20",
     "invoice": "93725",
     "status": "ambiguo",
-    "times_corrected": 289
+    "times_corrected": 306
   },
   "281|ALSTROEMERIA|MIXTO|0|10|SELECT": {
     "articulo_id": 12787,
@@ -26352,7 +26352,7 @@
     "raw": "ALSTRO (TSTEM ASSORTED SELECT 2 100 200 .180 36.00",
     "invoice": "94114",
     "status": "ambiguo",
-    "times_corrected": 119
+    "times_corrected": 126
   },
   "281|ALSTROEMERIA|WHITE|0|10|SELECT": {
     "articulo_id": 12723,
@@ -26367,7 +26367,7 @@
     "raw": "ALSTRO (TSTEM WHITE SELECT 1 100 100 .180 18.00",
     "invoice": "94114",
     "status": "ambiguo",
-    "times_corrected": 51
+    "times_corrected": 54
   },
   "281|ROSES|GARDEN MAYRA`S WHITE|40|25|": {
     "articulo_id": 34182,
@@ -26427,7 +26427,7 @@
     "raw": "1 H LIMONADA 12 25 50 300 0,320 96,000",
     "invoice": "0000254785",
     "status": "ambiguo",
-    "times_corrected": 46
+    "times_corrected": 49
   },
   "13001|ROSES|TESSA-D LIMONADA|60|4|": {
     "articulo_id": 35087,
@@ -30625,7 +30625,7 @@
     "raw": "5 H Rose Freedom X 10 - 50 47806- 50 GONZA x 10 0603.11.00.00 200 1000 ST 0.32 320.00",
     "invoice": "",
     "status": "ambiguo",
-    "times_corrected": 19
+    "times_corrected": 20
   },
   "90012|ROSES|TIFFANY|60|25|": {
     "articulo_id": 37198,
@@ -31191,7 +31191,7 @@
     "size": 40,
     "stems_per_bunch": 25,
     "grade": "",
-    "raw": "2 H Frutteto 8 25 40 200 0,220 44,000",
+    "raw": "H DANS Frutteto 8 25 40 200 0,220 44,000",
     "invoice": "",
     "times_used": 0,
     "times_confirmed": 0,
@@ -31210,7 +31210,7 @@
     "size": 40,
     "stems_per_bunch": 25,
     "grade": "",
-    "raw": "H Momentum 2 25 40 50 0,220 11,000",
+    "raw": "H DANS Momentum 2 25 40 50 0,220 11,000",
     "invoice": "",
     "times_used": 0,
     "times_confirmed": 0,
@@ -31248,7 +31248,7 @@
     "size": 50,
     "stems_per_bunch": 25,
     "grade": "",
-    "raw": "H Frutteto 4 25 50 100 0,280 28,000",
+    "raw": "H FVIDA Frutteto 4 25 50 100 0,300 30,000",
     "invoice": "",
     "times_used": 0,
     "times_confirmed": 0,
@@ -31356,7 +31356,7 @@
     "size": 60,
     "stems_per_bunch": 25,
     "grade": "",
-    "raw": "7 H Mondial 14 25 60 350 0,350 122,500",
+    "raw": "6 H Mondial 14 25 60 350 0,350 122,500",
     "invoice": "",
     "times_used": 0,
     "times_confirmed": 0,
@@ -31388,7 +31388,7 @@
     "size": 60,
     "stems_per_bunch": 25,
     "grade": "",
-    "raw": "9 H Explorer 14 25 60 350 0,350 122,500",
+    "raw": "8 H Explorer 14 25 60 350 0,350 122,500",
     "invoice": "",
     "times_used": 0,
     "times_confirmed": 0,
@@ -32838,7 +32838,7 @@
     "raw": "SALMA 60 25 4 100 0.400 40.000",
     "invoice": "",
     "status": "ambiguo",
-    "times_corrected": 18
+    "times_corrected": 19
   },
   "90018|ROSES|ABSOLUTE IN PINK|60|25|": {
     "articulo_id": 31605,
@@ -33627,7 +33627,7 @@
     "raw": "2 QB 500 50 CARNATION WHITE R14 0603.12.7000 Stems 1000 US$ 0.120 US$ US$",
     "invoice": "",
     "status": "ambiguo",
-    "times_corrected": 1
+    "times_corrected": 2
   },
   "90030|CARNATIONS|RED|55|50|": {
     "articulo_id": 12827,
@@ -33642,7 +33642,7 @@
     "raw": "2 QB 500 50 CARNATION RED R14 0603.12.7000 Stems 1000 US$ 0.120 US$ US$",
     "invoice": "",
     "status": "ambiguo",
-    "times_corrected": 1
+    "times_corrected": 2
   },
   "90030|CARNATIONS|WHITE|55|30|": {
     "articulo_id": 12744,
@@ -33657,7 +33657,7 @@
     "raw": "1 HB 600 30 CARNATION WHITE VERALEZA 0603.12.7000 Stems 600 US$ 0.080 US$ US$",
     "invoice": "",
     "status": "ambiguo",
-    "times_corrected": 2
+    "times_corrected": 4
   },
   "90033|ROSES|MONDIAL|50|25|": {
     "articulo_id": 33230,
@@ -34538,7 +34538,7 @@
     "raw": "2 HB MONDIAL. 25 X .00   2        50.00 0.30 15.00",
     "invoice": "",
     "status": "ambiguo",
-    "times_corrected": 51
+    "times_corrected": 54
   },
   "90038|ROSES|MONDIAL.|60|25|": {
     "articulo_id": 32319,
@@ -34553,7 +34553,7 @@
     "raw": "2 HB MONDIAL. 25 X .00    7       175.00 0.35 61.25",
     "invoice": "",
     "status": "ambiguo",
-    "times_corrected": 34
+    "times_corrected": 36
   },
   "90038|ROSES|PALOMA|50|25|": {
     "articulo_id": 35877,
@@ -35001,7 +35001,7 @@
     "raw": "1 H Rose Freedom X 10 - 50 45337 50 GONZA X 10 0603.11.00.00 200 200 ST 0.30 60.00",
     "invoice": "",
     "status": "ambiguo",
-    "times_corrected": 32
+    "times_corrected": 34
   },
   "90044|ROSES|VENDELA|50|25|": {
     "articulo_id": 32426,
@@ -35377,7 +35377,7 @@
     "size": 60,
     "stems_per_bunch": 25,
     "grade": "",
-    "raw": "2 H Rose Freedom X 25 - 60 116296- 60 xxx 250 500 ST 0.37 185.00",
+    "raw": "H Rose FreedomX 25 -60 23263 60 250 250 ST 0.370 92.500",
     "invoice": "",
     "times_used": 0,
     "times_confirmed": 0,
@@ -35572,7 +35572,7 @@
     "raw": "2 HB EXPLORER. 25 X .00   4        100 0.30 30.00",
     "invoice": "1775728457_TIERRA_VERDE2.pdf",
     "status": "ambiguo",
-    "times_corrected": 34
+    "times_corrected": 36
   },
   "90038|ROSES|EXPLORER°|50|25|": {
     "articulo_id": 32252,
@@ -35587,7 +35587,7 @@
     "raw": "2 HB EXPLORER° 25 X .00   8        200 0.30 60.00",
     "invoice": "1775728457_TIERRA_VERDE2.pdf",
     "status": "ambiguo",
-    "times_corrected": 34
+    "times_corrected": 36
   },
   "11748|ROSES|MAGIC TIMES|40|25|": {
     "articulo_id": 35187,
@@ -35714,8 +35714,8 @@
     "size": 50,
     "stems_per_bunch": 25,
     "grade": "",
-    "raw": "1 Q Rose Playa Blanca X 25 - 50 114016 50 xxx 150 150 ST 0.40 60.00",
-    "invoice": "04 - 729-45889314 - MILONGA FLOWERS MILONGA.pdf",
+    "raw": "1 Q Rose Playa Blanca X25 - 50 117265 50 X 150 150 ST 0.40 60.00",
+    "invoice": "",
     "times_used": 0,
     "times_confirmed": 0,
     "times_corrected": 0,
@@ -35725,7 +35725,7 @@
   "90026|ROSES|FREEDOM|40|25|": {
     "articulo_id": 33908,
     "articulo_name": "ROSA FREEDOM 40CM 25U",
-    "origen": "auto-fuzzy",
+    "origen": "auto",
     "status": "aprendido_en_prueba",
     "provider_id": 90026,
     "species": "ROSES",
@@ -36441,7 +36441,7 @@
     "raw": "HB 1 0,5 EXPLORER 0603.11.00.60 25 14 14 350 0,32 112,00",
     "invoice": "1776252553_ROSABELLA.pdf",
     "status": "ambiguo",
-    "times_corrected": 34
+    "times_corrected": 36
   },
   "90010|CARNATIONS|SELECT CREAM|0|20|": {
     "articulo_id": 12908,
@@ -37069,7 +37069,7 @@
     "size": 40,
     "stems_per_bunch": 25,
     "grade": "",
-    "raw": "H Brighton 1 25 40 25 0,250 6,250",
+    "raw": "1 H DANS Brighton 1 25 40 25 0,220 5,500",
     "invoice": "",
     "times_used": 0,
     "times_confirmed": 0,
@@ -39444,7 +39444,7 @@
     "size": 40,
     "stems_per_bunch": 25,
     "grade": "",
-    "raw": "ROSES CAFE DEL MAR X 25 - 40 Milagro 5 125 0.400",
+    "raw": "ROSES CAFE DEL MAR X 25 - 40 Milagro 5 125 0.300",
     "invoice": "",
     "times_used": 0,
     "times_confirmed": 0,
@@ -39520,7 +39520,7 @@
     "size": 40,
     "stems_per_bunch": 25,
     "grade": "",
-    "raw": "ROSES MONDIAL X 25 - 40 Milagro 10 250 0.250",
+    "raw": "ROSES MONDIAL X 25 - 40 Milagro 1 25 0.250",
     "invoice": "",
     "times_used": 0,
     "times_confirmed": 0,
@@ -47001,7 +47001,7 @@
   "90030|CARNATIONS|MIX 55|55|25|": {
     "articulo_id": 12515,
     "articulo_name": "CLAVEL COL ESTANDAR MIXTO 60CM 25U",
-    "origen": "auto-fuzzy",
+    "origen": "auto",
     "status": "aprendido_en_prueba",
     "provider_id": 90030,
     "species": "CARNATIONS",
@@ -47039,7 +47039,7 @@
   "11391|ROSES|MOODY BLUES|50|25|": {
     "articulo_id": 35625,
     "articulo_name": "ROSA MOODY BLUES 50CM 25U PRESTIGE",
-    "origen": "auto-matching",
+    "origen": "auto",
     "status": "aprendido_en_prueba",
     "provider_id": 11391,
     "species": "ROSES",
@@ -47077,7 +47077,7 @@
   "11391|ROSES|SHIMMER|50|25|": {
     "articulo_id": 36476,
     "articulo_name": "ROSA SHIMMER 50CM 25U PRESTIGE",
-    "origen": "auto-matching",
+    "origen": "auto",
     "status": "aprendido_en_prueba",
     "provider_id": 11391,
     "species": "ROSES",
@@ -47096,7 +47096,7 @@
   "11391|ROSES|QUICKSAND|50|25|": {
     "articulo_id": 32362,
     "articulo_name": "ROSA COL QUICKSAND 50CM 25U",
-    "origen": "auto-matching",
+    "origen": "auto",
     "status": "aprendido_en_prueba",
     "provider_id": 11391,
     "species": "ROSES",
@@ -47110,6 +47110,44 @@
     "times_confirmed": 0,
     "times_corrected": 0,
     "first_seen_at": "2026-04-17T12:27:16",
+    "last_confirmed_at": ""
+  },
+  "435|ROSES|ALOHA|40|255|": {
+    "articulo_id": 31643,
+    "articulo_name": "ROSA ALOHA 40CM 25U CANTIZA",
+    "origen": "auto-matching",
+    "status": "aprendido_en_prueba",
+    "provider_id": 435,
+    "species": "ROSES",
+    "variety": "ALOHA",
+    "size": 40,
+    "stems_per_bunch": 255,
+    "grade": "",
+    "raw": "ALOHA 40CM N 255ST CZ",
+    "invoice": "",
+    "times_used": 0,
+    "times_confirmed": 0,
+    "times_corrected": 0,
+    "first_seen_at": "2026-04-17T13:46:43",
+    "last_confirmed_at": ""
+  },
+  "90026|ROSES|VENDELA|40|25|": {
+    "articulo_id": 32424,
+    "articulo_name": "ROSA COL VENDELA 40CM 25U",
+    "origen": "auto",
+    "status": "aprendido_en_prueba",
+    "provider_id": 90026,
+    "species": "ROSES",
+    "variety": "VENDELA",
+    "size": 40,
+    "stems_per_bunch": 25,
+    "grade": "",
+    "raw": "3 H Rose Vendela X 25 -40 23265-23267 40 300 000 ST 0.240 216.000",
+    "invoice": "",
+    "times_used": 0,
+    "times_confirmed": 0,
+    "times_corrected": 0,
+    "first_seen_at": "2026-04-17T13:50:28",
     "last_confirmed_at": ""
   }
 }

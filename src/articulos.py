@@ -274,7 +274,13 @@ class ArticulosLoader:
         return None
 
     def fuzzy_search(self, line: InvoiceLine, threshold: float = 0.4) -> list:
-        """Búsqueda fuzzy por similitud dentro del pool de la especie."""
+        """Búsqueda fuzzy por similitud dentro del pool de la especie.
+
+        Optimizaciones:
+        - Cache por (sp_key, query, threshold) — una factura repite variedades.
+        - Prefiltro con ``real_quick_ratio()`` (O(1)) y ``quick_ratio()``
+          (O(n+m)) antes del ``ratio()`` completo (O(n·m)).
+        """
         sp_map = {
             'ROSES': 'ROSES_EC', 'ROSES_EC': 'ROSES_EC', 'ROSES_COL': 'ROSES_COL',
             'CARNATIONS': 'CARNATIONS', 'HYDRANGEAS': 'HYDRANGEAS',
@@ -289,15 +295,34 @@ class ArticulosLoader:
         if not pool:
             return []
         query = self._query_key(line)
+        # Cache hit?
+        cache = getattr(self, '_fuzzy_cache', None)
+        if cache is None:
+            cache = {}
+            self._fuzzy_cache = cache
+        ckey = (sp_key, query, threshold)
+        if ckey in cache:
+            return cache[ckey]
         cands = []
+        sm = SequenceMatcher(None, query, '', autojunk=False)
         for rest, aid in pool:
-            r = SequenceMatcher(None, query, rest).ratio()
+            sm.set_seq2(rest)
+            # real_quick_ratio es O(1); quick_ratio O(n+m). Ambos son
+            # cotas superiores; si caen por debajo del threshold, ratio()
+            # tampoco pasará.
+            if sm.real_quick_ratio() < threshold:
+                continue
+            if sm.quick_ratio() < threshold:
+                continue
+            r = sm.ratio()
             if r >= threshold:
                 cands.append({
                     'id': aid, 'nombre': self.articulos[aid]['nombre'],
                     'similitud': round(r * 100, 1), 'key': rest,
                 })
-        return sorted(cands, key=lambda x: x['similitud'], reverse=True)[:5]
+        result = sorted(cands, key=lambda x: x['similitud'], reverse=True)[:5]
+        cache[ckey] = result
+        return result
 
     # --- Indexación interna ---
 

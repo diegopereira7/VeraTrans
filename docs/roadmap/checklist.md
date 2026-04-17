@@ -72,21 +72,19 @@ _Cifras tomadas del historial de sesiones de `CLAUDE.md` (sesión 6, abril 2026)
   - `mark_confirmed`/`mark_corrected` ya existen en `SynonymStore`;
     falta engancharlos a UI/API.
 
-### KPIs baseline (sesión 9p, `tools/evaluate_all.py`)
-- Líneas totales procesadas: **3297** (+78 vs 9o — IWA rescue liberado
-  + nuevos lines en CIRCASIA/PREMIUM/PRESTIGE/ECOFLOR)
-- Líneas `ok`: **2785** · `ambiguous_match`: **268** · `autoapprovable`: **2646**
-- **autoapprove_rate: 86.7%** de las líneas linkables (−0.4pp por
-  dilución: IWA añade 19 SURTIDO MIXTO ambig)
-- **Golden set: 100%** parse + link accuracy (88/88 líneas, 5/5 reviewed)
-- Buckets: OK 70 · NO_PARSEA 10 · TOTALES_MAL 1 · NO_DETECTADO 1
-  (MUCHO_RESCATE vaciado)
+### KPIs baseline (sesión 9q, `tools/evaluate_all.py`)
+- Líneas totales procesadas: **3309** (+12 vs 9p)
+- Líneas `ok`: **2795** · `ambiguous_match`: **228** · `autoapprovable`: **2654**
+- **autoapprove_rate: 87.8%** de las líneas linkables (+1.1pp vs 9p)
+- **Golden set: 100%** parse + link accuracy (88/88 líneas reviewed)
+  + 3 drafts pendientes (timana, benchmark, florifrut)
+- Buckets: OK 71 · NO_PARSEA 7 · TOTALES_MAL 3 · NO_DETECTADO 1
 - Top-5 penalties globales:
-  1. `weak_synonym` 2657
-  2. `variety_no_overlap` 244
-  3. `foreign_brand` 190
+  1. `weak_synonym` 2673
+  2. `variety_no_overlap` 245
+  3. `foreign_brand` 191
   4. `low_evidence` 152
-  5. `tie_top2_margin` 124
+  5. `tie_top2_margin` 125
 - Feedback loop operativo: golden → review → apply → sinónimos confirmados
 - Rama OCR real disponible: **OCRmyPDF+Tesseract** + EasyOCR fallback
 - Matching: **scoring por evidencia** con vetos duros y trazabilidad
@@ -388,17 +386,49 @@ tras la sesión 8 (baseline ya capturada).
 - [x] 15. IWA + PREMIUM + CIRCASIA + ECOFLOR + MILONGA + MILAGRO +
       PRESTIGE (sesión 9p) — 87.1%→86.7% (dilución por +78 líneas),
       NO_PARSEA 13→10, +5 proveedores a OK, MUCHO_RESCATE vaciado
-- [ ] 16. **Shadow mode** (Fase 10) — cuando se empiece a implantar
-- [ ] 17. Ampliar NO_PARSEA restante: CANTIZA, MILAGRO, MILONGA (OCR
-      muy corrupto en algunos samples)
-- [ ] 18. Reducir IWA ambiguous (19 SURTIDO MIXTO)
-- [ ] 19. Optimizar matcher (backlog) — ~6.5s para 43 líneas
+- [x] 16. IWA mixed_box + CANTIZA/MILAGRO/MILONGA + fuzzy cache +
+      golden drafts (sesión 9q) — 86.7%→87.8%, NO_PARSEA 10→7,
+      ambig 268→228 (reclassify), matcher ~6.5s→~5.0s para 42 líneas
+- [ ] 17. **Shadow mode** (Fase 10) — cuando se empiece a implantar
+- [ ] 18. Revisar golden drafts (timana, benchmark, florifrut) y
+      marcarlos reviewed
+- [ ] 19. NO_PARSEA restantes (7): CANANVALLE, CEAN GLOBAL, DAFLOR,
+      ELITE, NATIVE BLOOMS, SAYONARA, UNIQUE — mayoría son issues de
+      match, no de parse
+- [ ] 20. TOTALES_MAL (3): CANTIZA/MILAGRO/MILONGA — mejorar header
+      extraction para samples con OCR corrupto
 
 ---
 
 ## Registro rápido de avances
 
 ### Último bloque cerrado
+- Fecha: 2026-04-17
+- Paso: sesión 9q — IWA mixed_box + CANTIZA/MILAGRO/MILONGA + fuzzy
+  cache + golden drafts
+- Qué se hizo:
+  * **`matcher.py → reclassify_assorted`**: regex ampliado para
+    `SURTIDO MIXTO`, `ASSORTED ROSA`, `MIXTO` y variantes de 2
+    palabras. IWA 17 líneas `ambiguous_match` → `mixed_box`.
+  * **`parsers/cantiza.py`**: OCR cleanup (`S0CM`→`50CM`, `N255T`→
+    `N 25ST`, pipes). CANTIZA NO_PARSEA → OK (100 líneas).
+  * **`parsers/otros.py → ColFarmParser`**: aliases Rose/Unit
+    ampliados (R:ise, R:lse, Rlse, SR), cleanup OCR ruido `\d~`,
+    header fallback con `TOTAL (Dolares)` y `Vlr.Total FCA`.
+    MILONGA NO_PARSEA → TOTALES_MAL.
+  * **`parsers/auto_milagro.py`**: `_ocr_normalize()` maneja `~OSES`,
+    `FREE DOM`, `SO/S0` contextual, paréntesis OCR `(`→`0`, y chars
+    basura (bullet, replacement, etc.) → `-`. MILAGRO NO_PARSEA →
+    TOTALES_MAL.
+  * **`articulos.py → fuzzy_search`**: cache por `(sp_key, query,
+    threshold)` + prefiltro `real_quick_ratio`/`quick_ratio`. ~23%
+    speedup en invoice de 42 líneas (6.5s → 5.0s).
+  * **Golden**: +3 drafts (timana, benchmark, florifrut).
+- Resultado: autoapprove **86.7% → 87.8%** (+1.1pp); ok 2785→2795;
+  ambig 268→228 (−40 por mixed_box). Buckets: OK 70→71, NO_PARSEA
+  10→7, TOTALES_MAL 1→3. Golden 100% (88/88 reviewed + 3 drafts).
+
+### Penúltimo bloque cerrado
 - Fecha: 2026-04-17
 - Paso: sesión 9p — IWA + PREMIUM + CIRCASIA + ECOFLOR + MILONGA +
   MILAGRO + PRESTIGE

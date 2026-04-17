@@ -1445,10 +1445,10 @@ class ColFarmParser:
     Tolera OCR: 'Rbse'/'Rcse' por 'Rose', 'S1'/'SI'/'Sl'/"'ST" por 'ST',
     decimales con coma ('0,31') y espacios pegados ('NenaX25-50').
     """
-    # Alias de Rose con tolerancia OCR: Rose, Rbse, Rcse, Ros
-    _ROSE = r'(?:Rose|Rbse|Rcse|Ros)'
-    # Unidad: ST, S1, SI, Sl, 'ST, ST'
-    _UNIT = r"(?:ST|S1|SI|Sl|'?ST'?)"
+    # Alias de Rose con tolerancia OCR: Rose, Rbse, Rcse, Ros, R:ise, R:lse, Rlse
+    _ROSE = r'(?:Rose|Rbse|Rcse|Ros|R:ise|R:lse|Rlse|Rlese|R\|se)'
+    # Unidad: ST, S1, SI, Sl, 'ST, ST', sr (OCR garbage)
+    _UNIT = r"(?:ST|S1|SI|Sl|SR|'?ST'?)"
 
     @staticmethod
     def _money(s: str) -> float:
@@ -1474,6 +1474,11 @@ class ColFarmParser:
         h.awb = re.sub(r'\s+', '', m.group(1).strip()) if m else ''
         m = re.search(r'HAWB\s*/?\s*HVL[:\s]*([\w\-]+)', text, re.I); h.hawb = m.group(1) if m else ''
         m = re.search(r'INVOICE\s+TOTAL\s*\(?\w*\)?\s*([\d,.]+)', text, re.I)
+        if not m:
+            # MILONGA OCR: "NJCll:TOTAL (D�lares) 1,173.500" o "Vlr.Total FCA BOGOT�: 1,173.500"
+            m = re.search(r'TOTAL\s+\(?D[\wóÓ�]*lares\)?\s*([\d,.]+)', text, re.I)
+        if not m:
+            m = re.search(r'Vlr\.?\s*Total\s+FCA[^:]*:\s*([\d,.]+)', text, re.I)
         h.total = self._money(m.group(1)) if m else 0.0
 
         lines = []
@@ -1483,12 +1488,16 @@ class ColFarmParser:
             # Normaliza ruido OCR típico de estas facturas: pipes, llaves,
             # caracteres raros (� { } [ ]), asteriscos y puntos sueltos
             # entre números. Mantiene la línea original para ``raw_description``.
-            ln = re.sub(r'[\u00a6\u2022\u00b0{}\[\]~]', ' ', ln)
+            ln = re.sub(r'[\u00a6\u2022\u00b0{}\[\]~;]', ' ', ln)
             ln = re.sub(r'[\ufffd\u00ef\u00bf\u00bd]', ' ', ln)  # � y variantes
-            ln = ln.replace('|', ' ').replace('*', ' ')
+            ln = ln.replace('|', ' ').replace('*', ' ').replace('¡', ' ').replace('!', ' ')
             # "X2-5" pegado (OCR rompe X25) → "X 25", " i ee" ruido → " "
             ln = re.sub(r'X(\d)-(\d)(?=\s)', r'X\1\2', ln)
             ln = re.sub(r'\s+i\s+ee\s+', ' ', ln)
+            # Dígito seguido de '~' o punto basura: "300 1~ " → "300 " (ruido stems_total)
+            ln = re.sub(r'(?<=\d)\s*\d+[~\.]\s*(?=ST|SR|Sl)', ' ', ln, flags=re.I)
+            # Normaliza Rose OCR variants antes del regex principal
+            ln = re.sub(r'\bR(?:[:]?ise|[:]?lse|lese|\|se)\b', 'Rose', ln, flags=re.I)
             ln = re.sub(r'\s{2,}', ' ', ln).strip()
             # Línea principal: "1 H Rose Frutteto X 25 - 40 ... 300 300 ST 0.25 75.00"
             # Soporta 'RoseFrutteto' pegado, OCR 'Rbse'/'Rcse', unidad ST/S1/Sl,

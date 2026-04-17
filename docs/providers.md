@@ -10,8 +10,8 @@ muestras de entrenamiento.
 
 - **84 REGISTRADO_OK** — detectados y con parser funcional
 - **0 REGISTRADO_STUB** — todos los stubs convertidos
-- **Buckets en benchmark (sesión 9p)**: OK 70 · NO_PARSEA 10 ·
-  TOTALES_MAL 1 · NO_DETECTADO 1
+- **Buckets en benchmark (sesión 9q)**: OK 71 · NO_PARSEA 7 ·
+  TOTALES_MAL 3 · NO_DETECTADO 1
 - **8 LOGISTICA** — filtrados por SKIP_PATTERNS del batch:
   `ALLIANCE`, `DSV`, `EXCELE CARGA`, `LOGIZTIK`, `REAL CARGA`,
   `SAFTEC`, `VERALEZA` (la buyer), `FESO` (EXCELLENT CARGO SERVICE

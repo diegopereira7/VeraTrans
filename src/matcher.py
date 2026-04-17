@@ -860,8 +860,8 @@ def reclassify_assorted(lines: list[InvoiceLine]) -> list[InvoiceLine]:
     """
     _ASSORTED_RE = re.compile(
         r'^(?:ASSORTED|SPECIAL\s+ASSTD|SPECIAL\s+ASSORTED|ASSTD'
-        r'|ASSORTED\s+COLOR|MIX\s+COLORS?|MIX|MIXED'
-        r'|SPECIAL\s+PACK|SURTIDO'
+        r'|ASSORTED\s+(?:COLOR|ROSA|ROSE)|MIX\s+COLORS?|MIX|MIXED|MIXTO'
+        r'|SPECIAL\s+PACK|SURTIDO(?:\s+MIXTO)?'
         r'|(?:SPRAY\s+)?CARNATION\s+(?:ASSORTED|MIX))$', re.I)
     for l in lines:
         # También reclasifica ambiguous_match si la variedad es claramente
