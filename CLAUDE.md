@@ -1,7 +1,7 @@
 # CLAUDE.md — Guía operativa para el agente
 
-**Última actualización:** 2026-04-17 (sesión 9n)
-**Estado:** 86.8% autoapprove · Golden 100% (88/88) · NO_PARSEA ~19
+**Última actualización:** 2026-04-17 (sesión 9o)
+**Estado:** 87.1% autoapprove · Golden 100% (88/88) · NO_PARSEA 13
 
 ---
 
@@ -25,11 +25,11 @@ Web PHP), mismo pipeline Python. Usuario: Ángel Panadero
 
 ## Estado actual (fuente única de verdad)
 
-- **Autoapprove global:** 86.8% (3118 líneas sobre 82 proveedores)
+- **Autoapprove global:** 87.1% (3219 líneas sobre 82 proveedores)
 - **Golden set:** 100% (88/88 líneas con `_status: "reviewed"`)
-- **NO_PARSEA restantes:** ~19 proveedores
-- **Última sesión:** 9n (2026-04-17) — NATIVE + MILONGA + MILAGRO +
-  refinado matcher
+- **NO_PARSEA restantes:** 13 proveedores
+- **Última sesión:** 9o (2026-04-17) — TIMANA + ART ROSES + BENCHMARK
+  + TESSA parsers
 
 ### Próximos pasos posibles
 
@@ -37,8 +37,8 @@ Web PHP), mismo pipeline Python. Usuario: Ángel Panadero
    propuesta vs decisión humana, capturar fallos de producción.
    Recomendado si se empieza a implantar.
 2. **Reducir NO_PARSEA** atacando el top del backlog priorizado por
-   taxonomía (`auto_learn_taxonomy.json`). Candidatos vivos: UMA,
-   CANTIZA, BENCHMARK, TESSA, ART ROSES, TIMANA.
+   taxonomía (`auto_learn_taxonomy.json`). Candidatos vivos: CANTIZA,
+   TESSA (sub-líneas multi-variedad), más en el report.
 3. **Ampliar golden set** a más proveedores para robustecer el
    feedback loop (bootstrap → review → apply → evaluate).
 4. **Optimizar matcher** (backlog) — ~6.5s para 43 líneas contra 42k
@@ -348,6 +348,28 @@ Comandos con flags (`--provider`, `--max-samples`, `--verbose`,
 Solo las 2 últimas sesiones. Todas las anteriores en
 [`docs/sessions.md`](docs/sessions.md).
 
+### 2026-04-17 — sesión 9o: TIMANA + ART ROSES + BENCHMARK + TESSA parsers
+
+- **[src/parsers/otros.py](src/parsers/otros.py) → TimanaParser**:
+  `OF ` opcional entre size y tariff; sub-líneas de ASSORTED BOX
+  (`ROSE VAR COLOR SIZECM bunches spb price`, sin total) con padre
+  skippeado; deriva `header.total` de `Total FCA` o suma. Sample 01:
+  5→22 líneas, totals_ok 0→5.
+- **[src/parsers/mystic.py](src/parsers/mystic.py)**: `re.I` en ambos
+  regex y admitir mixed-case en variety — desbloquea ART ROSES
+  (FLORIFRUT, fmt mystic) que usa `Mondial`, `Brighton`, etc. ART
+  ROSES: 0/5 OK → 5/5 OK (29 líneas, todas totals_ok).
+- **[src/parsers/golden.py](src/parsers/golden.py) → BENCHMARK**:
+  `price_m` admite coma de miles en el total (`1,350.00`). Sample 01
+  OCR: 0 parsed (rescatado) → 1 parsed OK. Rescued 4→0, totals_ok
+  3/5→5/5.
+- **[src/parsers/otros.py](src/parsers/otros.py) → TessaParser**:
+  añadido prefix opcional `[A-Z][A-Z0-9\-]*\s+` antes de variety para
+  aceptar farm codes como `TESSA-R1`. Comma-in-total en price/label.
+  Sample 02b: 0→4 parsed (diff 100%→0%).
+- **Global**: autoapprove **86.8% → 87.1%** (+0.3pp), ok 2652→2739,
+  líneas totales 3118→3219 (+101). NO_PARSEA ~19→13. Golden 100%.
+
 ### 2026-04-17 — sesión 9n: NATIVE + MILONGA + MILAGRO + refinado matcher
 
 - **[src/matcher.py](src/matcher.py)**: `origin_match` subido 0.10 →
@@ -363,25 +385,6 @@ Solo las 2 últimas sesiones. Todas las anteriores en
   del regex. `_money()` tolera `.` basura. Sample 01: 0→11 líneas.
 - **Global**: autoapprove **81.9% → 86.8%** (+4.9pp, mayor salto).
   ok 2555→2652, ambiguous 367→239. Golden 100%.
-
-### 2026-04-17 — sesión 9m: DAFLOR + APOSENTOS + CANANVALLE
-
-- **[src/parsers/otros.py](src/parsers/otros.py) → DaflorParser**:
-  descripción colgada en dos líneas vía `pending_desc`/`pending_sp`.
-  Acepta `Q`/`H` sueltos, pipes como separadores, normaliza OCR
-  (`€ o.15` → `$0.15`, `C0-` → `CO-`).
-- **[src/parsers/otros.py](src/parsers/otros.py) → AposentosParser**:
-  regex tolerante a OCR (`C0-`, `OUTYFREE`, `$` opcional, `Taba*`).
-  APOSENTOS 03: 2→13 ok, 05: 3→11 ok.
-- **[src/matcher.py](src/matcher.py) → `_score_candidate`**: para
-  CARNATIONS añade tokens traducidos al `line_var_tokens` (catálogo
-  indexa por color español, facturas llegan con color inglés).
-- **[src/config.py](src/config.py)**: ampliado `CARNATION_COLOR_MAP`
-  (BURGUNDY, BRONZE, BLUE, FUCSIA, CREMA…).
-- **[src/matcher.py](src/matcher.py) → `_detect_foreign_brand`**:
-  umbral de longitud 4 → 3 (detecta EQR), con protección anti-CM/U.
-- **Global**: autoapprove **80.4% → 81.9%** (+1.5pp), ok 2471→2555,
-  `variety_no_overlap` 313→231. Golden 100%.
 
 ---
 

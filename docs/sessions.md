@@ -10,6 +10,52 @@ Para lecciones transversales reutilizables, ver [`lessons.md`](lessons.md).
 
 ---
 
+## 2026-04-17 — sesión 9o: TIMANA + ART ROSES + BENCHMARK + TESSA parsers
+
+Cuarta tanda de fix de NO_PARSEA sobre el backlog sesión 9n.
+
+- **[src/parsers/otros.py](../src/parsers/otros.py) → TimanaParser**:
+  el formato añade a veces `OF ` entre `SIZECM` y el tariff — regex
+  principal ahora lo acepta como opcional. Nuevo patrón de sub-líneas
+  para mixed boxes: `ROSE VAR COLOR SIZECM bunches spb price` (sin
+  total, sin `HB`) se parsea heredando el `box_type` del parent
+  `ASSORTED BOX ...`, que se skippea explícitamente (su stems/total
+  son la suma de las sub-líneas). Además deriva `header.total` del
+  texto `Total FCA Bogota: $...` o del sumatorio. Sample 01: 5
+  líneas → 22. Totals_ok 0/5 → 5/5.
+- **[src/parsers/mystic.py](../src/parsers/mystic.py)**: `re.I` en
+  ambos regex (`_LINE_RE` y `_LINE_RE_NOCODE`) y clase `[A-Za-z...]`
+  en variety del NOCODE. Desbloquea **ART ROSES** (FLORIFRUT, `fmt`
+  heredado `mystic`) que usa variedad mixed-case: `Mondial`,
+  `Explorer`, `Brighton`, `Frutteto`. Colateral: subido límite
+  `{0,14}` → `{1,14}` en la clase del box_code para no solaparse con
+  el NOCODE fallback cuando no hay código. ART ROSES: 0/5 samples OK
+  → 5/5 OK (14 lineas en el sample principal, 29 en total, todas con
+  totals_ok y diff 0%).
+- **[src/parsers/golden.py](../src/parsers/golden.py) → GoldenParser
+  (BENCHMARK)**: `price_m` no aceptaba coma de miles en el total
+  (`1,350.00`). Cambiado `[\d.]+` → `[\d,.]+` en los dos grupos y
+  `float(x.replace(',',''))` al convertir. Sample 01 OCR
+  (`15 H 500 7500 | CONSUMER BUNCH CARNATION FANCY ... 1,350.00`)
+  pasa de rescate a parsed OK. Rescued 4→0, totals_ok 3/5 → 5/5.
+- **[src/parsers/otros.py](../src/parsers/otros.py) → TessaParser**:
+  entre el campo `Loc.` y la variedad aparece a veces un farm/route
+  code estilo `TESSA-R1`, `TESSA-R2` (letra + dígito con guión).
+  Añadido prefix opcional `(?:[A-Z][A-Z0-9\-]*\s+)?` a `pm` y
+  coma-en-total en las tres totales/label. Sample 02b (0 parsed)
+  pasa a 4 parsed, diff 100%→0%. Otros samples también mejoran
+  aunque quedan variantes de sub-líneas multi-variedad (una caja con
+  15 variedades de 1 ramo cada una) que necesitan iteración aparte.
+- **Sanity regresión**: golden_eval mantiene 100% (88/88) tras los
+  cambios en mystic (re.I) y matcher intacto. Regression check en
+  MysticParser sobre MYSTIC, FIORENTINA, STAMPSY, STAMPSYBOX: líneas
+  parseadas idénticas al estado anterior.
+- **Resultado global**: autoapprove **86.8% → 87.1%** (+0.3pp);
+  ok 2652 → 2739; líneas totales 3118 → 3219 (+101 líneas nuevas
+  procedentes de los parsers liberados). NO_PARSEA ~19 → 13. 4 de los
+  6 candidatos del backlog salen de NO_PARSEA (TIMANA, ART ROSES,
+  BENCHMARK a OK; TESSA sube a TOTALES_MAL). Golden 100%.
+
 ## 2026-04-17 — sesión 9n: NATIVE + MILONGA + MILAGRO + refinado matcher
 
 - **[src/matcher.py](../src/matcher.py)**: bonus de `origin_match` subido 0.10 → 0.15

@@ -74,14 +74,21 @@ correspondiente en [`sessions.md`](sessions.md).
   Cuando aparezcan stubs con layout así, probar primero con
   `--fmt-name auto_qualisa` o `auto_agrinag` antes de escribir parser
   nuevo.
-- **Layout de parent/sub-líneas para mixed boxes**: AGRINAG y MILAGRO
-  tienen cajas parent con sub-líneas de detalle. Estrategia: emitir
-  sub-líneas (traen variedad real) y saltar parents que dicen "MIXED
-  BOX" (no aportan info).
+- **Layout de parent/sub-líneas para mixed boxes**: AGRINAG, MILAGRO
+  y TIMANA tienen cajas parent con sub-líneas de detalle.
+  Estrategia: emitir sub-líneas (traen variedad real) y saltar parents
+  que dicen "MIXED BOX" o "ASSORTED BOX" (no aportan info de
+  variedad). En TIMANA las sub-líneas **no traen total ni btype**:
+  heredan el box_type del parent y el total se calcula como
+  `bunches × spb × price`.
 - **Variedades en mixed case**: algunos proveedores (QUALISA,
-  NATUFLOR_SaaS, BELLAROSA) usan mixed case ("Vendela", "Freedom") en
-  el PDF. Siempre normalizar con `.strip().upper()` antes de guardar
-  en InvoiceLine.
+  NATUFLOR_SaaS, BELLAROSA, ART ROSES) usan mixed case ("Vendela",
+  "Freedom", "Mondial") en el PDF. Siempre normalizar con
+  `.strip().upper()` antes de guardar en InvoiceLine. **Además**: si
+  el regex del parser usa `[A-Z]` estricto, añadir `re.I` o ampliar
+  la clase a `[A-Za-z]` — ART ROSES compartía `fmt='mystic'` con
+  templates upper-case y fallaba hasta que Mystic se hizo
+  case-insensitive.
 - **Un fmt → varios proveedores similares**: cuando al arreglar un
   parser hereditado (ej. MYSTIC) varios otros mejoran (STAMPSY,
   STAMPSYBOX, FIORENTINA todos compartían `fmt='mystic'` con su propio

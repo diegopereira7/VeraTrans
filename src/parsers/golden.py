@@ -68,9 +68,11 @@ class GoldenParser:
         btype = bm.group(2).upper()
         upb   = int(bm.group(3))
         stems = int(bm.group(4))
-        price_m = re.search(r'([\d.]+)\s+([\d.]+)\s*$', after)
+        price_m = re.search(r'([\d,.]+)\s+([\d,.]+)\s*$', after)
         if not price_m: return None
-        try: price=float(price_m.group(1)); total=float(price_m.group(2))
+        try:
+            price=float(price_m.group(1).replace(',',''))
+            total=float(price_m.group(2).replace(',',''))
         except: return None
         grade_color = after[:price_m.start()].strip()
         ic_m = re.search(r'\b(CB|MC)\s+\S+\s*$', grade_color, re.I)

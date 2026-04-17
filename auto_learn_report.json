@@ -1261,20 +1261,20 @@
   },
   {
     "folder": "ART ROSES",
-    "verdict": "NO_PARSEA",
+    "verdict": "OK",
     "samples": 5,
     "detected": 5,
-    "parsed_any": 2,
-    "totals_ok": 1,
-    "total_parsed": 14,
+    "parsed_any": 5,
+    "totals_ok": 5,
+    "total_parsed": 29,
     "total_rescued": 0,
-    "ok_lines": 11,
+    "ok_lines": 26,
     "ambiguous_lines": 3,
     "sin_match_lines": 0,
     "sin_parser_lines": 0,
-    "autoapprovable_lines": 11,
-    "autoapprove_rate": 0.786,
-    "needs_review_lines": 3,
+    "autoapprovable_lines": 24,
+    "autoapprove_rate": 0.828,
+    "needs_review_lines": 5,
     "validation_errors_lines": 0,
     "extraction_source_mix": {
       "native": 5
@@ -1283,12 +1283,12 @@
       "-": 5
     },
     "penalties": {
-      "weak_synonym": 11,
-      "foreign_brand": 3,
+      "weak_synonym": 26,
+      "foreign_brand": 5,
       "low_evidence": 3
     },
     "match_statuses": {
-      "ok": 11,
+      "ok": 26,
       "ambiguous_match": 3
     },
     "samples_raw": [
@@ -1296,66 +1296,71 @@
         "file": "01 - 075-6577 1436 (44) - ART ROSES.pdf",
         "detected_as": "Flores y Frutas Florifrut",
         "fmt": "mystic",
-        "parsed_lines": 0,
+        "parsed_lines": 1,
         "rescued_lines": 0,
-        "ok_lines": 0,
+        "ok_lines": 1,
         "ambiguous_lines": 0,
         "sin_match_lines": 0,
         "sin_parser_lines": 0,
         "header_total": 22.0,
-        "sum_line_total": 0,
-        "header_ok": false,
-        "diff_pct": 100.0,
+        "sum_line_total": 22.0,
+        "header_ok": true,
+        "diff_pct": 0.0,
         "extraction_source": "native",
         "extraction_engine": "",
         "extraction_confidence": 1.0,
         "extraction_degraded": false,
-        "avg_link_confidence": 0.0,
+        "avg_link_confidence": 0.787,
         "autoapprovable_lines": 0,
-        "needs_review_lines": 0,
+        "needs_review_lines": 1,
         "validation_errors_lines": 0,
-        "penalties": {},
-        "match_statuses": {},
+        "penalties": {
+          "foreign_brand": 1,
+          "weak_synonym": 1
+        },
+        "match_statuses": {
+          "ok": 1
+        },
         "invoice": "0001061809",
         "error": "",
         "lane_auto": 0,
-        "lane_quick": 0,
+        "lane_quick": 1,
         "lane_full": 0
       },
       {
         "file": "01 - 075-67714625 - ART ROSES ART ROSES (2).pdf",
         "detected_as": "Flores y Frutas Florifrut",
         "fmt": "mystic",
-        "parsed_lines": 8,
+        "parsed_lines": 14,
         "rescued_lines": 0,
-        "ok_lines": 7,
+        "ok_lines": 13,
         "ambiguous_lines": 1,
         "sin_match_lines": 0,
         "sin_parser_lines": 0,
         "header_total": 867.0,
-        "sum_line_total": 167.0,
-        "header_ok": false,
-        "diff_pct": 80.74,
+        "sum_line_total": 867.0,
+        "header_ok": true,
+        "diff_pct": 0.0,
         "extraction_source": "native",
         "extraction_engine": "",
         "extraction_confidence": 1.0,
         "extraction_degraded": false,
-        "avg_link_confidence": 0.956,
-        "autoapprovable_lines": 7,
+        "avg_link_confidence": 0.975,
+        "autoapprovable_lines": 13,
         "needs_review_lines": 1,
         "validation_errors_lines": 0,
         "penalties": {
-          "weak_synonym": 7,
+          "weak_synonym": 13,
           "foreign_brand": 1,
           "low_evidence": 1
         },
         "match_statuses": {
-          "ok": 7,
+          "ok": 13,
           "ambiguous_match": 1
         },
         "invoice": "0001093134",
         "error": "",
-        "lane_auto": 7,
+        "lane_auto": 13,
         "lane_quick": 1,
         "lane_full": 0
       },
@@ -1363,29 +1368,33 @@
         "file": "02 - 075-67714544 - ART ROSES ART.pdf",
         "detected_as": "Flores y Frutas Florifrut",
         "fmt": "mystic",
-        "parsed_lines": 0,
+        "parsed_lines": 7,
         "rescued_lines": 0,
-        "ok_lines": 0,
+        "ok_lines": 7,
         "ambiguous_lines": 0,
         "sin_match_lines": 0,
         "sin_parser_lines": 0,
         "header_total": 788.0,
-        "sum_line_total": 0,
-        "header_ok": false,
-        "diff_pct": 100.0,
+        "sum_line_total": 788.0,
+        "header_ok": true,
+        "diff_pct": 0.0,
         "extraction_source": "native",
         "extraction_engine": "",
         "extraction_confidence": 1.0,
         "extraction_degraded": false,
-        "avg_link_confidence": 0.0,
-        "autoapprovable_lines": 0,
+        "avg_link_confidence": 1.0,
+        "autoapprovable_lines": 7,
         "needs_review_lines": 0,
         "validation_errors_lines": 0,
-        "penalties": {},
-        "match_statuses": {},
+        "penalties": {
+          "weak_synonym": 7
+        },
+        "match_statuses": {
+          "ok": 7
+        },
         "invoice": "0001092887",
         "error": "",
-        "lane_auto": 0,
+        "lane_auto": 7,
         "lane_quick": 0,
         "lane_full": 0
       },
@@ -1393,30 +1402,35 @@
         "file": "02 - S. 075-6577 1436 - ART ROSES 1061809.pdf",
         "detected_as": "Flores y Frutas Florifrut",
         "fmt": "mystic",
-        "parsed_lines": 0,
+        "parsed_lines": 1,
         "rescued_lines": 0,
-        "ok_lines": 0,
+        "ok_lines": 1,
         "ambiguous_lines": 0,
         "sin_match_lines": 0,
         "sin_parser_lines": 0,
         "header_total": 22.0,
-        "sum_line_total": 0,
-        "header_ok": false,
-        "diff_pct": 100.0,
+        "sum_line_total": 22.0,
+        "header_ok": true,
+        "diff_pct": 0.0,
         "extraction_source": "native",
         "extraction_engine": "",
         "extraction_confidence": 1.0,
         "extraction_degraded": false,
-        "avg_link_confidence": 0.0,
+        "avg_link_confidence": 0.787,
         "autoapprovable_lines": 0,
-        "needs_review_lines": 0,
+        "needs_review_lines": 1,
         "validation_errors_lines": 0,
-        "penalties": {},
-        "match_statuses": {},
+        "penalties": {
+          "foreign_brand": 1,
+          "weak_synonym": 1
+        },
+        "match_statuses": {
+          "ok": 1
+        },
         "invoice": "0001061809",
         "error": "",
         "lane_auto": 0,
-        "lane_quick": 0,
+        "lane_quick": 1,
         "lane_full": 0
       },
       {
@@ -1662,18 +1676,18 @@
   },
   {
     "folder": "BENCHMARK",
-    "verdict": "NO_PARSEA",
+    "verdict": "OK",
     "samples": 5,
     "detected": 5,
-    "parsed_any": 4,
-    "totals_ok": 3,
-    "total_parsed": 45,
-    "total_rescued": 4,
-    "ok_lines": 45,
+    "parsed_any": 5,
+    "totals_ok": 5,
+    "total_parsed": 49,
+    "total_rescued": 0,
+    "ok_lines": 49,
     "ambiguous_lines": 0,
     "sin_match_lines": 0,
     "sin_parser_lines": 0,
-    "autoapprovable_lines": 45,
+    "autoapprovable_lines": 49,
     "autoapprove_rate": 1.0,
     "needs_review_lines": 0,
     "validation_errors_lines": 0,
@@ -1686,10 +1700,10 @@
       "ocrmypdf": 1
     },
     "penalties": {
-      "weak_synonym": 31
+      "weak_synonym": 34
     },
     "match_statuses": {
-      "ok": 45
+      "ok": 49
     },
     "samples_raw": [
       {
@@ -1728,29 +1742,31 @@
         "file": "01 - 996-14233424 - BENCHMARK BENCHMARK GROWERS 103737.pdf",
         "detected_as": "Benchmark Growers",
         "fmt": "golden",
-        "parsed_lines": 0,
-        "rescued_lines": 1,
-        "ok_lines": 0,
+        "parsed_lines": 1,
+        "rescued_lines": 0,
+        "ok_lines": 1,
         "ambiguous_lines": 0,
         "sin_match_lines": 0,
         "sin_parser_lines": 0,
         "header_total": 1350.0,
-        "sum_line_total": 0,
-        "header_ok": false,
-        "diff_pct": 100.0,
+        "sum_line_total": 1350.0,
+        "header_ok": true,
+        "diff_pct": 0.0,
         "extraction_source": "ocr",
         "extraction_engine": "ocrmypdf",
         "extraction_confidence": 0.85,
         "extraction_degraded": false,
-        "avg_link_confidence": 0.0,
-        "autoapprovable_lines": 0,
+        "avg_link_confidence": 1.0,
+        "autoapprovable_lines": 1,
         "needs_review_lines": 0,
         "validation_errors_lines": 0,
         "penalties": {},
-        "match_statuses": {},
+        "match_statuses": {
+          "ok": 1
+        },
         "invoice": "",
         "error": "",
-        "lane_auto": 0,
+        "lane_auto": 1,
         "lane_quick": 0,
         "lane_full": 0
       },
@@ -1824,33 +1840,33 @@
         "file": "03 - 729-45642273 - BENCHMARK BENCHMARK GROWERS 103280.pdf",
         "detected_as": "Benchmark Growers",
         "fmt": "golden",
-        "parsed_lines": 11,
-        "rescued_lines": 3,
-        "ok_lines": 11,
+        "parsed_lines": 14,
+        "rescued_lines": 0,
+        "ok_lines": 14,
         "ambiguous_lines": 0,
         "sin_match_lines": 0,
         "sin_parser_lines": 0,
         "header_total": 9296.0,
-        "sum_line_total": 3596.0,
-        "header_ok": false,
-        "diff_pct": 61.32,
+        "sum_line_total": 9296.0,
+        "header_ok": true,
+        "diff_pct": 0.0,
         "extraction_source": "native",
         "extraction_engine": "",
         "extraction_confidence": 1.0,
         "extraction_degraded": false,
         "avg_link_confidence": 1.0,
-        "autoapprovable_lines": 11,
+        "autoapprovable_lines": 14,
         "needs_review_lines": 0,
         "validation_errors_lines": 0,
         "penalties": {
-          "weak_synonym": 11
+          "weak_synonym": 14
         },
         "match_statuses": {
-          "ok": 11
+          "ok": 14
         },
         "invoice": "",
         "error": "",
-        "lane_auto": 11,
+        "lane_auto": 14,
         "lane_quick": 0,
         "lane_full": 0
       }
@@ -3115,13 +3131,13 @@
     "totals_ok": 5,
     "total_parsed": 80,
     "total_rescued": 0,
-    "ok_lines": 66,
-    "ambiguous_lines": 8,
+    "ok_lines": 65,
+    "ambiguous_lines": 9,
     "sin_match_lines": 6,
     "sin_parser_lines": 0,
-    "autoapprovable_lines": 54,
-    "autoapprove_rate": 0.73,
-    "needs_review_lines": 26,
+    "autoapprovable_lines": 53,
+    "autoapprove_rate": 0.716,
+    "needs_review_lines": 27,
     "validation_errors_lines": 12,
     "extraction_source_mix": {
       "native": 5
@@ -3131,12 +3147,12 @@
     },
     "penalties": {
       "weak_synonym": 71,
-      "tie_top2_margin": 8,
+      "tie_top2_margin": 9,
       "variety_no_overlap": 6
     },
     "match_statuses": {
-      "ok": 66,
-      "ambiguous_match": 8,
+      "ok": 65,
+      "ambiguous_match": 9,
       "sin_match": 6
     },
     "samples_raw": [
@@ -3146,8 +3162,8 @@
         "fmt": "colibri",
         "parsed_lines": 8,
         "rescued_lines": 0,
-        "ok_lines": 7,
-        "ambiguous_lines": 1,
+        "ok_lines": 6,
+        "ambiguous_lines": 2,
         "sin_match_lines": 0,
         "sin_parser_lines": 0,
         "header_total": 1635.0,
@@ -3158,22 +3174,22 @@
         "extraction_engine": "",
         "extraction_confidence": 1.0,
         "extraction_degraded": false,
-        "avg_link_confidence": 0.952,
-        "autoapprovable_lines": 6,
-        "needs_review_lines": 2,
+        "avg_link_confidence": 0.945,
+        "autoapprovable_lines": 5,
+        "needs_review_lines": 3,
         "validation_errors_lines": 1,
         "penalties": {
           "weak_synonym": 7,
-          "tie_top2_margin": 1
+          "tie_top2_margin": 2
         },
         "match_statuses": {
-          "ok": 7,
-          "ambiguous_match": 1
+          "ok": 6,
+          "ambiguous_match": 2
         },
         "invoice": "FA-094378",
         "error": "",
-        "lane_auto": 6,
-        "lane_quick": 2,
+        "lane_auto": 5,
+        "lane_quick": 3,
         "lane_full": 0
       },
       {
@@ -3266,7 +3282,7 @@
         "extraction_engine": "",
         "extraction_confidence": 1.0,
         "extraction_degraded": false,
-        "avg_link_confidence": 0.913,
+        "avg_link_confidence": 0.912,
         "autoapprovable_lines": 27,
         "needs_review_lines": 6,
         "validation_errors_lines": 0,
@@ -4200,9 +4216,9 @@
     "ambiguous_lines": 10,
     "sin_match_lines": 19,
     "sin_parser_lines": 0,
-    "autoapprovable_lines": 19,
-    "autoapprove_rate": 0.633,
-    "needs_review_lines": 30,
+    "autoapprovable_lines": 20,
+    "autoapprove_rate": 0.667,
+    "needs_review_lines": 29,
     "validation_errors_lines": 0,
     "extraction_source_mix": {
       "native": 5
@@ -4211,7 +4227,7 @@
       "-": 5
     },
     "penalties": {
-      "weak_synonym": 21,
+      "weak_synonym": 22,
       "foreign_brand": 14,
       "tie_top2_margin": 8,
       "variety_no_overlap": 4,
@@ -4281,13 +4297,13 @@
         "extraction_engine": "",
         "extraction_confidence": 1.0,
         "extraction_degraded": false,
-        "avg_link_confidence": 0.751,
-        "autoapprovable_lines": 3,
-        "needs_review_lines": 8,
+        "avg_link_confidence": 0.777,
+        "autoapprovable_lines": 4,
+        "needs_review_lines": 7,
         "validation_errors_lines": 0,
         "penalties": {
           "foreign_brand": 2,
-          "weak_synonym": 3,
+          "weak_synonym": 4,
           "tie_top2_margin": 2,
           "variety_no_overlap": 1
         },
@@ -4298,8 +4314,8 @@
         },
         "invoice": "0000140477",
         "error": "",
-        "lane_auto": 3,
-        "lane_quick": 3,
+        "lane_auto": 4,
+        "lane_quick": 2,
         "lane_full": 5
       },
       {
@@ -5883,20 +5899,20 @@
   },
   {
     "folder": "FLORIFRUT",
-    "verdict": "NO_PARSEA",
+    "verdict": "OK",
     "samples": 5,
     "detected": 5,
-    "parsed_any": 2,
-    "totals_ok": 0,
-    "total_parsed": 12,
+    "parsed_any": 5,
+    "totals_ok": 5,
+    "total_parsed": 71,
     "total_rescued": 0,
-    "ok_lines": 10,
-    "ambiguous_lines": 2,
-    "sin_match_lines": 0,
+    "ok_lines": 60,
+    "ambiguous_lines": 5,
+    "sin_match_lines": 6,
     "sin_parser_lines": 0,
-    "autoapprovable_lines": 9,
-    "autoapprove_rate": 0.75,
-    "needs_review_lines": 3,
+    "autoapprovable_lines": 59,
+    "autoapprove_rate": 0.908,
+    "needs_review_lines": 12,
     "validation_errors_lines": 0,
     "extraction_source_mix": {
       "native": 5
@@ -5905,49 +5921,51 @@
       "-": 5
     },
     "penalties": {
-      "weak_synonym": 10,
-      "foreign_brand": 3,
-      "low_evidence": 2
+      "weak_synonym": 49,
+      "foreign_brand": 8,
+      "variety_no_overlap": 7,
+      "low_evidence": 5
     },
     "match_statuses": {
-      "ok": 10,
-      "ambiguous_match": 2
+      "ok": 60,
+      "ambiguous_match": 5,
+      "sin_match": 6
     },
     "samples_raw": [
       {
         "file": "01 - 075-67710963 - FLORIFRUT FLORIFRUT.pdf",
         "detected_as": "Flores y Frutas Florifrut",
         "fmt": "mystic",
-        "parsed_lines": 7,
+        "parsed_lines": 14,
         "rescued_lines": 0,
-        "ok_lines": 6,
+        "ok_lines": 13,
         "ambiguous_lines": 1,
         "sin_match_lines": 0,
         "sin_parser_lines": 0,
         "header_total": 955.0,
-        "sum_line_total": 167.0,
-        "header_ok": false,
-        "diff_pct": 82.51,
+        "sum_line_total": 955.0,
+        "header_ok": true,
+        "diff_pct": 0.0,
         "extraction_source": "native",
         "extraction_engine": "",
         "extraction_confidence": 1.0,
         "extraction_degraded": false,
-        "avg_link_confidence": 0.92,
-        "autoapprovable_lines": 5,
+        "avg_link_confidence": 0.96,
+        "autoapprovable_lines": 12,
         "needs_review_lines": 2,
         "validation_errors_lines": 0,
         "penalties": {
-          "weak_synonym": 6,
+          "weak_synonym": 13,
           "foreign_brand": 2,
           "low_evidence": 1
         },
         "match_statuses": {
-          "ok": 6,
+          "ok": 13,
           "ambiguous_match": 1
         },
         "invoice": "0001092565",
         "error": "",
-        "lane_auto": 5,
+        "lane_auto": 12,
         "lane_quick": 2,
         "lane_full": 0
       },
@@ -5955,29 +5973,33 @@
         "file": "01 - 729-4932 4111 (126) - FLORIFRUT 0001060938.pdf",
         "detected_as": "Flores y Frutas Florifrut",
         "fmt": "mystic",
-        "parsed_lines": 0,
+        "parsed_lines": 4,
         "rescued_lines": 0,
-        "ok_lines": 0,
+        "ok_lines": 4,
         "ambiguous_lines": 0,
         "sin_match_lines": 0,
         "sin_parser_lines": 0,
         "header_total": 308.0,
-        "sum_line_total": 0,
-        "header_ok": false,
-        "diff_pct": 100.0,
+        "sum_line_total": 308.0,
+        "header_ok": true,
+        "diff_pct": 0.0,
         "extraction_source": "native",
         "extraction_engine": "",
         "extraction_confidence": 1.0,
         "extraction_degraded": false,
-        "avg_link_confidence": 0.0,
-        "autoapprovable_lines": 0,
+        "avg_link_confidence": 1.0,
+        "autoapprovable_lines": 4,
         "needs_review_lines": 0,
         "validation_errors_lines": 0,
-        "penalties": {},
-        "match_statuses": {},
+        "penalties": {
+          "weak_synonym": 4
+        },
+        "match_statuses": {
+          "ok": 4
+        },
         "invoice": "0001060938",
         "error": "",
-        "lane_auto": 0,
+        "lane_auto": 4,
         "lane_quick": 0,
         "lane_full": 0
       },
@@ -5985,36 +6007,36 @@
         "file": "02 - 075-67710926 - FLORIFRUT FLORIFRUT.pdf",
         "detected_as": "Flores y Frutas Florifrut",
         "fmt": "mystic",
-        "parsed_lines": 5,
+        "parsed_lines": 12,
         "rescued_lines": 0,
-        "ok_lines": 4,
+        "ok_lines": 11,
         "ambiguous_lines": 1,
         "sin_match_lines": 0,
         "sin_parser_lines": 0,
         "header_total": 955.0,
-        "sum_line_total": 167.0,
-        "header_ok": false,
-        "diff_pct": 82.51,
+        "sum_line_total": 955.0,
+        "header_ok": true,
+        "diff_pct": 0.0,
         "extraction_source": "native",
         "extraction_engine": "",
         "extraction_confidence": 1.0,
         "extraction_degraded": false,
-        "avg_link_confidence": 0.93,
-        "autoapprovable_lines": 4,
+        "avg_link_confidence": 0.971,
+        "autoapprovable_lines": 11,
         "needs_review_lines": 1,
         "validation_errors_lines": 0,
         "penalties": {
-          "weak_synonym": 4,
+          "weak_synonym": 11,
           "foreign_brand": 1,
           "low_evidence": 1
         },
         "match_statuses": {
-          "ok": 4,
+          "ok": 11,
           "ambiguous_match": 1
         },
         "invoice": "0001092203",
         "error": "",
-        "lane_auto": 4,
+        "lane_auto": 11,
         "lane_quick": 1,
         "lane_full": 0
       },
@@ -6022,61 +6044,77 @@
         "file": "02 - 729-4932 4122 (194) - FLORIFRUT 0001061145.pdf",
         "detected_as": "Flores y Frutas Florifrut",
         "fmt": "mystic",
-        "parsed_lines": 0,
+        "parsed_lines": 6,
         "rescued_lines": 0,
-        "ok_lines": 0,
-        "ambiguous_lines": 0,
+        "ok_lines": 5,
+        "ambiguous_lines": 1,
         "sin_match_lines": 0,
         "sin_parser_lines": 0,
         "header_total": 160.0,
-        "sum_line_total": 0,
-        "header_ok": false,
-        "diff_pct": 100.0,
+        "sum_line_total": 160.0,
+        "header_ok": true,
+        "diff_pct": 0.0,
         "extraction_source": "native",
         "extraction_engine": "",
         "extraction_confidence": 1.0,
         "extraction_degraded": false,
-        "avg_link_confidence": 0.0,
-        "autoapprovable_lines": 0,
-        "needs_review_lines": 0,
+        "avg_link_confidence": 0.938,
+        "autoapprovable_lines": 5,
+        "needs_review_lines": 1,
         "validation_errors_lines": 0,
-        "penalties": {},
-        "match_statuses": {},
+        "penalties": {
+          "weak_synonym": 5,
+          "foreign_brand": 1,
+          "low_evidence": 1
+        },
+        "match_statuses": {
+          "ok": 5,
+          "ambiguous_match": 1
+        },
         "invoice": "0001061145",
         "error": "",
-        "lane_auto": 0,
-        "lane_quick": 0,
+        "lane_auto": 5,
+        "lane_quick": 1,
         "lane_full": 0
       },
       {
         "file": "03 - 369-99008420 - FLORIFRUT FLORIFRUT.pdf",
         "detected_as": "Flores y Frutas Florifrut",
         "fmt": "mystic",
-        "parsed_lines": 0,
+        "parsed_lines": 35,
         "rescued_lines": 0,
-        "ok_lines": 0,
-        "ambiguous_lines": 0,
-        "sin_match_lines": 0,
+        "ok_lines": 27,
+        "ambiguous_lines": 2,
+        "sin_match_lines": 6,
         "sin_parser_lines": 0,
         "header_total": 817.5,
-        "sum_line_total": 0,
-        "header_ok": false,
-        "diff_pct": 100.0,
+        "sum_line_total": 817.5,
+        "header_ok": true,
+        "diff_pct": 0.0,
         "extraction_source": "native",
         "extraction_engine": "",
         "extraction_confidence": 1.0,
         "extraction_degraded": false,
-        "avg_link_confidence": 0.0,
-        "autoapprovable_lines": 0,
-        "needs_review_lines": 0,
+        "avg_link_confidence": 0.877,
+        "autoapprovable_lines": 27,
+        "needs_review_lines": 8,
         "validation_errors_lines": 0,
-        "penalties": {},
-        "match_statuses": {},
+        "penalties": {
+          "foreign_brand": 4,
+          "low_evidence": 2,
+          "weak_synonym": 16,
+          "variety_no_overlap": 7
+        },
+        "match_statuses": {
+          "ambiguous_match": 2,
+          "ok": 27,
+          "sin_match": 6
+        },
         "invoice": "0001092097",
         "error": "",
-        "lane_auto": 0,
-        "lane_quick": 0,
-        "lane_full": 0
+        "lane_auto": 27,
+        "lane_quick": 2,
+        "lane_full": 6
       }
     ]
   },
@@ -6524,7 +6562,7 @@
       "-": 5
     },
     "penalties": {
-      "weak_synonym": 30
+      "weak_synonym": 31
     },
     "match_statuses": {
       "ok": 38
@@ -6582,12 +6620,12 @@
         "extraction_engine": "",
         "extraction_confidence": 1.0,
         "extraction_degraded": false,
-        "avg_link_confidence": 0.998,
+        "avg_link_confidence": 1.0,
         "autoapprovable_lines": 25,
         "needs_review_lines": 0,
         "validation_errors_lines": 0,
         "penalties": {
-          "weak_synonym": 19
+          "weak_synonym": 20
         },
         "match_statuses": {
           "ok": 25
@@ -9250,7 +9288,7 @@
       "-": 5
     },
     "penalties": {
-      "weak_synonym": 14,
+      "weak_synonym": 16,
       "foreign_brand": 3,
       "low_evidence": 2
     },
@@ -9416,12 +9454,12 @@
         "extraction_engine": "",
         "extraction_confidence": 1.0,
         "extraction_degraded": false,
-        "avg_link_confidence": 0.983,
+        "avg_link_confidence": 1.0,
         "autoapprovable_lines": 6,
         "needs_review_lines": 0,
         "validation_errors_lines": 0,
         "penalties": {
-          "weak_synonym": 4
+          "weak_synonym": 6
         },
         "match_statuses": {
           "ok": 6
@@ -11742,9 +11780,9 @@
     "ambiguous_lines": 0,
     "sin_match_lines": 3,
     "sin_parser_lines": 0,
-    "autoapprovable_lines": 6,
-    "autoapprove_rate": 0.75,
-    "needs_review_lines": 5,
+    "autoapprovable_lines": 8,
+    "autoapprove_rate": 1.0,
+    "needs_review_lines": 3,
     "validation_errors_lines": 0,
     "extraction_source_mix": {
       "ocr": 1,
@@ -11755,7 +11793,7 @@
       "-": 4
     },
     "penalties": {
-      "weak_synonym": 6,
+      "weak_synonym": 8,
       "low_evidence": 3
     },
     "match_statuses": {
@@ -11812,12 +11850,13 @@
         "extraction_engine": "",
         "extraction_confidence": 1.0,
         "extraction_degraded": false,
-        "avg_link_confidence": 0.671,
-        "autoapprovable_lines": 0,
-        "needs_review_lines": 1,
+        "avg_link_confidence": 0.773,
+        "autoapprovable_lines": 1,
+        "needs_review_lines": 0,
         "validation_errors_lines": 0,
         "penalties": {
-          "low_evidence": 1
+          "low_evidence": 1,
+          "weak_synonym": 1
         },
         "match_statuses": {
           "mixed_box": 1,
@@ -11825,8 +11864,8 @@
         },
         "invoice": "2092",
         "error": "",
-        "lane_auto": 0,
-        "lane_quick": 2,
+        "lane_auto": 1,
+        "lane_quick": 1,
         "lane_full": 0
       },
       {
@@ -11847,12 +11886,12 @@
         "extraction_engine": "",
         "extraction_confidence": 1.0,
         "extraction_degraded": false,
-        "avg_link_confidence": 0.858,
-        "autoapprovable_lines": 3,
-        "needs_review_lines": 3,
+        "avg_link_confidence": 0.898,
+        "autoapprovable_lines": 4,
+        "needs_review_lines": 2,
         "validation_errors_lines": 0,
         "penalties": {
-          "weak_synonym": 3,
+          "weak_synonym": 4,
           "low_evidence": 1
         },
         "match_statuses": {
@@ -11862,8 +11901,8 @@
         },
         "invoice": "2070",
         "error": "",
-        "lane_auto": 3,
-        "lane_quick": 2,
+        "lane_auto": 4,
+        "lane_quick": 1,
         "lane_full": 2
       },
       {
@@ -12666,7 +12705,7 @@
       "-": 5
     },
     "penalties": {
-      "weak_synonym": 118,
+      "weak_synonym": 119,
       "foreign_brand": 12,
       "variety_no_overlap": 1,
       "low_evidence": 1,
@@ -12833,12 +12872,12 @@
         "extraction_engine": "",
         "extraction_confidence": 1.0,
         "extraction_degraded": false,
-        "avg_link_confidence": 0.969,
+        "avg_link_confidence": 0.971,
         "autoapprovable_lines": 58,
         "needs_review_lines": 6,
         "validation_errors_lines": 0,
         "penalties": {
-          "weak_synonym": 61,
+          "weak_synonym": 62,
           "foreign_brand": 8,
           "variety_no_overlap": 1,
           "low_evidence": 1,
@@ -12880,7 +12919,7 @@
       "-": 5
     },
     "penalties": {
-      "weak_synonym": 43,
+      "weak_synonym": 47,
       "tie_top2_margin": 2,
       "foreign_brand": 1,
       "low_evidence": 1
@@ -12909,12 +12948,12 @@
         "extraction_engine": "",
         "extraction_confidence": 1.0,
         "extraction_degraded": false,
-        "avg_link_confidence": 0.996,
+        "avg_link_confidence": 1.0,
         "autoapprovable_lines": 15,
         "needs_review_lines": 0,
         "validation_errors_lines": 0,
         "penalties": {
-          "weak_synonym": 12
+          "weak_synonym": 15
         },
         "match_statuses": {
           "ok": 15
@@ -12977,12 +13016,12 @@
         "extraction_engine": "",
         "extraction_confidence": 1.0,
         "extraction_degraded": false,
-        "avg_link_confidence": 0.997,
+        "avg_link_confidence": 0.999,
         "autoapprovable_lines": 14,
         "needs_review_lines": 1,
         "validation_errors_lines": 0,
         "penalties": {
-          "weak_synonym": 13,
+          "weak_synonym": 14,
           "tie_top2_margin": 1
         },
         "match_statuses": {
@@ -13302,7 +13341,7 @@
       "-": 5
     },
     "penalties": {
-      "weak_synonym": 12,
+      "weak_synonym": 13,
       "foreign_brand": 4,
       "low_evidence": 3
     },
@@ -13400,11 +13439,12 @@
         "extraction_engine": "",
         "extraction_confidence": 1.0,
         "extraction_degraded": false,
-        "avg_link_confidence": 0.8,
+        "avg_link_confidence": 0.825,
         "autoapprovable_lines": 1,
         "needs_review_lines": 1,
         "validation_errors_lines": 0,
         "penalties": {
+          "weak_synonym": 1,
           "foreign_brand": 1,
           "low_evidence": 1
         },
@@ -14715,20 +14755,20 @@
   },
   {
     "folder": "TESSA",
-    "verdict": "NO_PARSEA",
+    "verdict": "TOTALES_MAL",
     "samples": 5,
     "detected": 5,
-    "parsed_any": 4,
-    "totals_ok": 0,
-    "total_parsed": 16,
+    "parsed_any": 5,
+    "totals_ok": 1,
+    "total_parsed": 22,
     "total_rescued": 0,
-    "ok_lines": 15,
-    "ambiguous_lines": 1,
+    "ok_lines": 22,
+    "ambiguous_lines": 0,
     "sin_match_lines": 0,
     "sin_parser_lines": 0,
-    "autoapprovable_lines": 15,
-    "autoapprove_rate": 0.938,
-    "needs_review_lines": 1,
+    "autoapprovable_lines": 22,
+    "autoapprove_rate": 1.0,
+    "needs_review_lines": 0,
     "validation_errors_lines": 0,
     "extraction_source_mix": {
       "native": 3,
@@ -14739,12 +14779,10 @@
       "ocrmypdf": 2
     },
     "penalties": {
-      "weak_synonym": 15,
-      "tie_top2_margin": 1
+      "weak_synonym": 21
     },
     "match_statuses": {
-      "ok": 15,
-      "ambiguous_match": 1
+      "ok": 22
     },
     "samples_raw": [
       {
@@ -14787,8 +14825,8 @@
         "fmt": "tessa",
         "parsed_lines": 5,
         "rescued_lines": 0,
-        "ok_lines": 4,
-        "ambiguous_lines": 1,
+        "ok_lines": 5,
+        "ambiguous_lines": 0,
         "sin_match_lines": 0,
         "sin_parser_lines": 0,
         "header_total": 390.0,
@@ -14799,55 +14837,53 @@
         "extraction_engine": "ocrmypdf",
         "extraction_confidence": 0.92,
         "extraction_degraded": false,
-        "avg_link_confidence": 0.983,
-        "autoapprovable_lines": 4,
-        "needs_review_lines": 1,
+        "avg_link_confidence": 1.0,
+        "autoapprovable_lines": 5,
+        "needs_review_lines": 0,
         "validation_errors_lines": 0,
         "penalties": {
-          "weak_synonym": 4,
-          "tie_top2_margin": 1
+          "weak_synonym": 5
         },
         "match_statuses": {
-          "ok": 4,
-          "ambiguous_match": 1
+          "ok": 5
         },
         "invoice": "90730627",
         "error": "",
-        "lane_auto": 4,
-        "lane_quick": 1,
+        "lane_auto": 5,
+        "lane_quick": 0,
         "lane_full": 0
       },
       {
         "file": "02 - 075-6688 3176 (109) - TESSA.pdf",
         "detected_as": "Tessa Corp",
         "fmt": "tessa",
-        "parsed_lines": 1,
+        "parsed_lines": 3,
         "rescued_lines": 0,
-        "ok_lines": 1,
+        "ok_lines": 3,
         "ambiguous_lines": 0,
         "sin_match_lines": 0,
         "sin_parser_lines": 0,
         "header_total": 375.0,
-        "sum_line_total": 135.0,
+        "sum_line_total": 305.0,
         "header_ok": false,
-        "diff_pct": 64.0,
+        "diff_pct": 18.67,
         "extraction_source": "native",
         "extraction_engine": "",
         "extraction_confidence": 1.0,
         "extraction_degraded": false,
         "avg_link_confidence": 1.0,
-        "autoapprovable_lines": 1,
+        "autoapprovable_lines": 3,
         "needs_review_lines": 0,
         "validation_errors_lines": 0,
         "penalties": {
-          "weak_synonym": 1
+          "weak_synonym": 2
         },
         "match_statuses": {
-          "ok": 1
+          "ok": 3
         },
         "invoice": "90591581",
         "error": "",
-        "lane_auto": 1,
+        "lane_auto": 3,
         "lane_quick": 0,
         "lane_full": 0
       },
@@ -14855,29 +14891,33 @@
         "file": "02 - 075-67714625 - TESSA TESSA.pdf",
         "detected_as": "Tessa Corp",
         "fmt": "tessa",
-        "parsed_lines": 0,
+        "parsed_lines": 4,
         "rescued_lines": 0,
-        "ok_lines": 0,
+        "ok_lines": 4,
         "ambiguous_lines": 0,
         "sin_match_lines": 0,
         "sin_parser_lines": 0,
         "header_total": 550.0,
-        "sum_line_total": 0,
-        "header_ok": false,
-        "diff_pct": 100.0,
+        "sum_line_total": 550.0,
+        "header_ok": true,
+        "diff_pct": 0.0,
         "extraction_source": "native",
         "extraction_engine": "",
         "extraction_confidence": 1.0,
         "extraction_degraded": false,
-        "avg_link_confidence": 0.0,
-        "autoapprovable_lines": 0,
+        "avg_link_confidence": 1.0,
+        "autoapprovable_lines": 4,
         "needs_review_lines": 0,
         "validation_errors_lines": 0,
-        "penalties": {},
-        "match_statuses": {},
+        "penalties": {
+          "weak_synonym": 4
+        },
+        "match_statuses": {
+          "ok": 4
+        },
         "invoice": "90727313",
         "error": "",
-        "lane_auto": 0,
+        "lane_auto": 4,
         "lane_quick": 0,
         "lane_full": 0
       },
@@ -15147,20 +15187,20 @@
   },
   {
     "folder": "TIMANA",
-    "verdict": "NO_PARSEA",
+    "verdict": "OK",
     "samples": 5,
     "detected": 5,
-    "parsed_any": 3,
-    "totals_ok": 3,
-    "total_parsed": 5,
-    "total_rescued": 22,
-    "ok_lines": 5,
-    "ambiguous_lines": 0,
-    "sin_match_lines": 0,
+    "parsed_any": 5,
+    "totals_ok": 5,
+    "total_parsed": 22,
+    "total_rescued": 5,
+    "ok_lines": 17,
+    "ambiguous_lines": 4,
+    "sin_match_lines": 1,
     "sin_parser_lines": 0,
-    "autoapprovable_lines": 5,
-    "autoapprove_rate": 1.0,
-    "needs_review_lines": 0,
+    "autoapprovable_lines": 17,
+    "autoapprove_rate": 0.81,
+    "needs_review_lines": 5,
     "validation_errors_lines": 0,
     "extraction_source_mix": {
       "native": 5
@@ -15169,41 +15209,55 @@
       "-": 5
     },
     "penalties": {
-      "weak_synonym": 5
+      "weak_synonym": 10,
+      "foreign_brand": 4,
+      "low_evidence": 4,
+      "variety_no_overlap": 1
     },
     "match_statuses": {
-      "ok": 5
+      "ok": 17,
+      "ambiguous_match": 4,
+      "sin_match": 1
     },
     "samples_raw": [
       {
         "file": "01 - 075-6537 6964 (334) - TIMANA 88112.pdf",
         "detected_as": "Flores Timana",
         "fmt": "timana",
-        "parsed_lines": 0,
-        "rescued_lines": 15,
-        "ok_lines": 0,
-        "ambiguous_lines": 0,
-        "sin_match_lines": 0,
+        "parsed_lines": 14,
+        "rescued_lines": 1,
+        "ok_lines": 9,
+        "ambiguous_lines": 4,
+        "sin_match_lines": 1,
         "sin_parser_lines": 0,
-        "header_total": 0.0,
-        "sum_line_total": 0,
-        "header_ok": null,
-        "diff_pct": null,
+        "header_total": 552.5,
+        "sum_line_total": 552.5,
+        "header_ok": true,
+        "diff_pct": 0.0,
         "extraction_source": "native",
         "extraction_engine": "",
         "extraction_confidence": 1.0,
         "extraction_degraded": false,
-        "avg_link_confidence": 0.0,
-        "autoapprovable_lines": 0,
-        "needs_review_lines": 0,
+        "avg_link_confidence": 0.864,
+        "autoapprovable_lines": 9,
+        "needs_review_lines": 5,
         "validation_errors_lines": 0,
-        "penalties": {},
-        "match_statuses": {},
+        "penalties": {
+          "weak_synonym": 2,
+          "foreign_brand": 4,
+          "low_evidence": 4,
+          "variety_no_overlap": 1
+        },
+        "match_statuses": {
+          "ok": 9,
+          "ambiguous_match": 4,
+          "sin_match": 1
+        },
         "invoice": "88112",
         "error": "",
-        "lane_auto": 0,
-        "lane_quick": 0,
-        "lane_full": 0
+        "lane_auto": 9,
+        "lane_quick": 4,
+        "lane_full": 1
       },
       {
         "file": "01 - 729-45096380 - TIMANA TIMANA.pdf",
@@ -15243,29 +15297,33 @@
         "file": "02 - 729- 4457 1424 (387) - TIMANA 88180.pdf",
         "detected_as": "Flores Timana",
         "fmt": "timana",
-        "parsed_lines": 0,
-        "rescued_lines": 4,
-        "ok_lines": 0,
+        "parsed_lines": 3,
+        "rescued_lines": 1,
+        "ok_lines": 3,
         "ambiguous_lines": 0,
         "sin_match_lines": 0,
         "sin_parser_lines": 0,
-        "header_total": 0.0,
-        "sum_line_total": 0,
-        "header_ok": null,
-        "diff_pct": null,
+        "header_total": 315.5,
+        "sum_line_total": 315.5,
+        "header_ok": true,
+        "diff_pct": 0.0,
         "extraction_source": "native",
         "extraction_engine": "",
         "extraction_confidence": 1.0,
         "extraction_degraded": false,
-        "avg_link_confidence": 0.0,
-        "autoapprovable_lines": 0,
+        "avg_link_confidence": 1.0,
+        "autoapprovable_lines": 3,
         "needs_review_lines": 0,
         "validation_errors_lines": 0,
-        "penalties": {},
-        "match_statuses": {},
+        "penalties": {
+          "weak_synonym": 3
+        },
+        "match_statuses": {
+          "ok": 3
+        },
         "invoice": "88180",
         "error": "",
-        "lane_auto": 0,
+        "lane_auto": 3,
         "lane_quick": 0,
         "lane_full": 0
       },
@@ -15352,9 +15410,9 @@
     "ambiguous_lines": 3,
     "sin_match_lines": 0,
     "sin_parser_lines": 0,
-    "autoapprovable_lines": 17,
-    "autoapprove_rate": 0.773,
-    "needs_review_lines": 5,
+    "autoapprovable_lines": 19,
+    "autoapprove_rate": 0.864,
+    "needs_review_lines": 3,
     "validation_errors_lines": 0,
     "extraction_source_mix": {
       "native": 5
@@ -15363,7 +15421,7 @@
       "-": 5
     },
     "penalties": {
-      "weak_synonym": 17,
+      "weak_synonym": 19,
       "variety_no_overlap": 10,
       "tie_top2_margin": 3
     },
@@ -15391,13 +15449,13 @@
         "extraction_engine": "",
         "extraction_confidence": 1.0,
         "extraction_degraded": false,
-        "avg_link_confidence": 0.748,
-        "autoapprovable_lines": 7,
-        "needs_review_lines": 2,
+        "avg_link_confidence": 0.776,
+        "autoapprovable_lines": 8,
+        "needs_review_lines": 1,
         "validation_errors_lines": 0,
         "penalties": {
           "variety_no_overlap": 3,
-          "weak_synonym": 7,
+          "weak_synonym": 8,
           "tie_top2_margin": 1
         },
         "match_statuses": {
@@ -15407,8 +15465,8 @@
         },
         "invoice": "FC117893",
         "error": "",
-        "lane_auto": 7,
-        "lane_quick": 5,
+        "lane_auto": 8,
+        "lane_quick": 4,
         "lane_full": 0
       },
       {
@@ -15429,20 +15487,20 @@
         "extraction_engine": "",
         "extraction_confidence": 1.0,
         "extraction_degraded": false,
-        "avg_link_confidence": 0.947,
-        "autoapprovable_lines": 5,
-        "needs_review_lines": 1,
+        "avg_link_confidence": 0.975,
+        "autoapprovable_lines": 6,
+        "needs_review_lines": 0,
         "validation_errors_lines": 0,
         "penalties": {
-          "weak_synonym": 5
+          "weak_synonym": 6
         },
         "match_statuses": {
           "ok": 6
         },
         "invoice": "137866",
         "error": "",
-        "lane_auto": 5,
-        "lane_quick": 1,
+        "lane_auto": 6,
+        "lane_quick": 0,
         "lane_full": 0
       },
       {

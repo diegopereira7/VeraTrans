@@ -996,12 +996,13 @@ class TessaParser:
             ln=ln.strip()
             # Patrón: ...HB/QB [loc] [num] VARIETY SIZE BUNCHES STEMS $PRICE $TOTAL LABEL
             # Ejemplo: "1 910573351 HB XL 2 MONDIAL 60 12 300 $0.45 $135.00 R17"
-            pm=re.search(r'(HB|QB)\s+(?:\w+\s+)?(?:\d+\s+)?([A-Z][A-Z\s.\-/]+?)\s+(\d{2})\s+(\d+)\s+(\d+)\s+\$([\d.]+)\s+\$([\d.]+)',ln)
+            # (?:[A-Z][A-Z0-9\-]*\s+)? admite farm/route code tipo "TESSA-R1" antes de la variedad
+            pm=re.search(r'(HB|QB)\s+(?:\w+\s+)?(?:\d+\s+)?(?:[A-Z][A-Z0-9\-]*\s+)?([A-Z][A-Z\s.\-/]+?)\s+(\d{2})\s+(\d+)\s+(\d+)\s+\$([\d.]+)\s+\$([\d,.]+)',ln)
             if pm:
                 btype=pm.group(1); var=pm.group(2).strip()
-                try: sz=int(pm.group(3)); spb=int(pm.group(4)); stems=int(pm.group(5)); price=float(pm.group(6)); total=float(pm.group(7))
+                try: sz=int(pm.group(3)); spb=int(pm.group(4)); stems=int(pm.group(5)); price=float(pm.group(6)); total=float(pm.group(7).replace(',',''))
                 except: continue
-                label_m=re.search(r'\$[\d.]+\s+(\w+)\s*$',ln); label=label_m.group(1) if label_m else ''
+                label_m=re.search(r'\$[\d,.]+\s+(\w+)\s*$',ln); label=label_m.group(1) if label_m else ''
                 il=InvoiceLine(raw_description=ln,species='ROSES',variety=var,
                                size=sz,stems_per_bunch=spb,stems=stems,
                                price_per_stem=price,line_total=total,label=label,box_type=btype)
@@ -1010,12 +1011,12 @@ class TessaParser:
             # FIX: línea sin variedad visible (variedad en la línea siguiente)
             # "1 910927987 QB 3 60 4 100 $0.45 $45.00 R18"
             # siguiente línea: "R2 PINK"  o "MONDIAL"
-            pm2=re.search(r'(HB|QB)\s+(\d+)\s+(\d{2})\s+(\d+)\s+(\d+)\s+\$([\d.]+)\s+\$([\d.]+)',ln)
+            pm2=re.search(r'(HB|QB)\s+(\d+)\s+(\d{2})\s+(\d+)\s+(\d+)\s+\$([\d.]+)\s+\$([\d,.]+)',ln)
             if pm2:
                 btype=pm2.group(1)
-                try: sz=int(pm2.group(3)); spb=int(pm2.group(4)); stems=int(pm2.group(5)); price=float(pm2.group(6)); total=float(pm2.group(7))
+                try: sz=int(pm2.group(3)); spb=int(pm2.group(4)); stems=int(pm2.group(5)); price=float(pm2.group(6)); total=float(pm2.group(7).replace(',',''))
                 except: continue
-                label_m=re.search(r'\$[\d.]+\s+(\w+)\s*$',ln); label=label_m.group(1) if label_m else ''
+                label_m=re.search(r'\$[\d,.]+\s+(\w+)\s*$',ln); label=label_m.group(1) if label_m else ''
                 # Buscar variedad en líneas siguientes
                 var_parts=[]
                 for j in range(i+1, min(i+3, len(text_lines))):
@@ -1587,37 +1588,78 @@ class IwaParser:
 
 
 class TimanaParser:
-    """Formato Flores Timana: ROSE VARIETY COLOR SIZE TARIFF BOXES HB BUNCHES SPB STEMS PRICE $ TOTAL
+    """Formato Flores Timana: ROSE VARIETY COLOR SIZE [OF ]TARIFF BOXES HB BUNCHES SPB STEMS PRICE $ TOTAL
     Ejemplo: "ROSE FREEDOM RED 40CM CO-FREE0603110050 4 HB 12 25 1,200 0.260 $ 312.00"
+    Algunas facturas añaden "OF " antes del tariff.
+
+    Mixed boxes: parent "ASSORTED BOX LABEL [TARIFF] 1 HB 12 25 300 0.220 $ 66.000"
+    se salta; sub-líneas "ROSE VARIETY COLOR SIZECM bunches spb price" heredan btype.
     """
+    # Linea principal: captura opcional "OF" entre size y tariff
+    _MAIN_RE = re.compile(
+        r'ROSE\s+([A-Z][A-Z\s.\-/&+]+?)\s+(\d{2,3})CM\s+'
+        r'(?:OF\s+)?'                                # label "OF" opcional
+        r'\S+\s+'                                    # tariff (CO-FREE...)
+        r'(\d+)\s+(HB|QB)\s+'                        # boxes + type
+        r'(\d+)\s+(\d+)\s+'                          # bunches + spb
+        r'([\d,]+)\s+([\d.]+)\s+\$\s+([\d,.]+)',     # stems + price + total
+        re.I)
+    # Sub-línea de assorted box (sin tariff, sin total, sin HB)
+    _SUB_RE = re.compile(
+        r'^ROSE\s+([A-Z][A-Z\s.\-/&+]+?)\s+(\d{2,3})CM\s+'
+        r'(\d+)\s+(\d+)\s+([\d.]+)\s*$',              # bunches + spb + price
+        re.I)
+    # Parent assorted box: se ignora, las sub-líneas traen el detalle real
+    _ASSORTED_RE = re.compile(r'^ASSORTED\s+BOX\b', re.I)
+
     def parse(self, text: str, pdata: dict):
         h = InvoiceHeader()
         h.provider_key = pdata['key']; h.provider_id = pdata['id']; h.provider_name = pdata['name']
         m = re.search(r'INVOICE\s+(\d+)', text, re.I); h.invoice_number = m.group(1) if m else ''
         m = re.search(r'(?:Issue|Ship)\s+Date[:\s]+([\d\-/]+)', text, re.I); h.date = m.group(1) if m else ''
+        m = re.search(r'Total\s+FCA\s+\w+[:\s]*\$\s*([\d,.]+)', text, re.I)
+        if m:
+            h.total = float(m.group(1).replace(',', ''))
         lines = []
+        last_btype = 'HB'
         for ln in text.split('\n'):
             raw = ln.strip()
-            pm = re.search(
-                r'ROSE\s+([A-Z][A-Z\s.\-/&]+?)\s+(\d{2,3})CM\s+'
-                r'\S+\s+'                                    # tariff
-                r'(\d+)\s+(HB|QB)\s+'                        # boxes + type
-                r'(\d+)\s+(\d+)\s+'                          # bunches + spb
-                r'([\d,]+)\s+([\d.]+)\s+\$\s+([\d,.]+)',     # stems + price + total
-                raw, re.I)
-            if not pm:
+            if self._ASSORTED_RE.search(raw):
+                # Parent assorted — recordar btype para las sub-líneas, no emitir
+                bt = re.search(r'\b(HB|QB)\b', raw)
+                if bt:
+                    last_btype = bt.group(1).upper()
                 continue
-            var = pm.group(1).strip()
-            sz = int(pm.group(2))
-            btype = pm.group(4).upper()
-            spb = int(pm.group(6))
-            stems = int(pm.group(7).replace(',', ''))
-            price = float(pm.group(8))
-            total = float(pm.group(9).replace(',', ''))
-            il = InvoiceLine(raw_description=raw, species='ROSES', variety=var, origin='COL',
-                             size=sz, stems_per_bunch=spb, stems=stems,
-                             price_per_stem=price, line_total=total, box_type=btype)
-            lines.append(il)
+            pm = self._MAIN_RE.search(raw)
+            if pm:
+                var = pm.group(1).strip()
+                sz = int(pm.group(2))
+                btype = pm.group(4).upper()
+                last_btype = btype
+                spb = int(pm.group(6))
+                stems = int(pm.group(7).replace(',', ''))
+                price = float(pm.group(8))
+                total = float(pm.group(9).replace(',', ''))
+                il = InvoiceLine(raw_description=raw, species='ROSES', variety=var, origin='COL',
+                                 size=sz, stems_per_bunch=spb, stems=stems,
+                                 price_per_stem=price, line_total=round(total, 2), box_type=btype)
+                lines.append(il)
+                continue
+            sm = self._SUB_RE.match(raw)
+            if sm:
+                var = sm.group(1).strip()
+                sz = int(sm.group(2))
+                bunches = int(sm.group(3))
+                spb = int(sm.group(4))
+                price = float(sm.group(5))
+                stems = bunches * spb
+                total = round(stems * price, 2)
+                il = InvoiceLine(raw_description=raw, species='ROSES', variety=var, origin='COL',
+                                 size=sz, stems_per_bunch=spb, bunches=bunches, stems=stems,
+                                 price_per_stem=price, line_total=total, box_type=last_btype)
+                lines.append(il)
+        if not h.total and lines:
+            h.total = round(sum(l.line_total for l in lines), 2)
         return h, lines
 
 

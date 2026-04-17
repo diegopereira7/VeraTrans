@@ -72,17 +72,20 @@ _Cifras tomadas del historial de sesiones de `CLAUDE.md` (sesión 6, abril 2026)
   - `mark_confirmed`/`mark_corrected` ya existen en `SynonymStore`;
     falta engancharlos a UI/API.
 
-### KPIs baseline (sesión 9n, `tools/evaluate_all.py`)
-- Líneas totales procesadas: **3118**
-- Líneas `ok`: **2652** · `ambiguous_match`: **239** · `autoapprovable`: **2510**
-- **autoapprove_rate: 86.8%** de las líneas linkables
+### KPIs baseline (sesión 9o, `tools/evaluate_all.py`)
+- Líneas totales procesadas: **3219** (+101 líneas de los parsers
+  liberados: TIMANA, ART ROSES, BENCHMARK, TESSA)
+- Líneas `ok`: **2739** · `ambiguous_match`: **246** · `autoapprovable`: **2600**
+- **autoapprove_rate: 87.1%** de las líneas linkables
 - **Golden set: 100%** parse + link accuracy (88/88 líneas, 5/5 reviewed)
+- Buckets: OK 65 · NO_PARSEA 13 · TOTALES_MAL 2 · MUCHO_RESCATE 1 ·
+  NO_DETECTADO 1
 - Top-5 penalties globales:
-  1. `weak_synonym` 2517
-  2. `variety_no_overlap` 234
-  3. `foreign_brand` 169
-  4. `low_evidence` 126 — bajó (filtro anti-ruido a sin_match)
-  5. `tie_top2_margin` 119 — bajó −40% (origin_match más fuerte)
+  1. `weak_synonym` 2595
+  2. `variety_no_overlap` 242
+  3. `foreign_brand` 180
+  4. `low_evidence` 133
+  5. `tie_top2_margin` 119
 - Feedback loop operativo: golden → review → apply → sinónimos confirmados
 - Rama OCR real disponible: **OCRmyPDF+Tesseract** + EasyOCR fallback
 - Matching: **scoring por evidencia** con vetos duros y trazabilidad
@@ -379,16 +382,39 @@ tras la sesión 8 (baseline ya capturada).
 - [x] 11. ELITE + SAYONARA (sesión 9l) — autoapprove 79.6%→80.4%
 - [x] 12. DAFLOR + APOSENTOS + CANANVALLE (sesión 9m) — 80.4%→81.9%
 - [x] 13. NATIVE + MILONGA + MILAGRO + refinado (sesión 9n) — 81.9%→86.8%
-- [ ] 14. **Shadow mode** (Fase 10) — cuando se empiece a implantar
-- [ ] 15. Ampliar NO_PARSEA restante: UMA, CANTIZA, BENCHMARK, TESSA,
-      ART ROSES, TIMANA, etc.
-- [ ] 16. Optimizar matcher (backlog) — ~6.5s para 43 líneas
+- [x] 14. TIMANA + ART ROSES + BENCHMARK + TESSA (sesión 9o) —
+      86.8%→87.1%, NO_PARSEA ~19→13 (+101 líneas rescatadas)
+- [ ] 15. **Shadow mode** (Fase 10) — cuando se empiece a implantar
+- [ ] 16. Ampliar NO_PARSEA restante: CANTIZA y subvariantes de TESSA
+      (sub-líneas multi-variedad), más providers del report
+- [ ] 17. Optimizar matcher (backlog) — ~6.5s para 43 líneas
 
 ---
 
 ## Registro rápido de avances
 
 ### Último bloque cerrado
+- Fecha: 2026-04-17
+- Paso: sesión 9o — TIMANA + ART ROSES + BENCHMARK + TESSA parsers
+- Qué se hizo:
+  * **`parsers/otros.py → TimanaParser`**: `OF ` opcional antes del
+    tariff; parent `ASSORTED BOX` se skippea y las sub-líneas (`ROSE
+    VAR COLOR SIZECM bunches spb price`, sin total ni `HB`) heredan
+    btype del parent; `header.total` derivado de `Total FCA Bogota:
+    $...` o suma. Sample 01: 5 líneas → 22. Totals_ok 0/5 → 5/5.
+  * **`parsers/mystic.py`**: `re.I` en `_LINE_RE` y `_LINE_RE_NOCODE`
+    + `[A-Za-z...]` en variety — desbloquea ART ROSES (FLORIFRUT,
+    fmt heredado mystic) con variedad mixed-case (Mondial, Explorer,
+    Brighton, Frutteto). ART ROSES: 0/5 OK → 5/5 OK (29 líneas).
+  * **`parsers/golden.py`** (BENCHMARK): `price_m` admite coma de
+    miles en total (`1,350.00`). Rescued 4→0, totals_ok 3/5→5/5.
+  * **`parsers/otros.py → TessaParser`**: prefix opcional para farm
+    code `TESSA-R1`/`TESSA-R2`; coma-en-total. Sample 02b 0→4 parsed,
+    diff 100%→0%.
+- Resultado: autoapprove **86.8% → 87.1%** (+0.3pp); ok 2652→2739;
+  líneas totales 3118→3219 (+101); NO_PARSEA ~19→13. Golden 100%.
+
+### Penúltimo bloque cerrado
 - Fecha: 2026-04-17
 - Paso: sesión 9n — NATIVE + MILONGA + MILAGRO + refinado matcher
 - Qué se hizo:
@@ -404,28 +430,6 @@ tras la sesión 8 (baseline ya capturada).
 - Resultado: autoapprove **81.9% → 86.8%** (+4.9pp, mayor salto
   individual hasta ahora). ok 2555→2652, ambiguous 367→239.
   Golden 100%.
-
-### Penúltimo bloque cerrado
-- Fecha: 2026-04-17
-- Paso: sesión 9m — DAFLOR + APOSENTOS + CANANVALLE
-- Qué se hizo:
-  * **`parsers/otros.py → DaflorParser`**: descripción colgada en dos
-    líneas (`Alstroemeria Assorted - CO-` + línea siguiente con datos)
-    vía pending_desc. Acepta `Q`/`H` sueltos, pipes como separadores,
-    normaliza OCR errors (`€ o.15` → `$0.15`, `C0-` → `CO-`).
-  * **`parsers/otros.py → AposentosParser`**: tolerante a OCR
-    (`C0-`→`CO-`, `OUTYFREE`→`DUTYFREE`, `$` opcional, `Taba*`).
-    APOSENTOS 03: 2 ok → 13 ok, 05: 3 ok → 11 ok.
-  * **`matcher.py → _score_candidate`**: CARNATIONS ahora añade
-    tokens traducidos (COWBOY ORANGE → COWBOY NARANJA) al set de
-    `line_var_tokens`. Permite que `variety_match` dispare cuando el
-    catálogo indexa por color español.
-  * **`config.py`**: ampliado `CARNATION_COLOR_MAP` con BURGUNDY,
-    BRONZE, AZUL, FUCSIA y variantes.
-  * **`matcher.py → _detect_foreign_brand`**: umbral de longitud
-    bajado de 4 a 3 (detecta EQR). Protegido contra CM/U.
-- Resultado: autoapprove **80.4% → 81.9%** (+1.5pp), ok 2471→2555,
-  ambiguous 424→367, `variety_no_overlap` 313→231. Golden 100%.
 
 ### Penúltimo bloque cerrado
 - Fecha: 2026-04-17

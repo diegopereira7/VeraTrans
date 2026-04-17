@@ -14,18 +14,20 @@ _BLOCK_NAMES = {'SORIALES', 'IGLESIAS', 'NAVARRETE'}
 # bloque opcional antes de variety.
 _LINE_RE = re.compile(
     r'^(?:\s*\d+\s+)?(?P<btype>[HQ])\s+'
-    r'(?P<code>[A-Z][A-Z0-9]{0,14})\s+'
+    r'(?P<code>[A-Z][A-Z0-9]{1,14})\s+'
     r'(?P<variety>.+?)\s+'
     r'(?P<peso>\d+)\s+(?P<cantidad>\d+)\s+(?P<length>\d+)\s+(?P<stems>\d+)\s+'
-    r'(?P<price>[\d,.]+)\s+(?P<total>[\d,.]+)\s*$'
+    r'(?P<price>[\d,.]+)\s+(?P<total>[\d,.]+)\s*$',
+    re.I
 )
 
 # Fallback sin box_code (ej. STAMPSYBOX: "1 H NECTARINE 4 25 50 100 0,300 30,000")
 _LINE_RE_NOCODE = re.compile(
     r'^(?:\s*\d+\s+)?(?P<btype>[HQ])\s+'
-    r'(?P<variety>[A-Z][A-Z0-9\s\-\.\'/&]+?)\s+'
+    r'(?P<variety>[A-Za-z][A-Za-z0-9\s\-\.\'/&]+?)\s+'
     r'(?P<peso>\d+)\s+(?P<cantidad>\d+)\s+(?P<length>\d+)\s+(?P<stems>\d+)\s+'
-    r'(?P<price>[\d,.]+)\s+(?P<total>[\d,.]+)\s*$'
+    r'(?P<price>[\d,.]+)\s+(?P<total>[\d,.]+)\s*$',
+    re.I
 )
 
 
