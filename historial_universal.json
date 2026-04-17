@@ -304,14 +304,14 @@
     "fecha": "2026-03-30 17:09"
   },
   "": {
-    "pdf": "02 - 729-4536 5036 (95) - APOSENTOS.pdf",
-    "provider": "Flores de Aposentos",
-    "total_usd": 391.0,
-    "lineas": 2,
-    "ok": 1,
-    "sin_match": 0,
-    "fecha": "2026-04-17 10:27",
-    "pdf_path": "C:\\Users\\diego.pereira\\Desktop\\DOC VERA\\FACTURAS IMPORTACION\\PROVEEDORES\\APOSENTOS\\02 - 729-4536 5036 (95) - APOSENTOS.pdf"
+    "pdf": "01 - 729-4985 6586 (134) - NATIVE.pdf",
+    "provider": "Native Blooms",
+    "total_usd": 0,
+    "lineas": 9,
+    "ok": 0,
+    "sin_match": 9,
+    "fecha": "2026-04-17 10:44",
+    "pdf_path": "C:\\Users\\diego.pereira\\Desktop\\DOC VERA\\FACTURAS IMPORTACION\\PROVEEDORES\\NATIVE BLOOMS\\01 - 729-4985 6586 (134) - NATIVE.pdf"
   },
   "7.149": {
     "pdf": "000 full.pdf",
@@ -739,13 +739,14 @@
     "pdf_path": "C:\\Users\\diego.pereira\\Desktop\\DOC VERA\\FACTURAS IMPORTACION\\PROVEEDORES\\CANANVALLE\\01 - 075-67710926 - CANANVALLE CANANVALLE.pdf"
   },
   "0000040428": {
-    "pdf": "075-6771 0963 FULL.pdf",
-    "provider": "Cantiza Flores",
-    "total_usd": 477.75,
-    "lineas": 99,
-    "ok": 27,
-    "sin_match": 1,
-    "fecha": "2026-03-28 10:45"
+    "pdf": "05 - 075-67710963 - NATIVE BLOOMS NATIVE.pdf",
+    "provider": "Calinama (Native)",
+    "total_usd": 270.0,
+    "lineas": 3,
+    "ok": 1,
+    "sin_match": 2,
+    "fecha": "2026-04-17 10:44",
+    "pdf_path": "C:\\Users\\diego.pereira\\Desktop\\DOC VERA\\FACTURAS IMPORTACION\\PROVEEDORES\\NATIVE BLOOMS\\05 - 075-67710963 - NATIVE BLOOMS NATIVE.pdf"
   },
   "18135": {
     "pdf": "SEMANA_10_X_075-6771_0974_(79)X_UMA.pdf",
@@ -8041,9 +8042,9 @@
     "provider": "Mystic Flowers",
     "total_usd": 360.0,
     "lineas": 26,
-    "ok": 23,
-    "sin_match": 3,
-    "fecha": "2026-04-16 16:39",
+    "ok": 24,
+    "sin_match": 2,
+    "fecha": "2026-04-17 10:53",
     "pdf_path": "C:\\Users\\diego.pereira\\Desktop\\DOC VERA\\FACTURAS IMPORTACION\\PROVEEDORES\\MYSTIC\\01 - 075-67712271 - MYSTIC MYSTIC2.pdf"
   },
   "25061663": {
@@ -11328,13 +11329,14 @@
     "fecha": "2026-03-30 17:10"
   },
   "0000041593": {
-    "pdf": "NATIVE 2.pdf",
+    "pdf": "02 - 075-67714625 - NATIVE BLOOMS NATIVE 2.pdf",
     "provider": "Calinama (Native)",
     "total_usd": 1610.0,
     "lineas": 17,
     "ok": 17,
     "sin_match": 0,
-    "fecha": "2026-03-30 17:10"
+    "fecha": "2026-04-17 10:45",
+    "pdf_path": "C:\\Users\\diego.pereira\\Desktop\\DOC VERA\\FACTURAS IMPORTACION\\PROVEEDORES\\NATIVE BLOOMS\\02 - 075-67714625 - NATIVE BLOOMS NATIVE 2.pdf"
   },
   "0000034767": {
     "pdf": "NATIVE.pdf",
@@ -11517,13 +11519,14 @@
     "fecha": "2026-03-30 17:11"
   },
   "INV-008764": {
-    "pdf": "SEMANA_10_X_729-4588_9314_(180)XX_MILONGA.pdf",
+    "pdf": "04 - 729-45889314 - MILONGA FLOWERS MILONGA.pdf",
     "provider": "Flores Milonga",
     "total_usd": 420.25,
     "lineas": 11,
-    "ok": 9,
-    "sin_match": 0,
-    "fecha": "2026-03-30 17:11"
+    "ok": 7,
+    "sin_match": 2,
+    "fecha": "2026-04-17 10:49",
+    "pdf_path": "C:\\Users\\diego.pereira\\Desktop\\DOC VERA\\FACTURAS IMPORTACION\\PROVEEDORES\\MILONGA FLOWERS\\04 - 729-45889314 - MILONGA FLOWERS MILONGA.pdf"
   },
   "001101097": {
     "pdf": "SEMANA_11_075-6771_4500_(104)_AROMA.pdf",
@@ -11580,13 +11583,14 @@
     "fecha": "2026-03-30 17:11"
   },
   "0000040954": {
-    "pdf": "SEMANA_11_075-6771_4544_(357)_NATIVE.pdf",
+    "pdf": "03 - 075-67714544 - NATIVE BLOOMS NATIVE.pdf",
     "provider": "Calinama (Native)",
     "total_usd": 270.0,
     "lineas": 3,
-    "ok": 3,
-    "sin_match": 0,
-    "fecha": "2026-03-30 17:12"
+    "ok": 1,
+    "sin_match": 2,
+    "fecha": "2026-04-17 10:44",
+    "pdf_path": "C:\\Users\\diego.pereira\\Desktop\\DOC VERA\\FACTURAS IMPORTACION\\PROVEEDORES\\NATIVE BLOOMS\\03 - 075-67714544 - NATIVE BLOOMS NATIVE.pdf"
   },
   "000007916": {
     "pdf": "SEMANA_11_075-6771_4544_(357)_ROSALEDA.pdf",
@@ -11607,13 +11611,14 @@
     "fecha": "2026-03-30 17:12"
   },
   "0000041170": {
-    "pdf": "SEMANA_11_075-6771_4555_(52)_NATIVE.pdf",
+    "pdf": "04 - 075-67714555 - NATIVE BLOOMS NATIVE.pdf",
     "provider": "Calinama (Native)",
     "total_usd": 31.0,
     "lineas": 1,
-    "ok": 1,
-    "sin_match": 0,
-    "fecha": "2026-03-30 17:12"
+    "ok": 0,
+    "sin_match": 1,
+    "fecha": "2026-04-17 10:44",
+    "pdf_path": "C:\\Users\\diego.pereira\\Desktop\\DOC VERA\\FACTURAS IMPORTACION\\PROVEEDORES\\NATIVE BLOOMS\\04 - 075-67714555 - NATIVE BLOOMS NATIVE.pdf"
   },
   "001231886": {
     "pdf": "SEMANA_11_075-6771_4555_(52)_SOLPACIFIC.pdf",
@@ -11688,13 +11693,14 @@
     "fecha": "2026-03-30 17:12"
   },
   "INV-008850": {
-    "pdf": "SEMANA_11_729-4593_7194_(271)_MILONGA.pdf",
+    "pdf": "03 - 729-45937194 - MILONGA FLOWERS MILONGA.pdf",
     "provider": "Flores Milonga",
-    "total_usd": 0.0,
+    "total_usd": 201.5,
     "lineas": 10,
-    "ok": 8,
-    "sin_match": 0,
-    "fecha": "2026-03-30 17:12"
+    "ok": 1,
+    "sin_match": 4,
+    "fecha": "2026-04-17 10:49",
+    "pdf_path": "C:\\Users\\diego.pereira\\Desktop\\DOC VERA\\FACTURAS IMPORTACION\\PROVEEDORES\\MILONGA FLOWERS\\03 - 729-45937194 - MILONGA FLOWERS MILONGA.pdf"
   },
   "INV-009092": {
     "pdf": "SEMANA_11_729-4593_7194_(271)_VUELVEN.pdf",
@@ -11832,13 +11838,14 @@
     "fecha": "2026-03-30 09:58"
   },
   "0000041703": {
-    "pdf": "SEMANA_12_✈️_075-6771_4636_SAFTEC_NATIVE.pdf",
+    "pdf": "01 - 075-67714636 - NATIVE BLOOMS NATIVE.pdf",
     "provider": "Calinama (Native)",
     "total_usd": 81.0,
     "lineas": 1,
     "ok": 1,
     "sin_match": 0,
-    "fecha": "2026-03-30 09:58"
+    "fecha": "2026-04-17 10:43",
+    "pdf_path": "C:\\Users\\diego.pereira\\Desktop\\DOC VERA\\FACTURAS IMPORTACION\\PROVEEDORES\\NATIVE BLOOMS\\01 - 075-67714636 - NATIVE BLOOMS NATIVE.pdf"
   },
   "001101654": {
     "pdf": "SEMANA_12_✈️_369-9902_2674_ALLIANZA_AROMA 2.pdf",
@@ -11913,13 +11920,14 @@
     "fecha": "2026-03-30 17:12"
   },
   "INV-008916": {
-    "pdf": "SEMANA_12_✈️_729-4593_7360_COLOMBIA_MILONGA.pdf",
+    "pdf": "02 - 729-45937360 - MILONGA FLOWERS MILONGA.pdf",
     "provider": "Flores Milonga",
     "total_usd": 814.75,
     "lineas": 14,
-    "ok": 12,
-    "sin_match": 0,
-    "fecha": "2026-03-30 17:12"
+    "ok": 10,
+    "sin_match": 2,
+    "fecha": "2026-04-17 10:49",
+    "pdf_path": "C:\\Users\\diego.pereira\\Desktop\\DOC VERA\\FACTURAS IMPORTACION\\PROVEEDORES\\MILONGA FLOWERS\\02 - 729-45937360 - MILONGA FLOWERS MILONGA.pdf"
   },
   "INV-009358": {
     "pdf": "SEMANA_12_✈️_729-4593_7360_COLOMBIA_VUELVEN.pdf",
@@ -15862,7 +15870,7 @@
     "lineas": 1,
     "ok": 0,
     "sin_match": 0,
-    "fecha": "2026-04-15 15:58",
+    "fecha": "2026-04-17 10:49",
     "pdf_path": "C:\\Users\\diego.pereira\\Desktop\\DOC VERA\\FACTURAS IMPORTACION\\PROVEEDORES\\MILONGA FLOWERS\\02 - S. 729-4494 1525 (211) - MILONGA.pdf"
   },
   "608": {
@@ -16034,5 +16042,85 @@
     "sin_match": 9,
     "fecha": "2026-04-17 10:31",
     "pdf_path": "C:\\Users\\diego.pereira\\Desktop\\DOC VERA\\FACTURAS IMPORTACION\\PROVEEDORES\\CANANVALLE\\05 - 369-96932430 - CANANVALLE CANANVALLE 5061208.pdf"
+  },
+  "INV-008992": {
+    "pdf": "01 - 996-14255161 - MILONGA FLOWERS MILONGA.pdf",
+    "provider": "Flores Milonga",
+    "total_usd": 1567.75,
+    "lineas": 11,
+    "ok": 5,
+    "sin_match": 2,
+    "fecha": "2026-04-17 10:49",
+    "pdf_path": "C:\\Users\\diego.pereira\\Desktop\\DOC VERA\\FACTURAS IMPORTACION\\PROVEEDORES\\MILONGA FLOWERS\\01 - 996-14255161 - MILONGA FLOWERS MILONGA.pdf"
+  },
+  "INV-003058": {
+    "pdf": "01 - S. 729-4494 1396 (417) - MILONGA.pdf",
+    "provider": "Flores Milonga",
+    "total_usd": 692.5,
+    "lineas": 4,
+    "ok": 3,
+    "sin_match": 0,
+    "fecha": "2026-04-17 10:49",
+    "pdf_path": "C:\\Users\\diego.pereira\\Desktop\\DOC VERA\\FACTURAS IMPORTACION\\PROVEEDORES\\MILONGA FLOWERS\\01 - S. 729-4494 1396 (417) - MILONGA.pdf"
+  },
+  "INV-008727": {
+    "pdf": "05 - 729-45889351 - MILONGA FLOWERS MILONGA.pdf",
+    "provider": "Flores Milonga",
+    "total_usd": 209.0,
+    "lineas": 5,
+    "ok": 1,
+    "sin_match": 1,
+    "fecha": "2026-04-17 10:49",
+    "pdf_path": "C:\\Users\\diego.pereira\\Desktop\\DOC VERA\\FACTURAS IMPORTACION\\PROVEEDORES\\MILONGA FLOWERS\\05 - 729-45889351 - MILONGA FLOWERS MILONGA.pdf"
+  },
+  "001062749": {
+    "pdf": "01 - 075-66741732 - MILAGRO MILAGRO 001062749.pdf",
+    "provider": "El Milagro de las Flores",
+    "total_usd": 269.5,
+    "lineas": 4,
+    "ok": 4,
+    "sin_match": 0,
+    "fecha": "2026-04-17 10:51",
+    "pdf_path": "C:\\Users\\diego.pereira\\Desktop\\DOC VERA\\FACTURAS IMPORTACION\\PROVEEDORES\\MILAGRO\\01 - 075-66741732 - MILAGRO MILAGRO 001062749.pdf"
+  },
+  "001061197": {
+    "pdf": "01 - 729-4509 6310 (376) - MILAGRO.pdf",
+    "provider": "El Milagro de las Flores",
+    "total_usd": 988.75,
+    "lineas": 42,
+    "ok": 33,
+    "sin_match": 9,
+    "fecha": "2026-04-17 10:56",
+    "pdf_path": "C:\\Users\\diego.pereira\\Desktop\\DOC VERA\\FACTURAS IMPORTACION\\PROVEEDORES\\MILAGRO\\01 - 729-4509 6310 (376) - MILAGRO.pdf"
+  },
+  "001061421": {
+    "pdf": "02 - 075-6664 4944 (118) - MILAGRO.pdf",
+    "provider": "El Milagro de las Flores",
+    "total_usd": 822.75,
+    "lineas": 15,
+    "ok": 12,
+    "sin_match": 3,
+    "fecha": "2026-04-17 10:51",
+    "pdf_path": "C:\\Users\\diego.pereira\\Desktop\\DOC VERA\\FACTURAS IMPORTACION\\PROVEEDORES\\MILAGRO\\02 - 075-6664 4944 (118) - MILAGRO.pdf"
+  },
+  "001065496": {
+    "pdf": "03 - 729-45489135 - MILAGRO MILAGRO 001065496.pdf",
+    "provider": "El Milagro de las Flores",
+    "total_usd": 50.0,
+    "lineas": 1,
+    "ok": 1,
+    "sin_match": 0,
+    "fecha": "2026-04-17 10:51",
+    "pdf_path": "C:\\Users\\diego.pereira\\Desktop\\DOC VERA\\FACTURAS IMPORTACION\\PROVEEDORES\\MILAGRO\\03 - 729-45489135 - MILAGRO MILAGRO 001065496.pdf"
+  },
+  "001065461": {
+    "pdf": "04 - 729-45489124 - MILAGRO MILAGRO 001065461.pdf",
+    "provider": "El Milagro de las Flores",
+    "total_usd": 80.0,
+    "lineas": 2,
+    "ok": 2,
+    "sin_match": 0,
+    "fecha": "2026-04-17 10:50",
+    "pdf_path": "C:\\Users\\diego.pereira\\Desktop\\DOC VERA\\FACTURAS IMPORTACION\\PROVEEDORES\\MILAGRO\\04 - 729-45489124 - MILAGRO MILAGRO 001065461.pdf"
   }
 }

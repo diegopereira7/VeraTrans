@@ -72,17 +72,17 @@ _Cifras tomadas del historial de sesiones de `CLAUDE.md` (sesión 6, abril 2026)
   - `mark_confirmed`/`mark_corrected` ya existen en `SynonymStore`;
     falta engancharlos a UI/API.
 
-### KPIs baseline (sesión 9m, `tools/evaluate_all.py`)
-- Líneas totales procesadas: **3111**
-- Líneas `ok`: **2555** · `ambiguous_match`: **367** · `autoapprovable`: **2393**
-- **autoapprove_rate: 81.9%** de las líneas linkables
+### KPIs baseline (sesión 9n, `tools/evaluate_all.py`)
+- Líneas totales procesadas: **3118**
+- Líneas `ok`: **2652** · `ambiguous_match`: **239** · `autoapprovable`: **2510**
+- **autoapprove_rate: 86.8%** de las líneas linkables
 - **Golden set: 100%** parse + link accuracy (88/88 líneas, 5/5 reviewed)
 - Top-5 penalties globales:
-  1. `weak_synonym` 2450 — sinónimos en prueba con trust bajo
-  2. `variety_no_overlap` 231 — bajó -82 tras fix CARNATIONS color
-  3. `low_evidence` 217 — ganador < 0.70 de score
-  4. `tie_top2_margin` 198 — empates prácticos entre candidatos
-  5. `foreign_brand` 169 — subió tras detectar marcas cortas (EQR)
+  1. `weak_synonym` 2517
+  2. `variety_no_overlap` 234
+  3. `foreign_brand` 169
+  4. `low_evidence` 126 — bajó (filtro anti-ruido a sin_match)
+  5. `tie_top2_margin` 119 — bajó −40% (origin_match más fuerte)
 - Feedback loop operativo: golden → review → apply → sinónimos confirmados
 - Rama OCR real disponible: **OCRmyPDF+Tesseract** + EasyOCR fallback
 - Matching: **scoring por evidencia** con vetos duros y trazabilidad
@@ -378,16 +378,34 @@ tras la sesión 8 (baseline ya capturada).
 - [x] 10. LATIN + refinado matcher (sesión 9k) — autoapprove 68.9%→79.6%
 - [x] 11. ELITE + SAYONARA (sesión 9l) — autoapprove 79.6%→80.4%
 - [x] 12. DAFLOR + APOSENTOS + CANANVALLE (sesión 9m) — 80.4%→81.9%
-- [ ] 13. **Shadow mode** (Fase 10) — cuando se empiece a implantar
-- [ ] 14. Ampliar NO_PARSEA restante: UMA, MILAGRO, CANTIZA, BENCHMARK,
-      NATIVE BLOOMS, MILONGA, etc.
-- [ ] 15. Optimizar matcher (backlog) — ~6.5s para 43 líneas
+- [x] 13. NATIVE + MILONGA + MILAGRO + refinado (sesión 9n) — 81.9%→86.8%
+- [ ] 14. **Shadow mode** (Fase 10) — cuando se empiece a implantar
+- [ ] 15. Ampliar NO_PARSEA restante: UMA, CANTIZA, BENCHMARK, TESSA,
+      ART ROSES, TIMANA, etc.
+- [ ] 16. Optimizar matcher (backlog) — ~6.5s para 43 líneas
 
 ---
 
 ## Registro rápido de avances
 
 ### Último bloque cerrado
+- Fecha: 2026-04-17
+- Paso: sesión 9n — NATIVE + MILONGA + MILAGRO + refinado matcher
+- Qué se hizo:
+  * **`matcher.py`**: bonus `origin_match` 0.10→0.15 para rosas/claveles
+    (EC/COL autoritativo). Resuelve ambiguous FREEDOM EC vs genérico.
+  * **`matcher.py`**: filtro anti-ruido — si top1 no tiene
+    `variety_match` Y `hint_score`<0.85, va a sin_match (no ambiguous)
+    para evitar matches arbitrarios tipo SHY→SYMBOL. LIMONADA→LEMONADE
+    (hint 0.88) se preserva.
+  * **`parsers/otros.py → ColFarmParser`** (MILONGA): normaliza OCR
+    garbage (pipes, llaves, `�`, `*`, `X2-5`→`X 25`, `i ee`) antes
+    del regex. `_money()` tolera `.` basura. MILONGA sample 01: 0 líneas→11.
+- Resultado: autoapprove **81.9% → 86.8%** (+4.9pp, mayor salto
+  individual hasta ahora). ok 2555→2652, ambiguous 367→239.
+  Golden 100%.
+
+### Penúltimo bloque cerrado
 - Fecha: 2026-04-17
 - Paso: sesión 9m — DAFLOR + APOSENTOS + CANANVALLE
 - Qué se hizo:

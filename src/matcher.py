@@ -305,11 +305,13 @@ def _score_candidate(line: InvoiceLine, cand: Candidate,
         score += 0.15
         reasons.append('species_match')
 
-    # — Origen (rosas/claveles)
+    # — Origen (rosas/claveles). Premio sustancial (0.15): el prefijo
+    # EC/COL en el catálogo es autoritativo para desempatar contra
+    # entradas genéricas sin origen (que suelen ganar por fuzzy 100%).
     if line.species in ('ROSES', 'CARNATIONS'):
         orig_art = _infer_article_origin(art)
         if orig_art and orig_art == line.origin:
-            score += 0.10
+            score += 0.15
             reasons.append('origin_match')
 
     # — Stems per bunch
@@ -707,7 +709,15 @@ class Matcher:
         # Si hay score razonable (≥0.50) lo dejamos como ambiguous para
         # revisión, en vez de descartarlo como sin_match. Esto evita que
         # una lectura buena pero sin evidencia dura caiga al abismo.
-        if top1.score >= 0.50:
+        # EXCEPCIÓN: si el ganador NO tiene variety_match (la variedad
+        # ni siquiera solapa parcialmente con el artículo) Y la similitud
+        # fuzzy es baja (<0.70), el candidato es ruido. Mejor sin_match
+        # para no proponer matches arbitrarios tipo "SHY → SYMBOL".
+        # Mantenemos ambiguous si la fuzzy es alta (LIMONADA→LEMONADE
+        # sin solape literal pero similitud 88%) — el operador decide.
+        plausible = ('variety_match' in top1.reasons
+                     or top1.hint_score >= 0.85)
+        if top1.score >= 0.50 and plausible:
             line.match_status = 'ambiguous_match'
             line.match_method = top1.method_hint or 'evidencia'
             line.articulo_id = top1.articulo.get('id')

@@ -660,11 +660,11 @@ el evaluador las use.
 
 ## Para el próximo turno
 
-Estado real tras sesión 9m (DAFLOR+APOSENTOS+CANANVALLE, 17 abril 2026):
-- Autoapprove: **81.9%** (3111 líneas de 82 proveedores)
+Estado real tras sesión 9n (NATIVE+MILONGA+MILAGRO, 17 abril 2026):
+- Autoapprove: **86.8%** (3118 líneas de 82 proveedores)
 - Golden set: **100%** (88/88 líneas) con `_status: "reviewed"`
 - NO_PARSEA restantes: ~19 proveedores
-- Carriles: regenerar tras sesión 9m.
+- Carriles: regenerar tras sesión 9n.
 
 Próximos pasos posibles:
 
@@ -1063,6 +1063,25 @@ final de este archivo, en la sección "Historial de sesiones".
   confirma **100% parse + link accuracy** sobre esas 88 líneas.
   Fase 2 del roadmap queda cerrada para el dataset inicial; ampliar
   con más proveedores es trabajo continuo.
+- **2026-04-17 sesión 9n**: NATIVE + MILONGA + MILAGRO + refinado matcher.
+  * **`src/matcher.py`**: bonus de `origin_match` subido 0.10 → 0.15
+    para rosas/claveles. El prefijo EC/COL del catálogo es
+    autoritativo y merece pesar más que un fuzzy 100% de artículo
+    genérico. Resuelve ambiguous tipo FREEDOM (EC vs genérico).
+  * **`src/matcher.py`**: filtro anti-ruido en el fallback low_evidence.
+    Si top1 no tiene `variety_match` Y su fuzzy `hint_score` < 0.85,
+    la línea va a `sin_match` en vez de `ambiguous_match`. Evita
+    matches arbitrarios tipo "SHY → SYMBOL" (MILAGRO) que confunden al
+    operador. Umbral 0.85 preserva casos tipo LIMONADA→LEMONADE
+    (similitud 0.88, sin solape literal).
+  * **`src/parsers/otros.py → ColFarmParser`** (MILONGA): normaliza
+    OCR noise antes del regex — pipes `|`, llaves, `�`, `*`,
+    `X2-5`→`X 25` OCR breaks, `i ee` ruido. `_money()` ahora
+    retorna 0.0 en lugar de reventar con `.` basura de OCR. MILONGA
+    sample 01 pasa de 0 líneas a 11 (5 ok).
+  * **Resultado global**: autoapprove **81.9% → 86.8%** (+4.9pp,
+    mayor salto individual). ok 2555→2652, ambiguous 367→239
+    (-128). Golden 100% mantenido (88/88).
 - **2026-04-17 sesión 9m**: DAFLOR + APOSENTOS + CANANVALLE (brand cortas).
   * **`src/parsers/otros.py → DaflorParser`**: fix descripción colgada
     en dos líneas (`Alstroemeria Assorted - CO-` en una, datos en la

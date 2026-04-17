@@ -1430,11 +1430,17 @@ class ColFarmParser:
 
     @staticmethod
     def _money(s: str) -> float:
-        """Parse money value: handles '3,900.00', '75.00', '0,31'."""
-        s = s.strip()
-        if ',' in s and '.' not in s:
-            return float(s.replace(',', '.'))
-        return float(s.replace(',', ''))
+        """Parse money value: handles '3,900.00', '75.00', '0,31'. Tolera
+        OCR garbage devolviendo 0.0 en lugar de reventar."""
+        s = (s or '').strip()
+        if not s or not re.search(r'\d', s):
+            return 0.0
+        try:
+            if ',' in s and '.' not in s:
+                return float(s.replace(',', '.'))
+            return float(s.replace(',', ''))
+        except ValueError:
+            return 0.0
 
     def parse(self, text: str, pdata: dict):
         h = InvoiceHeader()
@@ -1450,8 +1456,18 @@ class ColFarmParser:
 
         lines = []
         box_type = 'HB'
-        for ln in text.split('\n'):
-            ln = ln.strip()
+        for ln_raw in text.split('\n'):
+            ln = ln_raw.strip()
+            # Normaliza ruido OCR típico de estas facturas: pipes, llaves,
+            # caracteres raros (� { } [ ]), asteriscos y puntos sueltos
+            # entre números. Mantiene la línea original para ``raw_description``.
+            ln = re.sub(r'[\u00a6\u2022\u00b0{}\[\]~]', ' ', ln)
+            ln = re.sub(r'[\ufffd\u00ef\u00bf\u00bd]', ' ', ln)  # � y variantes
+            ln = ln.replace('|', ' ').replace('*', ' ')
+            # "X2-5" pegado (OCR rompe X25) → "X 25", " i ee" ruido → " "
+            ln = re.sub(r'X(\d)-(\d)(?=\s)', r'X\1\2', ln)
+            ln = re.sub(r'\s+i\s+ee\s+', ' ', ln)
+            ln = re.sub(r'\s{2,}', ' ', ln).strip()
             # Línea principal: "1 H Rose Frutteto X 25 - 40 ... 300 300 ST 0.25 75.00"
             # Soporta 'RoseFrutteto' pegado, OCR 'Rbse'/'Rcse', unidad ST/S1/Sl,
             # decimales con coma, conteo de caja opcional (sub-líneas OCR sin prefijo).

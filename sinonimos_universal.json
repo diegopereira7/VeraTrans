@@ -1272,14 +1272,20 @@
     "articulo_id": 12564,
     "articulo_name": "CLAVEL COL FANCY ROJO 70CM 20U",
     "origen": "auto",
+    "status": "aprendido_en_prueba",
     "provider_id": 313,
     "species": "CARNATIONS",
     "variety": "RED",
     "size": 0,
     "stems_per_bunch": 20,
     "grade": "FANCY",
-    "raw": "1 H Carnation Carn Mix Red/Yellow 576301 FAN GARCIA CO-0603129000 500 500 ST 0.190 95.000",
-    "invoice": "COLIBRI.pdf"
+    "raw": "14 H Carnation Red X 20 - FAN 591688- FAN CO-0603129000 500 7000 ST 0.190 1,330.000",
+    "invoice": "",
+    "times_used": 0,
+    "times_confirmed": 0,
+    "times_corrected": 0,
+    "first_seen_at": "2026-04-17T10:58:22",
+    "last_confirmed_at": ""
   },
   "313|CARNATIONS|MIX|0|20|FANCY": {
     "articulo_id": 12549,
@@ -1317,14 +1323,20 @@
     "articulo_id": 12576,
     "articulo_name": "CLAVEL COL SELECT ROJO 70CM 20U",
     "origen": "auto",
+    "status": "aprendido_en_prueba",
     "provider_id": 313,
     "species": "CARNATIONS",
     "variety": "RED",
     "size": 0,
     "stems_per_bunch": 20,
     "grade": "SELECT",
-    "raw": "2 H Carnation Red X 20 - SEL 576310- SEL LILAS CO-0603129000 500 1000 ST 0.200 200.000",
-    "invoice": "COLIBRI.pdf"
+    "raw": "1 H Carnation Red X 20 - SEL 591733 SEL CO-0603129000 500 500 ST 0.200 100.000",
+    "invoice": "",
+    "times_used": 0,
+    "times_confirmed": 0,
+    "times_corrected": 0,
+    "first_seen_at": "2026-04-17T10:58:24",
+    "last_confirmed_at": ""
   },
   "313|CARNATIONS|WHITE|0|20|SELECT": {
     "articulo_id": 12604,
@@ -1349,53 +1361,77 @@
     "articulo_id": 12527,
     "articulo_name": "CLAVEL COL FANCY AMARILLO 70CM 20U",
     "origen": "auto",
+    "status": "aprendido_en_prueba",
     "provider_id": 313,
     "species": "CARNATIONS",
     "variety": "YELLOW",
     "size": 0,
     "stems_per_bunch": 20,
     "grade": "FANCY",
-    "raw": "1 H Carnation Carn Mix Red/Yellow 576301 FAN GARCIA CO-0603129000 500 500 ST 0.190 95.000",
-    "invoice": "COLIBRI.pdf"
+    "raw": "1 H Carnation Yellow X 20 - FAN 591732 FAN CO-0603129000 500 500 ST 0.190 95.000",
+    "invoice": "",
+    "times_used": 0,
+    "times_confirmed": 0,
+    "times_corrected": 0,
+    "first_seen_at": "2026-04-17T10:58:23",
+    "last_confirmed_at": ""
   },
   "313|CARNATIONS|PINK|0|20|FANCY": {
     "articulo_id": 12566,
     "articulo_name": "CLAVEL COL FANCY ROSA 70CM 20U",
     "origen": "auto",
+    "status": "aprendido_en_prueba",
     "provider_id": 313,
     "species": "CARNATIONS",
     "variety": "PINK",
     "size": 0,
     "stems_per_bunch": 20,
     "grade": "FANCY",
-    "raw": "1 H Carnation Carn Mix Pink/Bicolor 576305 FAN R45 CO-0603129000 500 500 ST 0.190 95.000",
-    "invoice": "COLIBRI.pdf"
+    "raw": "1 H Carnation Pink X 20 - FAN 591731 FAN CO-0603129000 500 500 ST 0.190 95.000",
+    "invoice": "",
+    "times_used": 0,
+    "times_confirmed": 0,
+    "times_corrected": 0,
+    "first_seen_at": "2026-04-17T10:58:23",
+    "last_confirmed_at": ""
   },
   "313|CARNATIONS|PINK|0|20|SELECT": {
     "articulo_id": 12579,
     "articulo_name": "CLAVEL COL SELECT ROSA 70CM 20U",
     "origen": "auto",
+    "status": "aprendido_en_prueba",
     "provider_id": 313,
     "species": "CARNATIONS",
     "variety": "PINK",
     "size": 0,
     "stems_per_bunch": 20,
     "grade": "SELECT",
-    "raw": "1 H Carnation Carn Mix - Pink/Yellow 576314 SEL LILAS CO-0603129000 500 500 ST 0.200 100.000",
-    "invoice": "COLIBRI.pdf"
+    "raw": "1 H Carnation Carn Mix - Pink/Yellow 598582 SEL LILAS CO-0603129000 500 500 ST 0.200 100.000",
+    "invoice": "",
+    "times_used": 0,
+    "times_confirmed": 0,
+    "times_corrected": 0,
+    "first_seen_at": "2026-04-17T10:58:28",
+    "last_confirmed_at": ""
   },
   "313|CARNATIONS|YELLOW|0|20|SELECT": {
     "articulo_id": 12577,
     "articulo_name": "CLAVEL COL SELECT AMARILLO 70CM 20U",
     "origen": "auto",
+    "status": "aprendido_en_prueba",
     "provider_id": 313,
     "species": "CARNATIONS",
     "variety": "YELLOW",
     "size": 0,
     "stems_per_bunch": 20,
     "grade": "SELECT",
-    "raw": "1 H Carnation Carn Mix - Pink/Yellow 576314 SEL LILAS CO-0603129000 500 500 ST 0.200 100.000",
-    "invoice": "COLIBRI.pdf"
+    "raw": "1 H Carnation Carn Mix - Pink/Yellow 598582 SEL LILAS CO-0603129000 500 500 ST 0.200 100.000",
+    "invoice": "",
+    "times_used": 0,
+    "times_confirmed": 0,
+    "times_corrected": 0,
+    "first_seen_at": "2026-04-17T10:58:28",
+    "last_confirmed_at": ""
   },
   "313|CARNATIONS|BICOLOR|0|20|FANCY": {
     "articulo_id": 12534,
@@ -2844,15 +2880,21 @@
   "313|CARNATIONS|NOVELTY|0|10|SELECT": {
     "articulo_id": 12578,
     "articulo_name": "CLAVEL COL SELECT NOVEDADES 70CM 20U",
-    "origen": "revisado",
+    "origen": "auto",
+    "status": "aprendido_en_prueba",
     "provider_id": 313,
     "species": "CARNATIONS",
     "variety": "NOVELTY",
     "size": 0,
     "stems_per_bunch": 10,
     "grade": "SELECT",
-    "raw": "1 H Minicarnation Novelty X 10 - SEL 576321 SEL FBE CO-0603121000 500 500 ST 0.200 100.000",
-    "invoice": "COLIBRI.pdf"
+    "raw": "1 H Minicarnation Novelty X 10 - SEL 598589 SEL FBE CO-0603121000 500 500 ST 0.200 100.000",
+    "invoice": "",
+    "times_used": 0,
+    "times_confirmed": 0,
+    "times_corrected": 0,
+    "first_seen_at": "2026-04-17T10:58:28",
+    "last_confirmed_at": ""
   },
   "6323|HYDRANGEAS|PREMIUM TENIDA MELOCOTON|60|1|": {
     "articulo_id": 22734,
@@ -6950,15 +6992,21 @@
   "313|CARNATIONS|RED|0|10|SELECT": {
     "articulo_id": 12576,
     "articulo_name": "CLAVEL COL SELECT ROJO 70CM 20U",
-    "origen": "revisado",
+    "origen": "auto",
+    "status": "aprendido_en_prueba",
     "provider_id": 313,
     "species": "CARNATIONS",
     "variety": "RED",
     "size": 0,
     "stems_per_bunch": 10,
     "grade": "SELECT",
-    "raw": "2 H Minicarnation Mini Mix Red/White 490148- SEL CO-0603121000 500 1000 ST 0.190 190.000",
-    "invoice": ""
+    "raw": "1 H Minicarnation Mini Mix Red/White 1223857 SEL CO-0603121000 500 500 ST 0.150 75.000",
+    "invoice": "",
+    "times_used": 0,
+    "times_confirmed": 0,
+    "times_corrected": 0,
+    "first_seen_at": "2026-04-17T10:58:22",
+    "last_confirmed_at": ""
   },
   "313|CARNATIONS|WHITE|0|10|SELECT": {
     "articulo_id": 26777,
@@ -6971,7 +7019,7 @@
     "size": 0,
     "stems_per_bunch": 10,
     "grade": "SELECT",
-    "raw": "1 H Minicarnation Mini Mix Red/White 1223857 SEL CO-0603121000 500 500 ST 0.150 75.000",
+    "raw": "2 H Minicarnation Mini Mix Red/White 591729- SEL CO-0603121000 500 1000 ST 0.200 200.000",
     "invoice": "",
     "times_used": 0,
     "times_confirmed": 0,
@@ -13009,17 +13057,23 @@
     "invoice": ""
   },
   "310|CARNATIONS|MORADO|70|20|FANCY": {
-    "articulo_id": 12801,
-    "articulo_name": "CLAVEL FANCY MORADO 70CM 20U COLIBRI",
-    "origen": "revisado",
+    "articulo_id": 12550,
+    "articulo_name": "CLAVEL COL FANCY MORADO 70CM 20U",
+    "origen": "auto",
+    "status": "aprendido_en_prueba",
     "provider_id": 310,
     "species": "CARNATIONS",
     "variety": "MORADO",
     "size": 70,
     "stems_per_bunch": 20,
     "grade": "FANCY",
-    "raw": "8 H 500 4000 CONSUMER BUNCH CARNATION FANCY PURPLE FCY CB S2 0.190 760.00",
-    "invoice": ""
+    "raw": "8 H 500 4000 CONSUMER BUNCH CARNATION FANCY PURPLE FCY ZAF CB S2 0.190 760.00",
+    "invoice": "",
+    "times_used": 0,
+    "times_confirmed": 0,
+    "times_corrected": 0,
+    "first_seen_at": "2026-04-17T11:00:13",
+    "last_confirmed_at": ""
   },
   "2228|ROSES|FLOREANA|60|10|": {
     "articulo_id": 32982,
@@ -14719,9 +14773,9 @@
     "last_confirmed_at": ""
   },
   "2226|ROSES|MIA|70|25|": {
-    "articulo_id": 35349,
-    "articulo_name": "ROSA MIA 70CM 25U LA ROSALEDA",
-    "origen": "auto",
+    "articulo_id": 33206,
+    "articulo_name": "ROSA EC MIA 60CM 25U",
+    "origen": "auto-fuzzy",
     "status": "aprendido_en_prueba",
     "provider_id": 2226,
     "species": "ROSES",
@@ -14734,7 +14788,7 @@
     "times_used": 0,
     "times_confirmed": 0,
     "times_corrected": 0,
-    "first_seen_at": "2026-04-16T17:01:25",
+    "first_seen_at": "2026-04-17T11:05:08",
     "last_confirmed_at": ""
   },
   "2226|ROSES|MONDIAL|70|25|": {
@@ -17116,7 +17170,7 @@
     "raw": "15,00 QB HYD WHITE PREMIUM 350603199010 525 0,48 252,00",
     "invoice": "",
     "status": "ambiguo",
-    "times_corrected": 69
+    "times_corrected": 74
   },
   "440|GYPSOPHILA|GYPSOPHILA XL RAINBOW MIX|80|25|": {
     "articulo_id": 34976,
@@ -17131,7 +17185,7 @@
     "raw": "96632 1 hb 450 Gyp Xl Rainbow Mix 80 cm/750 gr Violeta Flowers 450 25 18 $ 8 ,50 $ 1 53,00",
     "invoice": "",
     "status": "ambiguo",
-    "times_corrected": 14
+    "times_corrected": 15
   },
   "6323|HYDRANGEAS|PREMIUM TENIDA YELLOW|60|1|": {
     "articulo_id": 22735,
@@ -26247,7 +26301,7 @@
     "raw": "ALSTRO (TSTEM ASSORTED SUPERSELEC 1 80 80 .240 19.20",
     "invoice": "93725",
     "status": "ambiguo",
-    "times_corrected": 238
+    "times_corrected": 255
   },
   "281|ALSTROEMERIA|MIXTO|0|10|SELECT": {
     "articulo_id": 12787,
@@ -26262,7 +26316,7 @@
     "raw": "ALSTRO (TSTEM ASSORTED SELECT 2 100 200 .180 36.00",
     "invoice": "94114",
     "status": "ambiguo",
-    "times_corrected": 98
+    "times_corrected": 105
   },
   "281|ALSTROEMERIA|WHITE|0|10|SELECT": {
     "articulo_id": 12723,
@@ -26277,7 +26331,7 @@
     "raw": "ALSTRO (TSTEM WHITE SELECT 1 100 100 .180 18.00",
     "invoice": "94114",
     "status": "ambiguo",
-    "times_corrected": 42
+    "times_corrected": 45
   },
   "281|ROSES|GARDEN MAYRA`S WHITE|40|25|": {
     "articulo_id": 34182,
@@ -26337,7 +26391,7 @@
     "raw": "1 H LIMONADA 12 25 50 300 0,320 96,000",
     "invoice": "0000254785",
     "status": "ambiguo",
-    "times_corrected": 34
+    "times_corrected": 43
   },
   "13001|ROSES|TESSA-D LIMONADA|60|4|": {
     "articulo_id": 35087,
@@ -30529,7 +30583,7 @@
     "raw": "5 H Rose Freedom X 10 - 50 47806- 50 GONZA x 10 0603.11.00.00 200 1000 ST 0.32 320.00",
     "invoice": "",
     "status": "ambiguo",
-    "times_corrected": 15
+    "times_corrected": 16
   },
   "90012|ROSES|TIFFANY|60|25|": {
     "articulo_id": 37198,
@@ -32694,7 +32748,7 @@
     "raw": "SALMA 60 25 4 100 0.400 40.000",
     "invoice": "",
     "status": "ambiguo",
-    "times_corrected": 14
+    "times_corrected": 15
   },
   "90018|ROSES|ABSOLUTE IN PINK|60|25|": {
     "articulo_id": 31605,
@@ -33665,8 +33719,8 @@
     "invoice": ""
   },
   "90034|ROSES|FREEDOM|70|25|": {
-    "articulo_id": 34032,
-    "articulo_name": "ROSA FREEDOM 70CM 25U ROSELY",
+    "articulo_id": 32994,
+    "articulo_name": "ROSA EC FREEDOM 70CM 25U",
     "origen": "auto",
     "status": "aprendido_en_prueba",
     "provider_id": 90034,
@@ -33680,12 +33734,12 @@
     "times_used": 0,
     "times_confirmed": 0,
     "times_corrected": 0,
-    "first_seen_at": "2026-04-16T17:01:34",
+    "first_seen_at": "2026-04-17T11:05:19",
     "last_confirmed_at": ""
   },
   "90034|ROSES|FREEDOM|60|25|": {
-    "articulo_id": 34011,
-    "articulo_name": "ROSA FREEDOM 60CM 25U ROSELY",
+    "articulo_id": 32993,
+    "articulo_name": "ROSA EC FREEDOM 60CM 25U",
     "origen": "auto",
     "status": "aprendido_en_prueba",
     "provider_id": 90034,
@@ -33699,7 +33753,7 @@
     "times_used": 0,
     "times_confirmed": 0,
     "times_corrected": 0,
-    "first_seen_at": "2026-04-16T17:01:34",
+    "first_seen_at": "2026-04-17T11:05:19",
     "last_confirmed_at": ""
   },
   "90034|ROSES|EXPLORER|70|25|": {
@@ -33900,8 +33954,8 @@
     "invoice": ""
   },
   "90034|ROSES|FREEDOM|50|25|": {
-    "articulo_id": 33975,
-    "articulo_name": "ROSA FREEDOM 50CM 25U ROSELY",
+    "articulo_id": 32991,
+    "articulo_name": "ROSA EC FREEDOM 50CM 25U",
     "origen": "auto",
     "status": "aprendido_en_prueba",
     "provider_id": 90034,
@@ -33915,7 +33969,7 @@
     "times_used": 0,
     "times_confirmed": 0,
     "times_corrected": 0,
-    "first_seen_at": "2026-04-16T17:01:36",
+    "first_seen_at": "2026-04-17T11:05:21",
     "last_confirmed_at": ""
   },
   "90034|ROSES|MAGIC TIMES|60|25|": {
@@ -34388,7 +34442,7 @@
     "raw": "2 HB MONDIAL. 25 X .00   2        50.00 0.30 15.00",
     "invoice": "",
     "status": "ambiguo",
-    "times_corrected": 42
+    "times_corrected": 45
   },
   "90038|ROSES|MONDIAL.|60|25|": {
     "articulo_id": 32319,
@@ -34403,7 +34457,7 @@
     "raw": "2 HB MONDIAL. 25 X .00    7       175.00 0.35 61.25",
     "invoice": "",
     "status": "ambiguo",
-    "times_corrected": 28
+    "times_corrected": 30
   },
   "90038|ROSES|PALOMA|50|25|": {
     "articulo_id": 35877,
@@ -34851,7 +34905,7 @@
     "raw": "1 H Rose Freedom X 10 - 50 45337 50 GONZA X 10 0603.11.00.00 200 200 ST 0.30 60.00",
     "invoice": "",
     "status": "ambiguo",
-    "times_corrected": 26
+    "times_corrected": 28
   },
   "90044|ROSES|VENDELA|50|25|": {
     "articulo_id": 32426,
@@ -35422,7 +35476,7 @@
     "raw": "2 HB EXPLORER. 25 X .00   4        100 0.30 30.00",
     "invoice": "1775728457_TIERRA_VERDE2.pdf",
     "status": "ambiguo",
-    "times_corrected": 28
+    "times_corrected": 30
   },
   "90038|ROSES|EXPLORER°|50|25|": {
     "articulo_id": 32252,
@@ -35437,7 +35491,7 @@
     "raw": "2 HB EXPLORER° 25 X .00   8        200 0.30 60.00",
     "invoice": "1775728457_TIERRA_VERDE2.pdf",
     "status": "ambiguo",
-    "times_corrected": 28
+    "times_corrected": 30
   },
   "11748|ROSES|MAGIC TIMES|40|25|": {
     "articulo_id": 35187,
@@ -35516,43 +35570,61 @@
     "last_confirmed_at": ""
   },
   "90026|ROSES|PINK MONDIAL|50|25|": {
-    "articulo_id": 36089,
-    "articulo_name": "ROSA PINK MONDIAL 50CM 25U MILONGA",
-    "origen": "auto-marca",
+    "articulo_id": 32345,
+    "articulo_name": "ROSA COL PINK MONDIAL 50CM 25U",
+    "origen": "auto",
+    "status": "aprendido_en_prueba",
     "provider_id": 90026,
     "species": "ROSES",
     "variety": "PINK MONDIAL",
     "size": 50,
     "stems_per_bunch": 25,
     "grade": "",
-    "raw": "1 H Rose Pink Mondial X 25 - 50 99794 50 xxx 300 300 ST 0.30 90.00",
-    "invoice": ""
+    "raw": "4 H Rose Pink Mondial X 25 - 50 117260 50 X 300 300 ST . 0.31 93.00",
+    "invoice": "",
+    "times_used": 0,
+    "times_confirmed": 0,
+    "times_corrected": 0,
+    "first_seen_at": "2026-04-17T10:49:02",
+    "last_confirmed_at": ""
   },
   "90026|ROSES|PATZ|50|25|": {
     "articulo_id": 35889,
     "articulo_name": "ROSA PATZ 50CM 25U MILONGA",
-    "origen": "auto-marca",
+    "origen": "auto",
+    "status": "aprendido_en_prueba",
     "provider_id": 90026,
     "species": "ROSES",
     "variety": "PATZ",
     "size": 50,
     "stems_per_bunch": 25,
     "grade": "",
-    "raw": "1 H Rose Patz X 25 - 50 99797 50 xxx 300 300 ST 0.30 90.00",
-    "invoice": ""
+    "raw": "1 Q Rose Patz X25 - 50 117263 50 X 150 150 ST 0.31 46.50",
+    "invoice": "",
+    "times_used": 0,
+    "times_confirmed": 0,
+    "times_corrected": 0,
+    "first_seen_at": "2026-04-17T10:49:02",
+    "last_confirmed_at": ""
   },
   "90026|ROSES|PLAYA BLANCA|50|25|": {
-    "articulo_id": 36152,
-    "articulo_name": "ROSA PLAYA BLANCA 50CM 25U MILONGA",
-    "origen": "auto-marca",
+    "articulo_id": 32351,
+    "articulo_name": "ROSA COL PLAYA BLANCA 50CM 25U",
+    "origen": "auto",
+    "status": "aprendido_en_prueba",
     "provider_id": 90026,
     "species": "ROSES",
     "variety": "PLAYA BLANCA",
     "size": 50,
     "stems_per_bunch": 25,
     "grade": "",
-    "raw": "1 Q Rose Playa Blanca X 25 - 50 99798 50 xxx 150 150 ST 0.40 60.00",
-    "invoice": ""
+    "raw": "1 Q Rose Playa Blanca X 25 - 50 114016 50 xxx 150 150 ST 0.40 60.00",
+    "invoice": "04 - 729-45889314 - MILONGA FLOWERS MILONGA.pdf",
+    "times_used": 0,
+    "times_confirmed": 0,
+    "times_corrected": 0,
+    "first_seen_at": "2026-04-17T10:46:38",
+    "last_confirmed_at": ""
   },
   "90026|ROSES|FREEDOM|40|25|": {
     "articulo_id": 33922,
@@ -36267,7 +36339,7 @@
     "raw": "HB 1 0,5 EXPLORER 0603.11.00.60 25 14 14 350 0,32 112,00",
     "invoice": "1776252553_ROSABELLA.pdf",
     "status": "ambiguo",
-    "times_corrected": 28
+    "times_corrected": 30
   },
   "90010|CARNATIONS|SELECT CREAM|0|20|": {
     "articulo_id": 12908,
@@ -44260,9 +44332,9 @@
     "last_confirmed_at": ""
   },
   "90034|ROSES|FREEDOM|80|25|": {
-    "articulo_id": 34040,
-    "articulo_name": "ROSA FREEDOM 80CM 25U ROSELY",
-    "origen": "auto-matching",
+    "articulo_id": 32995,
+    "articulo_name": "ROSA EC FREEDOM 80CM 25U",
+    "origen": "auto",
     "status": "aprendido_en_prueba",
     "provider_id": 90034,
     "species": "ROSES",
@@ -44275,7 +44347,7 @@
     "times_used": 0,
     "times_confirmed": 0,
     "times_corrected": 0,
-    "first_seen_at": "2026-04-16T17:01:38",
+    "first_seen_at": "2026-04-17T11:05:24",
     "last_confirmed_at": ""
   },
   "90034|ROSES|SALMA|50|25|": {
@@ -45649,7 +45721,7 @@
   "90002|ROSES|TWILIGHT|50|25|": {
     "articulo_id": 37501,
     "articulo_name": "ROSA TWILIGHT 50CM 25U GLAMOUR",
-    "origen": "auto-matching",
+    "origen": "auto",
     "status": "aprendido_en_prueba",
     "provider_id": 90002,
     "species": "ROSES",
@@ -45687,7 +45759,7 @@
   "90018|ROSES|COUNTRY HOME|40|25|": {
     "articulo_id": 32894,
     "articulo_name": "ROSA EC COUNTRY HOME 40CM 25U",
-    "origen": "auto-matching",
+    "origen": "auto",
     "status": "aprendido_en_prueba",
     "provider_id": 90018,
     "species": "ROSES",
@@ -45706,7 +45778,7 @@
   "90018|ROSES|QUEENS CROWN|50|25|": {
     "articulo_id": 33379,
     "articulo_name": "ROSA EC QUEENS CROWN 50CM 25U",
-    "origen": "auto-matching",
+    "origen": "auto",
     "status": "aprendido_en_prueba",
     "provider_id": 90018,
     "species": "ROSES",
@@ -45725,7 +45797,7 @@
   "1429|ROSES|TIBET|60|25|": {
     "articulo_id": 33554,
     "articulo_name": "ROSA EC TIBET 60CM 25U",
-    "origen": "auto-matching",
+    "origen": "auto",
     "status": "aprendido_en_prueba",
     "provider_id": 1429,
     "species": "ROSES",
@@ -45744,7 +45816,7 @@
   "90024|ROSES|SWEET UNIQUE|50|25|": {
     "articulo_id": 33498,
     "articulo_name": "ROSA EC SWEET UNIQUE 50CM 25U",
-    "origen": "auto-matching",
+    "origen": "auto",
     "status": "aprendido_en_prueba",
     "provider_id": 90024,
     "species": "ROSES",
@@ -45782,7 +45854,7 @@
   "2652|ROSES|PALOMA|40|25|": {
     "articulo_id": 35852,
     "articulo_name": "ROSA PALOMA 40CM 25U LIFEFLOWERS",
-    "origen": "auto-matching",
+    "origen": "auto",
     "status": "aprendido_en_prueba",
     "provider_id": 2652,
     "species": "ROSES",
@@ -45839,7 +45911,7 @@
   "90029|ROSES|COUNTRY HOME|50|25|": {
     "articulo_id": 32895,
     "articulo_name": "ROSA EC COUNTRY HOME 50CM 25U",
-    "origen": "auto-matching",
+    "origen": "auto",
     "status": "aprendido_en_prueba",
     "provider_id": 90029,
     "species": "ROSES",
@@ -45934,7 +46006,7 @@
   "90054|ROSES|COUNTRY HOME|50|25|": {
     "articulo_id": 32895,
     "articulo_name": "ROSA EC COUNTRY HOME 50CM 25U",
-    "origen": "auto-matching",
+    "origen": "auto",
     "status": "aprendido_en_prueba",
     "provider_id": 90054,
     "species": "ROSES",
@@ -45972,7 +46044,7 @@
   "90038|ROSES|PALOMA|40|25|": {
     "articulo_id": 35852,
     "articulo_name": "ROSA PALOMA 40CM 25U LIFEFLOWERS",
-    "origen": "auto-matching",
+    "origen": "auto",
     "status": "aprendido_en_prueba",
     "provider_id": 90038,
     "species": "ROSES",
@@ -46010,7 +46082,7 @@
   "90038|ROSES|PRINCESS CROWN°|50|25|": {
     "articulo_id": 33360,
     "articulo_name": "ROSA EC PRINCESS CROWN 50CM 25U",
-    "origen": "auto-matching",
+    "origen": "auto",
     "status": "aprendido_en_prueba",
     "provider_id": 90038,
     "species": "ROSES",
@@ -46029,7 +46101,7 @@
   "306|CARNATIONS|CARNATION NOVELTY|0|0|STANDARD": {
     "articulo_id": 12668,
     "articulo_name": "CLAVEL ESTANDAR NOVEDADES 60CM 20U TURFLOR",
-    "origen": "auto-fuzzy",
+    "origen": "auto",
     "status": "aprendido_en_prueba",
     "provider_id": 306,
     "species": "CARNATIONS",
@@ -46048,7 +46120,7 @@
   "306|CARNATIONS|CARNATION YELLOW|0|0|STANDARD": {
     "articulo_id": 12627,
     "articulo_name": "CLAVEL ESTANDAR AMARILLO 60CM 20U TURFLOR",
-    "origen": "auto-fuzzy",
+    "origen": "auto",
     "status": "aprendido_en_prueba",
     "provider_id": 306,
     "species": "CARNATIONS",
@@ -46067,7 +46139,7 @@
   "306|CARNATIONS|CARNATION BURGUNDY|0|0|FANCY": {
     "articulo_id": 12762,
     "articulo_name": "CLAVEL FANCY GRANATE 70CM 20U TURFLOR",
-    "origen": "auto-fuzzy",
+    "origen": "auto",
     "status": "aprendido_en_prueba",
     "provider_id": 306,
     "species": "CARNATIONS",
@@ -46086,7 +46158,7 @@
   "306|CARNATIONS|CARNATION NOVELTY|0|0|FANCY": {
     "articulo_id": 12810,
     "articulo_name": "CLAVEL FANCY NOVEDADES 70CM 20U TURFLOR",
-    "origen": "auto-fuzzy",
+    "origen": "auto",
     "status": "aprendido_en_prueba",
     "provider_id": 306,
     "species": "CARNATIONS",
@@ -46105,7 +46177,7 @@
   "306|CARNATIONS|SPRAY CARNATION NOVELTY|0|0|SELECT": {
     "articulo_id": 12953,
     "articulo_name": "CLAVEL SELECT NOVEDADES 70CM 20U TURFLOR",
-    "origen": "auto-fuzzy",
+    "origen": "auto",
     "status": "aprendido_en_prueba",
     "provider_id": 306,
     "species": "CARNATIONS",
@@ -46119,6 +46191,196 @@
     "times_confirmed": 0,
     "times_corrected": 0,
     "first_seen_at": "2026-04-17T10:40:50",
+    "last_confirmed_at": ""
+  },
+  "90029|ROSES|FREEDOM|60|25|": {
+    "articulo_id": 32993,
+    "articulo_name": "ROSA EC FREEDOM 60CM 25U",
+    "origen": "auto",
+    "status": "aprendido_en_prueba",
+    "provider_id": 90029,
+    "species": "ROSES",
+    "variety": "FREEDOM",
+    "size": 60,
+    "stems_per_bunch": 25,
+    "grade": "",
+    "raw": "3 EXX HB FREEDOM 12 60 300 $0,300 $90,000",
+    "invoice": "",
+    "times_used": 0,
+    "times_confirmed": 0,
+    "times_corrected": 0,
+    "first_seen_at": "2026-04-17T10:45:38",
+    "last_confirmed_at": ""
+  },
+  "2652|ROSES|CAFE DEL MAR|60|25|": {
+    "articulo_id": 32054,
+    "articulo_name": "ROSA CAFE DEL MAR 60CM 25U MILAGRO",
+    "origen": "auto-matching",
+    "status": "aprendido_en_prueba",
+    "provider_id": 2652,
+    "species": "ROSES",
+    "variety": "CAFE DEL MAR",
+    "size": 60,
+    "stems_per_bunch": 25,
+    "grade": "",
+    "raw": "ROSES CAFE DEL MAR X 25 - 60 Milagro 2 50 0.600",
+    "invoice": "04 - 729-45489124 - MILAGRO MILAGRO 001065461.pdf",
+    "times_used": 0,
+    "times_confirmed": 0,
+    "times_corrected": 0,
+    "first_seen_at": "2026-04-17T10:50:26",
+    "last_confirmed_at": ""
+  },
+  "90046|ROSES|MARZIPAN|50|0|": {
+    "articulo_id": 33188,
+    "articulo_name": "ROSA EC MARZIPAN 60CM 25U",
+    "origen": "auto",
+    "status": "aprendido_en_prueba",
+    "provider_id": 90046,
+    "species": "ROSES",
+    "variety": "MARZIPAN",
+    "size": 50,
+    "stems_per_bunch": 0,
+    "grade": "",
+    "raw": "H R20 MARZIPAN 50 2 50 0,30 15,00",
+    "invoice": "",
+    "times_used": 0,
+    "times_confirmed": 0,
+    "times_corrected": 0,
+    "first_seen_at": "2026-04-17T10:59:03",
+    "last_confirmed_at": ""
+  },
+  "90024|ROSES|FREEDOM|50|25|": {
+    "articulo_id": 32991,
+    "articulo_name": "ROSA EC FREEDOM 50CM 25U",
+    "origen": "auto",
+    "status": "aprendido_en_prueba",
+    "provider_id": 90024,
+    "species": "ROSES",
+    "variety": "FREEDOM",
+    "size": 50,
+    "stems_per_bunch": 25,
+    "grade": "",
+    "raw": "Rosas - Freedom 50cm 0,00 0,00 200 0,32 64,00",
+    "invoice": "",
+    "times_used": 0,
+    "times_confirmed": 0,
+    "times_corrected": 0,
+    "first_seen_at": "2026-04-17T11:02:32",
+    "last_confirmed_at": ""
+  },
+  "90024|ROSES|FREEDOM|40|25|": {
+    "articulo_id": 32990,
+    "articulo_name": "ROSA EC FREEDOM 40CM 25U",
+    "origen": "auto-matching",
+    "status": "aprendido_en_prueba",
+    "provider_id": 90024,
+    "species": "ROSES",
+    "variety": "FREEDOM",
+    "size": 40,
+    "stems_per_bunch": 25,
+    "grade": "",
+    "raw": "Rosas - Freedom 40cm 0,00 0,00 200 0,27 54,00",
+    "invoice": "",
+    "times_used": 0,
+    "times_confirmed": 0,
+    "times_corrected": 0,
+    "first_seen_at": "2026-04-17T11:02:33",
+    "last_confirmed_at": ""
+  },
+  "90030|CARNATIONS|RED DANIKO|55|50|": {
+    "articulo_id": 12517,
+    "articulo_name": "CLAVEL COL ESTANDAR ROJO 60CM 20U",
+    "origen": "auto",
+    "status": "aprendido_en_prueba",
+    "provider_id": 90030,
+    "species": "CARNATIONS",
+    "variety": "RED DANIKO",
+    "size": 55,
+    "stems_per_bunch": 50,
+    "grade": "",
+    "raw": "2 QB 500 50 CARNATION RED DANIKO R14 0603.12.7000 Stems 1000 US$ 0.130 US$ 2.600 US$",
+    "invoice": "",
+    "times_used": 0,
+    "times_confirmed": 0,
+    "times_corrected": 0,
+    "first_seen_at": "2026-04-17T11:04:35",
+    "last_confirmed_at": ""
+  },
+  "90030|CARNATIONS|RED DANIKO|55|125|": {
+    "articulo_id": 12522,
+    "articulo_name": "CLAVEL COL ESTANDAR ROJO 60CM 25U",
+    "origen": "auto-fuzzy",
+    "status": "aprendido_en_prueba",
+    "provider_id": 90030,
+    "species": "CARNATIONS",
+    "variety": "RED DANIKO",
+    "size": 55,
+    "stems_per_bunch": 125,
+    "grade": "",
+    "raw": "5 QB 500 125 CARNATION RED DANIKO VERALEZA 0603.12.7000 Stems 2500 US$ 0.130 US$ 2.600 US$",
+    "invoice": "",
+    "times_used": 0,
+    "times_confirmed": 0,
+    "times_corrected": 0,
+    "first_seen_at": "2026-04-17T11:04:36",
+    "last_confirmed_at": ""
+  },
+  "90054|ROSES|FREEDOM|70|25|": {
+    "articulo_id": 32994,
+    "articulo_name": "ROSA EC FREEDOM 70CM 25U",
+    "origen": "auto-matching",
+    "status": "aprendido_en_prueba",
+    "provider_id": 90054,
+    "species": "ROSES",
+    "variety": "FREEDOM",
+    "size": 70,
+    "stems_per_bunch": 25,
+    "grade": "",
+    "raw": "1 HB ROSAS FREEDOM 70 25 12 12 300 0,5500 T 165,00",
+    "invoice": "",
+    "times_used": 0,
+    "times_confirmed": 0,
+    "times_corrected": 0,
+    "first_seen_at": "2026-04-17T11:05:31",
+    "last_confirmed_at": ""
+  },
+  "306|CARNATIONS|SPRAY CARNATION SPECIAL MIX|0|0|FANCY": {
+    "articulo_id": 12549,
+    "articulo_name": "CLAVEL COL FANCY MIXTO 70CM 20U",
+    "origen": "auto-fuzzy",
+    "status": "aprendido_en_prueba",
+    "provider_id": 306,
+    "species": "CARNATIONS",
+    "variety": "SPRAY CARNATION SPECIAL MIX",
+    "size": 0,
+    "stems_per_bunch": 0,
+    "grade": "FANCY",
+    "raw": "1 Q SPRAY CARNATION SPECIAL MIX FANCY MARIÑO 0603.12.00 250 250 Stems 0.130 $32.50",
+    "invoice": "",
+    "times_used": 0,
+    "times_confirmed": 0,
+    "times_corrected": 0,
+    "first_seen_at": "2026-04-17T11:06:17",
+    "last_confirmed_at": ""
+  },
+  "306|CARNATIONS|CARNATION BICOLOR|0|0|FANCY": {
+    "articulo_id": 12534,
+    "articulo_name": "CLAVEL COL FANCY BICOLOR 70CM 20U",
+    "origen": "auto",
+    "status": "aprendido_en_prueba",
+    "provider_id": 306,
+    "species": "CARNATIONS",
+    "variety": "CARNATION BICOLOR",
+    "size": 0,
+    "stems_per_bunch": 0,
+    "grade": "FANCY",
+    "raw": "5 HB Carnation Bicolor - Fancy - - 500 2500 Stems $0.170 $425.00",
+    "invoice": "",
+    "times_used": 0,
+    "times_confirmed": 0,
+    "times_corrected": 0,
+    "first_seen_at": "2026-04-17T11:06:18",
     "last_confirmed_at": ""
   }
 }
