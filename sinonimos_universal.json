@@ -26427,7 +26427,7 @@
     "raw": "1 H LIMONADA 12 25 50 300 0,320 96,000",
     "invoice": "0000254785",
     "status": "ambiguo",
-    "times_corrected": 49
+    "times_corrected": 50
   },
   "13001|ROSES|TESSA-D LIMONADA|60|4|": {
     "articulo_id": 35087,
@@ -41135,7 +41135,7 @@
     "size": 40,
     "stems_per_bunch": 25,
     "grade": "",
-    "raw": "ROSE VENDELA WHITE 40CM CO-FREE0603110050 1 HB 12 25 300 0.240 $ 72.00",
+    "raw": "ROSE VENDELA WHITE 40CM OF CO-FREE0603110050 2 HB 12 25 600 0.220 $ 132.000",
     "invoice": "",
     "times_used": 0,
     "times_confirmed": 0,
@@ -41154,7 +41154,7 @@
     "size": 40,
     "stems_per_bunch": 25,
     "grade": "",
-    "raw": "ROSE PINK MONDIAL PINK 40CM CO-FREE0603110050 1 HB 12 25 300 0.240 $ 72.00",
+    "raw": "ROSE PINK MONDIAL PINK 40CM 4 25 0.220",
     "invoice": "",
     "times_used": 0,
     "times_confirmed": 0,

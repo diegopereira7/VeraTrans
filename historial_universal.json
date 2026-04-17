@@ -12668,13 +12668,14 @@
     "fecha": "2026-03-31 12:26"
   },
   "DE": {
-    "pdf": "IWA.pdf",
+    "pdf": "02 - 729- 4457 1424 (387) - IWA 5961.pdf",
     "provider": "IWA Flowers",
-    "total_usd": 0.0,
-    "lineas": 6,
-    "ok": 4,
-    "sin_match": 0,
-    "fecha": "2026-03-31 12:26"
+    "total_usd": 3335.0,
+    "lineas": 15,
+    "ok": 6,
+    "sin_match": 1,
+    "fecha": "2026-04-17 13:35",
+    "pdf_path": "C:\\Users\\diego.pereira\\Desktop\\DOC VERA\\FACTURAS IMPORTACION\\PROVEEDORES\\IWA\\02 - 729- 4457 1424 (387) - IWA 5961.pdf"
   },
   "90502": {
     "pdf": "TIMANA.pdf",

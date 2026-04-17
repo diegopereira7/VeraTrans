@@ -52,7 +52,11 @@
       "Bash(\"C:/Users/diego.pereira/AppData/Local/Python/pythoncore-3.14-64/python.exe\" batch_process.py \"batch_uploads/20260410074444_8c399209\" --batch-id test_farin_001)",
       "Bash(rm -f learned_rules.json pending_review.json)",
       "WebFetch(domain:anyformat.ai)",
-      "Bash(ls -la auto_learn_*.json auto_learn_*.csv)"
+      "Bash(ls -la auto_learn_*.json auto_learn_*.csv)",
+      "Bash(php -l c:/wamp64/www/verabuy/web/api.php)",
+      "Bash(php -l c:/verabuy-traductor/web/api.php)",
+      "Bash(\"/c/wamp64/bin/php/php8.3.14/php.exe\" -l c:/verabuy-traductor/web/api.php)",
+      "Bash(\"/c/wamp64/bin/php/php8.3.28/php.exe\" -l c:/verabuy-traductor/web/api.php)"
     ]
   }
 }
