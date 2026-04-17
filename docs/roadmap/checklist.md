@@ -72,13 +72,19 @@ _Cifras tomadas del historial de sesiones de `CLAUDE.md` (sesión 6, abril 2026)
   - `mark_confirmed`/`mark_corrected` ya existen en `SynonymStore`;
     falta engancharlos a UI/API.
 
-### KPIs baseline (sesión 9h, `tools/evaluate_all.py`)
-- OK: **59/82** proveedores · TOTALES_MAL: **1/82** ·
-  NO_PARSEA: **20/82** · NO_DETECTADO: **1/82**
-- Líneas totales procesadas: **3001**
-- Líneas `ok`: **2002** · `ambiguous_match`: **755** · `autoapprovable`: **1819**
-- **autoapprove_rate: 66.1%** de las líneas linkables
-- **Golden set: 100%** parse + link accuracy (88/88 líneas)
+### KPIs baseline (sesión 9k, `tools/evaluate_all.py`)
+- OK: **60/82** · TOTALES_MAL: **1/82** · NO_PARSEA: **19/82** ·
+  MUCHO_RESCATE: **1/82** · NO_DETECTADO: **1/82**
+- Líneas totales procesadas: **3089**
+- Líneas `ok`: **2453** · `ambiguous_match`: **408** · `autoapprovable`: **2276**
+- **autoapprove_rate: 79.6%** de las líneas linkables (tras refinado matcher)
+- **Golden set: 100%** parse + link accuracy (88/88 líneas, 5/5 reviewed)
+- Top-5 penalties globales:
+  1. `weak_synonym` 2368 — sinónimos en prueba con trust bajo
+  2. `variety_no_overlap` 289 — variedad no coincide con el ganador
+  3. `low_evidence` 268 — ganador < 0.70 de score
+  4. `tie_top2_margin` 187 — empates prácticos entre candidatos (−64% vs 9j)
+  5. `foreign_brand` 128 — marca ajena al proveedor actual
 - Feedback loop operativo: golden → review → apply → sinónimos confirmados
 - Rama OCR real disponible: **OCRmyPDF+Tesseract** + EasyOCR fallback
 - Matching: **scoring por evidencia** con vetos duros y trazabilidad
@@ -131,21 +137,21 @@ _Cifras tomadas del historial de sesiones de `CLAUDE.md` (sesión 6, abril 2026)
   - Estructura: `golden/` con JSONs por factura
   - Bootstrap: `tools/golden_bootstrap.py`
   - Evaluador: `tools/evaluate_golden.py`
-- [-] Etiquetar al menos los proveedores de mayor volumen
-  - 5 drafts generados: ALEGRIA, MYSTIC, FIORENTINA, MEAFLOS, BENCHMARK
-  - **Pendiente: revisión manual por el operador**
-- [-] Medir accuracy real por línea (pendiente golden revisado)
-- [-] Medir accuracy real de link ERP (pendiente golden revisado)
-- [x] Medir tasa de autoaprobación segura (65.2% baseline)
+- [x] Etiquetar al menos los proveedores de mayor volumen
+  - 5 anotaciones reviewed: ALEGRIA, MYSTIC, FIORENTINA, MEAFLOS, BENCHMARK
+  - Revisión manual completada por el operador (17 abril 2026)
+- [x] Medir accuracy real por línea (100% en golden reviewed)
+- [x] Medir accuracy real de link ERP (100% en golden reviewed)
+- [x] Medir tasa de autoaprobación segura (68.9% tras brand boost)
 - [x] Medir tasa de revisión manual necesaria (needs_review en benchmark)
 
 ### Criterio de cierre de fase
 - existe dataset manual de referencia,
 - existen métricas comparables en el tiempo,
 - ya no se depende solo de `parsed_any` o `totals_ok`.
-- **Parcialmente cerrada**: tooling listo, falta la revisión manual de
-  las 5 anotaciones. Se cierra cuando el operador las revise y
-  `evaluate_golden.py` produzca métricas reales.
+- **CERRADA (17 abril 2026)**: 5 anotaciones reviewed, 100% accuracy
+  en `evaluate_golden.py`. Ampliar el dataset a más proveedores es
+  trabajo continuo (Fase 12).
 
 ---
 
@@ -364,19 +370,55 @@ tras la sesión 8 (baseline ya capturada).
 - [x] 3. Atacar Top-10 `NO_PARSEA` guiado por la taxonomía (sesión 9b+9c)
       — 30→20 NO_PARSEA, +357 líneas, +3.2pp autoapprove
 - [x] 4. Crear golden set manual (sesión 9d) — tooling listo, 5 drafts
-- [-] **5. Revisar golden set manualmente** (operador)
-      **← activo siguiente** — `python tools/golden_review.py golden/<archivo>.json`
+- [x] 5. Revisar golden set manualmente (17 abril 2026) — 5/5 reviewed,
+      100% parse + link accuracy
 - [x] 6. Enganchar `mark_confirmed`/`mark_corrected` a la UI (sesión 9e)
       — botón ✓ en tabla + correct_match al cambiar artículo
 - [x] 7. Auditar matcher con golden set (sesión 9g) — link accuracy 43%→93%
 - [x] 8. TOTALES_MAL (sesión 9f) — 26→1, fallback central + fix campanario
-- [ ] 9. Shadow mode (Paso 9) — cuando se empiece a implantar
+- [x] 9. Brand boost (sesión 9j, commit `3855f7e`) — autoapprove 66.1%→68.9%
+- [x] 10. LATIN + refinado matcher (sesión 9k) — autoapprove 68.9%→79.6%
+- [ ] 11. **Shadow mode** (Fase 10) — cuando se empiece a implantar
+- [ ] 12. Ampliar NO_PARSEA restante: APOSENTOS, CANANVALLE, UMA, MILAGRO,
+      CANTIZA, BENCHMARK, etc. (19 proveedores aún fallan algún sample)
+- [ ] 13. Optimizar matcher (backlog) — ~6.5s para 43 líneas
 
 ---
 
 ## Registro rápido de avances
 
 ### Último bloque cerrado
+- Fecha: 2026-04-17
+- Paso: sesión 9k — LATIN parser + refinado matcher
+- Qué se hizo:
+  * **`src/parsers/latin.py`**: Format B regex ampliado para aceptar
+    coma decimal (`0,250` además de `0.250`). LATIN pasó de 91 líneas
+    100% ambiguas a 314 líneas 306 ok.
+  * **`src/matcher.py`**: quitado upper-clamp del score (permitir >1.0
+    para desempatar brand_boost), brand_boost ahora exige `size_exact`
+    (no `size_close`), tramo nuevo de required_margin=0.02 para scores
+    ≥1.05.
+- Resultado: autoapprove **68.9% → 79.6%** (+10.7pp), líneas ok
+  2002→2453, tie_top2_margin 521→187. Golden 100% mantenido.
+- Riesgos / pendientes: ninguno bloqueante.
+
+### Penúltimo bloque cerrado
+- Fecha: 2026-04-17
+- Paso: Fase 2 cerrada + brand boost aplicado
+- Qué se hizo:
+  * **Golden set revisado manualmente** por el operador. Los 5 JSONs
+    (`alegria`, `fiorentina`, `golden_unknown`, `meaflos`, `mystic`)
+    pasaron de `draft` → `reviewed`. `evaluate_golden.py` confirma
+    100% parse + link accuracy sobre 88 líneas.
+  * **Brand boost** (sesión 9j, commit `3855f7e`): en `src/matcher.py`
+    los artículos con marca del proveedor (vía `brand_by_provider`) +
+    variety/size match reciben `score=1.05`. `own_brands` se alimenta
+    también de `brand_by_provider` para casos tipo PONDEROSA donde la
+    key no coincide con la marca.
+- Resultado: autoapprove **66.1% → 68.9%** (+2.8pp), golden 100%
+  mantenido. Fase 2 y 3 cerradas empíricamente.
+
+### Penúltimo bloque cerrado
 - Fecha: 2026-04-16
 - Paso: Fase 4 cerrada — Paso 3 del roadmap (taxonomía E1..E10)
 - Qué se hizo (sesión 9):
@@ -435,23 +477,17 @@ tras la sesión 8 (baseline ya capturada).
 
 ### Bloque actual
 - Fecha: _(siguiente sesión)_
-- Paso: Paso 4 del roadmap — atacar Top NO_PARSEA guiado por taxonomía
-- Objetivo: bajar el bloque de 30 NO_PARSEA priorizando por E1+E3.
-  Top candidatos del backlog: LATIN FLOWERS (E8, 0% auto),
-  VALTHOMIG (E7+E3), APOSENTOS (E6+E2), AGRIVALDANI (E3),
-  CANANVALLE (E3), LIFE FLOWERS (E3), CONDOR ANDINO (E1),
-  UMA FLOWERS (E1).
-- Estado: pendiente
-- Nota rápida: con la taxonomía, los E3 (layout/coords) se atacan
-  juntos con `extract_words()`. Los E1 (parse_zero) requieren
-  inspección de muestras caso por caso.
+- Paso: por decidir entre **Shadow mode** (Fase 10) vs bajar NO_PARSEA
+  restantes (20 proveedores) vs optimizar matcher.
+- Estado: pendiente elección del operador.
 
-### Próximo bloque
-- Paso: Paso 2 del roadmap — golden set manual
-- Motivo: E6+E7+E8 son los errores dominantes pero sin golden set
-  no se pueden medir de verdad. Alternativa rápida: cerrar Paso 7
-  (confirmar sinónimos desde UI) que resuelve E7 transversalmente.
-- Dependencias: ninguna.
+### Próximo bloque recomendado
+- Paso: **Shadow mode** (Fase 10)
+- Motivo: la base estructural y empírica está cerrada (golden 100%,
+  autoapprove ~69%). El siguiente salto requiere uso real para capturar
+  los formatos/matches que el benchmark no exhibe.
+- Dependencias: ninguna técnica. Implica empezar a procesar facturas
+  reales en producción comparando propuesta vs decisión humana.
 
 ---
 

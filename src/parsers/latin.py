@@ -58,25 +58,28 @@ class LatinParser:
             # Format A (old): "1 QB HYDRANGEA ..."
             pm=re.search(r'(\d+)\s+(QB|HB)\s+(HYDRANGEA\s+[A-Z][A-Z\s.\-]+?)\s+\w+\s+\d{4}\w*\s+(\d+)\s+(\d+)\s+([\d.]+)',ln,re.I)
             # Format B: "0.250 1.00QBx35 HYDRANGEA VARIETY 0603... DELEG STEMS stem STEMS PRICE TOTAL"
+            # Algunos PDFs usan coma decimal ("0,250 1,00QBx35"); [\d.,]+ cubre ambos.
             if not pm:
                 pm=re.search(
-                    r'[\d.]+\s*'                             # BXS (decimal, e.g. 0.250)
-                    r'[\d.]+\s*'                             # PCS (decimal, e.g. 1.00)
+                    r'[\d.,]+\s*'                            # BXS (0.250 / 0,250)
+                    r'[\d.,]+\s*'                            # PCS (1.00 / 1,00)
                     r'(QB|HB)x(\d+)\s+'                      # QBx35 → box_type + stems_per_box
                     r'(HYDRANGEA\s+[A-Z][A-Z\s.\-/]+?)\s+'   # HYDRANGEA + variety
                     r'(\d{10})\s+'                            # HTS tariff (10 digits)
                     r'(.+?)\s+'                               # DELEGACION (variable)
                     r'(\d+)\s+stem\s+'                        # first stems count
                     r'(\d+)\s+'                               # total stems
-                    r'([\d.]+)\s+'                            # price
-                    r'([\d.]+)',                              # total
+                    r'([\d.,]+)\s+'                           # price (0.58 / 0,58)
+                    r'([\d.,]+)',                             # total (20.30 / 20,30)
                     ln, re.I)
                 if pm:
                     btype = pm.group(1).upper()
                     desc = pm.group(3).strip().upper()
                     deleg = pm.group(5).strip()
                     stems = int(pm.group(7))
-                    try: pps = float(pm.group(8)); total_val = float(pm.group(9))
+                    try:
+                        pps = float(pm.group(8).replace(',', '.'))
+                        total_val = float(pm.group(9).replace(',', '.'))
                     except: pps = 0.0; total_val = 0.0
                     label = re.sub(r'\s*-?\s*S\.?O\.?\s*$', '', deleg).strip()
                     label = re.sub(r'\s*-\s*$', '', label).strip()

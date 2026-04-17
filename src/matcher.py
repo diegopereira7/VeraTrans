@@ -355,8 +355,11 @@ def _score_candidate(line: InvoiceLine, cand: Candidate,
     if prior > 0:
         reasons.append(f'method_prior({head or "?"}:{prior:.2f})')
 
-    # Clamp final
-    cand.score = round(max(0.0, min(1.0, score)), 3)
+    # Clamp inferior a 0. Sin techo: candidatos con evidencia fuerte
+    # (sinónimo confirmado + histórico + variety/size/species match)
+    # pueden superar 1.0 y eso nos da un desempate real cuando el
+    # brand_boost iguala a varios candidatos a 1.05.
+    cand.score = round(max(0.0, score), 3)
     cand.reasons = reasons
     cand.penalties = penalties
 
@@ -603,17 +606,19 @@ class Matcher:
                              art_loader=self.art)
 
         # Brand boost: si existe un candidato con la marca propia del
-        # proveedor en el nombre Y tiene variety+size match, promoverlo.
+        # proveedor en el nombre Y tiene variety+size EXACTO, promoverlo.
         # Regla de negocio: el artículo con marca propia SIEMPRE gana
         # sobre genéricos o marcas ajenas con la misma variedad+talla.
         # Score > 1.0 garantiza que gana cualquier empate.
+        # size_close (±10cm) NO cuenta: si el parser leyó 50CM y hay
+        # un artículo 60CM con la misma marca, no queremos empatarlos.
         own_brand = (self.art.brand_by_provider.get(provider_id) or '').upper()
         if own_brand:
             for c in viable:
                 nombre = (c.articulo.get('nombre') or '').upper()
                 if (own_brand in nombre
                         and 'variety_match' in c.reasons
-                        and ('size_exact' in c.reasons or 'size_close' in c.reasons)):
+                        and 'size_exact' in c.reasons):
                     c.score = max(c.score, 1.05)
                     if 'brand_boost' not in c.reasons:
                         c.reasons.append('brand_boost')
@@ -643,16 +648,26 @@ class Matcher:
         top2_score = viable[1].score if len(viable) > 1 else 0.0
         margin = round(top1.score - top2_score, 3)
         line.candidate_margin = margin
-        line.link_confidence = top1.score
+        # link_confidence queda en [0,1] para la UI y match_confidence;
+        # el score interno puede exceder 1.0 para desempatar brand_boost.
+        line.link_confidence = min(1.0, top1.score)
         line.match_reasons = list(top1.reasons)
         line.match_penalties = list(top1.penalties)
 
         # Decisión.
         if top1.score >= _LINK_OK_THRESHOLD:
-            # Margen requerido adaptativo: candidatos muy fuertes
-            # (score ≥ 0.90) ganan aunque solo superen al 2º por 0.05;
-            # candidatos en zona media (0.70–0.90) exigen margen completo.
-            required_margin = 0.05 if top1.score >= 0.90 else _MARGIN_MIN
+            # Margen requerido adaptativo: los scores pueden exceder 1.0
+            # cuando la evidencia es muy fuerte (sinónimo + histórico +
+            # match pleno). Tres tramos:
+            #   ≥ 1.05 (brand_boost o evidencia rica): margen mínimo 0.02
+            #   ≥ 0.90 (candidato fuerte):             margen mínimo 0.05
+            #   0.70–0.90 (zona media):                margen completo (0.10)
+            if top1.score >= 1.05:
+                required_margin = 0.02
+            elif top1.score >= 0.90:
+                required_margin = 0.05
+            else:
+                required_margin = _MARGIN_MIN
             if margin < required_margin and top2_score >= _LINK_OK_THRESHOLD:
                 # Dos candidatos buenos y realmente empatados → ambigüedad.
                 line.match_status = 'ambiguous_match'

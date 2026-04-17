@@ -415,6 +415,22 @@ además cualquier `ambiguous_match` cuenta como revisión.
 algún script externo los importa, pero el motor interno ya no los usa
 como driver principal — solo como prior débil entre 0.04 y 0.12.
 
+**Scores > 1.0 permitidos** (sesión 9k): el score interno del candidato
+ya NO se clampa arriba. Un candidato con sinónimo confirmado + histórico
++ variety/size/species/spb/origin puede acumular ~1.40. Esto da
+desempates reales cuando el `brand_boost` aplica un piso de 1.05 a
+varios candidatos con marca propia. `link_confidence` de la línea
+sí se clampa a 1.0 para la UI y `match_confidence = link × ocr × ext`.
+
+**Margen requerido adaptativo** (sesión 9k):
+- top1.score ≥ 1.05 → margen 0.02 (evidencia rica, puede auto-aprobar)
+- top1.score ≥ 0.90 → margen 0.05
+- top1.score 0.70–0.90 → margen 0.10
+
+**Brand boost** (sesión 9j + 9k): si `brand_by_provider[pid]` existe
+y aparece en el nombre del artículo Y el candidato tiene `variety_match`
++ `size_exact` (no basta `size_close`), se aplica `score = max(score, 1.05)`.
+
 ## Cosas que no hay que hacer
 
 1. **No llamar APIs externas** salvo que el usuario lo pida explícitamente. Trabajar con Claude Code (agente) para generar parsers, no con API.
@@ -644,14 +660,26 @@ el evaluador las use.
 
 ## Para el próximo turno
 
-Carriles de revisión implementados (sesión 9i): auto 60.6%, quick 33.2%,
-full 6.2%. Próximos pasos:
+Estado real tras sesión 9k (LATIN + matcher refinado, 17 abril 2026):
+- Autoapprove: **79.6%** (3089 líneas de 82 proveedores)
+- Golden set: **100%** (88/88 líneas) con `_status: "reviewed"`
+- NO_PARSEA restantes: 19 proveedores
+- Carriles: regenerar tras sesión 9k (baseline previa 60.6/33.2/6.2
+  ya desfasada).
 
-1. **Ampliar golden set** con más proveedores y repetir el ciclo
-   bootstrap → review → apply → evaluate.
-2. **Usar la UI para confirmar/corregir matches** en producción real.
-   Cada ✓ promueve sinónimos → sube el % de carril auto.
-3. **Shadow mode** (Paso 9) cuando se empiece a implantar.
+Próximos pasos posibles:
+
+1. **Shadow mode** (Fase 10) — procesar facturas reales, comparar
+   propuesta vs decisión humana, capturar fallos de producción.
+   Recomendado si se empieza a implantar.
+2. **Reducir NO_PARSEA** atacando el Top del backlog priorizado por
+   taxonomía (`auto_learn_taxonomy.json`). Top candidatos: LATIN FLOWERS
+   (E8), VALTHOMIG (E7+E3), APOSENTOS (E6+E2), CANANVALLE (E3),
+   UMA FLOWERS (E1).
+3. **Ampliar golden set** a más proveedores para robustecer el
+   feedback loop (bootstrap → review → apply → evaluate).
+4. **Optimizar matcher** (backlog) — ~6.5s para 43 líneas contra 42k
+   artículos. Ideas: indexar por variety+size, precalcular brand set.
 
 ## REGLA OBLIGATORIA — mantener este archivo actualizado
 
@@ -1019,6 +1047,49 @@ final de este archivo, en la sección "Historial de sesiones".
   * Serialización en `procesar_pdf.py` + badge por línea + stat card
     "Auto X%" en `web/assets/app.js`.
   * Baseline: auto=60.6%, quick=33.2%, full=6.2% (3001 líneas).
+- **2026-04-16 sesión 9j**: Brand boost (commit `3855f7e`).
+  * En `src/matcher.py`: si existe un artículo con la marca del proveedor
+    (detectada vía `brand_by_provider()` del catálogo) Y tiene match de
+    variety+size, se le asigna `score=1.05` para que gane sobre sinónimos
+    débiles y genéricos.
+  * `own_brands` ahora se alimenta también de `brand_by_provider`, lo que
+    cubre casos donde la key del proveedor no coincide con la marca en
+    los artículos (ej: `verdesestacion` → marca PONDEROSA).
+  * Golden set: 100% mantenido (88/88).
+  * **Autoapprove 66.1% → 68.9%** (+2.8pp).
+- **2026-04-17 golden revisado**: El operador ha revisado manualmente
+  los 5 drafts iniciales (`_status: "reviewed"` en todos):
+  `alegria_00046496`, `fiorentina_0000141933`, `golden_unknown`,
+  `meaflos_EC1000035075`, `mystic_0000281780`. `evaluate_golden.py`
+  confirma **100% parse + link accuracy** sobre esas 88 líneas.
+  Fase 2 del roadmap queda cerrada para el dataset inicial; ampliar
+  con más proveedores es trabajo continuo.
+- **2026-04-17 sesión 9k**: Ataque NO_PARSEA (LATIN) + refinado matcher.
+  Cambios:
+  * **`src/parsers/latin.py`**: Format B regex usaba `[\d.]+` para
+    decimales y fallaba en facturas con coma decimal (`0,250 1,00QBx35`
+    en vez de `0.250 1.00QBx35`). Cambiado a `[\d.,]+` + `.replace(',', '.')`
+    al convertir. **LATIN: 91 líneas (100% amb) → 314 líneas (306 ok,
+    4 amb)**.
+  * **`src/matcher.py`** — quitado el upper-clamp del score: antes
+    `cand.score = round(max(0.0, min(1.0, score)), 3)`, ahora sin techo.
+    Motivo: los candidatos con evidencia muy fuerte (sinónimo +
+    histórico + match pleno) sumaban features > 1.0, el clamp los
+    colapsaba a 1.0, y el brand_boost con `max(score, 1.05)` los
+    aplanaba a 1.05 empatando con candidatos más flojos. Sin clamp
+    superior, el ganador conserva su score real y tenemos desempate.
+    `line.link_confidence` sigue clampado a 1.0 para la UI y para
+    `match_confidence = link × ocr × ext`.
+  * **`src/matcher.py`** — brand_boost ahora exige `size_exact` (no
+    `size_close`): evitar que un artículo 60CM con la misma marca
+    empate a 1.05 con el 50CM exacto cuando la factura dice 50CM.
+  * **`src/matcher.py`** — tramo nuevo de `required_margin`: scores
+    ≥1.05 necesitan solo 0.02 de margen (antes 0.05). La evidencia
+    rica ya separó a top1 del resto; un margen 0.03-0.04 con scores
+    1.138 vs 1.10 es victoria clara, no empate.
+  * **Resultado global**: autoapprove **68.9% → 79.6% (+10.7pp)**,
+    líneas ok 2002→2453, tie_top2_margin 521→187 (-64%). Golden set
+    mantiene 100%. NO_PARSEA 20→19 (LATIN resuelto).
 
 ## IMPORTANTE — gotcha con `register` tool
 

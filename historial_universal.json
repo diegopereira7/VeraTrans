@@ -119,13 +119,14 @@
     "fecha": "2026-03-20 14:08"
   },
   "LF41329": {
-    "pdf": "LATIN 41329.pdf",
+    "pdf": "04 - 729-45996941 - LATIN FLOWERS LATIN 41329.pdf",
     "provider": "Latin Flowers",
     "total_usd": 1959.35,
     "lineas": 53,
     "ok": 53,
     "sin_match": 0,
-    "fecha": "2026-03-30 17:10"
+    "fecha": "2026-04-17 09:22",
+    "pdf_path": "C:\\Users\\diego.pereira\\Desktop\\DOC VERA\\FACTURAS IMPORTACION\\PROVEEDORES\\LATIN FLOWERS\\04 - 729-45996941 - LATIN FLOWERS LATIN 41329.pdf"
   },
   "001030882": {
     "pdf": "LIFE2.pdf",
@@ -228,13 +229,14 @@
     "fecha": "2026-03-28 11:01"
   },
   "25060526": {
-    "pdf": "SEMANA_10_X_075-6771_0974_(79)X_VALTHO.pdf",
-    "provider": "Cantiza Flores",
+    "pdf": "02 - 075-67710974 - VALTHOMIG VALTHO.pdf",
+    "provider": "Valthomig",
     "total_usd": 265.0,
     "lineas": 15,
-    "ok": 14,
-    "sin_match": 1,
-    "fecha": "2026-03-30 17:11"
+    "ok": 11,
+    "sin_match": 4,
+    "fecha": "2026-04-17 09:23",
+    "pdf_path": "C:\\Users\\diego.pereira\\Desktop\\DOC VERA\\FACTURAS IMPORTACION\\PROVEEDORES\\VALTHOMIG\\02 - 075-67710974 - VALTHOMIG VALTHO.pdf"
   },
   "25060205": {
     "pdf": "VATHO.pdf",
@@ -300,14 +302,14 @@
     "fecha": "2026-03-30 17:09"
   },
   "": {
-    "pdf": "1776252508_CONEJERA_FE047941.pdf",
-    "provider": "Flores La Conejera",
-    "total_usd": 0.0,
-    "lineas": 9,
-    "ok": 0,
-    "sin_match": 0,
-    "fecha": "2026-04-15 13:30",
-    "pdf_path": "C:\\verabuy-traductor\\web\\uploads\\1776252508_CONEJERA_FE047941.pdf"
+    "pdf": "02 - 729- 4457 1424 (387) - LATIN 27104.pdf",
+    "provider": "Latin Flowers",
+    "total_usd": 2169.25,
+    "lineas": 64,
+    "ok": 61,
+    "sin_match": 3,
+    "fecha": "2026-04-17 09:22",
+    "pdf_path": "C:\\Users\\diego.pereira\\Desktop\\DOC VERA\\FACTURAS IMPORTACION\\PROVEEDORES\\LATIN FLOWERS\\02 - 729- 4457 1424 (387) - LATIN 27104.pdf"
   },
   "7.149": {
     "pdf": "000 full.pdf",
@@ -5138,14 +5140,14 @@
     "fecha": "2026-03-30 17:07"
   },
   "LF41128": {
-    "pdf": "1775728548_LATIN.pdf",
+    "pdf": "05 - 729-45915100 - LATIN FLOWERS LATIN.pdf",
     "provider": "Latin Flowers",
     "total_usd": 3310.95,
     "lineas": 78,
     "ok": 77,
     "sin_match": 1,
-    "fecha": "2026-04-09 11:55",
-    "pdf_path": "C:\\verabuy-traductor\\web\\uploads\\1775728548_LATIN.pdf"
+    "fecha": "2026-04-17 09:22",
+    "pdf_path": "C:\\Users\\diego.pereira\\Desktop\\DOC VERA\\FACTURAS IMPORTACION\\PROVEEDORES\\LATIN FLOWERS\\05 - 729-45915100 - LATIN FLOWERS LATIN.pdf"
   },
   "82967": {
     "pdf": "SEMANA_9_729-4591_5100_(223)_SAYONARA.pdf",
@@ -5319,13 +5321,14 @@
     "fecha": "2026-03-30 17:08"
   },
   "25060453": {
-    "pdf": "VALTHO.pdf",
-    "provider": "Cantiza Flores",
+    "pdf": "03 - 075-67710963 - VALTHOMIG VALTHO.pdf",
+    "provider": "Valthomig",
     "total_usd": 477.75,
     "lineas": 10,
-    "ok": 10,
-    "sin_match": 0,
-    "fecha": "2026-03-30 17:08"
+    "ok": 8,
+    "sin_match": 2,
+    "fecha": "2026-04-17 09:23",
+    "pdf_path": "C:\\Users\\diego.pereira\\Desktop\\DOC VERA\\FACTURAS IMPORTACION\\PROVEEDORES\\VALTHOMIG\\03 - 075-67710963 - VALTHOMIG VALTHO.pdf"
   },
   "25060452": {
     "pdf": "VALTHO1.pdf",
@@ -5544,13 +5547,14 @@
     "fecha": "2026-03-30 17:10"
   },
   "LF41533": {
-    "pdf": "SEMANA_11_729-4599_6974_(154)_LATIN.pdf",
+    "pdf": "03 - 729-45996974 - LATIN FLOWERS LATIN.pdf",
     "provider": "Latin Flowers",
     "total_usd": 3024.25,
     "lineas": 81,
     "ok": 81,
     "sin_match": 0,
-    "fecha": "2026-03-30 17:12"
+    "fecha": "2026-04-17 09:22",
+    "pdf_path": "C:\\Users\\diego.pereira\\Desktop\\DOC VERA\\FACTURAS IMPORTACION\\PROVEEDORES\\LATIN FLOWERS\\03 - 729-45996974 - LATIN FLOWERS LATIN.pdf"
   },
   "00000166862": {
     "pdf": "AGRIVALDANI (2).pdf",
@@ -7903,13 +7907,14 @@
     "fecha": "2026-03-30 17:12"
   },
   "LF41647": {
-    "pdf": "SEMANA_12_✈️_729-4593_7360_COLOMBIA_latin.pdf",
+    "pdf": "02 - 729-45937360 - LATIN FLOWERS latin.pdf",
     "provider": "Latin Flowers",
     "total_usd": 273.35,
     "lineas": 5,
     "ok": 5,
     "sin_match": 0,
-    "fecha": "2026-03-30 17:12"
+    "fecha": "2026-04-17 09:22",
+    "pdf_path": "C:\\Users\\diego.pereira\\Desktop\\DOC VERA\\FACTURAS IMPORTACION\\PROVEEDORES\\LATIN FLOWERS\\02 - 729-45937360 - LATIN FLOWERS latin.pdf"
   },
   "05296": {
     "pdf": "SEMANA_12_✈️_729-4593_7360_COLOMBIA_NATU.pdf",
@@ -7984,13 +7989,14 @@
     "fecha": "2026-03-28 11:03"
   },
   "00046496": {
-    "pdf": "SEMANA_13_075-6771_2271_ALLIANCE_Falta_Florsani_ALEGRIA.pdf",
+    "pdf": "01 - 075-67712271 - LA ALEGRIA ALEGRIA.pdf",
     "provider": "La Alegria Farm",
     "total_usd": 1597.5,
     "lineas": 43,
-    "ok": 0,
-    "sin_match": 43,
-    "fecha": "2026-03-28 11:03"
+    "ok": 43,
+    "sin_match": 0,
+    "fecha": "2026-04-16 16:41",
+    "pdf_path": "C:\\Users\\diego.pereira\\Desktop\\DOC VERA\\FACTURAS IMPORTACION\\PROVEEDORES\\LA ALEGRIA\\01 - 075-67712271 - LA ALEGRIA ALEGRIA.pdf"
   },
   "001001000055839": {
     "pdf": "SEMANA_13_075-6771_2271_ALLIANCE_Falta_Florsani_BOSQUE.pdf",
@@ -8024,19 +8030,20 @@
     "provider": "Mystic Flowers",
     "total_usd": 360.0,
     "lineas": 26,
-    "ok": 19,
-    "sin_match": 7,
-    "fecha": "2026-04-15 16:13",
+    "ok": 23,
+    "sin_match": 3,
+    "fecha": "2026-04-16 16:39",
     "pdf_path": "C:\\Users\\diego.pereira\\Desktop\\DOC VERA\\FACTURAS IMPORTACION\\PROVEEDORES\\MYSTIC\\01 - 075-67712271 - MYSTIC MYSTIC2.pdf"
   },
   "25061663": {
-    "pdf": "SEMANA_13_075-6771_2271_ALLIANCE_Falta_Florsani_VALTHO.pdf",
-    "provider": "Cantiza Flores",
+    "pdf": "01 - 075-67712271 - VALTHOMIG VALTHO.pdf",
+    "provider": "Valthomig",
     "total_usd": 776.75,
     "lineas": 38,
-    "ok": 37,
-    "sin_match": 1,
-    "fecha": "2026-03-28 11:03"
+    "ok": 38,
+    "sin_match": 0,
+    "fecha": "2026-04-17 09:25",
+    "pdf_path": "C:\\Users\\diego.pereira\\Desktop\\DOC VERA\\FACTURAS IMPORTACION\\PROVEEDORES\\VALTHOMIG\\01 - 075-67712271 - VALTHOMIG VALTHO.pdf"
   },
   "00000166889": {
     "pdf": "SEMANA_13_075-6771_4570_SAFTEC_completr_brissass_AGRIVALDANI.pdf",
@@ -8120,13 +8127,14 @@
     "fecha": "2026-03-30 17:13"
   },
   "LF41856": {
-    "pdf": "SEMANA_13_996-1425_5161_REAL_LATIN.pdf",
+    "pdf": "01 - 996-14255161 - LATIN FLOWERS LATIN.pdf",
     "provider": "Latin Flowers",
     "total_usd": 277.2,
     "lineas": 5,
     "ok": 5,
     "sin_match": 0,
-    "fecha": "2026-03-30 17:12"
+    "fecha": "2026-04-17 09:21",
+    "pdf_path": "C:\\Users\\diego.pereira\\Desktop\\DOC VERA\\FACTURAS IMPORTACION\\PROVEEDORES\\LATIN FLOWERS\\01 - 996-14255161 - LATIN FLOWERS LATIN.pdf"
   },
   "05551": {
     "pdf": "SEMANA_13_996-1425_5161_REAL_MAXIFLORES.pdf",
@@ -15864,5 +15872,35 @@
     "sin_match": 0,
     "fecha": "2026-04-15 16:21",
     "pdf_path": "C:\\Users\\diego.pereira\\Desktop\\DOC VERA\\FACTURAS IMPORTACION\\PROVEEDORES\\CONEJERA\\01 - 729-4509 6004 (415) - CONEJERA.pdf"
+  },
+  "486": {
+    "pdf": "1776350442_PONDEROS.pdf",
+    "provider": "Verdes La Estacion / Ponderosa",
+    "total_usd": 3369.0,
+    "lineas": 68,
+    "ok": 60,
+    "sin_match": 8,
+    "fecha": "2026-04-16 16:41",
+    "pdf_path": "C:\\verabuy-traductor\\web\\uploads\\1776350442_PONDEROS.pdf"
+  },
+  "25014409": {
+    "pdf": "01 - 729-4932 4111 (126) - VALTHOMIG 25014409.pdf",
+    "provider": "Valthomig",
+    "total_usd": 183.0,
+    "lineas": 9,
+    "ok": 9,
+    "sin_match": 0,
+    "fecha": "2026-04-17 09:22",
+    "pdf_path": "C:\\Users\\diego.pereira\\Desktop\\DOC VERA\\FACTURAS IMPORTACION\\PROVEEDORES\\VALTHOMIG\\01 - 729-4932 4111 (126) - VALTHOMIG 25014409.pdf"
+  },
+  "25014498": {
+    "pdf": "02 - 729-4932 4111 (126) - VALTHOMIG 25014498.pdf",
+    "provider": "Valthomig",
+    "total_usd": 654.0,
+    "lineas": 26,
+    "ok": 22,
+    "sin_match": 4,
+    "fecha": "2026-04-17 09:23",
+    "pdf_path": "C:\\Users\\diego.pereira\\Desktop\\DOC VERA\\FACTURAS IMPORTACION\\PROVEEDORES\\VALTHOMIG\\02 - 729-4932 4111 (126) - VALTHOMIG 25014498.pdf"
   }
 }
