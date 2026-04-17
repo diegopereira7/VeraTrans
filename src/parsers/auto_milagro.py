@@ -55,7 +55,7 @@ _INVOICE_RE = re.compile(r'INVOICE\s+No\.\s*(\S+)', re.I)
 _DATE_RE    = re.compile(r'Date\s+Invoice:\s*(\d{4}-\d{2}-\d{2})', re.I)
 _AWB_RE     = re.compile(r'AWB:\s*(\S+)', re.I)
 _HAWB_RE    = re.compile(r'HAWB:\s*(\S+)', re.I)
-_TOTAL_RE   = re.compile(r'TOTAL\s+INVOICE\s+\(Dollars\)\s+([\d.]+)', re.I)
+_TOTAL_RE   = re.compile(r'TOTAL\s+INVOICE\s+\(Dollars\)\s+([\d,.]+)', re.I)
 _SPECIES_MAP = {
     'ROSES': 'ROSES', 'ROSE': 'ROSES',
     'CARNATION': 'CARNATIONS', 'CARNATIONS': 'CARNATIONS',

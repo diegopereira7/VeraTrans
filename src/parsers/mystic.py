@@ -22,9 +22,11 @@ _LINE_RE = re.compile(
 )
 
 # Fallback sin box_code (ej. STAMPSYBOX: "1 H NECTARINE 4 25 50 100 0,300 30,000")
+# La clase de variety permite latin-extendida (À-ÿ) y el placeholder OCR \ufffd
+# para aceptar "CAFÉ DEL MAR" / "CAF� DEL MAR" de ECOFLOR.
 _LINE_RE_NOCODE = re.compile(
     r'^(?:\s*\d+\s+)?(?P<btype>[HQ])\s+'
-    r'(?P<variety>[A-Za-z][A-Za-z0-9\s\-\.\'/&]+?)\s+'
+    r"(?P<variety>[A-Za-zÀ-ÿ\ufffd][A-Za-z0-9À-ÿ\ufffd\s\-\.'/&]+?)\s+"
     r'(?P<peso>\d+)\s+(?P<cantidad>\d+)\s+(?P<length>\d+)\s+(?P<stems>\d+)\s+'
     r'(?P<price>[\d,.]+)\s+(?P<total>[\d,.]+)\s*$',
     re.I

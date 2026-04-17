@@ -1,7 +1,7 @@
 # CLAUDE.md — Guía operativa para el agente
 
-**Última actualización:** 2026-04-17 (sesión 9o)
-**Estado:** 87.1% autoapprove · Golden 100% (88/88) · NO_PARSEA 13
+**Última actualización:** 2026-04-17 (sesión 9p)
+**Estado:** 86.7% autoapprove · Golden 100% (88/88) · NO_PARSEA 10
 
 ---
 
@@ -25,20 +25,22 @@ Web PHP), mismo pipeline Python. Usuario: Ángel Panadero
 
 ## Estado actual (fuente única de verdad)
 
-- **Autoapprove global:** 87.1% (3219 líneas sobre 82 proveedores)
+- **Autoapprove global:** 86.7% (3297 líneas sobre 82 proveedores)
 - **Golden set:** 100% (88/88 líneas con `_status: "reviewed"`)
-- **NO_PARSEA restantes:** 13 proveedores
-- **Última sesión:** 9o (2026-04-17) — TIMANA + ART ROSES + BENCHMARK
-  + TESSA parsers
+- **NO_PARSEA restantes:** 10 proveedores
+- **Buckets:** OK 70 · NO_PARSEA 10 · TOTALES_MAL 1 · NO_DETECTADO 1
+- **Última sesión:** 9p (2026-04-17) — IWA + PREMIUM + CIRCASIA +
+  ECOFLOR + MILONGA + MILAGRO + PRESTIGE
 
 ### Próximos pasos posibles
 
 1. **Shadow mode** (Fase 10) — procesar facturas reales, comparar
    propuesta vs decisión humana, capturar fallos de producción.
-   Recomendado si se empieza a implantar.
-2. **Reducir NO_PARSEA** atacando el top del backlog priorizado por
-   taxonomía (`auto_learn_taxonomy.json`). Candidatos vivos: CANTIZA,
-   TESSA (sub-líneas multi-variedad), más en el report.
+2. **Reducir IWA ambiguous** — 19 líneas SURTIDO MIXTO necesitan
+   sinónimos o regla específica de mixed-box.
+3. **Reducir NO_PARSEA** restantes (CANTIZA, MILAGRO, MILONGA) —
+   quedan con samples OCR-corruptos o formato de bajo volumen.
+4. **Optimizar matcher** (backlog) — ~6.5s para 43 líneas.
 3. **Ampliar golden set** a más proveedores para robustecer el
    feedback loop (bootstrap → review → apply → evaluate).
 4. **Optimizar matcher** (backlog) — ~6.5s para 43 líneas contra 42k
@@ -348,6 +350,40 @@ Comandos con flags (`--provider`, `--max-samples`, `--verbose`,
 Solo las 2 últimas sesiones. Todas las anteriores en
 [`docs/sessions.md`](docs/sessions.md).
 
+### 2026-04-17 — sesión 9p: IWA + PREMIUM + CIRCASIA + ECOFLOR + MILONGA + MILAGRO + PRESTIGE
+
+- **[src/parsers/otros.py](src/parsers/otros.py) → IwaParser**:
+  regex reescrita anclada en tariff 10-dígitos + bloque final
+  `Stems N USD$ P USD$ T`; `CM` opcional; farm codes tipo `R19-Pili`
+  y `size` opcional (líneas sin size). IWA: MUCHO_RESCATE → OK,
+  rescued 32→0, parsed 21→53.
+- **[src/parsers/otros.py](src/parsers/otros.py) → PremiumColParser**:
+  OCR cleanup (`l`→`1`, `Rl4`→`R14`, `.US$`→`US$`, `US$0.120`→
+  `US$ 0.120`, `'CARNATION`→`CARNATION`). Tolera `ORDEN` entre
+  tariff y `Stems`. Nueva variante B factura electrónica DIAN
+  (`CARNATION DIANTHUS CARYOPHYLLUS ... stems $price $total`) solo
+  como fallback. PREMIUM: NO_PARSEA → OK.
+- **[src/parsers/otros.py](src/parsers/otros.py) → ColFarmParser**:
+  nuevo pm5 para CIRCASIA (`1 Q Rose Tiffany 50 - 50 R14-
+  0603.11.00.00 150 150 Stems 0.28 $42.00`); relajado `\s+[-_]?\s*`
+  para aceptar `X25 -40` (MILONGA). CIRCASIA: NO_PARSEA → OK.
+- **[src/parsers/mystic.py](src/parsers/mystic.py)**: variety class
+  ampliada a `[A-Za-zÀ-ÿ\ufffd]` — acepta caracteres Latin-extended
+  y el placeholder OCR `\ufffd` (ECOFLOR tiene variedades con `É`
+  corrompida a `�`). ECOFLOR: TOTALES_MAL → OK (5/5 sum=header).
+- **[src/parsers/auto_milagro.py](src/parsers/auto_milagro.py)**:
+  `_TOTAL_RE` acepta coma de miles en `TOTAL INVOICE (Dollars) 1,193.50`.
+  MILAGRO 02a: header 1.0 → 1193.5.
+- **[src/parsers/otros.py](src/parsers/otros.py) → PrestigeParser**:
+  nueva variante OCR `ROSE FREEDOM 40 CM 2 250 500 0,16 80,00`
+  (PRESTIGE escaneado simple). PRESTIGE: NO_PARSEA → OK (9→24 parsed,
+  5/5 totals_ok).
+- **Global**: autoapprove **87.1% → 86.7%** (−0.4pp, dilución por
+  +78 líneas nuevas con mayor tasa ambiguous). ok 2739→2785 (+46),
+  líneas totales 3219→3297 (+78). Buckets: OK 65→70 (+5),
+  NO_PARSEA 13→10 (−3), MUCHO_RESCATE 1→0, TOTALES_MAL 2→1.
+  Golden 100%.
+
 ### 2026-04-17 — sesión 9o: TIMANA + ART ROSES + BENCHMARK + TESSA parsers
 
 - **[src/parsers/otros.py](src/parsers/otros.py) → TimanaParser**:
@@ -369,22 +405,6 @@ Solo las 2 últimas sesiones. Todas las anteriores en
   Sample 02b: 0→4 parsed (diff 100%→0%).
 - **Global**: autoapprove **86.8% → 87.1%** (+0.3pp), ok 2652→2739,
   líneas totales 3118→3219 (+101). NO_PARSEA ~19→13. Golden 100%.
-
-### 2026-04-17 — sesión 9n: NATIVE + MILONGA + MILAGRO + refinado matcher
-
-- **[src/matcher.py](src/matcher.py)**: `origin_match` subido 0.10 →
-  0.15 (EC/COL autoritativo vs fuzzy 100% genérico). Resuelve
-  FREEDOM EC vs genérico en NATIVE.
-- **[src/matcher.py](src/matcher.py)**: filtro anti-ruido en
-  low_evidence — si top1 no tiene `variety_match` Y fuzzy
-  `hint_score` < 0.85 → `sin_match` (antes `ambiguous_match`). Evita
-  matches tipo SHY→SYMBOL en MILAGRO. Umbral 0.85 preserva
-  LIMONADA→LEMONADE.
-- **[src/parsers/otros.py](src/parsers/otros.py) → ColFarmParser**
-  (MILONGA): normaliza OCR (pipes, `�`, `*`, `X2-5`, `i ee`) antes
-  del regex. `_money()` tolera `.` basura. Sample 01: 0→11 líneas.
-- **Global**: autoapprove **81.9% → 86.8%** (+4.9pp, mayor salto).
-  ok 2555→2652, ambiguous 367→239. Golden 100%.
 
 ---
 

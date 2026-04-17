@@ -109,6 +109,22 @@ correspondiente en [`sessions.md`](sessions.md).
   **más temprano** en el texto (la cabecera del PDF siempre tiene el
   emisor), no el primer match por orden de dict.
 
+## Benchmark y métricas
+
+- **Abrir parsers puede bajar autoapprove_rate temporalmente**. Una
+  regex que captura 30 líneas nuevas de MIXED boxes aporta al
+  denominador pero no necesariamente al numerador (muchas caen como
+  ambiguous/sin_match hasta que aprendan sinónimos). Medir por
+  **buckets de proveedores OK** y **líneas ok absolutas**, no solo
+  por tasa. Sesión 9p: líneas ok 2739→2785 (+46) pero autoapprove
+  87.1%→86.7% (−0.4pp).
+- **MUCHO_RESCATE es peor señal que NO_PARSEA**: NO_PARSEA con
+  parsed_any alto suele ser "1 sample OCR corrupto"; MUCHO_RESCATE
+  significa que el parser ve lineas pero el regex no encaja.
+  Priorizar MUCHO_RESCATE → rescatadas se convierten en parsed real
+  cambiando 1 regex (IWA sesión 9p: 32 rescued → 0 con regex
+  reescrita anclada en tariff).
+
 ## Matching
 
 Reglas vivas del matcher (tablas con aportes/penalizaciones) están en

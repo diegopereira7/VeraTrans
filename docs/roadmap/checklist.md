@@ -72,20 +72,21 @@ _Cifras tomadas del historial de sesiones de `CLAUDE.md` (sesión 6, abril 2026)
   - `mark_confirmed`/`mark_corrected` ya existen en `SynonymStore`;
     falta engancharlos a UI/API.
 
-### KPIs baseline (sesión 9o, `tools/evaluate_all.py`)
-- Líneas totales procesadas: **3219** (+101 líneas de los parsers
-  liberados: TIMANA, ART ROSES, BENCHMARK, TESSA)
-- Líneas `ok`: **2739** · `ambiguous_match`: **246** · `autoapprovable`: **2600**
-- **autoapprove_rate: 87.1%** de las líneas linkables
+### KPIs baseline (sesión 9p, `tools/evaluate_all.py`)
+- Líneas totales procesadas: **3297** (+78 vs 9o — IWA rescue liberado
+  + nuevos lines en CIRCASIA/PREMIUM/PRESTIGE/ECOFLOR)
+- Líneas `ok`: **2785** · `ambiguous_match`: **268** · `autoapprovable`: **2646**
+- **autoapprove_rate: 86.7%** de las líneas linkables (−0.4pp por
+  dilución: IWA añade 19 SURTIDO MIXTO ambig)
 - **Golden set: 100%** parse + link accuracy (88/88 líneas, 5/5 reviewed)
-- Buckets: OK 65 · NO_PARSEA 13 · TOTALES_MAL 2 · MUCHO_RESCATE 1 ·
-  NO_DETECTADO 1
+- Buckets: OK 70 · NO_PARSEA 10 · TOTALES_MAL 1 · NO_DETECTADO 1
+  (MUCHO_RESCATE vaciado)
 - Top-5 penalties globales:
-  1. `weak_synonym` 2595
-  2. `variety_no_overlap` 242
-  3. `foreign_brand` 180
-  4. `low_evidence` 133
-  5. `tie_top2_margin` 119
+  1. `weak_synonym` 2657
+  2. `variety_no_overlap` 244
+  3. `foreign_brand` 190
+  4. `low_evidence` 152
+  5. `tie_top2_margin` 124
 - Feedback loop operativo: golden → review → apply → sinónimos confirmados
 - Rama OCR real disponible: **OCRmyPDF+Tesseract** + EasyOCR fallback
 - Matching: **scoring por evidencia** con vetos duros y trazabilidad
@@ -384,16 +385,50 @@ tras la sesión 8 (baseline ya capturada).
 - [x] 13. NATIVE + MILONGA + MILAGRO + refinado (sesión 9n) — 81.9%→86.8%
 - [x] 14. TIMANA + ART ROSES + BENCHMARK + TESSA (sesión 9o) —
       86.8%→87.1%, NO_PARSEA ~19→13 (+101 líneas rescatadas)
-- [ ] 15. **Shadow mode** (Fase 10) — cuando se empiece a implantar
-- [ ] 16. Ampliar NO_PARSEA restante: CANTIZA y subvariantes de TESSA
-      (sub-líneas multi-variedad), más providers del report
-- [ ] 17. Optimizar matcher (backlog) — ~6.5s para 43 líneas
+- [x] 15. IWA + PREMIUM + CIRCASIA + ECOFLOR + MILONGA + MILAGRO +
+      PRESTIGE (sesión 9p) — 87.1%→86.7% (dilución por +78 líneas),
+      NO_PARSEA 13→10, +5 proveedores a OK, MUCHO_RESCATE vaciado
+- [ ] 16. **Shadow mode** (Fase 10) — cuando se empiece a implantar
+- [ ] 17. Ampliar NO_PARSEA restante: CANTIZA, MILAGRO, MILONGA (OCR
+      muy corrupto en algunos samples)
+- [ ] 18. Reducir IWA ambiguous (19 SURTIDO MIXTO)
+- [ ] 19. Optimizar matcher (backlog) — ~6.5s para 43 líneas
 
 ---
 
 ## Registro rápido de avances
 
 ### Último bloque cerrado
+- Fecha: 2026-04-17
+- Paso: sesión 9p — IWA + PREMIUM + CIRCASIA + ECOFLOR + MILONGA +
+  MILAGRO + PRESTIGE
+- Qué se hizo:
+  * **`parsers/otros.py → IwaParser`**: regex anclada en tariff 10d
+    + bloque `Stems N USD$ P USD$ T`. CM opcional, farm codes
+    limpiados por lista, size opcional. IWA: rescued 32→0, parsed
+    21→53; MUCHO_RESCATE → OK.
+  * **`parsers/otros.py → PremiumColParser`**: OCR cleanup
+    (l→1, Rl4→R14, .US$→US$, US$0→US$ 0) + `.*?Stems` para absorber
+    ORDEN intermedio. Variante B DIAN como fallback. PREMIUM:
+    NO_PARSEA → OK.
+  * **`parsers/otros.py → ColFarmParser`**: pm5 nuevo para CIRCASIA
+    (`SIZE - SIZE` range + label + tariff dotted + stems+Stems+price+
+    $total). `\s+[-_]?\s*` relajado para `X25 -40` de MILONGA.
+    CIRCASIA: NO_PARSEA → OK.
+  * **`parsers/mystic.py`**: variety class a
+    `[A-Za-zÀ-ÿ\ufffd]` — acepta CAFÉ OCR-corrompido a CAF�.
+    ECOFLOR: TOTALES_MAL → OK.
+  * **`parsers/auto_milagro.py`**: `_TOTAL_RE` con coma de miles.
+    MILAGRO 02a header 1.0 → 1193.5.
+  * **`parsers/otros.py → PrestigeParser`**: variante OCR simple
+    `ROSE FREEDOM 40 CM 2 250 500 0,16 80,00`. PRESTIGE:
+    NO_PARSEA → OK (9→24 parsed).
+- Resultado: autoapprove **87.1% → 86.7%** (−0.4pp, dilución por
+  líneas nuevas); ok 2739→2785 (+46); líneas totales 3219→3297
+  (+78); ambiguous 246→268 (IWA MIXTO). **Buckets: OK 65→70,
+  NO_PARSEA 13→10, MUCHO_RESCATE 1→0, TOTALES_MAL 2→1**. Golden 100%.
+
+### Penúltimo bloque cerrado
 - Fecha: 2026-04-17
 - Paso: sesión 9o — TIMANA + ART ROSES + BENCHMARK + TESSA parsers
 - Qué se hizo:
@@ -413,23 +448,6 @@ tras la sesión 8 (baseline ya capturada).
     diff 100%→0%.
 - Resultado: autoapprove **86.8% → 87.1%** (+0.3pp); ok 2652→2739;
   líneas totales 3118→3219 (+101); NO_PARSEA ~19→13. Golden 100%.
-
-### Penúltimo bloque cerrado
-- Fecha: 2026-04-17
-- Paso: sesión 9n — NATIVE + MILONGA + MILAGRO + refinado matcher
-- Qué se hizo:
-  * **`matcher.py`**: bonus `origin_match` 0.10→0.15 para rosas/claveles
-    (EC/COL autoritativo). Resuelve ambiguous FREEDOM EC vs genérico.
-  * **`matcher.py`**: filtro anti-ruido — si top1 no tiene
-    `variety_match` Y `hint_score`<0.85, va a sin_match (no ambiguous)
-    para evitar matches arbitrarios tipo SHY→SYMBOL. LIMONADA→LEMONADE
-    (hint 0.88) se preserva.
-  * **`parsers/otros.py → ColFarmParser`** (MILONGA): normaliza OCR
-    garbage (pipes, llaves, `�`, `*`, `X2-5`→`X 25`, `i ee`) antes
-    del regex. `_money()` tolera `.` basura. MILONGA sample 01: 0 líneas→11.
-- Resultado: autoapprove **81.9% → 86.8%** (+4.9pp, mayor salto
-  individual hasta ahora). ok 2555→2652, ambiguous 367→239.
-  Golden 100%.
 
 ### Penúltimo bloque cerrado
 - Fecha: 2026-04-17

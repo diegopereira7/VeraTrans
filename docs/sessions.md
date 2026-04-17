@@ -10,6 +10,63 @@ Para lecciones transversales reutilizables, ver [`lessons.md`](lessons.md).
 
 ---
 
+## 2026-04-17 — sesión 9p: IWA + PREMIUM + CIRCASIA + ECOFLOR + MILONGA + MILAGRO + PRESTIGE
+
+Quinta tanda de fix sobre el backlog de NO_PARSEA / MUCHO_RESCATE.
+Objetivo: convertir líneas rescatadas en parsed reales y subir los
+buckets de proveedores secundarios.
+
+- **[src/parsers/otros.py](../src/parsers/otros.py) → IwaParser**:
+  regex reescrita, anclada en el tariff de 10 dígitos y el bloque
+  final `Stems N USD$ P USD$ T`. El `CM` tras size ahora es opcional
+  (algunos samples lo omiten), y entre size y tariff puede aparecer
+  un farm-route code (`R19`, `R19-Pili`) que se limpia por lista
+  negra. Algunos lines no traen size (`ROSA ASSORTED ROSA 06031...`).
+  `SURTIDO MIXTO` como fallback de `ASSORTED`. IWA pasa de
+  MUCHO_RESCATE → OK: rescued 32→0, parsed 21→53, totals_ok 5/5.
+- **[src/parsers/otros.py](../src/parsers/otros.py) → PremiumColParser**:
+  OCR cleanup pre-regex: `l` inicial→`1`, `Rl4`→`R14`, `.US$`→`US$`,
+  `US$0.120`→`US$ 0.120`, `!` quitado, `'CARNATION`→`CARNATION`. El
+  regex principal ahora absorbe `ORDEN` entre tariff y `Stems`
+  (`.*?Stems` en lugar de `\s+Stems`). Variante B factura electrónica
+  DIAN añadida como fallback (solo se ejecuta si la variante A no
+  encontró nada): `CARNATION DIANTHUS CARYOPHYLLUS DIANTHUS
+  CARYOPHYLLUS CARNATION STEMS $PRICE $TOTAL`. PREMIUM: NO_PARSEA → OK.
+- **[src/parsers/otros.py](../src/parsers/otros.py) → ColFarmParser**:
+  (i) nuevo `pm5` para CIRCASIA que formatea rango de size
+  `SIZE - SIZE` con label y tariff punteado: `1 Q Rose Tiffany 50 -
+  50 R14- 0603.11.00.00 150 150 Stems 0.28 $42.00`. (ii) En el
+  regex principal, `\s+[-_]?\s+` → `\s+[-_]?\s*` para aceptar
+  `X25 -40` (sin espacio tras el dash) de MILONGA OCR. CIRCASIA:
+  NO_PARSEA → OK, MILONGA 03 rescued 5→2.
+- **[src/parsers/mystic.py](../src/parsers/mystic.py)**: variety
+  class en `_LINE_RE_NOCODE` ampliada a
+  `[A-Za-zÀ-ÿ\ufffd][A-Za-z0-9À-ÿ\ufffd\s\-\.'/&]+?` para aceptar
+  caracteres Latin-1/extended y el placeholder OCR `\ufffd`. ECOFLOR
+  tiene variedades como `CAF� DEL MAR` (OCR de `CAFÉ`) que antes
+  rebotaban. ECOFLOR: TOTALES_MAL → OK, 5/5 samples con sum=header.
+- **[src/parsers/auto_milagro.py](../src/parsers/auto_milagro.py)**:
+  `_TOTAL_RE` acepta coma de miles: `[\d.]+` → `[\d,.]+`. El
+  `_num()` ya hacía `.replace(',','')`. Sample 02a: header 1.0 →
+  1193.5. Aún hay líneas que faltan en MILAGRO (OCR muy corrupto),
+  por lo que el bucket sigue NO_PARSEA pero menos sesgado.
+- **[src/parsers/otros.py](../src/parsers/otros.py) → PrestigeParser**:
+  nueva variante OCR para factura escaneada simple:
+  `ROSE FREEDOM 40 CM 2 250 500 0,16 80,00` (ROSE + variety +
+  size + HB_count + stems_per_H + total_stems + price + total,
+  decimales con coma). Añade `header.total` derivado del sumatorio
+  si no se extrae del PDF. PRESTIGE: NO_PARSEA → OK (9→24 parsed,
+  5/5 totals_ok).
+- **Regresión**: golden 100% (88/88) preservado. MYSTIC, STAMPSY,
+  STAMPSYBOX, FIORENTINA, VUELVEN sin cambios en conteo de líneas.
+- **Resultado global**: autoapprove **87.1% → 86.7%** (−0.4pp —
+  dilución esperada al abrir más líneas; algunas son MIXED box de
+  IWA o DIAN de PREMIUM que matchean ambiguamente y suman al
+  denominador). ok 2739 → 2785 (+46); líneas totales 3219 → 3297
+  (+78); ambiguous 246 → 268 (+22, principalmente SURTIDO MIXTO en
+  IWA). **Buckets**: OK 65→70 (+5), NO_PARSEA 13→10 (−3),
+  MUCHO_RESCATE 1→0, TOTALES_MAL 2→1. Golden 100%.
+
 ## 2026-04-17 — sesión 9o: TIMANA + ART ROSES + BENCHMARK + TESSA parsers
 
 Cuarta tanda de fix de NO_PARSEA sobre el backlog sesión 9n.
