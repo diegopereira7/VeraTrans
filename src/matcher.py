@@ -526,7 +526,12 @@ class Matcher:
         #    evidencia es uno que fuzzy propone aunque no llegue al umbral
         #    antiguo de "auto". El scoring final decide.
         try:
-            fuzzy_hits = self.art.fuzzy_search(line, threshold=0.5) or []
+            # Threshold bajo (0.4): catálogos con varietys largas
+            # (ALSTROMERIA COL WINTERFELL PREMIUM 70CM 10U) contra
+            # líneas cortas (variety='WINTERFELL') dan ratios 40-50%.
+            # El scoring por evidencia filtra después: candidatos sin
+            # variety_match + size_exact no pasan el umbral de auto.
+            fuzzy_hits = self.art.fuzzy_search(line, threshold=0.4) or []
         except Exception:
             fuzzy_hits = []
         for f in fuzzy_hits[:5]:

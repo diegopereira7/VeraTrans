@@ -2383,7 +2383,7 @@
     "stems_per_bunch": 5,
     "grade": "",
     "raw": "Pom Europa/Asia White Cushion Bonita x 40 Bunch CO-0603141000 - 3.0 6 HB15 1200 240 $0.950 $228.00",
-    "invoice": "",
+    "invoice": "01 - 075-6537 7060 - SAYONARA 64439.pdf",
     "times_used": 0,
     "times_confirmed": 0,
     "times_corrected": 0,
@@ -8604,7 +8604,7 @@
   "11748|ROSES|FRUTTETO|50|10|": {
     "articulo_id": 34096,
     "articulo_name": "ROSA FRUTTETO 50CM 10U PONDEROSA",
-    "origen": "auto-marca",
+    "origen": "auto",
     "status": "aprendido_en_prueba",
     "provider_id": 11748,
     "species": "ROSES",
@@ -14431,7 +14431,7 @@
   "8870|ROSES|PINK MONDIAL|60|25|": {
     "articulo_id": 35557,
     "articulo_name": "ROSA MONDIAL 60CM 25U LA ALEGRIA",
-    "origen": "auto-color-strip",
+    "origen": "auto",
     "status": "aprendido_en_prueba",
     "provider_id": 8870,
     "species": "ROSES",
@@ -17080,7 +17080,7 @@
     "raw": "15,00 QB HYD WHITE PREMIUM 350603199010 525 0,48 252,00",
     "invoice": "",
     "status": "ambiguo",
-    "times_corrected": 59
+    "times_corrected": 64
   },
   "440|GYPSOPHILA|GYPSOPHILA XL RAINBOW MIX|80|25|": {
     "articulo_id": 34976,
@@ -17095,7 +17095,7 @@
     "raw": "96632 1 hb 450 Gyp Xl Rainbow Mix 80 cm/750 gr Violeta Flowers 450 25 18 $ 8 ,50 $ 1 53,00",
     "invoice": "",
     "status": "ambiguo",
-    "times_corrected": 12
+    "times_corrected": 13
   },
   "6323|HYDRANGEAS|PREMIUM TENIDA YELLOW|60|1|": {
     "articulo_id": 22735,
@@ -26211,7 +26211,7 @@
     "raw": "ALSTRO (TSTEM ASSORTED SUPERSELEC 1 80 80 .240 19.20",
     "invoice": "93725",
     "status": "ambiguo",
-    "times_corrected": 204
+    "times_corrected": 221
   },
   "281|ALSTROEMERIA|MIXTO|0|10|SELECT": {
     "articulo_id": 12787,
@@ -26226,7 +26226,7 @@
     "raw": "ALSTRO (TSTEM ASSORTED SELECT 2 100 200 .180 36.00",
     "invoice": "94114",
     "status": "ambiguo",
-    "times_corrected": 84
+    "times_corrected": 91
   },
   "281|ALSTROEMERIA|WHITE|0|10|SELECT": {
     "articulo_id": 12723,
@@ -26241,7 +26241,7 @@
     "raw": "ALSTRO (TSTEM WHITE SELECT 1 100 100 .180 18.00",
     "invoice": "94114",
     "status": "ambiguo",
-    "times_corrected": 36
+    "times_corrected": 39
   },
   "281|ROSES|GARDEN MAYRA`S WHITE|40|25|": {
     "articulo_id": 34182,
@@ -26301,7 +26301,7 @@
     "raw": "1 H LIMONADA 12 25 50 300 0,320 96,000",
     "invoice": "0000254785",
     "status": "ambiguo",
-    "times_corrected": 28
+    "times_corrected": 30
   },
   "13001|ROSES|TESSA-D LIMONADA|60|4|": {
     "articulo_id": 35087,
@@ -30493,7 +30493,7 @@
     "raw": "5 H Rose Freedom X 10 - 50 47806- 50 GONZA x 10 0603.11.00.00 200 1000 ST 0.32 320.00",
     "invoice": "",
     "status": "ambiguo",
-    "times_corrected": 13
+    "times_corrected": 14
   },
   "90012|ROSES|TIFFANY|60|25|": {
     "articulo_id": 37198,
@@ -32658,7 +32658,7 @@
     "raw": "SALMA 60 25 4 100 0.400 40.000",
     "invoice": "",
     "status": "ambiguo",
-    "times_corrected": 12
+    "times_corrected": 13
   },
   "90018|ROSES|ABSOLUTE IN PINK|60|25|": {
     "articulo_id": 31605,
@@ -34352,7 +34352,7 @@
     "raw": "2 HB MONDIAL. 25 X .00   2        50.00 0.30 15.00",
     "invoice": "",
     "status": "ambiguo",
-    "times_corrected": 36
+    "times_corrected": 39
   },
   "90038|ROSES|MONDIAL.|60|25|": {
     "articulo_id": 32319,
@@ -34367,7 +34367,7 @@
     "raw": "2 HB MONDIAL. 25 X .00    7       175.00 0.35 61.25",
     "invoice": "",
     "status": "ambiguo",
-    "times_corrected": 24
+    "times_corrected": 26
   },
   "90038|ROSES|PALOMA|50|25|": {
     "articulo_id": 35877,
@@ -34815,7 +34815,7 @@
     "raw": "1 H Rose Freedom X 10 - 50 45337 50 GONZA X 10 0603.11.00.00 200 200 ST 0.30 60.00",
     "invoice": "",
     "status": "ambiguo",
-    "times_corrected": 22
+    "times_corrected": 24
   },
   "90044|ROSES|VENDELA|50|25|": {
     "articulo_id": 32426,
@@ -35386,7 +35386,7 @@
     "raw": "2 HB EXPLORER. 25 X .00   4        100 0.30 30.00",
     "invoice": "1775728457_TIERRA_VERDE2.pdf",
     "status": "ambiguo",
-    "times_corrected": 24
+    "times_corrected": 26
   },
   "90038|ROSES|EXPLORER°|50|25|": {
     "articulo_id": 32252,
@@ -35401,7 +35401,7 @@
     "raw": "2 HB EXPLORER° 25 X .00   8        200 0.30 60.00",
     "invoice": "1775728457_TIERRA_VERDE2.pdf",
     "status": "ambiguo",
-    "times_corrected": 24
+    "times_corrected": 26
   },
   "11748|ROSES|MAGIC TIMES|40|25|": {
     "articulo_id": 35187,
@@ -36225,7 +36225,7 @@
     "raw": "HB 1 0,5 EXPLORER 0603.11.00.60 25 14 14 350 0,32 112,00",
     "invoice": "1776252553_ROSABELLA.pdf",
     "status": "ambiguo",
-    "times_corrected": 24
+    "times_corrected": 26
   },
   "90010|CARNATIONS|SELECT CREAM|0|20|": {
     "articulo_id": 12908,
@@ -41272,7 +41272,7 @@
   "435|ROSES|MELI|60|25|": {
     "articulo_id": 35324,
     "articulo_name": "ROSA MELI 60CM 25U CANTIZA",
-    "origen": "auto-matching",
+    "origen": "auto",
     "status": "aprendido_en_prueba",
     "provider_id": 435,
     "species": "ROSES",
@@ -41576,7 +41576,7 @@
   "435|ROSES|SUMMERLIGHT|40|25|": {
     "articulo_id": 36805,
     "articulo_name": "ROSA SUMMERLIGHT 40CM 25U CANTIZA",
-    "origen": "auto-matching",
+    "origen": "auto",
     "status": "aprendido_en_prueba",
     "provider_id": 435,
     "species": "ROSES",
@@ -44638,7 +44638,7 @@
   "435|ROSES|BLESSING|50|25|": {
     "articulo_id": 31795,
     "articulo_name": "ROSA BLESSING 50CM 25U CANTIZA",
-    "origen": "auto-matching",
+    "origen": "auto",
     "status": "aprendido_en_prueba",
     "provider_id": 435,
     "species": "ROSES",
@@ -44657,7 +44657,7 @@
   "435|ROSES|BROMO|40|25|": {
     "articulo_id": 31966,
     "articulo_name": "ROSA BROMO 40CM 25U CANTIZA",
-    "origen": "auto-matching",
+    "origen": "auto",
     "status": "aprendido_en_prueba",
     "provider_id": 435,
     "species": "ROSES",
@@ -44676,7 +44676,7 @@
   "435|ROSES|CHILI LOVE|40|25|": {
     "articulo_id": 36034,
     "articulo_name": "ROSA PINK LOVE 40CM 25U CANTIZA",
-    "origen": "auto-fuzzy",
+    "origen": "auto",
     "status": "aprendido_en_prueba",
     "provider_id": 435,
     "species": "ROSES",
@@ -44695,7 +44695,7 @@
   "90007|ROSES|BARISTA|50|25|": {
     "articulo_id": 31746,
     "articulo_name": "ROSA BARISTA 50CM 25U CERES",
-    "origen": "auto-matching",
+    "origen": "auto",
     "status": "aprendido_en_prueba",
     "provider_id": 90007,
     "species": "ROSES",
@@ -44714,7 +44714,7 @@
   "90007|ROSES|DEKORA|50|20|": {
     "articulo_id": 32672,
     "articulo_name": "ROSA DEKORA 50CM 20U CERES",
-    "origen": "auto-matching",
+    "origen": "auto",
     "status": "aprendido_en_prueba",
     "provider_id": 90007,
     "species": "ROSES",
@@ -44733,7 +44733,7 @@
   "90012|ROSES|TITANIC|50|10|": {
     "articulo_id": 37208,
     "articulo_name": "ROSA TITANIC 50CM 10U ECOFLOR",
-    "origen": "auto-matching",
+    "origen": "auto",
     "status": "aprendido_en_prueba",
     "provider_id": 90012,
     "species": "ROSES",
@@ -44752,7 +44752,7 @@
   "90012|ROSES|ORANGE MAGIC|50|10|": {
     "articulo_id": 34487,
     "articulo_name": "ROSA HIGH MAGIC 50CM 10U ECOFLOR",
-    "origen": "auto-fuzzy",
+    "origen": "auto",
     "status": "aprendido_en_prueba",
     "provider_id": 90012,
     "species": "ROSES",
@@ -44809,7 +44809,7 @@
   "435|ROSES|PINK PUNK|40|25|": {
     "articulo_id": 36034,
     "articulo_name": "ROSA PINK LOVE 40CM 25U CANTIZA",
-    "origen": "auto-fuzzy",
+    "origen": "auto",
     "status": "aprendido_en_prueba",
     "provider_id": 435,
     "species": "ROSES",
@@ -44823,6 +44823,177 @@
     "times_confirmed": 0,
     "times_corrected": 0,
     "first_seen_at": "2026-04-17T09:36:27",
+    "last_confirmed_at": ""
+  },
+  "90047|ALSTROEMERIA|ROME|70|10|INCREDIBLE": {
+    "articulo_id": 2308,
+    "articulo_name": "ALSTROMERIA FANCY ROSA 70CM 10U",
+    "origen": "auto",
+    "status": "aprendido_en_prueba",
+    "provider_id": 90047,
+    "species": "ALSTROEMERIA",
+    "variety": "ROME",
+    "size": 70,
+    "stems_per_bunch": 10,
+    "grade": "INCREDIBLE",
+    "raw": "ALSTROEMERIA ROME INCREDIBLE 30",
+    "invoice": "",
+    "times_used": 0,
+    "times_confirmed": 0,
+    "times_corrected": 0,
+    "first_seen_at": "2026-04-17T09:48:28",
+    "last_confirmed_at": ""
+  },
+  "90047|ALSTROEMERIA|SUNNY LADY|70|10|INCREDIBLE": {
+    "articulo_id": 2441,
+    "articulo_name": "ALSTROMERIA SUNNY LADY PREMIUM 70CM 10U WAYUU",
+    "origen": "auto",
+    "status": "aprendido_en_prueba",
+    "provider_id": 90047,
+    "species": "ALSTROEMERIA",
+    "variety": "SUNNY LADY",
+    "size": 70,
+    "stems_per_bunch": 10,
+    "grade": "INCREDIBLE",
+    "raw": "ALSTROEMERIA SUNNY LADY INCREDIBLE 20",
+    "invoice": "",
+    "times_used": 0,
+    "times_confirmed": 0,
+    "times_corrected": 0,
+    "first_seen_at": "2026-04-17T09:48:28",
+    "last_confirmed_at": ""
+  },
+  "90047|ALSTROEMERIA|ROME|70|10|PREMIUM": {
+    "articulo_id": 2308,
+    "articulo_name": "ALSTROMERIA FANCY ROSA 70CM 10U",
+    "origen": "auto",
+    "status": "aprendido_en_prueba",
+    "provider_id": 90047,
+    "species": "ALSTROEMERIA",
+    "variety": "ROME",
+    "size": 70,
+    "stems_per_bunch": 10,
+    "grade": "PREMIUM",
+    "raw": "ALSTROEMERIA ROME PREMIUM 10",
+    "invoice": "",
+    "times_used": 0,
+    "times_confirmed": 0,
+    "times_corrected": 0,
+    "first_seen_at": "2026-04-17T09:48:29",
+    "last_confirmed_at": ""
+  },
+  "90047|ALSTROEMERIA|SUNNY LADY|70|10|PREMIUM": {
+    "articulo_id": 2441,
+    "articulo_name": "ALSTROMERIA SUNNY LADY PREMIUM 70CM 10U WAYUU",
+    "origen": "auto",
+    "status": "aprendido_en_prueba",
+    "provider_id": 90047,
+    "species": "ALSTROEMERIA",
+    "variety": "SUNNY LADY",
+    "size": 70,
+    "stems_per_bunch": 10,
+    "grade": "PREMIUM",
+    "raw": "ALSTROEMERIA SUNNY LADY PREMIUM 10",
+    "invoice": "",
+    "times_used": 0,
+    "times_confirmed": 0,
+    "times_corrected": 0,
+    "first_seen_at": "2026-04-17T09:48:29",
+    "last_confirmed_at": ""
+  },
+  "90047|ALSTROEMERIA|VELVET QUEEN|70|10|INCREDIBLE": {
+    "articulo_id": 2432,
+    "articulo_name": "ALSTROMERIA SELECT ORANGE QUEEN  80CM 10U",
+    "origen": "auto",
+    "status": "aprendido_en_prueba",
+    "provider_id": 90047,
+    "species": "ALSTROEMERIA",
+    "variety": "VELVET QUEEN",
+    "size": 70,
+    "stems_per_bunch": 10,
+    "grade": "INCREDIBLE",
+    "raw": "ALSTROEMERIA VELVET QUEEN INCREDIBLE 20",
+    "invoice": "",
+    "times_used": 0,
+    "times_confirmed": 0,
+    "times_corrected": 0,
+    "first_seen_at": "2026-04-17T09:48:32",
+    "last_confirmed_at": ""
+  },
+  "90047|ALSTROEMERIA|TAMPA|70|10|INCREDIBLE": {
+    "articulo_id": 2433,
+    "articulo_name": "ALSTROMERIA SELECT TAMPA 80 CM 10U",
+    "origen": "auto",
+    "status": "aprendido_en_prueba",
+    "provider_id": 90047,
+    "species": "ALSTROEMERIA",
+    "variety": "TAMPA",
+    "size": 70,
+    "stems_per_bunch": 10,
+    "grade": "INCREDIBLE",
+    "raw": "ALSTROEMERIA TAMPA INCREDIBLE 40",
+    "invoice": "",
+    "times_used": 0,
+    "times_confirmed": 0,
+    "times_corrected": 0,
+    "first_seen_at": "2026-04-17T09:48:33",
+    "last_confirmed_at": ""
+  },
+  "90047|ALSTROEMERIA|ORANGE QUEEN|70|10|PREMIUM": {
+    "articulo_id": 2432,
+    "articulo_name": "ALSTROMERIA SELECT ORANGE QUEEN  80CM 10U",
+    "origen": "auto",
+    "status": "aprendido_en_prueba",
+    "provider_id": 90047,
+    "species": "ALSTROEMERIA",
+    "variety": "ORANGE QUEEN",
+    "size": 70,
+    "stems_per_bunch": 10,
+    "grade": "PREMIUM",
+    "raw": "ALSTROEMERIA ORANGE QUEEN PREMIUM 10",
+    "invoice": "",
+    "times_used": 0,
+    "times_confirmed": 0,
+    "times_corrected": 0,
+    "first_seen_at": "2026-04-17T09:48:33",
+    "last_confirmed_at": ""
+  },
+  "2166|CHRYSANTHEMUM|SP CUSHION MIXTO|70|15|": {
+    "articulo_id": 14803,
+    "articulo_name": "CRISANTEMO SP CUSHION MIXTO 70CM 5U SAYONARA",
+    "origen": "auto",
+    "status": "aprendido_en_prueba",
+    "provider_id": 2166,
+    "species": "CHRYSANTHEMUM",
+    "variety": "SP CUSHION MIXTO",
+    "size": 70,
+    "stems_per_bunch": 15,
+    "grade": "",
+    "raw": "Pom Europa/Asia White Cushion Bonita x 40 Bunch CO-0603141000 - 3.0 6 HB15 1200 240 $0.950 $228.00",
+    "invoice": "",
+    "times_used": 0,
+    "times_confirmed": 0,
+    "times_corrected": 0,
+    "first_seen_at": "2026-04-17T09:54:50",
+    "last_confirmed_at": ""
+  },
+  "442|GYPSOPHILA|GYP NATURAL XLENCE 750 G|80|25|": {
+    "articulo_id": 28247,
+    "articulo_name": "PANICULATA XLENCE BLANCO 750GR 1U MYSTIC",
+    "origen": "auto",
+    "status": "aprendido_en_prueba",
+    "provider_id": 442,
+    "species": "GYPSOPHILA",
+    "variety": "GYP NATURAL XLENCE 750 G",
+    "size": 80,
+    "stems_per_bunch": 25,
+    "grade": "",
+    "raw": "25 H FR Gyp Natural Xlence 750 G 400 25 80 10000 6,000 2400,000",
+    "invoice": "",
+    "times_used": 0,
+    "times_confirmed": 0,
+    "times_corrected": 0,
+    "first_seen_at": "2026-04-17T10:03:02",
     "last_confirmed_at": ""
   }
 }

@@ -660,12 +660,12 @@ el evaluador las use.
 
 ## Para el próximo turno
 
-Estado real tras sesión 9k (LATIN + matcher refinado, 17 abril 2026):
-- Autoapprove: **79.6%** (3089 líneas de 82 proveedores)
+Estado real tras sesión 9l (ELITE + SAYONARA, 17 abril 2026):
+- Autoapprove: **80.4%** (3089 líneas de 82 proveedores)
 - Golden set: **100%** (88/88 líneas) con `_status: "reviewed"`
-- NO_PARSEA restantes: 19 proveedores
-- Carriles: regenerar tras sesión 9k (baseline previa 60.6/33.2/6.2
-  ya desfasada).
+- NO_PARSEA restantes: 19 proveedores (ELITE/SAYONARA técnicamente
+  NO_PARSEA por parsed_any < 5/5 pero matching funciona)
+- Carriles: regenerar tras sesión 9l.
 
 Próximos pasos posibles:
 
@@ -1064,6 +1064,29 @@ final de este archivo, en la sección "Historial de sesiones".
   confirma **100% parse + link accuracy** sobre esas 88 líneas.
   Fase 2 del roadmap queda cerrada para el dataset inicial; ampliar
   con más proveedores es trabajo continuo.
+- **2026-04-17 sesión 9l**: ELITE matching + SAYONARA precio-correcto.
+  * **`src/parsers/auto_elite.py`**: defaults de talla por especie
+    (ALSTROEMERIA=70cm, CARNATIONS=60cm, HYDRANGEAS=60cm). Las líneas
+    ELITE no traen CM y el catálogo siempre es 70cm para alstros.
+    Sin esto, el fuzzy no podía casar "WINTERFELL" con
+    "ALSTROMERIA COL WINTERFELL PREMIUM 70CM 10U" (size=0 → query muy
+    corto → similitud 48% < threshold 50%).
+  * **`src/matcher.py`**: fuzzy threshold bajado de 0.5 a 0.4. El
+    scoring por evidencia filtra después los candidatos débiles; no
+    merece la pena descartar candidatos al 48% de similitud cuando la
+    variedad es buena. ELITE pasa de 0 ok a 15 ok.
+  * **`src/parsers/sayonara.py`**: bug en Custom Pack mix. Las líneas
+    detalle usaban `price_per_stem=pack['price']` (0.95) y
+    `line_total=proporcion_del_total`, lo que disparaba `total_mismatch`
+    (stems*0.95 ≠ line_total) que capaba el link_confidence a 0.70 y
+    tiraba a quick lane. Fix: usar `d['price_unit']` (el precio real de
+    la línea detalle, 0.19) y `line_total = stems × price_unit`.
+    Añadido `bunches` para que `stems_mismatch` también cuadre.
+    Normalizado uso de `bunches` vs `spb` entre PACK_RE y PACK_RE_B
+    (antes se confundían según el regex). SAYONARA pasa de auto=0 a
+    auto=82.6% (38 líneas en auto lane).
+  * **Resultado global**: autoapprove 79.6% → 80.4% (+0.8pp),
+    autoapprovable lines +53. Golden 100% mantenido.
 - **2026-04-17 sesión 9k**: Ataque NO_PARSEA (LATIN) + refinado matcher.
   Cambios:
   * **`src/parsers/latin.py`**: Format B regex usaba `[\d.]+` para

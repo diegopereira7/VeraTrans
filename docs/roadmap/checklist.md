@@ -72,19 +72,19 @@ _Cifras tomadas del historial de sesiones de `CLAUDE.md` (sesión 6, abril 2026)
   - `mark_confirmed`/`mark_corrected` ya existen en `SynonymStore`;
     falta engancharlos a UI/API.
 
-### KPIs baseline (sesión 9k, `tools/evaluate_all.py`)
+### KPIs baseline (sesión 9l, `tools/evaluate_all.py`)
 - OK: **60/82** · TOTALES_MAL: **1/82** · NO_PARSEA: **19/82** ·
   MUCHO_RESCATE: **1/82** · NO_DETECTADO: **1/82**
 - Líneas totales procesadas: **3089**
-- Líneas `ok`: **2453** · `ambiguous_match`: **408** · `autoapprovable`: **2276**
-- **autoapprove_rate: 79.6%** de las líneas linkables (tras refinado matcher)
+- Líneas `ok`: **2471** · `ambiguous_match`: **424** · `autoapprovable`: **2329**
+- **autoapprove_rate: 80.4%** de las líneas linkables
 - **Golden set: 100%** parse + link accuracy (88/88 líneas, 5/5 reviewed)
 - Top-5 penalties globales:
-  1. `weak_synonym` 2368 — sinónimos en prueba con trust bajo
-  2. `variety_no_overlap` 289 — variedad no coincide con el ganador
-  3. `low_evidence` 268 — ganador < 0.70 de score
-  4. `tie_top2_margin` 187 — empates prácticos entre candidatos (−64% vs 9j)
-  5. `foreign_brand` 128 — marca ajena al proveedor actual
+  1. `weak_synonym` 2404 — sinónimos en prueba con trust bajo
+  2. `variety_no_overlap` 313 — variedad no coincide con el ganador
+  3. `low_evidence` 276 — ganador < 0.70 de score
+  4. `tie_top2_margin` 196 — empates prácticos entre candidatos
+  5. `foreign_brand` 141 — marca ajena al proveedor actual
 - Feedback loop operativo: golden → review → apply → sinónimos confirmados
 - Rama OCR real disponible: **OCRmyPDF+Tesseract** + EasyOCR fallback
 - Matching: **scoring por evidencia** con vetos duros y trazabilidad
@@ -378,16 +378,37 @@ tras la sesión 8 (baseline ya capturada).
 - [x] 8. TOTALES_MAL (sesión 9f) — 26→1, fallback central + fix campanario
 - [x] 9. Brand boost (sesión 9j, commit `3855f7e`) — autoapprove 66.1%→68.9%
 - [x] 10. LATIN + refinado matcher (sesión 9k) — autoapprove 68.9%→79.6%
-- [ ] 11. **Shadow mode** (Fase 10) — cuando se empiece a implantar
-- [ ] 12. Ampliar NO_PARSEA restante: APOSENTOS, CANANVALLE, UMA, MILAGRO,
-      CANTIZA, BENCHMARK, etc. (19 proveedores aún fallan algún sample)
-- [ ] 13. Optimizar matcher (backlog) — ~6.5s para 43 líneas
+- [x] 11. ELITE + SAYONARA (sesión 9l) — autoapprove 79.6%→80.4%
+- [ ] 12. **Shadow mode** (Fase 10) — cuando se empiece a implantar
+- [ ] 13. Ampliar NO_PARSEA restante: APOSENTOS, CANANVALLE, UMA, MILAGRO,
+      CANTIZA, BENCHMARK, DAFLOR, etc.
+- [ ] 14. Optimizar matcher (backlog) — ~6.5s para 43 líneas
 
 ---
 
 ## Registro rápido de avances
 
 ### Último bloque cerrado
+- Fecha: 2026-04-17
+- Paso: sesión 9l — ELITE matching + SAYONARA precio-correcto
+- Qué se hizo:
+  * **`src/parsers/auto_elite.py`**: defaults de talla por especie
+    (ALSTRO=70, CARN=60). Las facturas ELITE no llevan CM y el catálogo
+    asume 70cm para alstros.
+  * **`src/matcher.py`**: fuzzy threshold 0.5 → 0.4 (el scoring filtra
+    después; catálogos con variedades largas rinden similitud 40-50%
+    aunque la variedad corta sea correcta).
+  * **`src/parsers/sayonara.py`**: bug de Custom Pack mix. Líneas
+    detalle usaban `price_per_stem=pack['price']` (0.95) en vez del
+    `d['price_unit']` real (0.19) y `line_total=proporción`, disparando
+    `total_mismatch` que capaba link a 0.70. Fix: price_unit real +
+    line_total = stems × price_unit + bunches correcto. Normalizado
+    `bunches` vs `spb` entre PACK_RE y PACK_RE_B.
+- Resultado: ELITE 0 ok → 15 ok (auto 0% → 50%); SAYONARA auto 0 →
+  38 (82.6%). Global autoapprove **79.6% → 80.4%** (+0.8pp). Golden
+  100% mantenido.
+
+### Penúltimo bloque cerrado
 - Fecha: 2026-04-17
 - Paso: sesión 9k — LATIN parser + refinado matcher
 - Qué se hizo:
@@ -400,7 +421,6 @@ tras la sesión 8 (baseline ya capturada).
     ≥1.05.
 - Resultado: autoapprove **68.9% → 79.6%** (+10.7pp), líneas ok
   2002→2453, tie_top2_margin 521→187. Golden 100% mantenido.
-- Riesgos / pendientes: ninguno bloqueante.
 
 ### Penúltimo bloque cerrado
 - Fecha: 2026-04-17

@@ -138,13 +138,14 @@ class SayonaraParser:
             detail_m = self._DETAIL_RE.search(ln)
 
             if pack_m:
-                # Línea PACK (facturable)
+                # Línea PACK (facturable). Groups PACK_RE:
+                # (boxes, btype, bunches, stems, price, total)
                 is_mix = bool(re.search(r'Custom\s+Pack|Mix\b', ln, re.I))
                 current_pack = {
                     'line': ln, 'tipo': tipo, 'prefix': prefix, 'bunch': bunch,
                     'boxes': int(pack_m.group(1)),
                     'btype': pack_m.group(2).upper(),
-                    'spb': int(pack_m.group(3)),
+                    'bunches': int(pack_m.group(3)),
                     'stems': int(pack_m.group(4).replace(',', '')),
                     'price': float(pack_m.group(5)),
                     'total': float(pack_m.group(6).replace(',', '')),
@@ -154,12 +155,15 @@ class SayonaraParser:
                 }
                 packs.append(current_pack)
             elif pack_m_b:
+                # Groups PACK_RE_B: (boxes, btype, spb_inline, stems, bunches, price, total).
+                # Aquí el spb viene explícito en HB15 y sustituye al del tipo.
                 is_mix = bool(re.search(r'Custom\s+Pack|Mix\b', ln, re.I))
                 current_pack = {
-                    'line': ln, 'tipo': tipo, 'prefix': prefix, 'bunch': bunch,
+                    'line': ln, 'tipo': tipo, 'prefix': prefix,
+                    'bunch': int(pack_m_b.group(3)) or bunch,
                     'boxes': int(pack_m_b.group(1)),
                     'btype': pack_m_b.group(2).upper(),
-                    'spb': int(pack_m_b.group(3)),
+                    'bunches': int(pack_m_b.group(5)),
                     'stems': int(pack_m_b.group(4)),
                     'price': float(pack_m_b.group(6)),
                     'total': float(pack_m_b.group(7).replace(',', '')),
@@ -181,34 +185,37 @@ class SayonaraParser:
         lines = []
         for pack in packs:
             if not pack['is_mix'] or not pack['details']:
-                # Producto individual o mix sin detalle → una línea
+                # Producto individual o mix sin detalle → una línea.
                 variety, color = self._extract_variety_from_pack(pack['line'], pack['prefix'])
                 var_stored = f"{pack['tipo']} {variety} {color}".replace('  ', ' ').strip()
                 lines.append(InvoiceLine(
                     raw_description=pack['line'], species='CHRYSANTHEMUM',
                     variety=var_stored, grade='', origin='COL', size=70,
-                    stems_per_bunch=pack['bunch'], bunches=pack['boxes'],
+                    stems_per_bunch=pack['bunch'],
+                    bunches=pack['bunches'],
                     stems=pack['stems'], price_per_stem=pack['price'],
                     line_total=pack['total'], label=pack['label'],
                     box_type=pack['btype'], provider_key='sayonara',
                 ))
             else:
-                # Caja mixta con detalle → una línea por variedad
-                total_detail_stems = sum(d['stems'] for d in pack['details'])
+                # Caja mixta con detalle → una línea por variedad.
+                # Cada detalle tiene su propio price_unit (ej 0.19) distinto
+                # del price del pack (0.950). Usamos price_unit para que
+                # stems * price_per_stem == line_total y evitar disparar
+                # validation_errors (total_mismatch) que caparían link_conf.
                 for d in pack['details']:
                     variety, color = self._extract_variety_from_name(d['name'])
                     var_stored = f"{pack['tipo']} {variety} {color}".replace('  ', ' ').strip()
-                    # Proporción de tallos y precio
-                    if total_detail_stems > 0:
-                        ratio = d['stems'] / total_detail_stems
-                        line_total = round(pack['total'] * ratio, 2)
-                    else:
-                        line_total = round(pack['total'] / len(pack['details']), 2)
+                    if not variety:
+                        continue
+                    price_unit = d.get('price_unit') or pack['price']
+                    line_total = round(d['stems'] * price_unit, 2)
+                    bunches = d['stems'] // pack['bunch'] if pack['bunch'] else 0
                     lines.append(InvoiceLine(
                         raw_description=d['raw'], species='CHRYSANTHEMUM',
                         variety=var_stored, grade='', origin='COL', size=70,
-                        stems_per_bunch=pack['bunch'],
-                        stems=d['stems'], price_per_stem=pack['price'],
+                        stems_per_bunch=pack['bunch'], bunches=bunches,
+                        stems=d['stems'], price_per_stem=price_unit,
                         line_total=line_total, label=pack['label'],
                         box_type='MIX', provider_key='sayonara',
                     ))

@@ -121,7 +121,11 @@ class AutoParser:
                 species_raw = re.sub(r'\s+', ' ', m.group('species').upper())
                 species = _SPECIES_MAP.get(species_raw, 'OTHER')
                 variety = m.group('variety').strip().upper()
-                size = int(m.group('size')) if m.group('size') else (60 if species == 'ROSES' else 0)
+                # Defaults por especie cuando el PDF no explicita CM:
+                # ELITE siempre factura alstroemeria 70cm y claveles 60cm.
+                default_size = {'ROSES': 60, 'ALSTROEMERIA': 70,
+                                'CARNATIONS': 60, 'HYDRANGEAS': 60}.get(species, 0)
+                size = int(m.group('size')) if m.group('size') else default_size
                 total_stems = int(m.group('total_stems'))
                 total_bunch = int(m.group('total_bunch'))
                 spb = total_stems // total_bunch if total_bunch else 10

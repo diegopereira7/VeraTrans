@@ -193,13 +193,14 @@
     "pdf_path": "C:\\verabuy-traductor\\batch_uploads\\20260415074719_659d4da3\\ROSELY_002001000326087.pdf"
   },
   "83155": {
-    "pdf": "SAYONARA 83155.pdf",
+    "pdf": "03 - 729-45996941 - SAYONARA SAYONARA 83155.pdf",
     "provider": "Sayonara",
-    "total_usd": 0.0,
-    "lineas": 25,
-    "ok": 14,
-    "sin_match": 11,
-    "fecha": "2026-03-30 17:11"
+    "total_usd": 814.0,
+    "lineas": 28,
+    "ok": 25,
+    "sin_match": 3,
+    "fecha": "2026-04-17 09:54",
+    "pdf_path": "C:\\Users\\diego.pereira\\Desktop\\DOC VERA\\FACTURAS IMPORTACION\\PROVEEDORES\\SAYONARA\\03 - 729-45996941 - SAYONARA SAYONARA 83155.pdf"
   },
   "SECORE.pdf": {
     "pdf": "SECORE.pdf",
@@ -302,14 +303,14 @@
     "fecha": "2026-03-30 17:09"
   },
   "": {
-    "pdf": "02 - 729- 4457 1424 (387) - LATIN 27104.pdf",
-    "provider": "Latin Flowers",
-    "total_usd": 2169.25,
-    "lineas": 64,
-    "ok": 61,
-    "sin_match": 3,
-    "fecha": "2026-04-17 09:22",
-    "pdf_path": "C:\\Users\\diego.pereira\\Desktop\\DOC VERA\\FACTURAS IMPORTACION\\PROVEEDORES\\LATIN FLOWERS\\02 - 729- 4457 1424 (387) - LATIN 27104.pdf"
+    "pdf": "01 - 075-6537 7060 - SAYONARA 64439.pdf",
+    "provider": "Sayonara",
+    "total_usd": 228.0,
+    "lineas": 1,
+    "ok": 1,
+    "sin_match": 0,
+    "fecha": "2026-04-17 09:55",
+    "pdf_path": "C:\\Users\\diego.pereira\\Desktop\\DOC VERA\\FACTURAS IMPORTACION\\PROVEEDORES\\SAYONARA\\01 - 075-6537 7060 - SAYONARA 64439.pdf"
   },
   "7.149": {
     "pdf": "000 full.pdf",
@@ -4440,13 +4441,14 @@
     "fecha": "2026-03-30 17:06"
   },
   "82818": {
-    "pdf": "SEMANA_8_729-4591_5074_(119)_SAYONARA.pdf",
+    "pdf": "05 - 729-45915074 - SAYONARA SAYONARA.pdf",
     "provider": "Sayonara",
-    "total_usd": 0.0,
-    "lineas": 15,
-    "ok": 8,
-    "sin_match": 7,
-    "fecha": "2026-03-30 17:06"
+    "total_usd": 986.0,
+    "lineas": 17,
+    "ok": 15,
+    "sin_match": 2,
+    "fecha": "2026-04-17 09:55",
+    "pdf_path": "C:\\Users\\diego.pereira\\Desktop\\DOC VERA\\FACTURAS IMPORTACION\\PROVEEDORES\\SAYONARA\\05 - 729-45915074 - SAYONARA SAYONARA.pdf"
   },
   "000004120": {
     "pdf": "SEMANA_9_075-6764_6040_(83)_BRISSAS.pdf",
@@ -5150,13 +5152,14 @@
     "pdf_path": "C:\\Users\\diego.pereira\\Desktop\\DOC VERA\\FACTURAS IMPORTACION\\PROVEEDORES\\LATIN FLOWERS\\05 - 729-45915100 - LATIN FLOWERS LATIN.pdf"
   },
   "82967": {
-    "pdf": "SEMANA_9_729-4591_5100_(223)_SAYONARA.pdf",
+    "pdf": "04 - 729-45915100 - SAYONARA SAYONARA.pdf",
     "provider": "Sayonara",
-    "total_usd": 0.0,
-    "lineas": 15,
-    "ok": 8,
-    "sin_match": 7,
-    "fecha": "2026-03-30 17:07"
+    "total_usd": 1176.0,
+    "lineas": 17,
+    "ok": 15,
+    "sin_match": 2,
+    "fecha": "2026-04-17 09:55",
+    "pdf_path": "C:\\Users\\diego.pereira\\Desktop\\DOC VERA\\FACTURAS IMPORTACION\\PROVEEDORES\\SAYONARA\\04 - 729-45915100 - SAYONARA SAYONARA.pdf"
   },
   "1903": {
     "pdf": "TB PONDE.pdf",
@@ -7953,13 +7956,14 @@
     "fecha": "2026-03-30 17:12"
   },
   "83368": {
-    "pdf": "SEMANA_12_✈️_729-4599_7276_EXCELLE_SAYONARA.pdf",
+    "pdf": "01 - 729-45997276 - SAYONARA SAYONARA.pdf",
     "provider": "Sayonara",
-    "total_usd": 0.0,
-    "lineas": 15,
-    "ok": 8,
-    "sin_match": 7,
-    "fecha": "2026-03-30 17:12"
+    "total_usd": 1176.0,
+    "lineas": 17,
+    "ok": 15,
+    "sin_match": 2,
+    "fecha": "2026-04-17 09:54",
+    "pdf_path": "C:\\Users\\diego.pereira\\Desktop\\DOC VERA\\FACTURAS IMPORTACION\\PROVEEDORES\\SAYONARA\\01 - 729-45997276 - SAYONARA SAYONARA.pdf"
   },
   "4299": {
     "pdf": "SEMANA_13_075-6768_2355_REAL_CARGA_DAFLOR.pdf",
@@ -15902,5 +15906,75 @@
     "sin_match": 4,
     "fecha": "2026-04-17 09:23",
     "pdf_path": "C:\\Users\\diego.pereira\\Desktop\\DOC VERA\\FACTURAS IMPORTACION\\PROVEEDORES\\VALTHOMIG\\02 - 729-4932 4111 (126) - VALTHOMIG 25014498.pdf"
+  },
+  "1816094": {
+    "pdf": "01 - 729-45096310 - ELITE ELITE.pdf",
+    "provider": "The Elite Flower",
+    "total_usd": 52.0,
+    "lineas": 1,
+    "ok": 0,
+    "sin_match": 1,
+    "fecha": "2026-04-17 09:48",
+    "pdf_path": "C:\\Users\\diego.pereira\\Desktop\\DOC VERA\\FACTURAS IMPORTACION\\PROVEEDORES\\ELITE\\01 - 729-45096310 - ELITE ELITE.pdf"
+  },
+  "1626083": {
+    "pdf": "01 - 075-6537 6964 (334) - ELITE 1626083.pdf",
+    "provider": "The Elite Flower",
+    "total_usd": 292.8,
+    "lineas": 19,
+    "ok": 6,
+    "sin_match": 13,
+    "fecha": "2026-04-17 09:48",
+    "pdf_path": "C:\\Users\\diego.pereira\\Desktop\\DOC VERA\\FACTURAS IMPORTACION\\PROVEEDORES\\ELITE\\01 - 075-6537 6964 (334) - ELITE 1626083.pdf"
+  },
+  "1633443": {
+    "pdf": "02 - 729- 4457 1424 (387) - ELITE 1633443.pdf",
+    "provider": "The Elite Flower",
+    "total_usd": 290.4,
+    "lineas": 23,
+    "ok": 9,
+    "sin_match": 14,
+    "fecha": "2026-04-17 09:48",
+    "pdf_path": "C:\\Users\\diego.pereira\\Desktop\\DOC VERA\\FACTURAS IMPORTACION\\PROVEEDORES\\ELITE\\02 - 729- 4457 1424 (387) - ELITE 1633443.pdf"
+  },
+  "1811881": {
+    "pdf": "02 - 729-45096542 - ELITE ELITE.pdf",
+    "provider": "The Elite Flower",
+    "total_usd": 52.0,
+    "lineas": 1,
+    "ok": 0,
+    "sin_match": 1,
+    "fecha": "2026-04-17 09:48",
+    "pdf_path": "C:\\Users\\diego.pereira\\Desktop\\DOC VERA\\FACTURAS IMPORTACION\\PROVEEDORES\\ELITE\\02 - 729-45096542 - ELITE ELITE.pdf"
+  },
+  "1805766": {
+    "pdf": "03 - 045-10594065 - ELITE ELITE.pdf",
+    "provider": "The Elite Flower",
+    "total_usd": 0.0,
+    "lineas": 1,
+    "ok": 0,
+    "sin_match": 0,
+    "fecha": "2026-04-17 09:48",
+    "pdf_path": "C:\\Users\\diego.pereira\\Desktop\\DOC VERA\\FACTURAS IMPORTACION\\PROVEEDORES\\ELITE\\03 - 045-10594065 - ELITE ELITE.pdf"
+  },
+  "1804140": {
+    "pdf": "04 - 996-13640631 - ELITE ELITE.pdf",
+    "provider": "The Elite Flower",
+    "total_usd": 136.0,
+    "lineas": 1,
+    "ok": 0,
+    "sin_match": 1,
+    "fecha": "2026-04-17 09:48",
+    "pdf_path": "C:\\Users\\diego.pereira\\Desktop\\DOC VERA\\FACTURAS IMPORTACION\\PROVEEDORES\\ELITE\\04 - 996-13640631 - ELITE ELITE.pdf"
+  },
+  "1803503": {
+    "pdf": "05 - 729-45095761 - ELITE ELITE.pdf",
+    "provider": "The Elite Flower",
+    "total_usd": 190.4,
+    "lineas": 12,
+    "ok": 2,
+    "sin_match": 10,
+    "fecha": "2026-04-17 09:48",
+    "pdf_path": "C:\\Users\\diego.pereira\\Desktop\\DOC VERA\\FACTURAS IMPORTACION\\PROVEEDORES\\ELITE\\05 - 729-45095761 - ELITE ELITE.pdf"
   }
 }
