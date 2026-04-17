@@ -30,7 +30,7 @@ from copy import copy
 from dataclasses import dataclass, field
 from typing import Optional
 
-from src.config import FUZZY_THRESHOLD_AUTO
+from src.config import FUZZY_THRESHOLD_AUTO, translate_carnation_color
 from src.models import InvoiceLine
 from src.articulos import ArticulosLoader
 from src.sinonimos import SynonymStore
@@ -155,10 +155,12 @@ def _detect_foreign_brand(nombre: str, pkey: str) -> Optional[str]:
     if not tokens:
         return None
     # Buscar entre las últimas 2 palabras (las marcas suelen ir al final).
-    last_tokens = {t for t in tokens[-2:] if len(t) >= 4}
+    # Umbral 3 para cubrir marcas cortas como EQR; con 4 se escapaba.
+    last_tokens = {t for t in tokens[-2:] if len(t) >= 3 and not t.endswith(('CM', 'U'))}
     known = _known_brands()
+    pkey_up = (pkey or '').upper()
     for tok in last_tokens:
-        if tok in known and tok != pkey:
+        if tok in known and tok != pkey_up:
             return tok
     return None
 
@@ -264,6 +266,16 @@ def _score_candidate(line: InvoiceLine, cand: Candidate,
     art = cand.articulo
     nombre = (art.get('nombre') or '').upper()
     line_var_tokens = {t for t in (line.variety or '').upper().split() if len(t) >= 3}
+
+    # Para claveles el catálogo suele indexar por color en español
+    # (CLAVEL COL FANCY NARANJA), pero la factura llega con variedad
+    # + color en inglés ("COWBOY ORANGE"). Añadimos al set la versión
+    # traducida para que variety_match pueda disparar por color.
+    if line.species == 'CARNATIONS' and line.variety:
+        translated = translate_carnation_color(line.variety).upper()
+        for t in translated.split():
+            if len(t) >= 3:
+                line_var_tokens.add(t)
 
     score = 0.0
     reasons: list[str] = []

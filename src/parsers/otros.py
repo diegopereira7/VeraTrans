@@ -302,9 +302,18 @@ class DaflorParser:
     """Formato: Boxes DESCRIPTION Box_ID Tariff No.Box P.O. Un.Box T.Un Unit Price TOTAL
     FIX: el PDF usa mixed-case (Alstroemeria, Roses), no solo MAYÚSCULAS.
     FIX: tamaño (50) aparece tras el guión de grado para rosas.
+    FIX: a veces la descripción va en una línea y los números en la
+    siguiente — mantener pending_desc/pending_sp entre iteraciones.
     """
     SPECIES_MAP={'alstroemeria':'ALSTROEMERIA','carnation':'CARNATIONS','rose':'ROSES',
                  'chrysanth':'CHRYSANTHEMUM','hydrangea':'HYDRANGEAS','gypsophila':'GYPSOPHILA'}
+
+    def _detect_species(self, desc: str) -> str:
+        for k, v in self.SPECIES_MAP.items():
+            if k in desc.lower():
+                return v
+        return 'ALSTROEMERIA'
+
     def parse(self, text:str, pdata:dict):
         h=InvoiceHeader(); h.provider_key=pdata['key']; h.provider_id=pdata['id']; h.provider_name=pdata['name']
         m=re.search(r'INVOICE\s+Nro\.?\s*(\S+)',text,re.I); h.invoice_number=m.group(1) if m else ''
@@ -312,37 +321,92 @@ class DaflorParser:
         m=re.search(r'AWB\s*/\s*VL\s+([\d\-]+)',text,re.I); h.awb=re.sub(r'\s+','',m.group(1)) if m else ''
         m=re.search(r'HAWB\s*/\s*VHL\s+([\w\-]+)',text,re.I); h.hawb=m.group(1).strip() if m else ''
         lines=[]
+        # Descripción colgada de la línea previa. Ej:
+        #   'Alstroemeria Assorted - CO-'
+        #   '1 QB MARCA DECO - - 200 200 Stems $0.150 $30.00'
+        pending_desc = ''
+        pending_sp = ''
         for ln in text.split('\n'):
             ln=ln.strip()
+            if not ln:
+                continue
+
+            # Formato cabecera-colgada: descripción en una línea sin números finales.
+            hdr_m = re.match(
+                r'^(Alstroemeria|Roses?|Carnations?|Hydrangeas?|Chrysanth\w*|Gypsophila)\s+'
+                r'(.+?)\s*[-\u2013]\s*(?:MARCA\s+)?(?:CO-.*)?$',
+                ln, re.I)
+            if hdr_m and 'Stems' not in ln and '$' not in ln:
+                pending_sp = self._detect_species(hdr_m.group(1))
+                pending_desc = f"{hdr_m.group(1).strip()} {hdr_m.group(2).strip()}"
+                continue
+
+            # Normaliza pipes y OCR errors (€ vs $, o por 0 antes de .)
+            # antes de buscar el patrón principal.
+            ln_norm = ln.replace('|', ' ')
+            ln_norm = re.sub(r'[\u20ac�]\s*o\.', '$0.', ln_norm)  # "� o.15" -> "$0.15"
+            ln_norm = re.sub(r'\bo\.(\d)', r'0.\1', ln_norm)      # "o.15" -> "0.15"
+            ln_norm = re.sub(r'\s{2,}', ' ', ln_norm).strip()
             # FIX: usar re.I para mixed-case: "1 QB Alstroemeria Assorted - Fancy"
-            # Also allow digits in grade position (for roses where size appears as grade: "- 50")
-            pm=re.search(r'(\d+)\s+(QB|HB)\s+([A-Za-z][A-Za-z\s.\-/\u00b4\u2019\']+?)\s*[-\u2013]\s*([A-Za-z0-9]+)',ln,re.I)
-            if not pm:
-                pm=re.search(r'(QB|HB)\s+([A-Za-z][A-Za-z\s.\-/\u00b4\u2019\']+?)\s*[-\u2013]\s*([A-Za-z0-9]+)',ln,re.I)
-                if not pm: continue
-                btype=pm.group(1).upper(); desc=pm.group(2).strip(); grade=pm.group(3).strip()
-            else:
+            # Also allow digits in grade position (for roses where size appears as grade: "- 50").
+            # Q alone (1 letra) soportado además de QB/HB.
+            pm=re.search(r'(\d+)\s+(QB?|HB?)\s+([A-Za-z][A-Za-z\s.\-/\u00b4\u2019\']+?)\s*[-\u2013]\s*([A-Za-z0-9]+)',ln_norm,re.I)
+            desc = ''
+            btype = ''
+            grade = ''
+            used_pending = False
+            if pm:
                 btype=pm.group(2).upper(); desc=pm.group(3).strip(); grade=pm.group(4).strip()
+                if len(btype) == 1:
+                    btype = btype + 'B'   # "Q" → "QB", "H" → "HB"
+            else:
+                # Segunda línea del formato colgado: "1 QB ... 200 200 Stems $..."
+                cont_m = re.search(
+                    r'(\d+)\s+(QB?|HB?)\s+(?:(.+?)\s+)?\d+\s+\d+\s+Stems\s+\$?',
+                    ln_norm, re.I)
+                if cont_m and pending_desc:
+                    btype = cont_m.group(2).upper()
+                    if len(btype) == 1:
+                        btype = btype + 'B'
+                    # Etiqueta/marca entre QB y los números (opcional)
+                    extra = (cont_m.group(3) or '').strip()
+                    desc = pending_desc
+                    grade = extra if extra and not re.match(r'^-+$', extra) else ''
+                    used_pending = True
+                else:
+                    pm=re.search(r'(QB?|HB?)\s+([A-Za-z][A-Za-z\s.\-/\u00b4\u2019\']+?)\s*[-\u2013]\s*([A-Za-z0-9]+)',ln_norm,re.I)
+                    if not pm:
+                        continue
+                    btype=pm.group(1).upper(); desc=pm.group(2).strip(); grade=pm.group(3).strip()
+                    if len(btype) == 1:
+                        btype = btype + 'B'
+
             # Detectar especie
-            sp='ALSTROEMERIA'
-            for k,v in self.SPECIES_MAP.items():
-                if k in desc.lower(): sp=v; break
+            sp = pending_sp if used_pending and pending_sp else self._detect_species(desc)
             # Extraer tamaño para rosas: "Roses Pink O'hara - 50"
             sz=0
-            sz_m=re.search(r'[-\u2013]\s*(\d{2})\s', ln)
+            sz_m=re.search(r'[-\u2013]\s*(\d{2})\s', ln_norm)
             if sz_m and sp == 'ROSES':
                 sz = int(sz_m.group(1))
-            # FIX: buscar "200 200 Stems $0.150 $30.00" con case-insensitive
-            nm=re.search(r'(\d+)\s+(\d+)\s+Stems\s+\$([\d.]+)\s+\$([\d.]+)',ln,re.I)
+            # FIX: buscar "200 200 Stems $0.150 $30.00" con case-insensitive.
+            # El primer $ puede faltar (Stems 0.15 $56.00) y los miles pueden
+            # venir con coma (1,000 stems).
+            nm=re.search(r'([\d,]+)\s+([\d,]+)\s+Stems\s+\$?([\d.]+)\s+\$?([\d.,]+)',ln_norm,re.I)
             upb=0; stems=0; price=0.0; total=0.0
             if nm:
-                try: upb=int(nm.group(1)); stems=int(nm.group(2)); price=float(nm.group(3)); total=float(nm.group(4))
+                try:
+                    upb=int(nm.group(1).replace(',','')); stems=int(nm.group(2).replace(',',''))
+                    price=float(nm.group(3)); total=float(nm.group(4).replace(',',''))
                 except: pass
             # Limpiar nombre de variedad: quitar prefijo de especie
-            var_clean = re.sub(r'^(?:Alstroemeria|Roses?)\s+', '', desc, flags=re.I).strip()
+            var_clean = re.sub(r'^(?:Alstroemeria|Roses?|Carnations?|Hydrangeas?)\s+', '', desc, flags=re.I).strip()
             il=InvoiceLine(raw_description=ln,species=sp,variety=var_clean.upper(),grade=grade.upper(),origin='COL',
                            size=sz,stems_per_bunch=upb,stems=stems,price_per_stem=price,line_total=total,box_type=btype)
             lines.append(il)
+            # Reset pending tras consumirlo
+            if used_pending:
+                pending_desc = ''
+                pending_sp = ''
         return h, lines
 
 
@@ -1750,17 +1814,26 @@ class AposentosParser:
         lines = []
         for ln in text.split('\n'):
             ln = ln.strip()
+            # Normalización OCR para escaneos ruidosos:
+            #   "C0-" (cero) → "CO-", "OUTYFREE" → "DUTYFREE",
+            #   "DUTYFREE"/"DUTY FREE" indistintos. El grade puede venir
+            #   precedido por ".0" o ".", los precios sin "$" prefix.
+            ln_n = re.sub(r'\bC0-', 'CO-', ln)
+            ln_n = re.sub(r'\bOUTY\s*FREE?\b', 'DUTYFREE', ln_n, flags=re.I)
             # "1 Tabaco 500 CARNATIONS BERNARD NOVELTY DUTY FREE FANCY . CO-0603129000 $0.1700 $85.00"
-            # "5 Tabaco 2500 CARNATIONS BICOLORES SURTIDOS BICOLOR DUTY FREE FANCY . CO-0603129000 $0.1700 $425.00"
+            # "12 Taba 6000 CARNATIONS ILIAS YELLOW DUTYFREE FANCY 0 CO-0603129000 0.1600 960.00"  (OCR)
             pm = re.search(
-                r'(\d+)\s+Tabaco\s+(\d+)\s+CARNATIONS\s+(.+?)\s+(?:DUTY\s+FREE|REGULAR)\s+(\w+)\s+[.\s]+CO-[\d]+\s+\$([\d.]+)\s+\$([\d.]+)',
-                ln, re.I)
+                r'(\d+)\s+Taba\w*\s+(\d+)\s+CARNATIONS\s+(.+?)\s+'
+                r'(?:DUTY\s*FREE?|DUTYFREE|REGULAR)\s+(\w+)\s+'
+                r'[.0\s]+CO-[\d]+\s+'
+                r'\$?([\d.]+)\s+\$?([\d.,]+)',
+                ln_n, re.I)
             if not pm:
                 continue
             boxes = int(pm.group(1)); stems = int(pm.group(2))
             desc = pm.group(3).strip()
             grade = pm.group(4).strip().upper()  # FANCY, SELECT, etc.
-            price = float(pm.group(5)); total = float(pm.group(6))
+            price = float(pm.group(5)); total = float(pm.group(6).replace(',',''))
             # Separar variedad y color del desc: "BERNARD NOVELTY" -> var=BERNARD, color=NOVELTY
             parts = desc.upper().split()
             var = parts[0] if parts else desc.upper()

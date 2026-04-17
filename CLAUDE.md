@@ -660,12 +660,11 @@ el evaluador las use.
 
 ## Para el próximo turno
 
-Estado real tras sesión 9l (ELITE + SAYONARA, 17 abril 2026):
-- Autoapprove: **80.4%** (3089 líneas de 82 proveedores)
+Estado real tras sesión 9m (DAFLOR+APOSENTOS+CANANVALLE, 17 abril 2026):
+- Autoapprove: **81.9%** (3111 líneas de 82 proveedores)
 - Golden set: **100%** (88/88 líneas) con `_status: "reviewed"`
-- NO_PARSEA restantes: 19 proveedores (ELITE/SAYONARA técnicamente
-  NO_PARSEA por parsed_any < 5/5 pero matching funciona)
-- Carriles: regenerar tras sesión 9l.
+- NO_PARSEA restantes: ~19 proveedores
+- Carriles: regenerar tras sesión 9m.
 
 Próximos pasos posibles:
 
@@ -1064,6 +1063,34 @@ final de este archivo, en la sección "Historial de sesiones".
   confirma **100% parse + link accuracy** sobre esas 88 líneas.
   Fase 2 del roadmap queda cerrada para el dataset inicial; ampliar
   con más proveedores es trabajo continuo.
+- **2026-04-17 sesión 9m**: DAFLOR + APOSENTOS + CANANVALLE (brand cortas).
+  * **`src/parsers/otros.py → DaflorParser`**: fix descripción colgada
+    en dos líneas (`Alstroemeria Assorted - CO-` en una, datos en la
+    siguiente) vía `pending_desc`/`pending_sp`. Acepta `Q`/`H` sueltos
+    además de `QB`/`HB`, pipes `|` como separadores, y normaliza OCR
+    errors (`€ o.15` → `$0.15`, `C0-` → `CO-`). DAFLOR: sin_parser
+    rescued drop importante.
+  * **`src/parsers/otros.py → AposentosParser`**: regex tolerante a
+    OCR (`C0-` → `CO-`, `OUTYFREE` → `DUTYFREE`, `$` opcional en
+    precios, `Taba*` en vez de `Tabaco` exacto). APOSENTOS 03:
+    2 ok → 13 ok, APOSENTOS 05: 3 ok → 11 ok.
+  * **`src/matcher.py → _score_candidate`**: para CARNATIONS añade
+    los tokens traducidos al español al `line_var_tokens` antes del
+    check `variety_match`. El catálogo indexa claveles por color
+    español (`CLAVEL COL FANCY NARANJA`) pero las facturas llegan
+    con variedad + color inglés (`COWBOY ORANGE`). Sin este fix el
+    scoring daba `variety_no_overlap` para matches correctos.
+  * **`src/config.py`**: añadidos `BURGUNDY→GRANATE`,
+    `BORDEAUX→GRANATE`, `WINE→GRANATE`, `CREAM→CREMA`,
+    `BRONZE→BRONCE`, `BLUE→AZUL`, `FUCHSIA/HOT/MAGENTA→FUCSIA` al
+    `CARNATION_COLOR_MAP`.
+  * **`src/matcher.py → _detect_foreign_brand`**: threshold de
+    longitud de marca bajado de 4 a 3 para detectar EQR y similares.
+    Añadida protección contra falsos positivos en tokens tipo `CM`
+    o `U` que quedan como sufijo de talla/packaging.
+  * **Resultado global**: autoapprove **80.4% → 81.9%** (+1.5pp),
+    ok 2471→2555, ambiguous 424→367. `variety_no_overlap` 313→231
+    (-82). Golden 100% mantenido.
 - **2026-04-17 sesión 9l**: ELITE matching + SAYONARA precio-correcto.
   * **`src/parsers/auto_elite.py`**: defaults de talla por especie
     (ALSTROEMERIA=70cm, CARNATIONS=60cm, HYDRANGEAS=60cm). Las líneas

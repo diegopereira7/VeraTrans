@@ -68,6 +68,9 @@ CARNATION_COLOR_MAP = {
     'VIOLET': 'VIOLETA', 'LILAC': 'LILA', 'PEACH': 'MELOCOTON', 'SALMON': 'SALMON',
     'GREEN': 'VERDE', 'NOVELTY': 'NOVEDADES', 'NOVELTIES': 'NOVEDADES',
     'BICOLOR': 'BICOLOR', 'DARK': 'OSCURO', 'LIGHT': 'CLARO',
+    'BURGUNDY': 'GRANATE', 'BORDEAUX': 'GRANATE', 'WINE': 'GRANATE',
+    'CREAM': 'CREMA', 'BRONZE': 'BRONCE', 'BLUE': 'AZUL',
+    'HOT': 'FUCSIA', 'FUCHSIA': 'FUCSIA', 'MAGENTA': 'FUCSIA',
 }
 
 # --- Sufijos de marca a ignorar al construir el brand index ---

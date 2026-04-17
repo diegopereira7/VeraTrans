@@ -2,24 +2,24 @@
   "top": [
     [
       "weak_synonym",
-      2404
+      2450
     ],
     [
       "variety_no_overlap",
-      313
+      231
     ],
     [
       "low_evidence",
-      276
+      217
     ],
     [
       "tie_top2_margin",
-      196
+      198
     ],
     [
       "foreign_brand",
-      141
+      169
     ]
   ],
-  "total_penalties": 3330
+  "total_penalties": 3265
 }

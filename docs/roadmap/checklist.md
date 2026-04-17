@@ -72,19 +72,17 @@ _Cifras tomadas del historial de sesiones de `CLAUDE.md` (sesión 6, abril 2026)
   - `mark_confirmed`/`mark_corrected` ya existen en `SynonymStore`;
     falta engancharlos a UI/API.
 
-### KPIs baseline (sesión 9l, `tools/evaluate_all.py`)
-- OK: **60/82** · TOTALES_MAL: **1/82** · NO_PARSEA: **19/82** ·
-  MUCHO_RESCATE: **1/82** · NO_DETECTADO: **1/82**
-- Líneas totales procesadas: **3089**
-- Líneas `ok`: **2471** · `ambiguous_match`: **424** · `autoapprovable`: **2329**
-- **autoapprove_rate: 80.4%** de las líneas linkables
+### KPIs baseline (sesión 9m, `tools/evaluate_all.py`)
+- Líneas totales procesadas: **3111**
+- Líneas `ok`: **2555** · `ambiguous_match`: **367** · `autoapprovable`: **2393**
+- **autoapprove_rate: 81.9%** de las líneas linkables
 - **Golden set: 100%** parse + link accuracy (88/88 líneas, 5/5 reviewed)
 - Top-5 penalties globales:
-  1. `weak_synonym` 2404 — sinónimos en prueba con trust bajo
-  2. `variety_no_overlap` 313 — variedad no coincide con el ganador
-  3. `low_evidence` 276 — ganador < 0.70 de score
-  4. `tie_top2_margin` 196 — empates prácticos entre candidatos
-  5. `foreign_brand` 141 — marca ajena al proveedor actual
+  1. `weak_synonym` 2450 — sinónimos en prueba con trust bajo
+  2. `variety_no_overlap` 231 — bajó -82 tras fix CARNATIONS color
+  3. `low_evidence` 217 — ganador < 0.70 de score
+  4. `tie_top2_margin` 198 — empates prácticos entre candidatos
+  5. `foreign_brand` 169 — subió tras detectar marcas cortas (EQR)
 - Feedback loop operativo: golden → review → apply → sinónimos confirmados
 - Rama OCR real disponible: **OCRmyPDF+Tesseract** + EasyOCR fallback
 - Matching: **scoring por evidencia** con vetos duros y trazabilidad
@@ -379,16 +377,39 @@ tras la sesión 8 (baseline ya capturada).
 - [x] 9. Brand boost (sesión 9j, commit `3855f7e`) — autoapprove 66.1%→68.9%
 - [x] 10. LATIN + refinado matcher (sesión 9k) — autoapprove 68.9%→79.6%
 - [x] 11. ELITE + SAYONARA (sesión 9l) — autoapprove 79.6%→80.4%
-- [ ] 12. **Shadow mode** (Fase 10) — cuando se empiece a implantar
-- [ ] 13. Ampliar NO_PARSEA restante: APOSENTOS, CANANVALLE, UMA, MILAGRO,
-      CANTIZA, BENCHMARK, DAFLOR, etc.
-- [ ] 14. Optimizar matcher (backlog) — ~6.5s para 43 líneas
+- [x] 12. DAFLOR + APOSENTOS + CANANVALLE (sesión 9m) — 80.4%→81.9%
+- [ ] 13. **Shadow mode** (Fase 10) — cuando se empiece a implantar
+- [ ] 14. Ampliar NO_PARSEA restante: UMA, MILAGRO, CANTIZA, BENCHMARK,
+      NATIVE BLOOMS, MILONGA, etc.
+- [ ] 15. Optimizar matcher (backlog) — ~6.5s para 43 líneas
 
 ---
 
 ## Registro rápido de avances
 
 ### Último bloque cerrado
+- Fecha: 2026-04-17
+- Paso: sesión 9m — DAFLOR + APOSENTOS + CANANVALLE
+- Qué se hizo:
+  * **`parsers/otros.py → DaflorParser`**: descripción colgada en dos
+    líneas (`Alstroemeria Assorted - CO-` + línea siguiente con datos)
+    vía pending_desc. Acepta `Q`/`H` sueltos, pipes como separadores,
+    normaliza OCR errors (`€ o.15` → `$0.15`, `C0-` → `CO-`).
+  * **`parsers/otros.py → AposentosParser`**: tolerante a OCR
+    (`C0-`→`CO-`, `OUTYFREE`→`DUTYFREE`, `$` opcional, `Taba*`).
+    APOSENTOS 03: 2 ok → 13 ok, 05: 3 ok → 11 ok.
+  * **`matcher.py → _score_candidate`**: CARNATIONS ahora añade
+    tokens traducidos (COWBOY ORANGE → COWBOY NARANJA) al set de
+    `line_var_tokens`. Permite que `variety_match` dispare cuando el
+    catálogo indexa por color español.
+  * **`config.py`**: ampliado `CARNATION_COLOR_MAP` con BURGUNDY,
+    BRONZE, AZUL, FUCSIA y variantes.
+  * **`matcher.py → _detect_foreign_brand`**: umbral de longitud
+    bajado de 4 a 3 (detecta EQR). Protegido contra CM/U.
+- Resultado: autoapprove **80.4% → 81.9%** (+1.5pp), ok 2471→2555,
+  ambiguous 424→367, `variety_no_overlap` 313→231. Golden 100%.
+
+### Penúltimo bloque cerrado
 - Fecha: 2026-04-17
 - Paso: sesión 9l — ELITE matching + SAYONARA precio-correcto
 - Qué se hizo:

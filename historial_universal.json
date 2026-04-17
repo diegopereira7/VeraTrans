@@ -285,13 +285,14 @@
     "fecha": "2026-03-30 17:09"
   },
   "4164": {
-    "pdf": "SEMANA_10_X_729-4588_9723_(203)X_F_GUIA_DAFLOR.pdf",
+    "pdf": "04 - 729-45889723 - DAFLOR DAFLOR.pdf",
     "provider": "Daflor",
-    "total_usd": 0.0,
-    "lineas": 13,
-    "ok": 0,
-    "sin_match": 8,
-    "fecha": "2026-03-28 11:01"
+    "total_usd": 764.0,
+    "lineas": 15,
+    "ok": 4,
+    "sin_match": 6,
+    "fecha": "2026-04-17 10:23",
+    "pdf_path": "C:\\Users\\diego.pereira\\Desktop\\DOC VERA\\FACTURAS IMPORTACION\\PROVEEDORES\\DAFLOR\\04 - 729-45889723 - DAFLOR DAFLOR.pdf"
   },
   "001002": {
     "pdf": "FAIRIS GARDEN.pdf",
@@ -303,14 +304,14 @@
     "fecha": "2026-03-30 17:09"
   },
   "": {
-    "pdf": "01 - 075-6537 7060 - SAYONARA 64439.pdf",
-    "provider": "Sayonara",
-    "total_usd": 228.0,
-    "lineas": 1,
+    "pdf": "02 - 729-4536 5036 (95) - APOSENTOS.pdf",
+    "provider": "Flores de Aposentos",
+    "total_usd": 391.0,
+    "lineas": 2,
     "ok": 1,
     "sin_match": 0,
-    "fecha": "2026-04-17 09:55",
-    "pdf_path": "C:\\Users\\diego.pereira\\Desktop\\DOC VERA\\FACTURAS IMPORTACION\\PROVEEDORES\\SAYONARA\\01 - 075-6537 7060 - SAYONARA 64439.pdf"
+    "fecha": "2026-04-17 10:27",
+    "pdf_path": "C:\\Users\\diego.pereira\\Desktop\\DOC VERA\\FACTURAS IMPORTACION\\PROVEEDORES\\APOSENTOS\\02 - 729-4536 5036 (95) - APOSENTOS.pdf"
   },
   "7.149": {
     "pdf": "000 full.pdf",
@@ -728,13 +729,14 @@
     "fecha": "2026-03-30 17:04"
   },
   "5066900": {
-    "pdf": "SEMANA_9_075-6771_0926_(334)_CANANVALLE.pdf",
+    "pdf": "01 - 075-67710926 - CANANVALLE CANANVALLE.pdf",
     "provider": "Cananvalley Flowers",
     "total_usd": 195.0,
     "lineas": 4,
     "ok": 3,
     "sin_match": 1,
-    "fecha": "2026-03-30 17:06"
+    "fecha": "2026-04-17 10:30",
+    "pdf_path": "C:\\Users\\diego.pereira\\Desktop\\DOC VERA\\FACTURAS IMPORTACION\\PROVEEDORES\\CANANVALLE\\01 - 075-67710926 - CANANVALLE CANANVALLE.pdf"
   },
   "0000040428": {
     "pdf": "075-6771 0963 FULL.pdf",
@@ -4974,13 +4976,14 @@
     "fecha": "2026-03-30 17:07"
   },
   "4129": {
-    "pdf": "SEMANA_9_729-4588_9351_(223)_DAFLOR.pdf",
+    "pdf": "05 - 729-45889351 - DAFLOR DAFLOR.pdf",
     "provider": "Daflor",
-    "total_usd": 0.0,
-    "lineas": 16,
-    "ok": 0,
-    "sin_match": 10,
-    "fecha": "2026-03-30 17:07"
+    "total_usd": 770.0,
+    "lineas": 18,
+    "ok": 5,
+    "sin_match": 8,
+    "fecha": "2026-04-17 10:23",
+    "pdf_path": "C:\\Users\\diego.pereira\\Desktop\\DOC VERA\\FACTURAS IMPORTACION\\PROVEEDORES\\DAFLOR\\05 - 729-45889351 - DAFLOR DAFLOR.pdf"
   },
   "04173": {
     "pdf": "SEMANA_9_729-4588_9351_(223)_MAXI.pdf",
@@ -5442,13 +5445,14 @@
     "fecha": "2026-03-30 17:10"
   },
   "5066051": {
-    "pdf": "CANANVALLE.pdf",
+    "pdf": "02 - 369-98313806 - CANANVALLE CANANVALLE.pdf",
     "provider": "Cananvalley Flowers",
     "total_usd": 175.0,
     "lineas": 2,
     "ok": 2,
     "sin_match": 0,
-    "fecha": "2026-03-30 17:09"
+    "fecha": "2026-04-17 10:30",
+    "pdf_path": "C:\\Users\\diego.pereira\\Desktop\\DOC VERA\\FACTURAS IMPORTACION\\PROVEEDORES\\CANANVALLE\\02 - 369-98313806 - CANANVALLE CANANVALLE.pdf"
   },
   "00000167430": {
     "pdf": "SEMANA_10_X_369-9901_0800_(273)X_AGRIVALDANI.pdf",
@@ -7361,13 +7365,14 @@
     "fecha": "2026-03-30 17:12"
   },
   "4219": {
-    "pdf": "SEMANA_11_729-4593_7275_(306)_DAFLOR.pdf",
+    "pdf": "03 - 729-45937275 - DAFLOR DAFLOR.pdf",
     "provider": "Daflor",
-    "total_usd": 0.0,
-    "lineas": 15,
-    "ok": 0,
-    "sin_match": 6,
-    "fecha": "2026-03-30 17:12"
+    "total_usd": 800.0,
+    "lineas": 17,
+    "ok": 4,
+    "sin_match": 8,
+    "fecha": "2026-04-17 10:23",
+    "pdf_path": "C:\\Users\\diego.pereira\\Desktop\\DOC VERA\\FACTURAS IMPORTACION\\PROVEEDORES\\DAFLOR\\03 - 729-45937275 - DAFLOR DAFLOR.pdf"
   },
   "A2578748": {
     "pdf": "SEMANA_11_729-4593_7275_(306)_MULTIFLORA.pdf",
@@ -7856,13 +7861,14 @@
     "fecha": "2026-03-30 17:12"
   },
   "4265": {
-    "pdf": "SEMANA_12_✈️_729-45937522_REAL_DAFLOR.pdf",
+    "pdf": "02 - 729-45937522 - DAFLOR DAFLOR.pdf",
     "provider": "Daflor",
-    "total_usd": 0.0,
-    "lineas": 17,
-    "ok": 0,
-    "sin_match": 5,
-    "fecha": "2026-03-30 17:12"
+    "total_usd": 1078.0,
+    "lineas": 19,
+    "ok": 5,
+    "sin_match": 11,
+    "fecha": "2026-04-17 10:22",
+    "pdf_path": "C:\\Users\\diego.pereira\\Desktop\\DOC VERA\\FACTURAS IMPORTACION\\PROVEEDORES\\DAFLOR\\02 - 729-45937522 - DAFLOR DAFLOR.pdf"
   },
   "A2580765": {
     "pdf": "SEMANA_12_✈️_729-45937522_REAL_MULTIFLORA.pdf",
@@ -7966,13 +7972,14 @@
     "pdf_path": "C:\\Users\\diego.pereira\\Desktop\\DOC VERA\\FACTURAS IMPORTACION\\PROVEEDORES\\SAYONARA\\01 - 729-45997276 - SAYONARA SAYONARA.pdf"
   },
   "4299": {
-    "pdf": "SEMANA_13_075-6768_2355_REAL_CARGA_DAFLOR.pdf",
+    "pdf": "01 - 075-67682355 - DAFLOR DAFLOR.pdf",
     "provider": "Daflor",
-    "total_usd": 0.0,
-    "lineas": 5,
+    "total_usd": 166.0,
+    "lineas": 6,
     "ok": 0,
-    "sin_match": 4,
-    "fecha": "2026-03-30 17:12"
+    "sin_match": 5,
+    "fecha": "2026-04-17 10:22",
+    "pdf_path": "C:\\Users\\diego.pereira\\Desktop\\DOC VERA\\FACTURAS IMPORTACION\\PROVEEDORES\\DAFLOR\\01 - 075-67682355 - DAFLOR DAFLOR.pdf"
   },
   "FA-117644": {
     "pdf": "SEMANA_13_075-6768_2355_REAL_CARGA_COLIBRI.pdf",
@@ -9122,13 +9129,14 @@
     "fecha": "2026-03-30 17:01"
   },
   "830068604": {
-    "pdf": "APOSENTOS.pdf",
+    "pdf": "05 - 729-45889314 - APOSENTOS APOSENTOS.pdf",
     "provider": "Flores de Aposentos",
-    "total_usd": 1700.0,
-    "lineas": 6,
-    "ok": 0,
-    "sin_match": 5,
-    "fecha": "2026-04-09 10:28"
+    "total_usd": 2125.0,
+    "lineas": 13,
+    "ok": 11,
+    "sin_match": 0,
+    "fecha": "2026-04-17 10:28",
+    "pdf_path": "C:\\Users\\diego.pereira\\Desktop\\DOC VERA\\FACTURAS IMPORTACION\\PROVEEDORES\\APOSENTOS\\05 - 729-45889314 - APOSENTOS APOSENTOS.pdf"
   },
   "INV-008307": {
     "pdf": "SEMANA_4_729-4494_2225_(220)_MILONGA.pdf",
@@ -15976,5 +15984,55 @@
     "sin_match": 10,
     "fecha": "2026-04-17 09:48",
     "pdf_path": "C:\\Users\\diego.pereira\\Desktop\\DOC VERA\\FACTURAS IMPORTACION\\PROVEEDORES\\ELITE\\05 - 729-45095761 - ELITE ELITE.pdf"
+  },
+  "INV26486": {
+    "pdf": "02 - 729- 4457 1424 (387) - DAFLOR 26486.pdf",
+    "provider": "Daflor",
+    "total_usd": 116.0,
+    "lineas": 2,
+    "ok": 0,
+    "sin_match": 2,
+    "fecha": "2026-04-17 10:22",
+    "pdf_path": "C:\\Users\\diego.pereira\\Desktop\\DOC VERA\\FACTURAS IMPORTACION\\PROVEEDORES\\DAFLOR\\02 - 729- 4457 1424 (387) - DAFLOR 26486.pdf"
+  },
+  "INV26423": {
+    "pdf": "01 - 075-6537 6964 (334) - DAFLOR 26423.pdf",
+    "provider": "Daflor",
+    "total_usd": 0,
+    "lineas": 1,
+    "ok": 0,
+    "sin_match": 1,
+    "fecha": "2026-04-17 10:22",
+    "pdf_path": "C:\\Users\\diego.pereira\\Desktop\\DOC VERA\\FACTURAS IMPORTACION\\PROVEEDORES\\DAFLOR\\01 - 075-6537 6964 (334) - DAFLOR 26423.pdf"
+  },
+  "5062671": {
+    "pdf": "03 - 075-67640020 - CANANVALLE CANANVALLE 5062671.pdf",
+    "provider": "Cananvalley Flowers",
+    "total_usd": 3.5,
+    "lineas": 14,
+    "ok": 12,
+    "sin_match": 2,
+    "fecha": "2026-04-17 10:30",
+    "pdf_path": "C:\\Users\\diego.pereira\\Desktop\\DOC VERA\\FACTURAS IMPORTACION\\PROVEEDORES\\CANANVALLE\\03 - 075-67640020 - CANANVALLE CANANVALLE 5062671.pdf"
+  },
+  "5062384": {
+    "pdf": "04 - 369-97462212 - CANANVALLE CANANVALLE.pdf",
+    "provider": "Cananvalley Flowers",
+    "total_usd": 60.0,
+    "lineas": 1,
+    "ok": 1,
+    "sin_match": 0,
+    "fecha": "2026-04-17 10:30",
+    "pdf_path": "C:\\Users\\diego.pereira\\Desktop\\DOC VERA\\FACTURAS IMPORTACION\\PROVEEDORES\\CANANVALLE\\04 - 369-97462212 - CANANVALLE CANANVALLE.pdf"
+  },
+  "5061208": {
+    "pdf": "05 - 369-96932430 - CANANVALLE CANANVALLE 5061208.pdf",
+    "provider": "Cananvalley Flowers",
+    "total_usd": 222.5,
+    "lineas": 25,
+    "ok": 16,
+    "sin_match": 9,
+    "fecha": "2026-04-17 10:31",
+    "pdf_path": "C:\\Users\\diego.pereira\\Desktop\\DOC VERA\\FACTURAS IMPORTACION\\PROVEEDORES\\CANANVALLE\\05 - 369-96932430 - CANANVALLE CANANVALLE 5061208.pdf"
   }
 }
