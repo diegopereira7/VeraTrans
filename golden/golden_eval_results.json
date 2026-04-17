@@ -26,6 +26,51 @@
     "discrepancies": []
   },
   {
+    "provider_key": "golden",
+    "invoice": "",
+    "pdf": "02 - 729-45641676 - BENCHMARK BENCHMARK GROWERS 103685.pdf",
+    "gold_lines": 32,
+    "sys_lines": 32,
+    "matched_pairs": 32,
+    "missing_lines": 0,
+    "extra_lines": 0,
+    "field_accuracy": {
+      "variety": 1.0,
+      "species": 1.0,
+      "origin": 1.0,
+      "size": 1.0,
+      "stems_per_bunch": 1.0,
+      "stems": 1.0,
+      "line_total": 1.0
+    },
+    "link_accuracy": 0.906,
+    "link_correct": 29,
+    "link_total": 32,
+    "full_line_accuracy": 0.906,
+    "full_correct": 29,
+    "full_total": 32,
+    "discrepancies": [
+      {
+        "type": "link_mismatch",
+        "gold_variety": "MIXTO",
+        "gold_articulo": "12792 (CLAVEL FANCY MIXTO 70CM 20U GOLDEN)",
+        "sys_articulo": "26786 (MINI CLAVEL FANCY MIXTO 70CM 10U GOLDEN)"
+      },
+      {
+        "type": "link_mismatch",
+        "gold_variety": "MIXTO",
+        "gold_articulo": "12792 (CLAVEL FANCY MIXTO 70CM 20U GOLDEN)",
+        "sys_articulo": "26786 (MINI CLAVEL FANCY MIXTO 70CM 10U GOLDEN)"
+      },
+      {
+        "type": "link_mismatch",
+        "gold_variety": "MIXTO",
+        "gold_articulo": "12792 (CLAVEL FANCY MIXTO 70CM 20U GOLDEN)",
+        "sys_articulo": "26786 (MINI CLAVEL FANCY MIXTO 70CM 10U GOLDEN)"
+      }
+    ]
+  },
+  {
     "provider_key": "fiorentina",
     "invoice": "0000141933",
     "pdf": "01 - 369-99022674 - FIORENTINA FIORENTINA (2).pdf",
@@ -50,6 +95,39 @@
     "full_correct": 6,
     "full_total": 6,
     "discrepancies": []
+  },
+  {
+    "provider_key": "florifrut",
+    "invoice": "0001093134",
+    "pdf": "01 - 075-67714625 - ART ROSES ART ROSES (2).pdf",
+    "gold_lines": 14,
+    "sys_lines": 14,
+    "matched_pairs": 14,
+    "missing_lines": 0,
+    "extra_lines": 0,
+    "field_accuracy": {
+      "variety": 1.0,
+      "species": 1.0,
+      "origin": 1.0,
+      "size": 1.0,
+      "stems_per_bunch": 1.0,
+      "stems": 1.0,
+      "line_total": 1.0
+    },
+    "link_accuracy": 0.929,
+    "link_correct": 13,
+    "link_total": 14,
+    "full_line_accuracy": 0.929,
+    "full_correct": 13,
+    "full_total": 14,
+    "discrepancies": [
+      {
+        "type": "link_mismatch",
+        "gold_variety": "IGUAZU",
+        "gold_articulo": "33101 (ROSA EC IGUAZU BICOLOR 50CM 25U)",
+        "sys_articulo": "34637 (ROSA IGUAZU 50CM 25U CANTIZA)"
+      }
+    ]
   },
   {
     "provider_key": "golden",
@@ -128,5 +206,86 @@
     "full_correct": 26,
     "full_total": 26,
     "discrepancies": []
+  },
+  {
+    "provider_key": "timana",
+    "invoice": "88112",
+    "pdf": "01 - 075-6537 6964 (334) - TIMANA 88112.pdf",
+    "gold_lines": 14,
+    "sys_lines": 14,
+    "matched_pairs": 14,
+    "missing_lines": 0,
+    "extra_lines": 0,
+    "field_accuracy": {
+      "variety": 1.0,
+      "species": 1.0,
+      "origin": 1.0,
+      "size": 1.0,
+      "stems_per_bunch": 1.0,
+      "stems": 1.0,
+      "line_total": 1.0
+    },
+    "link_accuracy": 0.357,
+    "link_correct": 5,
+    "link_total": 14,
+    "full_line_accuracy": 0.357,
+    "full_correct": 5,
+    "full_total": 14,
+    "discrepancies": [
+      {
+        "type": "link_mismatch",
+        "gold_variety": "VENDELA WHITE",
+        "gold_articulo": "37534 (ROSA VENDELA 40CM 25U TIMANÁ)",
+        "sys_articulo": "32424 (ROSA COL VENDELA 40CM 25U)"
+      },
+      {
+        "type": "link_mismatch",
+        "gold_variety": "VENDELA WHITE",
+        "gold_articulo": "37568 (ROSA VENDELA 50CM 25U TIMANÁ)",
+        "sys_articulo": "32426 (ROSA COL VENDELA 50CM 25U)"
+      },
+      {
+        "type": "link_mismatch",
+        "gold_variety": "HIGH AND MAGIC ORANGE",
+        "gold_articulo": "32279 (ROSA COL HIGH MAGIC BICOLOR 40CM 25U)",
+        "sys_articulo": "34449 (ROSA HIGH & ORANGE 40CM 25U LUXUS)"
+      },
+      {
+        "type": "link_mismatch",
+        "gold_variety": "ASSORTED ASSORTED",
+        "gold_articulo": "32226 (ROSA COL COLOR MIXTO 40CM 25U)",
+        "sys_articulo": "None ()"
+      },
+      {
+        "type": "link_mismatch",
+        "gold_variety": "MONDIAL WHITE",
+        "gold_articulo": "35542 (ROSA MONDIAL 60CM 25U TIMANÁ)",
+        "sys_articulo": "32319 (ROSA COL MONDIAL 60CM 25U)"
+      },
+      {
+        "type": "link_mismatch",
+        "gold_variety": "PINK MONDIAL PINK",
+        "gold_articulo": "36101 (ROSA PINK MONDIAL 40CM 25U TIMANÁ)",
+        "sys_articulo": "32344 (ROSA COL PINK MONDIAL 40CM 25U)"
+      },
+      {
+        "type": "link_mismatch",
+        "gold_variety": "HIGH AND MAGIC ORANGE",
+        "gold_articulo": "32278 (ROSA COL HIGH MAGIC BICOLOR 60CM 25U)",
+        "sys_articulo": "34447 (ROSA HIGH & ORANGE 60CM 25U CERES)"
+      },
+      {
+        "type": "link_mismatch",
+        "gold_variety": "GOLDFINCH YELLOW",
+        "gold_articulo": "32268 (ROSA COL GOLDFINCH 40CM 25U)",
+        "sys_articulo": "34240 (ROSA GOLDFINCH 60CM 25U CANTIZA)"
+      },
+      {
+        "type": "link_mismatch",
+        "gold_variety": "CHERRY BRANDY PEACH",
+        "gold_articulo": "32222 (ROSA COL CHERRY BRANDY BICOLOR 50CM 25U)",
+        "sys_articulo": "32165 (ROSA CHERRY BRANDY 60CM 25U CANTIZA)"
+      }
+    ]
   }
 ]
