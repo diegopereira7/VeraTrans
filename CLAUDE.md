@@ -1,7 +1,7 @@
 # CLAUDE.md — Guía operativa para el agente
 
 **Última actualización:** 2026-04-20 (sesión 9r)
-**Estado:** 89.4% autoapprove · Golden 148/148 reviewed (link 93.9%) · NO_PARSEA 7
+**Estado:** 90.2% autoapprove · Golden 148/148 reviewed (link 97.3%) · NO_PARSEA 7
 
 ---
 
@@ -25,36 +25,34 @@ Web PHP), mismo pipeline Python. Usuario: Ángel Panadero
 
 ## Estado actual (fuente única de verdad)
 
-- **Autoapprove global:** 89.4% (3309 líneas sobre 82 proveedores)
+- **Autoapprove global:** 90.2% (3309 líneas sobre 82 proveedores)
 - **Golden set:** 148/148 reviewed (8 proveedores). **Link accuracy
-  93.9% (139/148)** — 9 mismatches restantes, todos gap del matcher:
-  5 en timana (HIGH AND MAGIC ORANGE x2, ASSORTED ASSORTED, GOLDFINCH
-  60, CHERRY BRANDY 60), 3 en benchmark (MINICARNS → CLAVEL FANCY),
-  1 en florifrut (IGUAZU → IGUAZU BICOLOR).
+  97.3% (144/148)** — 4 mismatches restantes, casos conceptuales:
+  3 en benchmark (MINICARNS spb=10 vs CLAVEL FANCY spb=20 — decisión
+  de convención GOLDEN, no matcher) y 1 en timana (ASSORTED ASSORTED
+  → gold quiere COLOR MIXTO pero `reclassify_assorted` lo marca como
+  mixed_box, conflicto de política).
 - **NO_PARSEA restantes:** 7 proveedores
 - **Buckets:** OK 71 · NO_PARSEA 7 · TOTALES_MAL 3 · NO_DETECTADO 1
-- **Última sesión:** 9r (2026-04-20) — revisión golden drafts +
-  matcher: color-suffix strip, pkey fallback desde provider_id,
-  brand_boost contextual. Autoapprove 87.8→89.4, golden 91.2→93.9.
+- **Última sesión:** 9r (2026-04-20) — revisión golden + matcher
+  completo: color-suffix strip, connector strip (AND/&), BICOLOR
+  extension encadenada, pkey fallback, brand_boost contextual,
+  size_tol dual (10 close, 20 max). Autoapprove 87.8→90.2, golden
+  91.2→97.3.
 
 ### Próximos pasos posibles
 
-1. **Matcher: cerrar los 9 mismatches restantes del golden**
-   ([src/matcher.py](src/matcher.py)). Casos pendientes que requieren
-   trabajo más específico:
-   - **HIGH AND MAGIC ORANGE → HIGH MAGIC BICOLOR** (2 casos timana):
-     remover stopword "AND" + fuzzy a prefijo "HIGH MAGIC*".
-   - **ASSORTED ASSORTED → COLOR MIXTO** (1 caso): sinónimo o mapping
-     de ASSORTED/MIXED/SURTIDO a COLOR MIXTO en la búsqueda de variety.
-   - **GOLDFINCH 60CM / CHERRY BRANDY 60CM** (2 casos): relajar
-     `_SIZE_TOL` de 10→20cm cuando no hay candidato con marca propia
-     (usuario prefiere genérico con variety correcta aunque size off
-     sobre marca ajena con size exacto).
-   - **IGUAZU → IGUAZU BICOLOR** (1 florifrut): búsqueda por prefijo
-     de variety si no hay match exacto en by_variety.
+1. **Resolver los 4 mismatches conceptuales restantes del golden**.
+   Requieren decisión de negocio, no más matcher:
    - **MINICARNS → CLAVEL FANCY** (3 benchmark): el parser produce
-     `spb=10` (mini) pero gold dice spb=20 (fancy). Caso golden-
-     específico, revisar si es el parser o el mapping.
+     spb=10 (mini) pero el gold dice spb=20 (fancy). En benchmark las
+     líneas "MINI CARN" se tratan convencionalmente como clavel
+     fancy; tocar parser benchmark o añadir override GOLDEN.
+   - **ASSORTED ASSORTED → COLOR MIXTO** (1 timana): gold quiere
+     match a `ROSA COL COLOR MIXTO` pero actualmente
+     `reclassify_assorted` marca las variedades "mixto" como
+     `mixed_box` (no ok). Conflicto de política — revisar si
+     queremos match explícito a COLOR MIXTO para algunos proveedores.
 2. **Shadow mode** (Fase 10) — procesar facturas reales, comparar
    propuesta vs decisión humana, capturar fallos de producción.
 3. **NO_PARSEA restantes (7)**: CANANVALLE, CEAN GLOBAL, DAFLOR,
@@ -373,49 +371,63 @@ Solo las 2 últimas sesiones. Todas las anteriores en
 
 ### 2026-04-20 — sesión 9r: revisión golden + matcher prioridad de marca
 
-- **Golden drafts** (timana_88112, benchmark_103685, florifrut_0001093134):
-  confirmados como reviewed en sesión 9q pero quedaba pegada la
-  `_note` DRAFT — limpiada en los 3 archivos. Estado: 148/148
-  líneas reviewed en 8 proveedores.
+- **Golden drafts** (timana/benchmark/florifrut): limpiada la
+  `_note` DRAFT en los 3 archivos. 148/148 reviewed en 8 proveedores.
 - **Diagnóstico golden**: link accuracy inicial 91.2% (135/148), 13
-  mismatches, todos gap del matcher (no del golden). Patrón: el
-  sistema elige genérico `ROSA COL ...` o artículo con marca ajena
-  (CANTIZA, LUXUS, CERES) en lugar del artículo con marca del
-  proveedor actual (TIMANÁ, GOLDEN).
-- **Regla de negocio confirmada por el usuario** (guardada en
+  mismatches, todos gap del matcher. Patrón: el sistema elige
+  genérico COL o marca ajena (CANTIZA, LUXUS, CERES) en lugar del
+  artículo con marca del proveedor actual, o no encuentra el
+  candidato correcto porque la variedad de factura no matchea literal
+  con la del catálogo (WHITE/PINK suffix, AND connector, BICOLOR
+  suffix ausente).
+- **Regla de negocio confirmada** (guardada en
   `feedback_matcher_priority.md`): marca del proveedor > genérico
-  COL/EC > marca ajena. Variedad correcta con tamaño aproximado
-  pesa más que variedad+tamaño exactos con marca ajena.
+  COL/EC > marca ajena. Variedad correcta con tamaño aproximado pesa
+  más que variedad+tamaño exactos con marca ajena.
 - **[src/matcher.py](src/matcher.py) → `_strip_color_suffix`**:
-  nuevo helper paralelo a `_strip_color_prefix`. Quita sufijos de
-  color (`WHITE`, `PINK`, etc.) si la base resultante existe en
-  `by_variety`. Permite que `VENDELA WHITE` resuelva a `VENDELA`
-  y encuentre el artículo TIMANÁ. Generador adicional añadido en
-  `_gather_candidates` (case 2d).
+  paralelo a `_strip_color_prefix`. `VENDELA WHITE` → `VENDELA`
+  cuando la base existe en `by_variety`. Generador 2d en
+  `_gather_candidates`. Cerró 3 TIMANA (VENDELA WHITE 40/50,
+  MONDIAL WHITE 60, PINK MONDIAL PINK 40).
+- **[src/matcher.py](src/matcher.py) → `_strip_connector`**:
+  quita `AND`/`&`/`Y` del medio si el resultado existe. Cerró 2
+  TIMANA (HIGH AND MAGIC ORANGE 40/60 → HIGH MAGIC BICOLOR via 2f).
+- **[src/matcher.py](src/matcher.py) → `_simplified_variants` +
+  generador 2f BICOLOR extension**: explora todas las combinaciones
+  de simplificación (directa, color-suffix, connector-strip,
+  ambos) y prueba añadir `BICOLOR` al final si existe en
+  `by_variety`. Cerró IGUAZU → IGUAZU BICOLOR (florifrut) y CHERRY
+  BRANDY PEACH 60 → CHERRY BRANDY BICOLOR (timana).
 - **[src/matcher.py](src/matcher.py) → `_score_candidate`**:
-  comparación de `own_brands` vs `nombre` ahora usa `_normalize`
-  (strip acentos). Antes `'TIMANA' in 'TIMANÁ'` = False y
-  `brand_in_name` nunca disparaba para proveedores con tilde en el
-  sufijo del catálogo. `foreign_brand` también normalizado.
-- **[src/matcher.py](src/matcher.py) → `match_line` fallback
-  `pkey`**: si el parser deja `line.provider_key=''` (caso TIMANA
-  y otros), se deriva del `provider_id` iterando `PROVIDERS`.
-  Desbloquea `brand_boost` para proveedores donde antes nunca
-  disparaba por el id mismatch entre PROVIDERS config (90039) y
-  `id_proveedor` del catálogo (2651).
-- **[src/matcher.py](src/matcher.py) → `match_line` brand_boost
-  contextual**: solo aplica si hay **exactamente un** candidato con
-  `own_brand + variety_match + size_exact`; el score se eleva sobre
-  el top alternativo + 0.05 (antes 1.05 fijo, insuficiente para
-  superar synonyms legacy que llegaban a ~1.19). El gating por
-  unicidad evita empates en proveedores con mucho catálogo marcado
-  (ECOFLOR, MYSTIC) que causaban −11pp al aplicar boost a varios.
-- **Globales**: autoapprove **87.8% → 89.4%** (+1.6pp). ok 2795→
-  2833 (+38), ambiguous 228→205 (−23), autoapprovable 2666→2715
-  (+49). Golden **91.2% → 93.9%** (+2.7pp, −4 mismatches: 4
-  cerrados en TIMANA — VENDELA WHITE 40/50, MONDIAL WHITE 60,
-  PINK MONDIAL PINK 40). Quedan 9 mismatches que requieren trabajo
-  más específico (ver "Próximos pasos").
+  comparación `own_brands` vs `nombre` con `_normalize` (strip
+  acentos). Arregla `'TIMANA' in 'TIMANÁ'` = False que bloqueaba
+  `brand_in_name` en proveedores con tilde en el sufijo. Idem
+  `foreign_brand`.
+- **[src/matcher.py](src/matcher.py) → `match_line` pkey fallback**:
+  si el parser deja `line.provider_key=''`, se deriva del
+  `provider_id` via PROVIDERS. Desbloquea brand_boost en
+  proveedores donde el ID del config (p.ej. 90039 TIMANA) no
+  coincide con el `id_proveedor` del catálogo (2651).
+- **[src/matcher.py](src/matcher.py) → brand_boost contextual**:
+  solo aplica si hay **un único** candidato con `own_brand +
+  variety_match + size_exact`; el score se eleva sobre el top
+  alternativo + 0.05 para superar synonyms legacy del genérico
+  (trust+history llegaba a ~1.19). El gating por unicidad evita
+  empates catastróficos (−11pp autoapprove) en catálogos muy
+  marcados como ECOFLOR/MYSTIC.
+- **[src/matcher.py](src/matcher.py) → size tolerance dual**:
+  `_SIZE_TOL=10` para bonus/penalty suave (`size_close` +0.05) y
+  `_SIZE_TOL_MAX=20` para el veto duro. Entre 10 y 20cm el
+  candidato no se descarta pero recibe penalty `size_off(Ncm)
+  −0.10`. Permite al genérico COL/EC con variedad correcta ganar a
+  una marca ajena con size exacto cuando no hay otra alternativa.
+  Cerró GOLDFINCH YELLOW 60 → GOLDFINCH 40CM COL (diff 20cm).
+- **Globales**: autoapprove **87.8% → 90.2%** (+2.4pp). ok 2795→
+  2852 (+57), ambiguous 228→196 (−32), autoapprovable 2666→
+  ~2720 (+54). Golden **91.2% → 97.3%** (+6.1pp, 13 → 4
+  mismatches). Los 4 restantes son decisiones conceptuales
+  (MINICARNS→CLAVEL FANCY en benchmark, ASSORTED→COLOR MIXTO vs
+  mixed_box en timana) — ver "Próximos pasos".
 
 ### 2026-04-17 — sesión 9q: IWA mixed_box + CANTIZA/MILAGRO/MILONGA + fuzzy cache
 

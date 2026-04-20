@@ -114,20 +114,13 @@
       "stems": 1.0,
       "line_total": 1.0
     },
-    "link_accuracy": 0.929,
-    "link_correct": 13,
+    "link_accuracy": 1.0,
+    "link_correct": 14,
     "link_total": 14,
-    "full_line_accuracy": 0.929,
-    "full_correct": 13,
+    "full_line_accuracy": 1.0,
+    "full_correct": 14,
     "full_total": 14,
-    "discrepancies": [
-      {
-        "type": "link_mismatch",
-        "gold_variety": "IGUAZU",
-        "gold_articulo": "33101 (ROSA EC IGUAZU BICOLOR 50CM 25U)",
-        "sys_articulo": "34637 (ROSA IGUAZU 50CM 25U CANTIZA)"
-      }
-    ]
+    "discrepancies": []
   },
   {
     "provider_key": "golden",
@@ -225,42 +218,18 @@
       "stems": 1.0,
       "line_total": 1.0
     },
-    "link_accuracy": 0.643,
-    "link_correct": 9,
+    "link_accuracy": 0.929,
+    "link_correct": 13,
     "link_total": 14,
-    "full_line_accuracy": 0.643,
-    "full_correct": 9,
+    "full_line_accuracy": 0.929,
+    "full_correct": 13,
     "full_total": 14,
     "discrepancies": [
-      {
-        "type": "link_mismatch",
-        "gold_variety": "HIGH AND MAGIC ORANGE",
-        "gold_articulo": "32279 (ROSA COL HIGH MAGIC BICOLOR 40CM 25U)",
-        "sys_articulo": "34449 (ROSA HIGH & ORANGE 40CM 25U LUXUS)"
-      },
       {
         "type": "link_mismatch",
         "gold_variety": "ASSORTED ASSORTED",
         "gold_articulo": "32226 (ROSA COL COLOR MIXTO 40CM 25U)",
         "sys_articulo": "None ()"
-      },
-      {
-        "type": "link_mismatch",
-        "gold_variety": "HIGH AND MAGIC ORANGE",
-        "gold_articulo": "32278 (ROSA COL HIGH MAGIC BICOLOR 60CM 25U)",
-        "sys_articulo": "34447 (ROSA HIGH & ORANGE 60CM 25U CERES)"
-      },
-      {
-        "type": "link_mismatch",
-        "gold_variety": "GOLDFINCH YELLOW",
-        "gold_articulo": "32268 (ROSA COL GOLDFINCH 40CM 25U)",
-        "sys_articulo": "34240 (ROSA GOLDFINCH 60CM 25U CANTIZA)"
-      },
-      {
-        "type": "link_mismatch",
-        "gold_variety": "CHERRY BRANDY PEACH",
-        "gold_articulo": "32222 (ROSA COL CHERRY BRANDY BICOLOR 50CM 25U)",
-        "sys_articulo": "32165 (ROSA CHERRY BRANDY 60CM 25U CANTIZA)"
       }
     ]
   }

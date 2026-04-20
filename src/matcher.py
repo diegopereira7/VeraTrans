@@ -109,7 +109,8 @@ class Candidate:
     score: float = 0.0
 
 
-_SIZE_TOL = 10  # cm
+_SIZE_TOL = 10  # cm — match "close" sin penalty
+_SIZE_TOL_MAX = 20  # cm — umbral duro (veto por encima)
 
 
 _FOREIGN_BRANDS_CACHE: Optional[set[str]] = None
@@ -229,10 +230,14 @@ def _hard_vetoes(line: InvoiceLine, art: dict) -> list[str]:
         orig_art = _infer_article_origin(art)
         if orig_art and orig_line and orig_art != orig_line:
             v.append(f'origin_mismatch({orig_line}→{orig_art})')
-    # Talla incompatible: más de _SIZE_TOL cm de diferencia.
+    # Talla incompatible: más de _SIZE_TOL_MAX cm de diferencia es
+    # veto duro. Entre _SIZE_TOL (10) y _SIZE_TOL_MAX (20) se permite
+    # el candidato pero con penalty en scoring (`size_off`), para que
+    # un genérico COL/EC con variedad correcta pueda ganar a una
+    # marca ajena con size exacto cuando no hay otra alternativa.
     if line.size:
         sz_art = _infer_article_size(art)
-        if sz_art and abs(sz_art - line.size) > _SIZE_TOL:
+        if sz_art and abs(sz_art - line.size) > _SIZE_TOL_MAX:
             v.append(f'size_mismatch({line.size}→{sz_art})')
     return v
 
@@ -292,12 +297,19 @@ def _score_candidate(line: InvoiceLine, cand: Candidate,
     # — Talla
     sz_art = _infer_article_size(art)
     if line.size and sz_art:
+        diff = abs(sz_art - line.size)
         if sz_art == line.size:
             score += 0.20
             reasons.append('size_exact')
-        elif abs(sz_art - line.size) <= _SIZE_TOL:
+        elif diff <= _SIZE_TOL:
             score += 0.05
             reasons.append('size_close')
+        elif diff <= _SIZE_TOL_MAX:
+            # Diff 11–20cm: permitido (no veto) pero con penalty para
+            # que solo gane cuando no hay candidatos con size_exact
+            # sin foreign_brand.
+            score -= 0.10
+            penalties.append(f'size_off({diff}cm)')
 
     # — Especie
     sp_art = _infer_article_species(art)
@@ -415,6 +427,8 @@ _COLOR_PREFIX_RE = re.compile(
 _COLOR_SUFFIX_RE = re.compile(
     r'\s+(?:PINK|RED|ORANGE|YELLOW|WHITE|PEACH|CREAM|SALMON|HOT\s+PINK|LIGHT\s+PINK|BLANCO|NARANJA|AMARILLO|ROJO|ROSA)$', re.I)
 
+_CONNECTOR_RE = re.compile(r'\s+(?:AND|&|Y)\s+', re.I)
+
 
 def _strip_color_prefix(variety: str, art_index: dict) -> str | None:
     """Strip a color prefix from a variety if the remainder is a known article variety.
@@ -430,6 +444,53 @@ def _strip_color_prefix(variety: str, art_index: dict) -> str | None:
     candidate = v[m.end():].strip()
     if candidate and candidate in art_index:
         return candidate
+    return None
+
+
+def _simplified_variants(variety: str) -> list[str]:
+    """Genera variantes simplificadas de una variedad sin verificar existencia.
+
+    Aplica strip de color suffix y connector (AND/&/Y) en combinaciones.
+    Uso: probar candidatos para matching cuando la variedad de factura
+    ("HIGH AND MAGIC ORANGE") no coincide literal con el catálogo
+    ("HIGH MAGIC BICOLOR"). El que llama filtra por existencia.
+    """
+    from src.articulos import _normalize
+    v = _normalize(variety)
+    variants = [v]
+    # Variante sin color suffix
+    m = _COLOR_SUFFIX_RE.search(v)
+    if m:
+        base = v[:m.start()].strip()
+        if base:
+            variants.append(base)
+    # Variante sin connector (AND/&/Y)
+    without_conn = re.sub(r'\s+', ' ', _CONNECTOR_RE.sub(' ', v)).strip()
+    if without_conn != v:
+        variants.append(without_conn)
+    # Combinación: sin color suffix Y sin connector
+    for variant in list(variants):
+        simplified = re.sub(r'\s+', ' ', _CONNECTOR_RE.sub(' ', variant)).strip()
+        if simplified and simplified not in variants:
+            variants.append(simplified)
+    return variants
+
+
+def _strip_connector(variety: str, art_index: dict) -> str | None:
+    """Strip connector words (AND, &, Y) from a variety if the result exists.
+
+    "HIGH AND MAGIC" → "HIGH MAGIC" (if HIGH MAGIC exists in catalog)
+    "ROSA Y AZUL" → "ROSA AZUL" (if exists)
+
+    Facturas escriben a veces variedades con conectores que el catálogo
+    no conserva. Esto permite recuperar el match base.
+    """
+    from src.articulos import _normalize
+    v = _normalize(variety)
+    simplified = _CONNECTOR_RE.sub(' ', v)
+    simplified = re.sub(r'\s+', ' ', simplified).strip()
+    if simplified != v and simplified in art_index:
+        return simplified
     return None
 
 
@@ -558,6 +619,54 @@ class Matcher:
                         articulo=result, source='color_strip',
                         method_hint=f'color-suffix+{method}',
                     ))
+
+        # 2e) Connector strip: "HIGH AND MAGIC ORANGE" → "HIGH MAGIC
+        # ORANGE" si la versión sin AND/&/Y existe en by_variety. Se
+        # aplica sobre la variedad directa y sobre la base post-
+        # color-suffix ("HIGH AND MAGIC" → "HIGH MAGIC").
+        if line.variety and line.species == 'ROSES':
+            for source_variety in (line.variety,
+                                    _strip_color_suffix(line.variety, self.art.by_variety)):
+                if not source_variety:
+                    continue
+                without_conn = _strip_connector(source_variety, self.art.by_variety)
+                if without_conn:
+                    result, confidence, method = self.art.search_with_priority(
+                        variety=without_conn, size=line.size,
+                        provider_id=provider_id, provider_key=pkey,
+                    )
+                    if result:
+                        cands.append(Candidate(
+                            articulo=result, source='connector_strip',
+                            method_hint=f'connector+{method}',
+                        ))
+
+        # 2f) Variety + BICOLOR: muchas rosas bicolor se facturan sin
+        # "BICOLOR" pero el catálogo las indexa con sufijo (IGUAZU →
+        # IGUAZU BICOLOR, CHERRY BRANDY PEACH → CHERRY BRANDY →
+        # CHERRY BRANDY BICOLOR, HIGH AND MAGIC ORANGE → HIGH MAGIC →
+        # HIGH MAGIC BICOLOR). Se prueban todas las simplificaciones
+        # (color-suffix + connector-strip) con sufijo BICOLOR.
+        # Si la variedad base también existe en by_variety, el scoring
+        # natural decide (el genérico sin marca ajena gana al BICOLOR
+        # cuando corresponde).
+        if line.variety and line.species == 'ROSES':
+            seen_bicolor = set()
+            for base in _simplified_variants(line.variety):
+                extended = base + ' BICOLOR'
+                if extended in seen_bicolor:
+                    continue
+                seen_bicolor.add(extended)
+                if extended in self.art.by_variety:
+                    result, confidence, method = self.art.search_with_priority(
+                        variety=extended, size=line.size,
+                        provider_id=provider_id, provider_key=pkey,
+                    )
+                    if result:
+                        cands.append(Candidate(
+                            articulo=result, source='bicolor_ext',
+                            method_hint=f'bicolor-ext+{method}',
+                        ))
 
         # 3) Exact name
         a = self.art.find_by_name(line.expected_name())
