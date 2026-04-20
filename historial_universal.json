@@ -16123,5 +16123,15 @@
     "sin_match": 0,
     "fecha": "2026-04-17 10:50",
     "pdf_path": "C:\\Users\\diego.pereira\\Desktop\\DOC VERA\\FACTURAS IMPORTACION\\PROVEEDORES\\MILAGRO\\04 - 729-45489124 - MILAGRO MILAGRO 001065461.pdf"
+  },
+  "25063223": {
+    "pdf": "1776694667_CANTIZA.pdf",
+    "provider": "Valthomig",
+    "total_usd": 771.5,
+    "lineas": 21,
+    "ok": 20,
+    "sin_match": 1,
+    "fecha": "2026-04-20 16:17",
+    "pdf_path": "C:\\verabuy-traductor\\web\\uploads\\1776694667_CANTIZA.pdf"
   }
 }

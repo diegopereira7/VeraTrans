@@ -95,8 +95,8 @@
     "last_confirmed_at": ""
   },
   "435|ROSES|MONDIAL|50|25|": {
-    "articulo_id": 33230,
-    "articulo_name": "ROSA EC MONDIAL 50CM 25U",
+    "articulo_id": 35473,
+    "articulo_name": "ROSA MONDIAL 50CM 25U CANTIZA",
     "origen": "auto",
     "status": "aprendido_en_prueba",
     "provider_id": 435,
@@ -110,12 +110,12 @@
     "times_used": 0,
     "times_confirmed": 0,
     "times_corrected": 0,
-    "first_seen_at": "2026-04-16T09:28:30",
+    "first_seen_at": "2026-04-20T16:15:45",
     "last_confirmed_at": ""
   },
   "435|ROSES|IGUAZU|50|25|": {
-    "articulo_id": 33101,
-    "articulo_name": "ROSA EC IGUAZU BICOLOR 50CM 25U",
+    "articulo_id": 34637,
+    "articulo_name": "ROSA IGUAZU 50CM 25U CANTIZA",
     "origen": "auto",
     "status": "aprendido_en_prueba",
     "provider_id": 435,
@@ -129,7 +129,7 @@
     "times_used": 0,
     "times_confirmed": 0,
     "times_corrected": 0,
-    "first_seen_at": "2026-04-16T09:36:27",
+    "first_seen_at": "2026-04-20T16:15:45",
     "last_confirmed_at": ""
   },
   "435|ROSES|PALOMA|50|25|": {
@@ -152,8 +152,8 @@
     "last_confirmed_at": ""
   },
   "435|ROSES|PINK MONDIAL|50|25|": {
-    "articulo_id": 33338,
-    "articulo_name": "ROSA EC PINK MONDIAL 50CM 25U",
+    "articulo_id": 36045,
+    "articulo_name": "ROSA PINK MONDIAL 50CM 25U CANTIZA",
     "origen": "auto",
     "status": "aprendido_en_prueba",
     "provider_id": 435,
@@ -167,7 +167,7 @@
     "times_used": 0,
     "times_confirmed": 0,
     "times_corrected": 0,
-    "first_seen_at": "2026-04-16T09:28:52",
+    "first_seen_at": "2026-04-20T16:12:49",
     "last_confirmed_at": ""
   },
   "435|ROSES|BRIGHTON|60|25|": {
@@ -266,8 +266,8 @@
     "last_confirmed_at": ""
   },
   "435|ROSES|CABARET|50|25|": {
-    "articulo_id": 32793,
-    "articulo_name": "ROSA EC CABARET BICOLOR 50CM 25U",
+    "articulo_id": 32026,
+    "articulo_name": "ROSA CABARET 50CM 25U CANTIZA",
     "origen": "auto",
     "status": "aprendido_en_prueba",
     "provider_id": 435,
@@ -281,7 +281,7 @@
     "times_used": 0,
     "times_confirmed": 0,
     "times_corrected": 0,
-    "first_seen_at": "2026-04-16T09:36:29",
+    "first_seen_at": "2026-04-20T16:12:49",
     "last_confirmed_at": ""
   },
   "435|ROSES|IGUANA|50|25|": {
@@ -421,8 +421,8 @@
     "last_confirmed_at": ""
   },
   "435|ROSES|TUTTI FRUTTI|50|20|": {
-    "articulo_id": 33577,
-    "articulo_name": "ROSA EC TUTTI FRUTTI BICOLOR 50CM 20U",
+    "articulo_id": 37487,
+    "articulo_name": "ROSA TUTTI FRUTTI 50CM 20U CANTIZA",
     "origen": "auto",
     "status": "aprendido_en_prueba",
     "provider_id": 435,
@@ -436,7 +436,7 @@
     "times_used": 0,
     "times_confirmed": 0,
     "times_corrected": 0,
-    "first_seen_at": "2026-04-16T09:36:30",
+    "first_seen_at": "2026-04-20T16:15:46",
     "last_confirmed_at": ""
   },
   "435|ROSES|JOY|50|25|": {
@@ -478,8 +478,8 @@
     "last_confirmed_at": ""
   },
   "435|ROSES|PURPLE FICTION|50|25|": {
-    "articulo_id": 33371,
-    "articulo_name": "ROSA EC PURPLE CEZANNE 50CM 25U",
+    "articulo_id": 36270,
+    "articulo_name": "ROSA PURPLE CEZANNE 50CM 25U CANTIZA",
     "origen": "auto",
     "status": "aprendido_en_prueba",
     "provider_id": 435,
@@ -493,7 +493,7 @@
     "times_used": 0,
     "times_confirmed": 0,
     "times_corrected": 0,
-    "first_seen_at": "2026-04-16T09:36:26",
+    "first_seen_at": "2026-04-20T16:15:44",
     "last_confirmed_at": ""
   },
   "435|ROSES|CAROUSEL|50|25|": {
@@ -1575,7 +1575,7 @@
     "size": 70,
     "stems_per_bunch": 20,
     "grade": "FANCY",
-    "raw": "5 H 500 2500 CONSUMER BUNCH CARNATION FANCY CARN FCY MIX CB S2 0.165 412.50",
+    "raw": "5 H 500 2500 CONSUMER BUNCH CARNATION FANCY BURGUNDY FCY CB S2 0.190 475.00",
     "invoice": "",
     "times_used": 0,
     "times_confirmed": 1,
@@ -1594,7 +1594,7 @@
     "size": 70,
     "stems_per_bunch": 20,
     "grade": "FANCY",
-    "raw": "1 H 500 500 CONSUMER BUNCH CARNATION FANCY ASTURIAS FCY WH CB S2 0.170 85.00",
+    "raw": "6 H 500 3000 CONSUMER BUNCH CARNATION FANCY BLANCO FCY CB S2 0.165 495.00",
     "invoice": "",
     "times_used": 0,
     "times_confirmed": 0,
@@ -1613,7 +1613,7 @@
     "size": 70,
     "stems_per_bunch": 20,
     "grade": "FANCY",
-    "raw": "1 H 500 500 CONSUMER BUNCH CARNATION FANCY R48 FCY RD CB S2 0.170 85.00",
+    "raw": "4 H 500 2000 CONSUMER BUNCH CARNATION FANCY RED FCY CB S2 0.190 380.00",
     "invoice": "",
     "times_used": 0,
     "times_confirmed": 0,
@@ -1651,7 +1651,7 @@
     "size": 70,
     "stems_per_bunch": 20,
     "grade": "FANCY",
-    "raw": "1 H 500 500 CONSUMER BUNCH CARNATION FANCY FCY YW CB S2 0.170 85.00",
+    "raw": "4 H 500 2000 CONSUMER BUNCH CARNATION FANCY YELLOW FCY CB S2 0.190 380.00",
     "invoice": "",
     "times_used": 0,
     "times_confirmed": 0,
@@ -1689,7 +1689,7 @@
     "size": 70,
     "stems_per_bunch": 20,
     "grade": "FANCY",
-    "raw": "1 H 500 500 CONSUMER BUNCH CARNATION FANCY R45 NOVEDADES+ BICOL CB S2 0.170 85.00",
+    "raw": "1 H 500 500 CONSUMER BUNCH CARNATION FANCY ASTURIAS BIC CB S2 0.180 90.00",
     "invoice": "",
     "times_used": 0,
     "times_confirmed": 0,
@@ -3059,7 +3059,7 @@
     "size": 70,
     "stems_per_bunch": 25,
     "grade": "",
-    "raw": "4 QB EXPLORER 25 X .00     1      25 0.40 10.00",
+    "raw": "3 QB EXPLORER 25 X .00     2      50 0.40 20.00",
     "invoice": "",
     "times_used": 0,
     "times_confirmed": 3,
@@ -3078,7 +3078,7 @@
     "size": 70,
     "stems_per_bunch": 25,
     "grade": "",
-    "raw": "9 HB MONDIAL 25 X .00     8      200 0.40 80.00",
+    "raw": "4 HB MONDIAL 25 X .00     12      300.00 0.40 120.00",
     "invoice": "",
     "times_used": 0,
     "times_confirmed": 4,
@@ -3097,7 +3097,7 @@
     "size": 50,
     "stems_per_bunch": 25,
     "grade": "",
-    "raw": "19 HB EXPLORER 25 X .00   12        300 0.30 90.00",
+    "raw": "4 HB EXPLORER 25 X .00   5        125 0.30 37.50",
     "invoice": "",
     "times_used": 0,
     "times_confirmed": 7,
@@ -3116,7 +3116,7 @@
     "size": 50,
     "stems_per_bunch": 25,
     "grade": "",
-    "raw": "15 HB MONDIAL 25 X .00   12        300 0.30 90.00",
+    "raw": "4 HB MONDIAL 25 X .00   5        125 0.30 37.50",
     "invoice": "",
     "times_used": 0,
     "times_confirmed": 5,
@@ -3135,7 +3135,7 @@
     "size": 50,
     "stems_per_bunch": 25,
     "grade": "",
-    "raw": "16 HB BRIGHTON 25 X .00   3        75 0.30 22.50",
+    "raw": "4 HB BRIGHTON 25 X .00   1        25 0.30 7.50",
     "invoice": "",
     "times_used": 0,
     "times_confirmed": 4,
@@ -3192,7 +3192,7 @@
     "size": 60,
     "stems_per_bunch": 25,
     "grade": "",
-    "raw": "5 QB FRUTTETO 25 X .00    1       25 0.35 8.75",
+    "raw": "3 QB FRUTTETO 25 X .00    1       25 0.35 8.75",
     "invoice": "",
     "times_used": 0,
     "times_confirmed": 1,
@@ -3211,7 +3211,7 @@
     "size": 60,
     "stems_per_bunch": 25,
     "grade": "",
-    "raw": "18 HB MONDIAL 25 X .00    4       100 0.35 35.00",
+    "raw": "3 QB MONDIAL 25 X .00    1       25 0.35 8.75",
     "invoice": "",
     "times_used": 0,
     "times_confirmed": 3,
@@ -3249,7 +3249,7 @@
     "size": 60,
     "stems_per_bunch": 25,
     "grade": "",
-    "raw": "18 HB EXPLORER 25 X .00    4       100 0.35 35.00",
+    "raw": "1 HB EXPLORER 25 X .00    12       300.00 0.35 105.00",
     "invoice": "",
     "times_used": 0,
     "times_confirmed": 3,
@@ -3697,8 +3697,8 @@
     "invoice": "VERDES LA ESTACION 1829.pdf"
   },
   "11748|ROSES|VENDELA|50|20|": {
-    "articulo_id": 32426,
-    "articulo_name": "ROSA COL VENDELA 50CM 25U",
+    "articulo_id": 37584,
+    "articulo_name": "ROSA VENDELA 50CM 20U PONDEROSA",
     "origen": "auto",
     "status": "aprendido_en_prueba",
     "provider_id": 11748,
@@ -3712,7 +3712,7 @@
     "times_used": 0,
     "times_confirmed": 0,
     "times_corrected": 0,
-    "first_seen_at": "2026-04-16T16:04:55",
+    "first_seen_at": "2026-04-20T16:24:32",
     "last_confirmed_at": ""
   },
   "11748|ROSES|BRIGHTON|40|20|": {
@@ -6849,9 +6849,9 @@
     "last_confirmed_at": ""
   },
   "1429|ROSES|CLOWN|50|20|": {
-    "articulo_id": 32845,
-    "articulo_name": "ROSA EC CLOWN BICOLOR 50CM 20U",
-    "origen": "auto",
+    "articulo_id": 32180,
+    "articulo_name": "ROSA CLOWN 50CM 20U LUXUS",
+    "origen": "auto-matching",
     "status": "aprendido_en_prueba",
     "provider_id": 1429,
     "species": "ROSES",
@@ -6864,7 +6864,7 @@
     "times_used": 0,
     "times_confirmed": 0,
     "times_corrected": 0,
-    "first_seen_at": "2026-04-15T17:08:26",
+    "first_seen_at": "2026-04-20T16:24:53",
     "last_confirmed_at": ""
   },
   "1429|ROSES|FRUTETTO|40|25|": {
@@ -7139,7 +7139,7 @@
     "size": 50,
     "stems_per_bunch": 25,
     "grade": "",
-    "raw": "45/57 HB 0,50 1,00 FREEDOM 50CM 300 300 CO 0603110000 $ 0,30 $ 90,00",
+    "raw": "48/48 HB 0,50 1,00 FREEDOM 50CM 25 25 TIPO B CO 0603110000 $ 0,16 $ 4,00",
     "invoice": "",
     "times_used": 0,
     "times_confirmed": 0,
@@ -7521,7 +7521,7 @@
     "size": 40,
     "stems_per_bunch": 25,
     "grade": "",
-    "raw": "31/57 HB 0,50 1,00 VENDELA 40CM 300 300 KENTIA CO 0603110000 $ 0,26 $ 78,00",
+    "raw": "VENDELA 40CM 50 50 TIPO B CO 0603110000 $ 0,16 $ 8,00",
     "invoice": "",
     "times_used": 0,
     "times_confirmed": 0,
@@ -7578,7 +7578,7 @@
     "size": 40,
     "stems_per_bunch": 25,
     "grade": "",
-    "raw": "36/57 HB 0,50 1,00 BRIGHTON 40CM 300 300 CO 0603110000 $ 0,28 $ 84,00",
+    "raw": "BRIGHTON 40CM 175 175 TIPO B CO 0603110000 $ 0,16 $ 28,00",
     "invoice": "",
     "times_used": 0,
     "times_confirmed": 0,
@@ -7857,7 +7857,7 @@
     "size": 50,
     "stems_per_bunch": 25,
     "grade": "",
-    "raw": "5 H MONDIAL 12 25 50 300 0,320 96,000",
+    "raw": "4 H MONDIAL 12 25 50 300 0,300 90,000",
     "invoice": "",
     "times_used": 0,
     "times_confirmed": 5,
@@ -8731,8 +8731,8 @@
     "last_confirmed_at": ""
   },
   "11748|ROSES|VENDELA|50|10|": {
-    "articulo_id": 32426,
-    "articulo_name": "ROSA COL VENDELA 50CM 25U",
+    "articulo_id": 37573,
+    "articulo_name": "ROSA VENDELA 50CM 10U PONDEROSA",
     "origen": "auto",
     "status": "aprendido_en_prueba",
     "provider_id": 11748,
@@ -8746,7 +8746,7 @@
     "times_used": 0,
     "times_confirmed": 0,
     "times_corrected": 0,
-    "first_seen_at": "2026-04-16T16:05:12",
+    "first_seen_at": "2026-04-20T16:15:49",
     "last_confirmed_at": ""
   },
   "11748|ROSES|ATOMIC|50|10|": {
@@ -14265,7 +14265,7 @@
     "size": 80,
     "stems_per_bunch": 25,
     "grade": "",
-    "raw": "97341 1 hb 450 Gypso Xlence Natural 80 cm / 1000 gr Violeta Flowers 450 25 18 $ 8 ,00 $ 1 44,00",
+    "raw": "97024 1 qb 150 Gypso Xlence Natural 80 cm / 750 gr Violeta Flowers 150 25 6 $ 5,25 $ 3 1,50",
     "invoice": "",
     "times_used": 0,
     "times_confirmed": 0,
@@ -17194,7 +17194,7 @@
     "raw": "15,00 QB HYD WHITE PREMIUM 350603199010 525 0,48 252,00",
     "invoice": "",
     "status": "ambiguo",
-    "times_corrected": 189
+    "times_corrected": 194
   },
   "440|GYPSOPHILA|GYPSOPHILA XL RAINBOW MIX|80|25|": {
     "articulo_id": 34976,
@@ -17209,7 +17209,7 @@
     "raw": "96632 1 hb 450 Gyp Xl Rainbow Mix 80 cm/750 gr Violeta Flowers 450 25 18 $ 8 ,50 $ 1 53,00",
     "invoice": "",
     "status": "ambiguo",
-    "times_corrected": 37
+    "times_corrected": 38
   },
   "6323|HYDRANGEAS|PREMIUM TENIDA YELLOW|60|1|": {
     "articulo_id": 22735,
@@ -26215,8 +26215,8 @@
     "invoice": ""
   },
   "310|CARNATIONS|ROJO|70|20|SELECT": {
-    "articulo_id": 12570,
-    "articulo_name": "CLAVEL COL FANCY ROJO 70CM 440U GOLDEN SANTOS",
+    "articulo_id": 12820,
+    "articulo_name": "CLAVEL FANCY ROJO 70CM 20U GOLDEN",
     "origen": "auto",
     "status": "aprendido_en_prueba",
     "provider_id": 310,
@@ -26230,7 +26230,7 @@
     "times_used": 0,
     "times_confirmed": 0,
     "times_corrected": 0,
-    "first_seen_at": "2026-04-17T09:29:41",
+    "first_seen_at": "2026-04-20T16:24:07",
     "last_confirmed_at": ""
   },
   "2229|ROSES|IGUANA|50|25|": {
@@ -26337,7 +26337,7 @@
     "raw": "ALSTRO (TSTEM ASSORTED SUPERSELEC 1 80 80 .240 19.20",
     "invoice": "93725",
     "status": "ambiguo",
-    "times_corrected": 629
+    "times_corrected": 646
   },
   "281|ALSTROEMERIA|MIXTO|0|10|SELECT": {
     "articulo_id": 12787,
@@ -26352,7 +26352,7 @@
     "raw": "ALSTRO (TSTEM ASSORTED SELECT 2 100 200 .180 36.00",
     "invoice": "94114",
     "status": "ambiguo",
-    "times_corrected": 259
+    "times_corrected": 266
   },
   "281|ALSTROEMERIA|WHITE|0|10|SELECT": {
     "articulo_id": 12723,
@@ -26367,7 +26367,7 @@
     "raw": "ALSTRO (TSTEM WHITE SELECT 1 100 100 .180 18.00",
     "invoice": "94114",
     "status": "ambiguo",
-    "times_corrected": 111
+    "times_corrected": 114
   },
   "281|ROSES|GARDEN MAYRA`S WHITE|40|25|": {
     "articulo_id": 34182,
@@ -26427,7 +26427,7 @@
     "raw": "1 H LIMONADA 12 25 50 300 0,320 96,000",
     "invoice": "0000254785",
     "status": "ambiguo",
-    "times_corrected": 83
+    "times_corrected": 87
   },
   "13001|ROSES|TESSA-D LIMONADA|60|4|": {
     "articulo_id": 35087,
@@ -30625,7 +30625,7 @@
     "raw": "5 H Rose Freedom X 10 - 50 47806- 50 GONZA x 10 0603.11.00.00 200 1000 ST 0.32 320.00",
     "invoice": "",
     "status": "ambiguo",
-    "times_corrected": 39
+    "times_corrected": 40
   },
   "90012|ROSES|TIFFANY|60|25|": {
     "articulo_id": 37198,
@@ -31191,7 +31191,7 @@
     "size": 40,
     "stems_per_bunch": 25,
     "grade": "",
-    "raw": "H DANS Frutteto 8 25 40 200 0,220 44,000",
+    "raw": "2 H Frutteto 8 25 40 200 0,220 44,000",
     "invoice": "",
     "times_used": 0,
     "times_confirmed": 0,
@@ -31210,7 +31210,7 @@
     "size": 40,
     "stems_per_bunch": 25,
     "grade": "",
-    "raw": "H DANS Momentum 2 25 40 50 0,220 11,000",
+    "raw": "H Momentum 2 25 40 50 0,220 11,000",
     "invoice": "",
     "times_used": 0,
     "times_confirmed": 0,
@@ -31248,7 +31248,7 @@
     "size": 50,
     "stems_per_bunch": 25,
     "grade": "",
-    "raw": "H FVIDA Frutteto 4 25 50 100 0,300 30,000",
+    "raw": "H Frutteto 4 25 50 100 0,280 28,000",
     "invoice": "",
     "times_used": 0,
     "times_confirmed": 0,
@@ -31356,7 +31356,7 @@
     "size": 60,
     "stems_per_bunch": 25,
     "grade": "",
-    "raw": "6 H Mondial 14 25 60 350 0,350 122,500",
+    "raw": "7 H Mondial 14 25 60 350 0,350 122,500",
     "invoice": "",
     "times_used": 0,
     "times_confirmed": 0,
@@ -31388,7 +31388,7 @@
     "size": 60,
     "stems_per_bunch": 25,
     "grade": "",
-    "raw": "8 H Explorer 14 25 60 350 0,350 122,500",
+    "raw": "9 H Explorer 14 25 60 350 0,350 122,500",
     "invoice": "",
     "times_used": 0,
     "times_confirmed": 0,
@@ -32838,7 +32838,7 @@
     "raw": "SALMA 60 25 4 100 0.400 40.000",
     "invoice": "",
     "status": "ambiguo",
-    "times_corrected": 38
+    "times_corrected": 39
   },
   "90018|ROSES|ABSOLUTE IN PINK|60|25|": {
     "articulo_id": 31605,
@@ -33315,7 +33315,7 @@
     "size": 50,
     "stems_per_bunch": 25,
     "grade": "",
-    "raw": "Rosas - Mondial 50cm 0,00 0,00 300 0,24 72,00",
+    "raw": "Rosas - Mondial 50cm 0,00 0,00 150 0,30 45,00",
     "invoice": "",
     "times_used": 0,
     "times_confirmed": 6,
@@ -33334,7 +33334,7 @@
     "size": 50,
     "stems_per_bunch": 25,
     "grade": "",
-    "raw": "Rosas - Explorer 50cm 0,00 0,00 900 0,25 225,00",
+    "raw": "Rosas - Explorer 50cm 0,00 0,00 350 0,35 122,50",
     "invoice": "",
     "times_used": 0,
     "times_confirmed": 4,
@@ -33366,7 +33366,7 @@
     "size": 50,
     "stems_per_bunch": 25,
     "grade": "",
-    "raw": "Rosas - Frutteto 50cm 0,00 0,00 350 0,26 91,00",
+    "raw": "Rosas - Frutteto 50cm 0,00 0,00 300 0,25 75,00",
     "invoice": "",
     "times_used": 0,
     "times_confirmed": 1,
@@ -34550,7 +34550,7 @@
     "raw": "2 HB MONDIAL. 25 X .00   2        50.00 0.30 15.00",
     "invoice": "",
     "status": "ambiguo",
-    "times_corrected": 111
+    "times_corrected": 114
   },
   "90038|ROSES|MONDIAL.|60|25|": {
     "articulo_id": 32319,
@@ -34565,7 +34565,7 @@
     "raw": "2 HB MONDIAL. 25 X .00    7       175.00 0.35 61.25",
     "invoice": "",
     "status": "ambiguo",
-    "times_corrected": 74
+    "times_corrected": 76
   },
   "90038|ROSES|PALOMA|50|25|": {
     "articulo_id": 35877,
@@ -35013,7 +35013,7 @@
     "raw": "1 H Rose Freedom X 10 - 50 45337 50 GONZA X 10 0603.11.00.00 200 200 ST 0.30 60.00",
     "invoice": "",
     "status": "ambiguo",
-    "times_corrected": 72
+    "times_corrected": 74
   },
   "90044|ROSES|VENDELA|50|25|": {
     "articulo_id": 32426,
@@ -35584,7 +35584,7 @@
     "raw": "2 HB EXPLORER. 25 X .00   4        100 0.30 30.00",
     "invoice": "1775728457_TIERRA_VERDE2.pdf",
     "status": "ambiguo",
-    "times_corrected": 74
+    "times_corrected": 76
   },
   "90038|ROSES|EXPLORER°|50|25|": {
     "articulo_id": 32252,
@@ -35599,7 +35599,7 @@
     "raw": "2 HB EXPLORER° 25 X .00   8        200 0.30 60.00",
     "invoice": "1775728457_TIERRA_VERDE2.pdf",
     "status": "ambiguo",
-    "times_corrected": 74
+    "times_corrected": 76
   },
   "11748|ROSES|MAGIC TIMES|40|25|": {
     "articulo_id": 35187,
@@ -36453,7 +36453,7 @@
     "raw": "HB 1 0,5 EXPLORER 0603.11.00.60 25 14 14 350 0,32 112,00",
     "invoice": "1776252553_ROSABELLA.pdf",
     "status": "ambiguo",
-    "times_corrected": 74
+    "times_corrected": 76
   },
   "90010|CARNATIONS|SELECT CREAM|0|20|": {
     "articulo_id": 12908,
@@ -36710,8 +36710,8 @@
     "last_confirmed_at": ""
   },
   "11748|ROSES|TOPAZ|50|25|": {
-    "articulo_id": 32420,
-    "articulo_name": "ROSA COL TOPAZ 50CM 25U",
+    "articulo_id": 37222,
+    "articulo_name": "ROSA TOPAZ 50CM 25U PONDEROSA",
     "origen": "auto",
     "status": "aprendido_en_prueba",
     "provider_id": 11748,
@@ -36725,7 +36725,7 @@
     "times_used": 0,
     "times_confirmed": 0,
     "times_corrected": 0,
-    "first_seen_at": "2026-04-15T16:20:48",
+    "first_seen_at": "2026-04-20T16:24:28",
     "last_confirmed_at": ""
   },
   "11748|ROSES|MAGIC TIME|40|25|": {
@@ -37081,7 +37081,7 @@
     "size": 40,
     "stems_per_bunch": 25,
     "grade": "",
-    "raw": "1 H DANS Brighton 1 25 40 25 0,220 5,500",
+    "raw": "H Brighton 1 25 40 25 0,250 6,250",
     "invoice": "",
     "times_used": 0,
     "times_confirmed": 0,
@@ -38715,7 +38715,7 @@
     "size": 60,
     "stems_per_bunch": 25,
     "grade": "",
-    "raw": "20 HB VINTAGE 25 X .00    10       250 0.35 87.50",
+    "raw": "4 HB VINTAGE 25 X .00    12       300.00 0.35 105.00",
     "invoice": "",
     "times_used": 0,
     "times_confirmed": 1,
@@ -41147,7 +41147,7 @@
     "size": 40,
     "stems_per_bunch": 25,
     "grade": "",
-    "raw": "ROSE VENDELA WHITE 40CM OF CO-FREE0603110050 2 HB 12 25 600 0.220 $ 132.000",
+    "raw": "ROSE VENDELA WHITE 40CM CO-FREE0603110050 1 HB 12 25 300 0.240 $ 72.00",
     "invoice": "",
     "times_used": 0,
     "times_confirmed": 0,
@@ -41166,7 +41166,7 @@
     "size": 40,
     "stems_per_bunch": 25,
     "grade": "",
-    "raw": "ROSE PINK MONDIAL PINK 40CM 4 25 0.220",
+    "raw": "ROSE PINK MONDIAL PINK 40CM CO-FREE0603110050 1 HB 12 25 300 0.240 $ 72.00",
     "invoice": "",
     "times_used": 0,
     "times_confirmed": 0,
@@ -41365,8 +41365,8 @@
     "last_confirmed_at": ""
   },
   "435|ROSES|EXPLORER|50|25|": {
-    "articulo_id": 32950,
-    "articulo_name": "ROSA EC EXPLORER 50CM 25U",
+    "articulo_id": 33755,
+    "articulo_name": "ROSA EXPLORER 50CM 25U CANTIZA",
     "origen": "auto",
     "status": "aprendido_en_prueba",
     "provider_id": 435,
@@ -41380,7 +41380,7 @@
     "times_used": 0,
     "times_confirmed": 0,
     "times_corrected": 0,
-    "first_seen_at": "2026-04-16T09:28:29",
+    "first_seen_at": "2026-04-20T16:22:35",
     "last_confirmed_at": ""
   },
   "435|ROSES|COOL WATER|50|25|": {
@@ -41764,9 +41764,9 @@
     "last_confirmed_at": ""
   },
   "435|ROSES|PURPLE MOON|40|25|": {
-    "articulo_id": 33475,
-    "articulo_name": "ROSA EC SUGAR MOON 40CM 25U",
-    "origen": "auto",
+    "articulo_id": 36802,
+    "articulo_name": "ROSA SUGAR MOON 40CM 25U CANTIZA",
+    "origen": "auto-fuzzy",
     "status": "aprendido_en_prueba",
     "provider_id": 435,
     "species": "ROSES",
@@ -41779,7 +41779,7 @@
     "times_used": 0,
     "times_confirmed": 0,
     "times_corrected": 0,
-    "first_seen_at": "2026-04-16T09:28:44",
+    "first_seen_at": "2026-04-20T16:22:47",
     "last_confirmed_at": ""
   },
   "435|ROSES|ORANGE CRUSH|40|25|": {
@@ -41859,8 +41859,8 @@
     "last_confirmed_at": ""
   },
   "435|ROSES|JOY|40|25|": {
-    "articulo_id": 32938,
-    "articulo_name": "ROSA EC ENJOY 40CM 25U",
+    "articulo_id": 33669,
+    "articulo_name": "ROSA ENJOY 40CM 25U CANTIZA",
     "origen": "auto",
     "status": "aprendido_en_prueba",
     "provider_id": 435,
@@ -41874,7 +41874,7 @@
     "times_used": 0,
     "times_confirmed": 0,
     "times_corrected": 0,
-    "first_seen_at": "2026-04-16T09:28:47",
+    "first_seen_at": "2026-04-20T16:22:49",
     "last_confirmed_at": ""
   },
   "435|ROSES|KAHALA|40|25|": {
@@ -42049,9 +42049,9 @@
     "last_confirmed_at": ""
   },
   "4471|ROSES|ESPERANCE|50|25|": {
-    "articulo_id": 33688,
-    "articulo_name": "ROSA ESPERANCE 50CM 20U LIFEFLOWERS",
-    "origen": "auto",
+    "articulo_id": 33689,
+    "articulo_name": "ROSA ESPERANCE 50CM 25U LIFEFLOWERS",
+    "origen": "auto-marca",
     "status": "aprendido_en_prueba",
     "provider_id": 4471,
     "species": "ROSES",
@@ -42064,7 +42064,7 @@
     "times_used": 0,
     "times_confirmed": 0,
     "times_corrected": 0,
-    "first_seen_at": "2026-04-16T09:32:09",
+    "first_seen_at": "2026-04-20T16:24:52",
     "last_confirmed_at": ""
   },
   "90051|ROSES|DEEP PURPLE|60|25|A": {
@@ -42192,7 +42192,7 @@
     "size": 50,
     "stems_per_bunch": 25,
     "grade": "",
-    "raw": "2775 3 hb 350 Mondial 50 cm Zurita Maria/ Sae Flowers 1050 25 42 $ 0 ,28 $ 2 94,00",
+    "raw": "2744 2 hb 350 Mondial 50 cm Zurita Maria / Sae Flowers 700 25 28 $ 0,28 $ 1 96,00",
     "invoice": "",
     "times_used": 0,
     "times_confirmed": 0,
@@ -42211,7 +42211,7 @@
     "size": 50,
     "stems_per_bunch": 25,
     "grade": "",
-    "raw": "6464 1 hb 300 Nectarine 50 cm Floricola BloomingAcres 300 25 12 $ 0 ,35 $ 1 05,00",
+    "raw": "6088 1 hb 300 Nectarine 50 cm Blooming Acress 300 25 12 $ 0 ,35 $ 1 05,00",
     "invoice": "",
     "times_used": 0,
     "times_confirmed": 0,
@@ -42230,7 +42230,7 @@
     "size": 40,
     "stems_per_bunch": 25,
     "grade": "",
-    "raw": "7453 1 hb 350 Mondial 40 cm Franco Luzpa/ Coemxiger 350 25 14 $ 0 ,22 $ 7 7,00",
+    "raw": "1 hb 350 Mondial 40 cm Franco Luzpa/ Comexiger 350 25 14 $ 0,22 $ 7 7,00",
     "invoice": "",
     "times_used": 0,
     "times_confirmed": 0,
@@ -42410,9 +42410,9 @@
     "last_confirmed_at": ""
   },
   "435|ROSES|SWEET CAKE|40|25|": {
-    "articulo_id": 33489,
-    "articulo_name": "ROSA EC SWEET AKITO 40CM 25U",
-    "origen": "auto",
+    "articulo_id": 36975,
+    "articulo_name": "ROSA SWEET GRAPE 40CM 25U CANTIZA",
+    "origen": "auto-fuzzy",
     "status": "aprendido_en_prueba",
     "provider_id": 435,
     "species": "ROSES",
@@ -42425,7 +42425,7 @@
     "times_used": 0,
     "times_confirmed": 0,
     "times_corrected": 0,
-    "first_seen_at": "2026-04-16T09:36:33",
+    "first_seen_at": "2026-04-20T16:27:32",
     "last_confirmed_at": ""
   },
   "435|ROSES|UNFORGIVEN|40|25|": {
@@ -42790,9 +42790,9 @@
     "last_confirmed_at": ""
   },
   "435|ROSES|ESPERANCE|50|25|": {
-    "articulo_id": 32942,
-    "articulo_name": "ROSA EC ESPERANCE 50CM 25U",
-    "origen": "auto",
+    "articulo_id": 33687,
+    "articulo_name": "ROSA ESPERANCE 50CM 25U CANTIZA",
+    "origen": "auto-marca",
     "status": "aprendido_en_prueba",
     "provider_id": 435,
     "species": "ROSES",
@@ -42805,7 +42805,7 @@
     "times_used": 0,
     "times_confirmed": 0,
     "times_corrected": 0,
-    "first_seen_at": "2026-04-16T10:19:28",
+    "first_seen_at": "2026-04-20T16:27:32",
     "last_confirmed_at": ""
   },
   "435|ROSES|STARDUST|60|25|": {
@@ -47458,7 +47458,7 @@
     "size": 50,
     "stems_per_bunch": 25,
     "grade": "",
-    "raw": "H FVIDA Iguazu 4 25 50 100 0,300 30,000",
+    "raw": "1 H Iguazu 12 25 50 300 0,380 114,000",
     "invoice": "",
     "times_used": 0,
     "times_confirmed": 0,
@@ -48282,5 +48282,92 @@
     "times_corrected": 0,
     "first_seen_at": "2026-04-20T14:22:53",
     "last_confirmed_at": ""
+  },
+  "435|ROSES|ATOMIC|40|25|": {
+    "articulo_id": 31709,
+    "articulo_name": "ROSA ATOMIC 40CM 25U CANTIZA",
+    "origen": "auto",
+    "status": "aprendido_en_prueba",
+    "provider_id": 435,
+    "species": "ROSES",
+    "variety": "ATOMIC",
+    "size": 40,
+    "stems_per_bunch": 25,
+    "grade": "",
+    "raw": "ATOMIC 40CM N 25ST CZ",
+    "invoice": "1776694667_CANTIZA.pdf",
+    "times_used": 0,
+    "times_confirmed": 0,
+    "times_corrected": 0,
+    "first_seen_at": "2026-04-20T16:17:49",
+    "last_confirmed_at": ""
+  },
+  "435|ROSES|CHERRY O|50|25|": {
+    "articulo_id": 32171,
+    "articulo_name": "ROSA CHERRY O! 50CM 25U CANTIZA",
+    "origen": "auto-fuzzy",
+    "status": "aprendido_en_prueba",
+    "provider_id": 435,
+    "species": "ROSES",
+    "variety": "CHERRY O",
+    "size": 50,
+    "stems_per_bunch": 25,
+    "grade": "",
+    "raw": "CHERRY O 50CM N 25ST CZ",
+    "invoice": "1776694667_CANTIZA.pdf",
+    "times_used": 0,
+    "times_confirmed": 0,
+    "times_corrected": 0,
+    "first_seen_at": "2026-04-20T16:17:49",
+    "last_confirmed_at": ""
+  },
+  "435|ROSES|SWEETNESS|50|25|": {
+    "articulo_id": 37018,
+    "articulo_name": "ROSA SWEETNESS 50CM 25U CANTIZA",
+    "origen": "auto-matching",
+    "status": "aprendido_en_prueba",
+    "provider_id": 435,
+    "species": "ROSES",
+    "variety": "SWEETNESS",
+    "size": 50,
+    "stems_per_bunch": 25,
+    "grade": "",
+    "raw": "SWEETNESS 50CM N 25ST CZ",
+    "invoice": "1776694667_CANTIZA.pdf",
+    "times_used": 0,
+    "times_confirmed": 0,
+    "times_corrected": 0,
+    "first_seen_at": "2026-04-20T16:17:50",
+    "last_confirmed_at": ""
+  },
+  "435|ROSES|MOMENTUM|60|25|": {
+    "articulo_id": 35408,
+    "articulo_name": "ROSA MOMENTUM 60CM 25U CANTIZA",
+    "origen": "auto",
+    "status": "aprendido_en_prueba",
+    "provider_id": 435,
+    "species": "ROSES",
+    "variety": "MOMENTUM",
+    "size": 60,
+    "stems_per_bunch": 25,
+    "grade": "",
+    "raw": "MOMENTUM 60CM N 25ST CZ",
+    "invoice": "1776694667_CANTIZA.pdf",
+    "times_used": 0,
+    "times_confirmed": 0,
+    "times_corrected": 0,
+    "first_seen_at": "2026-04-20T16:17:52",
+    "last_confirmed_at": ""
+  },
+  "435|ROSES|ARCTICA|50|25|": {
+    "articulo_id": 31695,
+    "articulo_name": "ROSA ARTICA 50CM 25U CANTIZA",
+    "origen": "manual-web",
+    "provider_id": 435,
+    "species": "ROSES",
+    "variety": "ARCTICA",
+    "size": 50,
+    "stems_per_bunch": 25,
+    "grade": ""
   }
 }

@@ -10,6 +10,29 @@ Para lecciones transversales reutilizables, ver [`lessons.md`](lessons.md).
 
 ---
 
+## 2026-04-20 — sesión 9u: matcher perf 26× (deferred save + bulk MySQL)
+
+Optimización de performance del matcher. El profiling reveló que el
+80% del tiempo se iba en `json.dump()` dentro de `SynonymStore.save()`
+— cada línea disparaba un save completo del archivo (≈190ms × 42
+líneas = 8s de I/O). El fuzzy que la doc mencionaba como bottleneck
+era solo 1s.
+
+- **[src/sinonimos.py](../src/sinonimos.py) → `SynonymStore`**: nuevo
+  flag `_batch_depth` + context manager `batch()` que difiere el
+  save del JSON hasta salir del contexto. Durante batch, los
+  `add()` / `mark_*` solo marcan `_dirty`; al salir hay un único
+  `_write_to_disk()`.
+- **[src/sinonimos.py](../src/sinonimos.py) → `_sync_to_mysql` /
+  `_bulk_sync_to_mysql`**: sync MySQL también diferido y convertido
+  a `executemany` con una sola conexión al flush (antes 18ms ×
+  42 líneas abriendo/cerrando conexión = 0.77s).
+- **[src/matcher.py](../src/matcher.py) → `match_all`**: envuelve el
+  loop en `with self.syn.batch():` para activar el modo diferido.
+- **Perf**: factura ALEGRIA (43 líneas) **10.2s → 0.39s** (26×).
+  Por línea: **238ms → 9ms**. Sin regresión de métricas: golden
+  97.3%, autoapprove 90.2%, OK 76 idénticos a antes.
+
 ## 2026-04-20 — sesión 9t: TOTALES_MAL cleanup (TESSA + MILAGRO + MILONGA)
 
 Ataque a los 3 proveedores TOTALES_MAL. Los 3 subieron a OK.

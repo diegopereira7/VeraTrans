@@ -820,15 +820,25 @@ class Matcher:
                 and 'variety_match' in c.reasons
                 and 'size_exact' in c.reasons
             ]
-            # Solo boost si hay un único candidato con marca propia +
-            # variety+size exactos; múltiples empatarían y generarían
-            # ambiguous_match (−11pp autoapprove en provs con mucho
-            # catálogo marcado como ECOFLOR/MYSTIC).
-            # El boost debe superar synonyms legacy que llegan a ~1.19
-            # apuntando al genérico (caso TIMANA). Elevamos sobre el
-            # top alternativo + margen; la regla de negocio es: marca
-            # propia + variedad + talla exactas SIEMPRE gana.
-            if len(boost_candidates) == 1:
+            # Entre candidatos con marca propia preferimos `spb_match`
+            # (elige el SKU con la talla por bouquet correcta) y luego
+            # el score. Sólo promovemos si hay un líder claro — empates
+            # reales se dejan al scoring base para no crear
+            # ambiguous_match artificial en provs con mucho catálogo
+            # marcado (ECOFLOR/MYSTIC).
+            boost_candidates.sort(
+                key=lambda c: ('spb_match' in c.reasons, c.score),
+                reverse=True)
+            second = (boost_candidates[1] if len(boost_candidates) > 1
+                      else None)
+            clear_winner = (
+                len(boost_candidates) == 1
+                or (second is not None
+                    and (('spb_match' in boost_candidates[0].reasons
+                          and 'spb_match' not in second.reasons)
+                         or boost_candidates[0].score > second.score + 0.05))
+            )
+            if boost_candidates and clear_winner:
                 c = boost_candidates[0]
                 other_top = max(
                     (o.score for o in viable if o is not c), default=0.0)
