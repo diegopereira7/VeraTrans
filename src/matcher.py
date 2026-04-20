@@ -32,7 +32,7 @@ from typing import Optional
 
 from src.config import FUZZY_THRESHOLD_AUTO, translate_carnation_color
 from src.models import InvoiceLine
-from src.articulos import ArticulosLoader
+from src.articulos import ArticulosLoader, _normalize
 from src.sinonimos import SynonymStore
 
 logger = logging.getLogger(__name__)
@@ -145,23 +145,48 @@ def _known_brands() -> set[str]:
     return _FOREIGN_BRANDS_CACHE
 
 
+def _own_brands_norm(pkey: str, provider_id: int,
+                     art_loader: Optional[ArticulosLoader]) -> set[str]:
+    """Marca propia normalizada (sin acentos): pkey + brand_by_provider.
+
+    Se usa tanto en `_score_candidate` (para disparar brand_in_name) como
+    en `match_line` (para brand_boost). Centralizar evita divergencia
+    si en el futuro se añade una tercera fuente de marca.
+    """
+    brands: set[str] = set()
+    if pkey:
+        pn = _normalize(pkey)
+        if pn:
+            brands.add(pn)
+    if art_loader and provider_id:
+        catalog_brand = art_loader.brand_by_provider.get(provider_id)
+        if catalog_brand:
+            cn = _normalize(catalog_brand)
+            if cn:
+                brands.add(cn)
+    return brands
+
+
 def _detect_foreign_brand(nombre: str, pkey: str) -> Optional[str]:
     """Busca una marca conocida en el nombre del artículo que NO sea pkey.
 
     Devuelve el nombre de la marca ajena si hay match al final del nombre
     (patrón típico: ``ROSA XX 50CM 25U MARCA``), None si el nombre es
     genérico o si la marca que aparece es la del propio proveedor.
+
+    Comparación normalizada (sin tildes) para que ``TIMANÁ`` en el
+    nombre no se trate como marca ajena cuando pkey es ``TIMANA``.
     """
-    tokens = nombre.split()
+    tokens = _normalize(nombre).split()
     if not tokens:
         return None
     # Buscar entre las últimas 2 palabras (las marcas suelen ir al final).
     # Umbral 3 para cubrir marcas cortas como EQR; con 4 se escapaba.
     last_tokens = {t for t in tokens[-2:] if len(t) >= 3 and not t.endswith(('CM', 'U'))}
-    known = _known_brands()
-    pkey_up = (pkey or '').upper()
+    known = {_normalize(b) for b in _known_brands()}
+    pkey_norm = _normalize(pkey or '')
     for tok in last_tokens:
-        if tok in known and tok != pkey_up:
+        if tok in known and tok != pkey_norm:
             return tok
     return None
 
@@ -335,18 +360,10 @@ def _score_candidate(line: InvoiceLine, cand: Candidate,
     # — Marca/proveedor en nombre del artículo.
     # Comparamos con acentos normalizados: pkey='TIMANA' debe matchear
     # 'ROSA VENDELA ... TIMANÁ'. El catalog_brand lleva tilde en BD.
-    from src.articulos import _normalize
     pkey = (line.provider_key or '').upper()
-    pkey_norm = _normalize(pkey) if pkey else ''
     nombre_norm = _normalize(nombre)
-    own_brands_norm = set()
-    if pkey_norm:
-        own_brands_norm.add(pkey_norm)
-    if art_loader and provider_id:
-        catalog_brand = art_loader.brand_by_provider.get(provider_id)
-        if catalog_brand:
-            own_brands_norm.add(_normalize(catalog_brand))
-    own_brand_match = any(b in nombre_norm for b in own_brands_norm if b)
+    own_brands_norm = _own_brands_norm(pkey, provider_id, art_loader)
+    own_brand_match = any(b in nombre_norm for b in own_brands_norm)
     if own_brand_match:
         score += 0.25
         reasons.append(f'brand_in_name({pkey})')
@@ -406,7 +423,6 @@ def _strip_life_delegation(variety: str, art_index: dict) -> str:
                             → try removing 2 words: "EXPLORER" (known) → return "EXPLORER"
     "MARL EXPLORER" → try "EXPLORER" (known) → return "EXPLORER"
     """
-    from src.articulos import _normalize
     v = _normalize(variety)
     words = v.split()
     if len(words) <= 1:
@@ -424,8 +440,10 @@ def _strip_life_delegation(variety: str, art_index: dict) -> str:
 _COLOR_PREFIX_RE = re.compile(
     r'^(?:PINK|RED|ORANGE|YELLOW|WHITE|PEACH|CREAM|SALMON|HOT PINK|LIGHT PINK)\s+', re.I)
 
+# El input a la regex viene ya por _normalize (espacios colapsados a
+# un espacio único), así que basta 'HOT PINK' literal en ambas regex.
 _COLOR_SUFFIX_RE = re.compile(
-    r'\s+(?:PINK|RED|ORANGE|YELLOW|WHITE|PEACH|CREAM|SALMON|HOT\s+PINK|LIGHT\s+PINK|BLANCO|NARANJA|AMARILLO|ROJO|ROSA)$', re.I)
+    r'\s+(?:PINK|RED|ORANGE|YELLOW|WHITE|PEACH|CREAM|SALMON|HOT PINK|LIGHT PINK|BLANCO|NARANJA|AMARILLO|ROJO|ROSA)$', re.I)
 
 _CONNECTOR_RE = re.compile(r'\s+(?:AND|&|Y)\s+', re.I)
 
@@ -436,7 +454,6 @@ def _strip_color_prefix(variety: str, art_index: dict) -> str | None:
     "PINK ESPERANCE" → "ESPERANCE" (if ESPERANCE exists in catalog)
     "PINK FLOYD" → None (FLOYD doesn't exist, so keep PINK FLOYD)
     """
-    from src.articulos import _normalize
     v = _normalize(variety)
     m = _COLOR_PREFIX_RE.match(v)
     if not m:
@@ -455,7 +472,6 @@ def _simplified_variants(variety: str) -> list[str]:
     ("HIGH AND MAGIC ORANGE") no coincide literal con el catálogo
     ("HIGH MAGIC BICOLOR"). El que llama filtra por existencia.
     """
-    from src.articulos import _normalize
     v = _normalize(variety)
     variants = [v]
     # Variante sin color suffix
@@ -485,7 +501,6 @@ def _strip_connector(variety: str, art_index: dict) -> str | None:
     Facturas escriben a veces variedades con conectores que el catálogo
     no conserva. Esto permite recuperar el match base.
     """
-    from src.articulos import _normalize
     v = _normalize(variety)
     simplified = _CONNECTOR_RE.sub(' ', v)
     simplified = re.sub(r'\s+', ' ', simplified).strip()
@@ -506,7 +521,6 @@ def _strip_color_suffix(variety: str, art_index: dict) -> str | None:
     "PINK MONDIAL PINK" → "PINK MONDIAL" (if PINK MONDIAL exists)
     "MONDIAL WHITE" → "MONDIAL" (if MONDIAL exists)
     """
-    from src.articulos import _normalize
     v = _normalize(variety)
     m = _COLOR_SUFFIX_RE.search(v)
     if not m:
@@ -717,6 +731,7 @@ class Matcher:
         priority_order = {
             'synonym': 0, 'priority': 1, 'branded': 2, 'exact': 3,
             'delegation': 4, 'color_strip': 4,
+            'connector_strip': 4, 'bicolor_ext': 4,
             'rose_ec': 5, 'rose_col': 5, 'fuzzy': 6,
         }
         best_by_id: dict[int, Candidate] = {}
@@ -794,19 +809,9 @@ class Matcher:
         # proveedor en el nombre Y tiene variety+size EXACTO, promoverlo.
         # Regla de negocio: el artículo con marca propia SIEMPRE gana
         # sobre genéricos o marcas ajenas con la misma variedad+talla.
-        # Score 1.20 garantiza que domina synonyms legacy del genérico
-        # (trust 0.55 + provider_history llegaban a 1.18–1.20).
         # size_close (±10cm) NO cuenta: si el parser leyó 50CM y hay
         # un artículo 60CM con la misma marca, no queremos empatarlos.
-        # Marca propia se deriva del catálogo (brand_by_provider) y
-        # también del pkey — el provider_id del config (p.ej. 90039
-        # TIMANA) no siempre coincide con el id_proveedor del catálogo
-        # (2651), así que pkey normalizado es el fallback más fiable.
-        from src.articulos import _normalize
-        catalog_brand = self.art.brand_by_provider.get(provider_id) or ''
-        pkey_norm = _normalize(pkey) if pkey else ''
-        catalog_brand_norm = _normalize(catalog_brand) if catalog_brand else ''
-        own_brands_norm = {b for b in (catalog_brand_norm, pkey_norm) if b}
+        own_brands_norm = _own_brands_norm(pkey, provider_id, self.art)
         if own_brands_norm:
             boost_candidates = [
                 c for c in viable
