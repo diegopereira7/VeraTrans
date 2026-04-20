@@ -440,8 +440,8 @@
     "last_confirmed_at": ""
   },
   "435|ROSES|JOY|50|25|": {
-    "articulo_id": 32939,
-    "articulo_name": "ROSA EC ENJOY 50CM 25U",
+    "articulo_id": 34689,
+    "articulo_name": "ROSA JOY 50CM 25U CANTIZA",
     "origen": "auto",
     "status": "aprendido_en_prueba",
     "provider_id": 435,
@@ -455,12 +455,12 @@
     "times_used": 0,
     "times_confirmed": 0,
     "times_corrected": 0,
-    "first_seen_at": "2026-04-16T09:36:28",
+    "first_seen_at": "2026-04-20T11:47:03",
     "last_confirmed_at": ""
   },
   "435|ROSES|JOY|60|25|": {
-    "articulo_id": 32940,
-    "articulo_name": "ROSA EC ENJOY 60CM 25U",
+    "articulo_id": 34690,
+    "articulo_name": "ROSA JOY 60CM 25U CANTIZA",
     "origen": "auto",
     "status": "aprendido_en_prueba",
     "provider_id": 435,
@@ -474,7 +474,7 @@
     "times_used": 0,
     "times_confirmed": 0,
     "times_corrected": 0,
-    "first_seen_at": "2026-04-16T09:36:29",
+    "first_seen_at": "2026-04-20T11:47:03",
     "last_confirmed_at": ""
   },
   "435|ROSES|PURPLE FICTION|50|25|": {
@@ -1575,7 +1575,7 @@
     "size": 70,
     "stems_per_bunch": 20,
     "grade": "FANCY",
-    "raw": "5 H 500 2500 CONSUMER BUNCH CARNATION FANCY CARN FCY MIX CB S2 0.165 412.50",
+    "raw": "5 H 500 2500 CONSUMER BUNCH CARNATION FANCY BURGUNDY FCY CB S2 0.190 475.00",
     "invoice": "",
     "times_used": 0,
     "times_confirmed": 1,
@@ -1594,7 +1594,7 @@
     "size": 70,
     "stems_per_bunch": 20,
     "grade": "FANCY",
-    "raw": "1 H 500 500 CONSUMER BUNCH CARNATION FANCY ASTURIAS FCY WH CB S2 0.170 85.00",
+    "raw": "6 H 500 3000 CONSUMER BUNCH CARNATION FANCY BLANCO FCY CB S2 0.165 495.00",
     "invoice": "",
     "times_used": 0,
     "times_confirmed": 0,
@@ -1613,7 +1613,7 @@
     "size": 70,
     "stems_per_bunch": 20,
     "grade": "FANCY",
-    "raw": "1 H 500 500 CONSUMER BUNCH CARNATION FANCY R48 FCY RD CB S2 0.170 85.00",
+    "raw": "4 H 500 2000 CONSUMER BUNCH CARNATION FANCY RED FCY CB S2 0.190 380.00",
     "invoice": "",
     "times_used": 0,
     "times_confirmed": 0,
@@ -1651,7 +1651,7 @@
     "size": 70,
     "stems_per_bunch": 20,
     "grade": "FANCY",
-    "raw": "1 H 500 500 CONSUMER BUNCH CARNATION FANCY FCY YW CB S2 0.170 85.00",
+    "raw": "4 H 500 2000 CONSUMER BUNCH CARNATION FANCY YELLOW FCY CB S2 0.190 380.00",
     "invoice": "",
     "times_used": 0,
     "times_confirmed": 0,
@@ -1689,7 +1689,7 @@
     "size": 70,
     "stems_per_bunch": 20,
     "grade": "FANCY",
-    "raw": "1 H 500 500 CONSUMER BUNCH CARNATION FANCY R45 NOVEDADES+ BICOL CB S2 0.170 85.00",
+    "raw": "1 H 500 500 CONSUMER BUNCH CARNATION FANCY ASTURIAS BIC CB S2 0.180 90.00",
     "invoice": "",
     "times_used": 0,
     "times_confirmed": 0,
@@ -3059,7 +3059,7 @@
     "size": 70,
     "stems_per_bunch": 25,
     "grade": "",
-    "raw": "4 QB EXPLORER 25 X .00     1      25 0.40 10.00",
+    "raw": "3 QB EXPLORER 25 X .00     2      50 0.40 20.00",
     "invoice": "",
     "times_used": 0,
     "times_confirmed": 3,
@@ -3078,7 +3078,7 @@
     "size": 70,
     "stems_per_bunch": 25,
     "grade": "",
-    "raw": "9 HB MONDIAL 25 X .00     8      200 0.40 80.00",
+    "raw": "4 HB MONDIAL 25 X .00     12      300.00 0.40 120.00",
     "invoice": "",
     "times_used": 0,
     "times_confirmed": 4,
@@ -3097,7 +3097,7 @@
     "size": 50,
     "stems_per_bunch": 25,
     "grade": "",
-    "raw": "19 HB EXPLORER 25 X .00   12        300 0.30 90.00",
+    "raw": "4 HB EXPLORER 25 X .00   5        125 0.30 37.50",
     "invoice": "",
     "times_used": 0,
     "times_confirmed": 7,
@@ -3116,7 +3116,7 @@
     "size": 50,
     "stems_per_bunch": 25,
     "grade": "",
-    "raw": "15 HB MONDIAL 25 X .00   12        300 0.30 90.00",
+    "raw": "4 HB MONDIAL 25 X .00   5        125 0.30 37.50",
     "invoice": "",
     "times_used": 0,
     "times_confirmed": 5,
@@ -3135,7 +3135,7 @@
     "size": 50,
     "stems_per_bunch": 25,
     "grade": "",
-    "raw": "16 HB BRIGHTON 25 X .00   3        75 0.30 22.50",
+    "raw": "4 HB BRIGHTON 25 X .00   1        25 0.30 7.50",
     "invoice": "",
     "times_used": 0,
     "times_confirmed": 4,
@@ -3192,7 +3192,7 @@
     "size": 60,
     "stems_per_bunch": 25,
     "grade": "",
-    "raw": "5 QB FRUTTETO 25 X .00    1       25 0.35 8.75",
+    "raw": "3 QB FRUTTETO 25 X .00    1       25 0.35 8.75",
     "invoice": "",
     "times_used": 0,
     "times_confirmed": 1,
@@ -3211,7 +3211,7 @@
     "size": 60,
     "stems_per_bunch": 25,
     "grade": "",
-    "raw": "18 HB MONDIAL 25 X .00    4       100 0.35 35.00",
+    "raw": "3 QB MONDIAL 25 X .00    1       25 0.35 8.75",
     "invoice": "",
     "times_used": 0,
     "times_confirmed": 3,
@@ -3249,7 +3249,7 @@
     "size": 60,
     "stems_per_bunch": 25,
     "grade": "",
-    "raw": "18 HB EXPLORER 25 X .00    4       100 0.35 35.00",
+    "raw": "1 HB EXPLORER 25 X .00    12       300.00 0.35 105.00",
     "invoice": "",
     "times_used": 0,
     "times_confirmed": 3,
@@ -6401,8 +6401,8 @@
     "last_confirmed_at": ""
   },
   "13001|ROSES|FRUTTETO|50|4|": {
-    "articulo_id": 33000,
-    "articulo_name": "ROSA EC FRUTTETO 50CM 25U",
+    "articulo_id": 34103,
+    "articulo_name": "ROSA FRUTTETO 50CM 25U TESSA",
     "origen": "auto",
     "status": "aprendido_en_prueba",
     "provider_id": 13001,
@@ -6416,7 +6416,7 @@
     "times_used": 0,
     "times_confirmed": 0,
     "times_corrected": 0,
-    "first_seen_at": "2026-04-17T11:59:02",
+    "first_seen_at": "2026-04-20T11:11:54",
     "last_confirmed_at": ""
   },
   "13001|ROSES|EXPLORER|60|12|": {
@@ -6913,8 +6913,8 @@
     "last_confirmed_at": ""
   },
   "1429|ROSES|ALBA|50|25|": {
-    "articulo_id": 32703,
-    "articulo_name": "ROSA EC ALBA 50CM 25U",
+    "articulo_id": 31626,
+    "articulo_name": "ROSA ALBA 50CM 25U LUXUS",
     "origen": "auto",
     "status": "aprendido_en_prueba",
     "provider_id": 1429,
@@ -6928,7 +6928,7 @@
     "times_used": 0,
     "times_confirmed": 0,
     "times_corrected": 0,
-    "first_seen_at": "2026-04-15T17:08:32",
+    "first_seen_at": "2026-04-20T11:43:50",
     "last_confirmed_at": ""
   },
   "1429|ROSES|QUICKSAND|50|25|": {
@@ -7857,7 +7857,7 @@
     "size": 50,
     "stems_per_bunch": 25,
     "grade": "",
-    "raw": "5 H MONDIAL 12 25 50 300 0,320 96,000",
+    "raw": "4 H MONDIAL 12 25 50 300 0,300 90,000",
     "invoice": "",
     "times_used": 0,
     "times_confirmed": 5,
@@ -8039,8 +8039,8 @@
     "last_confirmed_at": ""
   },
   "1429|ROSES|DYNAMIC|50|25|": {
-    "articulo_id": 32685,
-    "articulo_name": "ROSA DYNAMIC 50CM 25U UMA",
+    "articulo_id": 32686,
+    "articulo_name": "ROSA DYNAMIC 50CM 25U LUXUS",
     "origen": "auto",
     "status": "aprendido_en_prueba",
     "provider_id": 1429,
@@ -8054,7 +8054,7 @@
     "times_used": 0,
     "times_confirmed": 0,
     "times_corrected": 0,
-    "first_seen_at": "2026-04-15T17:08:31",
+    "first_seen_at": "2026-04-20T11:09:36",
     "last_confirmed_at": ""
   },
   "1429|ROSES|DYNAMIC|60|25|": {
@@ -8161,8 +8161,8 @@
     "invoice": "LUXUS 0000035145.pdf"
   },
   "1429|ROSES|STILETTO|50|25|": {
-    "articulo_id": 33474,
-    "articulo_name": "ROSA EC STILETTO 50CM 25U",
+    "articulo_id": 36798,
+    "articulo_name": "ROSA STILETTO 50CM 25U LUXUS",
     "origen": "auto",
     "status": "aprendido_en_prueba",
     "provider_id": 1429,
@@ -8176,7 +8176,7 @@
     "times_used": 0,
     "times_confirmed": 0,
     "times_corrected": 0,
-    "first_seen_at": "2026-04-15T17:08:28",
+    "first_seen_at": "2026-04-20T11:43:48",
     "last_confirmed_at": ""
   },
   "1429|ROSES|TIBET|50|25|": {
@@ -12236,8 +12236,8 @@
     "invoice": ""
   },
   "1429|ROSES|CORAL REEF|50|25|": {
-    "articulo_id": 32883,
-    "articulo_name": "ROSA EC CORAL REEF 50CM 25U",
+    "articulo_id": 32482,
+    "articulo_name": "ROSA CORAL REEF 50CM 25U LUXUS",
     "origen": "auto",
     "status": "aprendido_en_prueba",
     "provider_id": 1429,
@@ -12251,7 +12251,7 @@
     "times_used": 0,
     "times_confirmed": 0,
     "times_corrected": 0,
-    "first_seen_at": "2026-04-15T17:08:27",
+    "first_seen_at": "2026-04-20T11:43:47",
     "last_confirmed_at": ""
   },
   "1429|ROSES|FREEDOM|40|25|": {
@@ -12792,8 +12792,8 @@
     "invoice": "PRESTIGE 2165.pdf"
   },
   "11391|ROSES|PINK OHARA|50|25|": {
-    "articulo_id": 32348,
-    "articulo_name": "ROSA COL PINK OHARA 50CM 25U",
+    "articulo_id": 35790,
+    "articulo_name": "ROSA OHARA ROSA 50CM 25U PRESTIGE",
     "origen": "auto",
     "status": "aprendido_en_prueba",
     "provider_id": 11391,
@@ -12807,7 +12807,7 @@
     "times_used": 0,
     "times_confirmed": 0,
     "times_corrected": 0,
-    "first_seen_at": "2026-04-17T12:27:16",
+    "first_seen_at": "2026-04-20T11:45:35",
     "last_confirmed_at": ""
   },
   "2229|ROSES|LEMONADE|50|25|": {
@@ -12998,8 +12998,8 @@
     "last_confirmed_at": ""
   },
   "1429|ROSES|CREAM CARPE DIEM|50|25|": {
-    "articulo_id": 32816,
-    "articulo_name": "ROSA EC CARPE DIEM 50CM 25U",
+    "articulo_id": 32562,
+    "articulo_name": "ROSA CREAM CARPE DIEM 50CM 25U LUXUS",
     "origen": "auto",
     "status": "aprendido_en_prueba",
     "provider_id": 1429,
@@ -13013,7 +13013,7 @@
     "times_used": 0,
     "times_confirmed": 0,
     "times_corrected": 0,
-    "first_seen_at": "2026-04-15T17:08:33",
+    "first_seen_at": "2026-04-20T11:43:51",
     "last_confirmed_at": ""
   },
   "1429|ROSES|SWEET UNIQUE|50|25|": {
@@ -14664,8 +14664,8 @@
     "invoice": "OLIMPO 001001 0247041.pdf"
   },
   "2226|ROSES|MAGGI|60|25|": {
-    "articulo_id": 33164,
-    "articulo_name": "ROSA EC MAGGI 60CM 25U",
+    "articulo_id": 35177,
+    "articulo_name": "ROSA MAGGIE 60CM 25U LA ROSALEDA",
     "origen": "auto",
     "status": "aprendido_en_prueba",
     "provider_id": 2226,
@@ -14679,12 +14679,12 @@
     "times_used": 0,
     "times_confirmed": 0,
     "times_corrected": 0,
-    "first_seen_at": "2026-04-15T17:10:58",
+    "first_seen_at": "2026-04-20T11:45:47",
     "last_confirmed_at": ""
   },
   "2226|ROSES|MOMENTUM|60|25|": {
-    "articulo_id": 33224,
-    "articulo_name": "ROSA EC MOMENTUM 60CM 25U",
+    "articulo_id": 35406,
+    "articulo_name": "ROSA MOMENTUM 60CM 25U LA ROSALEDA",
     "origen": "auto",
     "status": "aprendido_en_prueba",
     "provider_id": 2226,
@@ -14698,12 +14698,12 @@
     "times_used": 0,
     "times_confirmed": 0,
     "times_corrected": 0,
-    "first_seen_at": "2026-04-15T17:10:58",
+    "first_seen_at": "2026-04-20T11:45:47",
     "last_confirmed_at": ""
   },
   "2226|ROSES|NEXUS|60|25|": {
-    "articulo_id": 33268,
-    "articulo_name": "ROSA EC NEXUS 60CM 25U",
+    "articulo_id": 35702,
+    "articulo_name": "ROSA NEXUS 60CM 25U LA ROSALEDA",
     "origen": "auto",
     "status": "aprendido_en_prueba",
     "provider_id": 2226,
@@ -14717,12 +14717,12 @@
     "times_used": 0,
     "times_confirmed": 0,
     "times_corrected": 0,
-    "first_seen_at": "2026-04-15T17:10:59",
+    "first_seen_at": "2026-04-20T11:45:47",
     "last_confirmed_at": ""
   },
   "2226|ROSES|PINK FLOYD|60|25|": {
-    "articulo_id": 33330,
-    "articulo_name": "ROSA EC PINK FLOYD 60CM 25U",
+    "articulo_id": 36013,
+    "articulo_name": "ROSA PINK FLOYD 60CM 25U LA ROSALEDA",
     "origen": "auto",
     "status": "aprendido_en_prueba",
     "provider_id": 2226,
@@ -14736,7 +14736,7 @@
     "times_used": 0,
     "times_confirmed": 0,
     "times_corrected": 0,
-    "first_seen_at": "2026-04-15T17:10:59",
+    "first_seen_at": "2026-04-20T11:45:48",
     "last_confirmed_at": ""
   },
   "2226|ROSES|PINK MONDIAL|60|25|": {
@@ -14759,8 +14759,8 @@
     "last_confirmed_at": ""
   },
   "2226|ROSES|ESPERANCE|60|25|": {
-    "articulo_id": 32943,
-    "articulo_name": "ROSA EC ESPERANCE 60CM 25U",
+    "articulo_id": 33709,
+    "articulo_name": "ROSA ESPERANCE 60CM 25U LA ROSALEDA",
     "origen": "auto",
     "status": "aprendido_en_prueba",
     "provider_id": 2226,
@@ -14774,12 +14774,12 @@
     "times_used": 0,
     "times_confirmed": 0,
     "times_corrected": 0,
-    "first_seen_at": "2026-04-15T17:11:00",
+    "first_seen_at": "2026-04-20T11:45:48",
     "last_confirmed_at": ""
   },
   "2226|ROSES|FRUTTETO|60|25|": {
-    "articulo_id": 33002,
-    "articulo_name": "ROSA EC FRUTTETO 60CM 25U",
+    "articulo_id": 34116,
+    "articulo_name": "ROSA FRUTTETO 60CM 25U LA ROSALEDA",
     "origen": "auto",
     "status": "aprendido_en_prueba",
     "provider_id": 2226,
@@ -14793,12 +14793,12 @@
     "times_used": 0,
     "times_confirmed": 0,
     "times_corrected": 0,
-    "first_seen_at": "2026-04-15T17:11:01",
+    "first_seen_at": "2026-04-20T11:45:39",
     "last_confirmed_at": ""
   },
   "2226|ROSES|MIA|70|25|": {
-    "articulo_id": 33206,
-    "articulo_name": "ROSA EC MIA 60CM 25U",
+    "articulo_id": 35349,
+    "articulo_name": "ROSA MIA 70CM 25U LA ROSALEDA",
     "origen": "auto",
     "status": "aprendido_en_prueba",
     "provider_id": 2226,
@@ -14812,12 +14812,12 @@
     "times_used": 0,
     "times_confirmed": 0,
     "times_corrected": 0,
-    "first_seen_at": "2026-04-17T11:05:08",
+    "first_seen_at": "2026-04-20T11:11:28",
     "last_confirmed_at": ""
   },
   "2226|ROSES|MONDIAL|70|25|": {
-    "articulo_id": 33233,
-    "articulo_name": "ROSA EC MONDIAL 70CM 25U",
+    "articulo_id": 35573,
+    "articulo_name": "ROSA MONDIAL 70CM 25U LA ROSALEDA",
     "origen": "auto",
     "status": "aprendido_en_prueba",
     "provider_id": 2226,
@@ -14831,12 +14831,12 @@
     "times_used": 0,
     "times_confirmed": 0,
     "times_corrected": 0,
-    "first_seen_at": "2026-04-15T17:11:01",
+    "first_seen_at": "2026-04-20T11:45:49",
     "last_confirmed_at": ""
   },
   "2226|ROSES|UNFORGIVEN|70|25|": {
-    "articulo_id": 33590,
-    "articulo_name": "ROSA EC UNFORGIVEN 60CM 25U",
+    "articulo_id": 37522,
+    "articulo_name": "ROSA UNFORGIVEN 70CM 25U LA ROSALEDA",
     "origen": "auto",
     "status": "aprendido_en_prueba",
     "provider_id": 2226,
@@ -14850,7 +14850,7 @@
     "times_used": 0,
     "times_confirmed": 0,
     "times_corrected": 0,
-    "first_seen_at": "2026-04-16T08:58:19",
+    "first_seen_at": "2026-04-20T11:11:28",
     "last_confirmed_at": ""
   },
   "2226|ROSES|VINTAGE|60|25|": {
@@ -14892,8 +14892,8 @@
     "last_confirmed_at": ""
   },
   "2226|ROSES|MOMENTUM|70|25|": {
-    "articulo_id": 33225,
-    "articulo_name": "ROSA EC MOMENTUM 70CM 25U",
+    "articulo_id": 35427,
+    "articulo_name": "ROSA MOMENTUM 70CM 25U LA ROSALEDA",
     "origen": "auto",
     "status": "aprendido_en_prueba",
     "provider_id": 2226,
@@ -14907,7 +14907,7 @@
     "times_used": 0,
     "times_confirmed": 0,
     "times_corrected": 0,
-    "first_seen_at": "2026-04-15T17:11:03",
+    "first_seen_at": "2026-04-20T11:45:51",
     "last_confirmed_at": ""
   },
   "2226|ROSES|PINK MONDIAL|70|25|": {
@@ -14930,8 +14930,8 @@
     "last_confirmed_at": ""
   },
   "2226|ROSES|EXPLORER|60|25|": {
-    "articulo_id": 32952,
-    "articulo_name": "ROSA EC EXPLORER 60CM 25U",
+    "articulo_id": 33792,
+    "articulo_name": "ROSA EXPLORER 60CM 25U LA ROSALEDA",
     "origen": "auto",
     "status": "aprendido_en_prueba",
     "provider_id": 2226,
@@ -14945,7 +14945,7 @@
     "times_used": 0,
     "times_confirmed": 0,
     "times_corrected": 0,
-    "first_seen_at": "2026-04-15T17:11:04",
+    "first_seen_at": "2026-04-20T11:45:51",
     "last_confirmed_at": ""
   },
   "2226|ROSES|COTTON X-PRESSION|50|25|": {
@@ -14968,8 +14968,8 @@
     "last_confirmed_at": ""
   },
   "2226|ROSES|MONDIAL|60|25|": {
-    "articulo_id": 33232,
-    "articulo_name": "ROSA EC MONDIAL 60CM 25U",
+    "articulo_id": 35533,
+    "articulo_name": "ROSA MONDIAL 60CM 25U LA ROSALEDA",
     "origen": "auto",
     "status": "aprendido_en_prueba",
     "provider_id": 2226,
@@ -14983,12 +14983,12 @@
     "times_used": 0,
     "times_confirmed": 0,
     "times_corrected": 0,
-    "first_seen_at": "2026-04-16T10:07:29",
+    "first_seen_at": "2026-04-20T11:45:39",
     "last_confirmed_at": ""
   },
   "2226|ROSES|SHIMMER|60|25|": {
-    "articulo_id": 33443,
-    "articulo_name": "ROSA EC SHIMMER 60CM 25U",
+    "articulo_id": 36485,
+    "articulo_name": "ROSA SHIMMER 60CM 25U LA ROSALEDA",
     "origen": "auto",
     "status": "aprendido_en_prueba",
     "provider_id": 2226,
@@ -15002,12 +15002,12 @@
     "times_used": 0,
     "times_confirmed": 0,
     "times_corrected": 0,
-    "first_seen_at": "2026-04-15T17:11:07",
+    "first_seen_at": "2026-04-20T11:45:53",
     "last_confirmed_at": ""
   },
   "2226|ROSES|VENDELA|60|25|": {
-    "articulo_id": 33602,
-    "articulo_name": "ROSA EC VENDELA 60CM 25U",
+    "articulo_id": 37595,
+    "articulo_name": "ROSA VENDELA 60CM 25U LA ROSALEDA",
     "origen": "auto",
     "status": "aprendido_en_prueba",
     "provider_id": 2226,
@@ -15021,12 +15021,12 @@
     "times_used": 0,
     "times_confirmed": 0,
     "times_corrected": 0,
-    "first_seen_at": "2026-04-15T17:11:07",
+    "first_seen_at": "2026-04-20T11:45:53",
     "last_confirmed_at": ""
   },
   "2226|ROSES|UNFORGIVEN|60|25|": {
-    "articulo_id": 33590,
-    "articulo_name": "ROSA EC UNFORGIVEN 60CM 25U",
+    "articulo_id": 37520,
+    "articulo_name": "ROSA UNFORGIVEN 60CM 25U LA ROSALEDA",
     "origen": "auto",
     "status": "aprendido_en_prueba",
     "provider_id": 2226,
@@ -15040,7 +15040,7 @@
     "times_used": 0,
     "times_confirmed": 0,
     "times_corrected": 0,
-    "first_seen_at": "2026-04-15T17:11:08",
+    "first_seen_at": "2026-04-20T11:45:53",
     "last_confirmed_at": ""
   },
   "2226|ROSES|TIFANNY|60|25|": {
@@ -15063,8 +15063,8 @@
     "last_confirmed_at": ""
   },
   "2226|ROSES|ESPERANCE|50|25|": {
-    "articulo_id": 32942,
-    "articulo_name": "ROSA EC ESPERANCE 50CM 25U",
+    "articulo_id": 33697,
+    "articulo_name": "ROSA ESPERANCE 50CM 25U LA ROSALEDA",
     "origen": "auto",
     "status": "aprendido_en_prueba",
     "provider_id": 2226,
@@ -15078,12 +15078,12 @@
     "times_used": 0,
     "times_confirmed": 0,
     "times_corrected": 0,
-    "first_seen_at": "2026-04-15T17:11:09",
+    "first_seen_at": "2026-04-20T11:45:54",
     "last_confirmed_at": ""
   },
   "2226|ROSES|FRUTTETO|50|25|": {
-    "articulo_id": 33000,
-    "articulo_name": "ROSA EC FRUTTETO 50CM 25U",
+    "articulo_id": 34093,
+    "articulo_name": "ROSA FRUTTETO 50CM 25U LA ROSALEDA",
     "origen": "auto",
     "status": "aprendido_en_prueba",
     "provider_id": 2226,
@@ -15097,7 +15097,7 @@
     "times_used": 0,
     "times_confirmed": 0,
     "times_corrected": 0,
-    "first_seen_at": "2026-04-15T17:11:09",
+    "first_seen_at": "2026-04-20T11:45:54",
     "last_confirmed_at": ""
   },
   "2226|ROSES|MAGIC TIMES|50|25|": {
@@ -15858,8 +15858,8 @@
     "invoice": "OLIMPO 001001 0247158.pdf"
   },
   "2226|ROSES|EXPLORER|50|25|": {
-    "articulo_id": 32950,
-    "articulo_name": "ROSA EC EXPLORER 50CM 25U",
+    "articulo_id": 33767,
+    "articulo_name": "ROSA EXPLORER 50CM 25U LA ROSALEDA",
     "origen": "auto",
     "status": "aprendido_en_prueba",
     "provider_id": 2226,
@@ -15873,12 +15873,12 @@
     "times_used": 0,
     "times_confirmed": 0,
     "times_corrected": 0,
-    "first_seen_at": "2026-04-15T17:10:52",
+    "first_seen_at": "2026-04-20T11:45:41",
     "last_confirmed_at": ""
   },
   "2226|ROSES|MONDIAL|50|25|": {
-    "articulo_id": 33230,
-    "articulo_name": "ROSA EC MONDIAL 50CM 25U",
+    "articulo_id": 35501,
+    "articulo_name": "ROSA MONDIAL 50CM 25U LA ROSALEDA",
     "origen": "auto",
     "status": "aprendido_en_prueba",
     "provider_id": 2226,
@@ -15892,7 +15892,7 @@
     "times_used": 0,
     "times_confirmed": 0,
     "times_corrected": 0,
-    "first_seen_at": "2026-04-15T17:11:06",
+    "first_seen_at": "2026-04-20T11:45:52",
     "last_confirmed_at": ""
   },
   "2226|ROSES|PALOMA|60|25|": {
@@ -15954,8 +15954,8 @@
     "invoice": ""
   },
   "2226|ROSES|PLAYA BLANCA|50|25|": {
-    "articulo_id": 33348,
-    "articulo_name": "ROSA EC PLAYA BLANCA 50CM 25U",
+    "articulo_id": 36159,
+    "articulo_name": "ROSA PLAYA BLANCA 50CM 25U LA ROSALEDA",
     "origen": "auto",
     "status": "aprendido_en_prueba",
     "provider_id": 2226,
@@ -15969,7 +15969,7 @@
     "times_used": 0,
     "times_confirmed": 0,
     "times_corrected": 0,
-    "first_seen_at": "2026-04-15T17:10:55",
+    "first_seen_at": "2026-04-20T11:45:44",
     "last_confirmed_at": ""
   },
   "2226|ROSES|TIBET|50|25|": {
@@ -16173,8 +16173,8 @@
     "invoice": ""
   },
   "2226|ROSES|CANDY X-PRESSION|50|25|": {
-    "articulo_id": 32809,
-    "articulo_name": "ROSA EC CANDY X-PRESSION 50CM 25U",
+    "articulo_id": 32109,
+    "articulo_name": "ROSA CANDY X-PRESSION 50CM 25U LA ROSALEDA",
     "origen": "auto",
     "status": "aprendido_en_prueba",
     "provider_id": 2226,
@@ -16188,7 +16188,7 @@
     "times_used": 0,
     "times_confirmed": 0,
     "times_corrected": 0,
-    "first_seen_at": "2026-04-15T17:10:54",
+    "first_seen_at": "2026-04-20T11:45:43",
     "last_confirmed_at": ""
   },
   "2226|ROSES|CANDY X-PRESSION|60|25|": {
@@ -17194,7 +17194,7 @@
     "raw": "15,00 QB HYD WHITE PREMIUM 350603199010 525 0,48 252,00",
     "invoice": "",
     "status": "ambiguo",
-    "times_corrected": 94
+    "times_corrected": 124
   },
   "440|GYPSOPHILA|GYPSOPHILA XL RAINBOW MIX|80|25|": {
     "articulo_id": 34976,
@@ -17209,7 +17209,7 @@
     "raw": "96632 1 hb 450 Gyp Xl Rainbow Mix 80 cm/750 gr Violeta Flowers 450 25 18 $ 8 ,50 $ 1 53,00",
     "invoice": "",
     "status": "ambiguo",
-    "times_corrected": 18
+    "times_corrected": 24
   },
   "6323|HYDRANGEAS|PREMIUM TENIDA YELLOW|60|1|": {
     "articulo_id": 22735,
@@ -26337,7 +26337,7 @@
     "raw": "ALSTRO (TSTEM ASSORTED SUPERSELEC 1 80 80 .240 19.20",
     "invoice": "93725",
     "status": "ambiguo",
-    "times_corrected": 306
+    "times_corrected": 408
   },
   "281|ALSTROEMERIA|MIXTO|0|10|SELECT": {
     "articulo_id": 12787,
@@ -26352,7 +26352,7 @@
     "raw": "ALSTRO (TSTEM ASSORTED SELECT 2 100 200 .180 36.00",
     "invoice": "94114",
     "status": "ambiguo",
-    "times_corrected": 126
+    "times_corrected": 168
   },
   "281|ALSTROEMERIA|WHITE|0|10|SELECT": {
     "articulo_id": 12723,
@@ -26367,7 +26367,7 @@
     "raw": "ALSTRO (TSTEM WHITE SELECT 1 100 100 .180 18.00",
     "invoice": "94114",
     "status": "ambiguo",
-    "times_corrected": 54
+    "times_corrected": 72
   },
   "281|ROSES|GARDEN MAYRA`S WHITE|40|25|": {
     "articulo_id": 34182,
@@ -26427,7 +26427,7 @@
     "raw": "1 H LIMONADA 12 25 50 300 0,320 96,000",
     "invoice": "0000254785",
     "status": "ambiguo",
-    "times_corrected": 50
+    "times_corrected": 62
   },
   "13001|ROSES|TESSA-D LIMONADA|60|4|": {
     "articulo_id": 35087,
@@ -27232,8 +27232,8 @@
     "invoice": ""
   },
   "90014|ROSES|WASABI|40|25|": {
-    "articulo_id": 33616,
-    "articulo_name": "ROSA EC WASABI 40CM 25U",
+    "articulo_id": 37711,
+    "articulo_name": "ROSA WASABI 40CM 25U FLORAROMA",
     "origen": "auto",
     "status": "aprendido_en_prueba",
     "provider_id": 90014,
@@ -27247,7 +27247,7 @@
     "times_used": 0,
     "times_confirmed": 0,
     "times_corrected": 0,
-    "first_seen_at": "2026-04-16T10:02:38",
+    "first_seen_at": "2026-04-20T11:42:04",
     "last_confirmed_at": ""
   },
   "90014|ROSES|PHOENIX|40|25|": {
@@ -27290,8 +27290,8 @@
     "invoice": ""
   },
   "90014|ROSES|MONDIAL|40|25|": {
-    "articulo_id": 33228,
-    "articulo_name": "ROSA EC MONDIAL 40CM 25U",
+    "articulo_id": 35437,
+    "articulo_name": "ROSA MONDIAL 40CM 25U FLORAROMA",
     "origen": "auto",
     "status": "aprendido_en_prueba",
     "provider_id": 90014,
@@ -27305,7 +27305,7 @@
     "times_used": 0,
     "times_confirmed": 0,
     "times_corrected": 0,
-    "first_seen_at": "2026-04-15T17:06:41",
+    "first_seen_at": "2026-04-20T11:41:52",
     "last_confirmed_at": ""
   },
   "90014|ROSES|PLAYA BLANCA|40|25|": {
@@ -27322,8 +27322,8 @@
     "invoice": ""
   },
   "90014|ROSES|EXPLORER|40|25|": {
-    "articulo_id": 32948,
-    "articulo_name": "ROSA EC EXPLORER 40CM 25U",
+    "articulo_id": 33732,
+    "articulo_name": "ROSA EXPLORER 40CM 25U FLORAROMA",
     "origen": "auto",
     "status": "aprendido_en_prueba",
     "provider_id": 90014,
@@ -27337,12 +27337,12 @@
     "times_used": 0,
     "times_confirmed": 0,
     "times_corrected": 0,
-    "first_seen_at": "2026-04-16T10:02:16",
+    "first_seen_at": "2026-04-20T11:41:51",
     "last_confirmed_at": ""
   },
   "90014|ROSES|EXPLORER|50|25|": {
-    "articulo_id": 32950,
-    "articulo_name": "ROSA EC EXPLORER 50CM 25U",
+    "articulo_id": 33758,
+    "articulo_name": "ROSA EXPLORER 50CM 25U FLORAROMA",
     "origen": "auto",
     "status": "aprendido_en_prueba",
     "provider_id": 90014,
@@ -27356,12 +27356,12 @@
     "times_used": 0,
     "times_confirmed": 0,
     "times_corrected": 0,
-    "first_seen_at": "2026-04-15T17:06:38",
+    "first_seen_at": "2026-04-20T11:41:48",
     "last_confirmed_at": ""
   },
   "90014|ROSES|FRUTTETO|40|25|": {
-    "articulo_id": 32999,
-    "articulo_name": "ROSA EC FRUTTETO 40CM 25U",
+    "articulo_id": 34059,
+    "articulo_name": "ROSA FRUTTETO 40CM 25U FLORAROMA",
     "origen": "auto",
     "status": "aprendido_en_prueba",
     "provider_id": 90014,
@@ -27375,12 +27375,12 @@
     "times_used": 0,
     "times_confirmed": 0,
     "times_corrected": 0,
-    "first_seen_at": "2026-04-15T17:06:41",
+    "first_seen_at": "2026-04-20T11:41:51",
     "last_confirmed_at": ""
   },
   "90014|ROSES|FRUTTETO|50|25|": {
-    "articulo_id": 33000,
-    "articulo_name": "ROSA EC FRUTTETO 50CM 25U",
+    "articulo_id": 34082,
+    "articulo_name": "ROSA FRUTTETO 50CM 25U FLORAROMA",
     "origen": "auto",
     "status": "aprendido_en_prueba",
     "provider_id": 90014,
@@ -27394,12 +27394,12 @@
     "times_used": 0,
     "times_confirmed": 0,
     "times_corrected": 0,
-    "first_seen_at": "2026-04-15T17:06:37",
+    "first_seen_at": "2026-04-20T11:41:48",
     "last_confirmed_at": ""
   },
   "90014|ROSES|MONDIAL|50|25|": {
-    "articulo_id": 33230,
-    "articulo_name": "ROSA EC MONDIAL 50CM 25U",
+    "articulo_id": 35476,
+    "articulo_name": "ROSA MONDIAL 50CM 25U FLORAROMA",
     "origen": "auto",
     "status": "aprendido_en_prueba",
     "provider_id": 90014,
@@ -27413,7 +27413,7 @@
     "times_used": 0,
     "times_confirmed": 0,
     "times_corrected": 0,
-    "first_seen_at": "2026-04-15T17:06:36",
+    "first_seen_at": "2026-04-20T11:41:48",
     "last_confirmed_at": ""
   },
   "90014|ROSES|MONDIAL|60|25|": {
@@ -27449,8 +27449,8 @@
     "last_confirmed_at": ""
   },
   "90014|ROSES|SILANTOI|50|25|": {
-    "articulo_id": 36535,
-    "articulo_name": "ROSA SILANTOI 50CM 25U EQR",
+    "articulo_id": 36529,
+    "articulo_name": "ROSA SILANTOI 50CM 25U FLORAROMA",
     "origen": "auto",
     "status": "aprendido_en_prueba",
     "provider_id": 90014,
@@ -27464,7 +27464,7 @@
     "times_used": 0,
     "times_confirmed": 0,
     "times_corrected": 0,
-    "first_seen_at": "2026-04-15T17:06:39",
+    "first_seen_at": "2026-04-20T11:07:58",
     "last_confirmed_at": ""
   },
   "90014|ROSES|VERSILIA|40|25|": {
@@ -30625,7 +30625,7 @@
     "raw": "5 H Rose Freedom X 10 - 50 47806- 50 GONZA x 10 0603.11.00.00 200 1000 ST 0.32 320.00",
     "invoice": "",
     "status": "ambiguo",
-    "times_corrected": 20
+    "times_corrected": 26
   },
   "90012|ROSES|TIFFANY|60|25|": {
     "articulo_id": 37198,
@@ -30686,8 +30686,8 @@
     "invoice": ""
   },
   "90014|ROSES|MOMENTUM|50|25|": {
-    "articulo_id": 33223,
-    "articulo_name": "ROSA EC MOMENTUM 50CM 25U",
+    "articulo_id": 35379,
+    "articulo_name": "ROSA MOMENTUM 50CM 25U FLORAROMA",
     "origen": "auto",
     "status": "aprendido_en_prueba",
     "provider_id": 90014,
@@ -30701,12 +30701,12 @@
     "times_used": 0,
     "times_confirmed": 0,
     "times_corrected": 0,
-    "first_seen_at": "2026-04-15T17:06:36",
+    "first_seen_at": "2026-04-20T11:41:48",
     "last_confirmed_at": ""
   },
   "90014|ROSES|NOVIA|50|25|": {
-    "articulo_id": 33275,
-    "articulo_name": "ROSA EC NOVIA 50CM 25U",
+    "articulo_id": 35739,
+    "articulo_name": "ROSA NOVIA 50CM 25U FLORAROMA",
     "origen": "auto",
     "status": "aprendido_en_prueba",
     "provider_id": 90014,
@@ -30720,12 +30720,12 @@
     "times_used": 0,
     "times_confirmed": 0,
     "times_corrected": 0,
-    "first_seen_at": "2026-04-15T17:06:38",
+    "first_seen_at": "2026-04-20T11:41:49",
     "last_confirmed_at": ""
   },
   "90014|ROSES|PINK FLOYD|50|25|": {
-    "articulo_id": 33329,
-    "articulo_name": "ROSA EC PINK FLOYD 50CM 25U",
+    "articulo_id": 35989,
+    "articulo_name": "ROSA PINK FLOYD 50CM 25U FLORAROMA",
     "origen": "auto",
     "status": "aprendido_en_prueba",
     "provider_id": 90014,
@@ -30739,12 +30739,12 @@
     "times_used": 0,
     "times_confirmed": 0,
     "times_corrected": 0,
-    "first_seen_at": "2026-04-15T17:06:39",
+    "first_seen_at": "2026-04-20T11:41:50",
     "last_confirmed_at": ""
   },
   "90014|ROSES|TIBET|50|25|": {
-    "articulo_id": 33553,
-    "articulo_name": "ROSA EC TIBET 50CM 25U",
+    "articulo_id": 37136,
+    "articulo_name": "ROSA TIBET 50CM 25U FLORAROMA",
     "origen": "auto",
     "status": "aprendido_en_prueba",
     "provider_id": 90014,
@@ -30758,12 +30758,12 @@
     "times_used": 0,
     "times_confirmed": 0,
     "times_corrected": 0,
-    "first_seen_at": "2026-04-15T17:06:39",
+    "first_seen_at": "2026-04-20T11:41:50",
     "last_confirmed_at": ""
   },
   "90014|ROSES|WASABI|50|25|": {
-    "articulo_id": 33617,
-    "articulo_name": "ROSA EC WASABI 50CM 25U",
+    "articulo_id": 37716,
+    "articulo_name": "ROSA WASABI 50CM 25U FLORAROMA",
     "origen": "auto",
     "status": "aprendido_en_prueba",
     "provider_id": 90014,
@@ -30777,12 +30777,12 @@
     "times_used": 0,
     "times_confirmed": 0,
     "times_corrected": 0,
-    "first_seen_at": "2026-04-15T17:06:39",
+    "first_seen_at": "2026-04-20T11:41:50",
     "last_confirmed_at": ""
   },
   "90014|ROSES|VENDELA|50|25|": {
-    "articulo_id": 33599,
-    "articulo_name": "ROSA EC VENDELA 50CM 25U",
+    "articulo_id": 37563,
+    "articulo_name": "ROSA VENDELA 50CM 25U FLORAROMA",
     "origen": "auto",
     "status": "aprendido_en_prueba",
     "provider_id": 90014,
@@ -30796,12 +30796,12 @@
     "times_used": 0,
     "times_confirmed": 0,
     "times_corrected": 0,
-    "first_seen_at": "2026-04-15T17:06:43",
+    "first_seen_at": "2026-04-20T11:41:53",
     "last_confirmed_at": ""
   },
   "90014|ROSES|KAHALA|50|25|": {
-    "articulo_id": 33118,
-    "articulo_name": "ROSA EC KAHALA 50CM 25U",
+    "articulo_id": 34707,
+    "articulo_name": "ROSA KAHALA 50CM 25U FLORAROMA",
     "origen": "auto",
     "status": "aprendido_en_prueba",
     "provider_id": 90014,
@@ -30815,12 +30815,12 @@
     "times_used": 0,
     "times_confirmed": 0,
     "times_corrected": 0,
-    "first_seen_at": "2026-04-15T17:06:43",
+    "first_seen_at": "2026-04-20T11:41:53",
     "last_confirmed_at": ""
   },
   "90014|ROSES|SHIMMER|50|25|": {
-    "articulo_id": 33442,
-    "articulo_name": "ROSA EC SHIMMER 50CM 25U",
+    "articulo_id": 36462,
+    "articulo_name": "ROSA SHIMMER 50CM 25U FLORAROMA",
     "origen": "auto",
     "status": "aprendido_en_prueba",
     "provider_id": 90014,
@@ -30834,12 +30834,12 @@
     "times_used": 0,
     "times_confirmed": 0,
     "times_corrected": 0,
-    "first_seen_at": "2026-04-15T17:06:43",
+    "first_seen_at": "2026-04-20T11:41:53",
     "last_confirmed_at": ""
   },
   "90014|ROSES|TIFFANY|50|25|": {
-    "articulo_id": 33557,
-    "articulo_name": "ROSA EC TIFFANY 50CM 25U",
+    "articulo_id": 37180,
+    "articulo_name": "ROSA TIFFANY 50CM 25U FLORAROMA",
     "origen": "auto",
     "status": "aprendido_en_prueba",
     "provider_id": 90014,
@@ -30853,7 +30853,7 @@
     "times_used": 0,
     "times_confirmed": 0,
     "times_corrected": 0,
-    "first_seen_at": "2026-04-15T17:06:44",
+    "first_seen_at": "2026-04-20T11:42:05",
     "last_confirmed_at": ""
   },
   "90014|ROSES|IGUANA|40|25|": {
@@ -31191,7 +31191,7 @@
     "size": 40,
     "stems_per_bunch": 25,
     "grade": "",
-    "raw": "H DANS Frutteto 8 25 40 200 0,220 44,000",
+    "raw": "2 H Frutteto 8 25 40 200 0,220 44,000",
     "invoice": "",
     "times_used": 0,
     "times_confirmed": 0,
@@ -31210,7 +31210,7 @@
     "size": 40,
     "stems_per_bunch": 25,
     "grade": "",
-    "raw": "H DANS Momentum 2 25 40 50 0,220 11,000",
+    "raw": "H Momentum 2 25 40 50 0,220 11,000",
     "invoice": "",
     "times_used": 0,
     "times_confirmed": 0,
@@ -31248,7 +31248,7 @@
     "size": 50,
     "stems_per_bunch": 25,
     "grade": "",
-    "raw": "H FVIDA Frutteto 4 25 50 100 0,300 30,000",
+    "raw": "H Frutteto 4 25 50 100 0,280 28,000",
     "invoice": "",
     "times_used": 0,
     "times_confirmed": 0,
@@ -31356,7 +31356,7 @@
     "size": 60,
     "stems_per_bunch": 25,
     "grade": "",
-    "raw": "6 H Mondial 14 25 60 350 0,350 122,500",
+    "raw": "7 H Mondial 14 25 60 350 0,350 122,500",
     "invoice": "",
     "times_used": 0,
     "times_confirmed": 0,
@@ -31388,7 +31388,7 @@
     "size": 60,
     "stems_per_bunch": 25,
     "grade": "",
-    "raw": "8 H Explorer 14 25 60 350 0,350 122,500",
+    "raw": "9 H Explorer 14 25 60 350 0,350 122,500",
     "invoice": "",
     "times_used": 0,
     "times_confirmed": 0,
@@ -32838,7 +32838,7 @@
     "raw": "SALMA 60 25 4 100 0.400 40.000",
     "invoice": "",
     "status": "ambiguo",
-    "times_corrected": 19
+    "times_corrected": 25
   },
   "90018|ROSES|ABSOLUTE IN PINK|60|25|": {
     "articulo_id": 31605,
@@ -33315,7 +33315,7 @@
     "size": 50,
     "stems_per_bunch": 25,
     "grade": "",
-    "raw": "Rosas - Mondial 50cm 0,00 0,00 300 0,24 72,00",
+    "raw": "Rosas - Mondial 50cm 0,00 0,00 150 0,30 45,00",
     "invoice": "",
     "times_used": 0,
     "times_confirmed": 6,
@@ -33334,7 +33334,7 @@
     "size": 50,
     "stems_per_bunch": 25,
     "grade": "",
-    "raw": "Rosas - Explorer 50cm 0,00 0,00 900 0,25 225,00",
+    "raw": "Rosas - Explorer 50cm 0,00 0,00 350 0,35 122,50",
     "invoice": "",
     "times_used": 0,
     "times_confirmed": 4,
@@ -33366,7 +33366,7 @@
     "size": 50,
     "stems_per_bunch": 25,
     "grade": "",
-    "raw": "Rosas - Frutteto 50cm 0,00 0,00 350 0,26 91,00",
+    "raw": "Rosas - Frutteto 50cm 0,00 0,00 300 0,25 75,00",
     "invoice": "",
     "times_used": 0,
     "times_confirmed": 1,
@@ -33627,7 +33627,7 @@
     "raw": "2 QB 500 50 CARNATION WHITE R14 0603.12.7000 Stems 1000 US$ 0.120 US$ US$",
     "invoice": "",
     "status": "ambiguo",
-    "times_corrected": 2
+    "times_corrected": 8
   },
   "90030|CARNATIONS|RED|55|50|": {
     "articulo_id": 12827,
@@ -33642,7 +33642,7 @@
     "raw": "2 QB 500 50 CARNATION RED R14 0603.12.7000 Stems 1000 US$ 0.120 US$ US$",
     "invoice": "",
     "status": "ambiguo",
-    "times_corrected": 2
+    "times_corrected": 8
   },
   "90030|CARNATIONS|WHITE|55|30|": {
     "articulo_id": 12744,
@@ -33657,11 +33657,11 @@
     "raw": "1 HB 600 30 CARNATION WHITE VERALEZA 0603.12.7000 Stems 600 US$ 0.080 US$ US$",
     "invoice": "",
     "status": "ambiguo",
-    "times_corrected": 4
+    "times_corrected": 16
   },
   "90033|ROSES|MONDIAL|50|25|": {
-    "articulo_id": 33230,
-    "articulo_name": "ROSA EC MONDIAL 50CM 25U",
+    "articulo_id": 35500,
+    "articulo_name": "ROSA MONDIAL 50CM 25U ROSADEX",
     "origen": "auto",
     "status": "aprendido_en_prueba",
     "provider_id": 90033,
@@ -33675,12 +33675,12 @@
     "times_used": 0,
     "times_confirmed": 0,
     "times_corrected": 0,
-    "first_seen_at": "2026-04-15T17:10:46",
+    "first_seen_at": "2026-04-20T11:45:37",
     "last_confirmed_at": ""
   },
   "90033|ROSES|MONDIAL|40|25|": {
-    "articulo_id": 33228,
-    "articulo_name": "ROSA EC MONDIAL 40CM 25U",
+    "articulo_id": 35452,
+    "articulo_name": "ROSA MONDIAL 40CM 25U ROSADEX",
     "origen": "auto",
     "status": "aprendido_en_prueba",
     "provider_id": 90033,
@@ -33694,7 +33694,7 @@
     "times_used": 0,
     "times_confirmed": 0,
     "times_corrected": 0,
-    "first_seen_at": "2026-04-15T17:10:47",
+    "first_seen_at": "2026-04-20T11:45:37",
     "last_confirmed_at": ""
   },
   "90033|ROSES|NENA|50|25|": {
@@ -33815,8 +33815,8 @@
     "invoice": ""
   },
   "90034|ROSES|FREEDOM|70|25|": {
-    "articulo_id": 32994,
-    "articulo_name": "ROSA EC FREEDOM 70CM 25U",
+    "articulo_id": 34032,
+    "articulo_name": "ROSA FREEDOM 70CM 25U ROSELY",
     "origen": "auto",
     "status": "aprendido_en_prueba",
     "provider_id": 90034,
@@ -33830,12 +33830,12 @@
     "times_used": 0,
     "times_confirmed": 0,
     "times_corrected": 0,
-    "first_seen_at": "2026-04-17T11:05:19",
+    "first_seen_at": "2026-04-20T11:45:55",
     "last_confirmed_at": ""
   },
   "90034|ROSES|FREEDOM|60|25|": {
-    "articulo_id": 32993,
-    "articulo_name": "ROSA EC FREEDOM 60CM 25U",
+    "articulo_id": 34011,
+    "articulo_name": "ROSA FREEDOM 60CM 25U ROSELY",
     "origen": "auto",
     "status": "aprendido_en_prueba",
     "provider_id": 90034,
@@ -33849,12 +33849,12 @@
     "times_used": 0,
     "times_confirmed": 0,
     "times_corrected": 0,
-    "first_seen_at": "2026-04-17T11:05:19",
+    "first_seen_at": "2026-04-20T11:45:55",
     "last_confirmed_at": ""
   },
   "90034|ROSES|EXPLORER|70|25|": {
-    "articulo_id": 32953,
-    "articulo_name": "ROSA EC EXPLORER 70CM 25U",
+    "articulo_id": 33833,
+    "articulo_name": "ROSA EXPLORER 70CM 25U ROSELY",
     "origen": "auto",
     "status": "aprendido_en_prueba",
     "provider_id": 90034,
@@ -33868,12 +33868,12 @@
     "times_used": 0,
     "times_confirmed": 0,
     "times_corrected": 0,
-    "first_seen_at": "2026-04-15T17:11:10",
+    "first_seen_at": "2026-04-20T11:45:55",
     "last_confirmed_at": ""
   },
   "90034|ROSES|EXPLORER|60|25|": {
-    "articulo_id": 32952,
-    "articulo_name": "ROSA EC EXPLORER 60CM 25U",
+    "articulo_id": 33805,
+    "articulo_name": "ROSA EXPLORER 60CM 25U ROSELY",
     "origen": "auto",
     "status": "aprendido_en_prueba",
     "provider_id": 90034,
@@ -33887,12 +33887,12 @@
     "times_used": 0,
     "times_confirmed": 0,
     "times_corrected": 0,
-    "first_seen_at": "2026-04-15T17:11:10",
+    "first_seen_at": "2026-04-20T11:45:55",
     "last_confirmed_at": ""
   },
   "90034|ROSES|MONDIAL|70|25|": {
-    "articulo_id": 33233,
-    "articulo_name": "ROSA EC MONDIAL 70CM 25U",
+    "articulo_id": 35588,
+    "articulo_name": "ROSA MONDIAL 70CM 25U ROSELY",
     "origen": "auto",
     "status": "aprendido_en_prueba",
     "provider_id": 90034,
@@ -33906,12 +33906,12 @@
     "times_used": 0,
     "times_confirmed": 0,
     "times_corrected": 0,
-    "first_seen_at": "2026-04-15T17:11:15",
+    "first_seen_at": "2026-04-20T11:45:58",
     "last_confirmed_at": ""
   },
   "90034|ROSES|BRIGHTON|70|25|": {
-    "articulo_id": 32783,
-    "articulo_name": "ROSA EC BRIGHTON 70CM 25U",
+    "articulo_id": 31959,
+    "articulo_name": "ROSA BRIGHTON 70CM 25U ROSELY",
     "origen": "auto",
     "status": "aprendido_en_prueba",
     "provider_id": 90034,
@@ -33925,7 +33925,7 @@
     "times_used": 0,
     "times_confirmed": 0,
     "times_corrected": 0,
-    "first_seen_at": "2026-04-15T17:11:11",
+    "first_seen_at": "2026-04-20T11:45:56",
     "last_confirmed_at": ""
   },
   "90034|ROSES|PINK MONDIAL|60|25|": {
@@ -33948,8 +33948,8 @@
     "last_confirmed_at": ""
   },
   "90034|ROSES|VENDELA|60|25|": {
-    "articulo_id": 33602,
-    "articulo_name": "ROSA EC VENDELA 60CM 25U",
+    "articulo_id": 37603,
+    "articulo_name": "ROSA VENDELA 60CM 25U ROSELY",
     "origen": "auto",
     "status": "aprendido_en_prueba",
     "provider_id": 90034,
@@ -33963,7 +33963,7 @@
     "times_used": 0,
     "times_confirmed": 0,
     "times_corrected": 0,
-    "first_seen_at": "2026-04-15T17:11:12",
+    "first_seen_at": "2026-04-20T11:45:56",
     "last_confirmed_at": ""
   },
   "90034|ROSES|ASSORTED YELLOW|60|25|": {
@@ -33986,8 +33986,8 @@
     "last_confirmed_at": ""
   },
   "90034|ROSES|EXPLORER|80|25|": {
-    "articulo_id": 32954,
-    "articulo_name": "ROSA EC EXPLORER 80CM 25U",
+    "articulo_id": 33848,
+    "articulo_name": "ROSA EXPLORER 80CM 25U ROSELY",
     "origen": "auto",
     "status": "aprendido_en_prueba",
     "provider_id": 90034,
@@ -34001,7 +34001,7 @@
     "times_used": 0,
     "times_confirmed": 0,
     "times_corrected": 0,
-    "first_seen_at": "2026-04-15T17:11:11",
+    "first_seen_at": "2026-04-20T11:45:55",
     "last_confirmed_at": ""
   },
   "90034|ROSES|ASSORTED YELLOW|80|25|": {
@@ -34018,8 +34018,8 @@
     "invoice": ""
   },
   "90034|ROSES|MONDIAL|60|25|": {
-    "articulo_id": 33232,
-    "articulo_name": "ROSA EC MONDIAL 60CM 25U",
+    "articulo_id": 35556,
+    "articulo_name": "ROSA MONDIAL 60CM 25U ROSELY",
     "origen": "auto",
     "status": "aprendido_en_prueba",
     "provider_id": 90034,
@@ -34033,7 +34033,7 @@
     "times_used": 0,
     "times_confirmed": 0,
     "times_corrected": 0,
-    "first_seen_at": "2026-04-15T17:11:11",
+    "first_seen_at": "2026-04-20T11:45:56",
     "last_confirmed_at": ""
   },
   "90034|ROSES|SALMA|80|25|": {
@@ -34050,8 +34050,8 @@
     "invoice": ""
   },
   "90034|ROSES|FREEDOM|50|25|": {
-    "articulo_id": 32991,
-    "articulo_name": "ROSA EC FREEDOM 50CM 25U",
+    "articulo_id": 33975,
+    "articulo_name": "ROSA FREEDOM 50CM 25U ROSELY",
     "origen": "auto",
     "status": "aprendido_en_prueba",
     "provider_id": 90034,
@@ -34065,7 +34065,7 @@
     "times_used": 0,
     "times_confirmed": 0,
     "times_corrected": 0,
-    "first_seen_at": "2026-04-17T11:05:21",
+    "first_seen_at": "2026-04-20T11:45:56",
     "last_confirmed_at": ""
   },
   "90034|ROSES|MAGIC TIMES|60|25|": {
@@ -34186,8 +34186,8 @@
     "invoice": ""
   },
   "90034|ROSES|MONDIAL|50|25|": {
-    "articulo_id": 33230,
-    "articulo_name": "ROSA EC MONDIAL 50CM 25U",
+    "articulo_id": 35512,
+    "articulo_name": "ROSA MONDIAL 50CM 25U ROSELY",
     "origen": "auto",
     "status": "aprendido_en_prueba",
     "provider_id": 90034,
@@ -34201,7 +34201,7 @@
     "times_used": 0,
     "times_confirmed": 0,
     "times_corrected": 0,
-    "first_seen_at": "2026-04-15T17:11:16",
+    "first_seen_at": "2026-04-20T11:45:58",
     "last_confirmed_at": ""
   },
   "90034|ROSES|ABSOLUT IN PINK|60|25|": {
@@ -34218,8 +34218,8 @@
     "invoice": ""
   },
   "90034|ROSES|SALMA|60|25|": {
-    "articulo_id": 33425,
-    "articulo_name": "ROSA EC SALMA 60CM 25U",
+    "articulo_id": 36424,
+    "articulo_name": "ROSA SALMA 60CM 25U ROSELY",
     "origen": "auto",
     "status": "aprendido_en_prueba",
     "provider_id": 90034,
@@ -34233,7 +34233,7 @@
     "times_used": 0,
     "times_confirmed": 0,
     "times_corrected": 0,
-    "first_seen_at": "2026-04-15T17:11:12",
+    "first_seen_at": "2026-04-20T11:45:56",
     "last_confirmed_at": ""
   },
   "90034|ROSES|PINK FLOYD|60|25|": {
@@ -34328,8 +34328,8 @@
     "invoice": ""
   },
   "90034|ROSES|WASABI|40|25|": {
-    "articulo_id": 33616,
-    "articulo_name": "ROSA EC WASABI 40CM 25U",
+    "articulo_id": 37715,
+    "articulo_name": "ROSA WASABI 40CM 25U ROSELY",
     "origen": "auto",
     "status": "aprendido_en_prueba",
     "provider_id": 90034,
@@ -34343,7 +34343,7 @@
     "times_used": 0,
     "times_confirmed": 0,
     "times_corrected": 0,
-    "first_seen_at": "2026-04-15T17:11:16",
+    "first_seen_at": "2026-04-20T11:45:58",
     "last_confirmed_at": ""
   },
   "90034|ROSES|SWEETNESS|60|25|": {
@@ -34538,7 +34538,7 @@
     "raw": "2 HB MONDIAL. 25 X .00   2        50.00 0.30 15.00",
     "invoice": "",
     "status": "ambiguo",
-    "times_corrected": 54
+    "times_corrected": 72
   },
   "90038|ROSES|MONDIAL.|60|25|": {
     "articulo_id": 32319,
@@ -34553,7 +34553,7 @@
     "raw": "2 HB MONDIAL. 25 X .00    7       175.00 0.35 61.25",
     "invoice": "",
     "status": "ambiguo",
-    "times_corrected": 36
+    "times_corrected": 48
   },
   "90038|ROSES|PALOMA|50|25|": {
     "articulo_id": 35877,
@@ -35001,7 +35001,7 @@
     "raw": "1 H Rose Freedom X 10 - 50 45337 50 GONZA X 10 0603.11.00.00 200 200 ST 0.30 60.00",
     "invoice": "",
     "status": "ambiguo",
-    "times_corrected": 34
+    "times_corrected": 46
   },
   "90044|ROSES|VENDELA|50|25|": {
     "articulo_id": 32426,
@@ -35218,8 +35218,8 @@
     "invoice": ""
   },
   "90041|ROSES|FREEDOM|60|25|": {
-    "articulo_id": 33980,
-    "articulo_name": "ROSA FREEDOM 60CM 25U",
+    "articulo_id": 34005,
+    "articulo_name": "ROSA FREEDOM 60CM 25U UNIQUE FLOWERS",
     "origen": "auto",
     "status": "aprendido_en_prueba",
     "provider_id": 90041,
@@ -35233,7 +35233,7 @@
     "times_used": 0,
     "times_confirmed": 0,
     "times_corrected": 0,
-    "first_seen_at": "2026-04-15T17:12:15",
+    "first_seen_at": "2026-04-20T11:12:31",
     "last_confirmed_at": ""
   },
   "90041|ROSES|TEXAS|50|25|": {
@@ -35310,8 +35310,8 @@
     "last_confirmed_at": ""
   },
   "90026|ROSES|EXPLORER|50|25|": {
-    "articulo_id": 32252,
-    "articulo_name": "ROSA COL EXPLORER 50CM 25U",
+    "articulo_id": 33775,
+    "articulo_name": "ROSA EXPLORER 50CM 25U MILONGA",
     "origen": "auto",
     "status": "aprendido_en_prueba",
     "provider_id": 90026,
@@ -35325,12 +35325,12 @@
     "times_used": 0,
     "times_confirmed": 0,
     "times_corrected": 0,
-    "first_seen_at": "2026-04-15T17:09:10",
+    "first_seen_at": "2026-04-20T11:44:24",
     "last_confirmed_at": ""
   },
   "90026|ROSES|MONDIAL|50|25|": {
-    "articulo_id": 32317,
-    "articulo_name": "ROSA COL MONDIAL 50CM 25U",
+    "articulo_id": 35488,
+    "articulo_name": "ROSA MONDIAL 50CM 25U MILONGA",
     "origen": "auto",
     "status": "aprendido_en_prueba",
     "provider_id": 90026,
@@ -35344,12 +35344,12 @@
     "times_used": 0,
     "times_confirmed": 0,
     "times_corrected": 0,
-    "first_seen_at": "2026-04-15T17:09:09",
+    "first_seen_at": "2026-04-20T11:44:23",
     "last_confirmed_at": ""
   },
   "90026|ROSES|FREEDOM|70|25|": {
-    "articulo_id": 34014,
-    "articulo_name": "ROSA FREEDOM 70CM 25U",
+    "articulo_id": 34022,
+    "articulo_name": "ROSA FREEDOM 70CM 25U MILONGA",
     "origen": "auto",
     "status": "aprendido_en_prueba",
     "provider_id": 90026,
@@ -35363,12 +35363,12 @@
     "times_used": 0,
     "times_confirmed": 0,
     "times_corrected": 0,
-    "first_seen_at": "2026-04-15T17:09:11",
+    "first_seen_at": "2026-04-20T11:10:09",
     "last_confirmed_at": ""
   },
   "90026|ROSES|FREEDOM|60|25|": {
-    "articulo_id": 33980,
-    "articulo_name": "ROSA FREEDOM 60CM 25U",
+    "articulo_id": 33999,
+    "articulo_name": "ROSA FREEDOM 60CM 25U MILONGA",
     "origen": "auto",
     "status": "aprendido_en_prueba",
     "provider_id": 90026,
@@ -35382,12 +35382,12 @@
     "times_used": 0,
     "times_confirmed": 0,
     "times_corrected": 0,
-    "first_seen_at": "2026-04-15T17:09:09",
+    "first_seen_at": "2026-04-20T11:09:59",
     "last_confirmed_at": ""
   },
   "90026|ROSES|FREEDOM|50|25|": {
-    "articulo_id": 33938,
-    "articulo_name": "ROSA FREEDOM 50CM 25U",
+    "articulo_id": 33963,
+    "articulo_name": "ROSA FREEDOM 50CM 25U MILONGA",
     "origen": "auto",
     "status": "aprendido_en_prueba",
     "provider_id": 90026,
@@ -35401,12 +35401,12 @@
     "times_used": 0,
     "times_confirmed": 0,
     "times_corrected": 0,
-    "first_seen_at": "2026-04-15T17:09:09",
+    "first_seen_at": "2026-04-20T11:10:08",
     "last_confirmed_at": ""
   },
   "90026|ROSES|MONDIAL|60|25|": {
-    "articulo_id": 32319,
-    "articulo_name": "ROSA COL MONDIAL 60CM 25U",
+    "articulo_id": 35537,
+    "articulo_name": "ROSA MONDIAL 60CM 25U MILONGA",
     "origen": "auto",
     "status": "aprendido_en_prueba",
     "provider_id": 90026,
@@ -35420,7 +35420,7 @@
     "times_used": 0,
     "times_confirmed": 0,
     "times_corrected": 0,
-    "first_seen_at": "2026-04-15T17:09:11",
+    "first_seen_at": "2026-04-20T11:44:13",
     "last_confirmed_at": ""
   },
   "8342|ALSTROEMERIA|ASSORTED|0|16|FANCY": {
@@ -35572,7 +35572,7 @@
     "raw": "2 HB EXPLORER. 25 X .00   4        100 0.30 30.00",
     "invoice": "1775728457_TIERRA_VERDE2.pdf",
     "status": "ambiguo",
-    "times_corrected": 36
+    "times_corrected": 48
   },
   "90038|ROSES|EXPLORER°|50|25|": {
     "articulo_id": 32252,
@@ -35587,7 +35587,7 @@
     "raw": "2 HB EXPLORER° 25 X .00   8        200 0.30 60.00",
     "invoice": "1775728457_TIERRA_VERDE2.pdf",
     "status": "ambiguo",
-    "times_corrected": 36
+    "times_corrected": 48
   },
   "11748|ROSES|MAGIC TIMES|40|25|": {
     "articulo_id": 35187,
@@ -35704,8 +35704,8 @@
     "last_confirmed_at": ""
   },
   "90026|ROSES|PLAYA BLANCA|50|25|": {
-    "articulo_id": 32351,
-    "articulo_name": "ROSA COL PLAYA BLANCA 50CM 25U",
+    "articulo_id": 36152,
+    "articulo_name": "ROSA PLAYA BLANCA 50CM 25U MILONGA",
     "origen": "auto",
     "status": "aprendido_en_prueba",
     "provider_id": 90026,
@@ -35719,12 +35719,12 @@
     "times_used": 0,
     "times_confirmed": 0,
     "times_corrected": 0,
-    "first_seen_at": "2026-04-17T10:46:38",
+    "first_seen_at": "2026-04-20T11:44:14",
     "last_confirmed_at": ""
   },
   "90026|ROSES|FREEDOM|40|25|": {
-    "articulo_id": 33908,
-    "articulo_name": "ROSA FREEDOM 40CM 25U",
+    "articulo_id": 33922,
+    "articulo_name": "ROSA FREEDOM 40CM 25U MILONGA",
     "origen": "auto",
     "status": "aprendido_en_prueba",
     "provider_id": 90026,
@@ -35738,7 +35738,7 @@
     "times_used": 0,
     "times_confirmed": 0,
     "times_corrected": 0,
-    "first_seen_at": "2026-04-17T12:25:34",
+    "first_seen_at": "2026-04-20T11:09:59",
     "last_confirmed_at": ""
   },
   "90026|ROSES|EXPLORER|60|25|": {
@@ -36441,7 +36441,7 @@
     "raw": "HB 1 0,5 EXPLORER 0603.11.00.60 25 14 14 350 0,32 112,00",
     "invoice": "1776252553_ROSABELLA.pdf",
     "status": "ambiguo",
-    "times_corrected": 36
+    "times_corrected": 48
   },
   "90010|CARNATIONS|SELECT CREAM|0|20|": {
     "articulo_id": 12908,
@@ -37069,7 +37069,7 @@
     "size": 40,
     "stems_per_bunch": 25,
     "grade": "",
-    "raw": "1 H DANS Brighton 1 25 40 25 0,220 5,500",
+    "raw": "H Brighton 1 25 40 25 0,250 6,250",
     "invoice": "",
     "times_used": 0,
     "times_confirmed": 0,
@@ -37553,8 +37553,8 @@
     "last_confirmed_at": ""
   },
   "90012|ROSES|ENGAGEMENT|50|25|": {
-    "articulo_id": 32933,
-    "articulo_name": "ROSA EC ENGAGEMENT 50CM 25U",
+    "articulo_id": 33650,
+    "articulo_name": "ROSA ENGAGEMENT 50CM 10U ECOFLOR",
     "origen": "auto",
     "status": "aprendido_en_prueba",
     "provider_id": 90012,
@@ -37568,7 +37568,7 @@
     "times_used": 0,
     "times_confirmed": 0,
     "times_corrected": 0,
-    "first_seen_at": "2026-04-15T17:06:08",
+    "first_seen_at": "2026-04-20T11:41:18",
     "last_confirmed_at": ""
   },
   "90012|ROSES|SWEET|50|10|": {
@@ -37990,8 +37990,8 @@
     "last_confirmed_at": ""
   },
   "90031|ROSES|FREEDOM|40|4|": {
-    "articulo_id": 33908,
-    "articulo_name": "ROSA FREEDOM 40CM 25U",
+    "articulo_id": 33923,
+    "articulo_name": "ROSA FREEDOM 40CM 25U EL PROGRESO",
     "origen": "auto",
     "status": "aprendido_en_prueba",
     "provider_id": 90031,
@@ -38005,12 +38005,12 @@
     "times_used": 0,
     "times_confirmed": 0,
     "times_corrected": 0,
-    "first_seen_at": "2026-04-15T17:06:20",
+    "first_seen_at": "2026-04-20T11:07:45",
     "last_confirmed_at": ""
   },
   "90031|ROSES|LEMONADE|50|1|": {
-    "articulo_id": 32290,
-    "articulo_name": "ROSA COL LEMONADE 50CM 25U",
+    "articulo_id": 35072,
+    "articulo_name": "ROSA LEMONADE 50CM 25U EL PROGRESO",
     "origen": "auto",
     "status": "aprendido_en_prueba",
     "provider_id": 90031,
@@ -38024,12 +38024,12 @@
     "times_used": 0,
     "times_confirmed": 0,
     "times_corrected": 0,
-    "first_seen_at": "2026-04-15T17:06:21",
+    "first_seen_at": "2026-04-20T11:07:46",
     "last_confirmed_at": ""
   },
   "90031|ROSES|FREEDOM|50|25|": {
-    "articulo_id": 33938,
-    "articulo_name": "ROSA FREEDOM 50CM 25U",
+    "articulo_id": 33964,
+    "articulo_name": "ROSA FREEDOM 50CM 25U EL PROGRESO",
     "origen": "auto",
     "status": "aprendido_en_prueba",
     "provider_id": 90031,
@@ -38043,12 +38043,12 @@
     "times_used": 0,
     "times_confirmed": 0,
     "times_corrected": 0,
-    "first_seen_at": "2026-04-15T17:06:21",
+    "first_seen_at": "2026-04-20T11:07:46",
     "last_confirmed_at": ""
   },
   "90031|ROSES|FREEDOM|40|2|": {
-    "articulo_id": 33908,
-    "articulo_name": "ROSA FREEDOM 40CM 25U",
+    "articulo_id": 33923,
+    "articulo_name": "ROSA FREEDOM 40CM 25U EL PROGRESO",
     "origen": "auto",
     "status": "aprendido_en_prueba",
     "provider_id": 90031,
@@ -38062,7 +38062,7 @@
     "times_used": 0,
     "times_confirmed": 0,
     "times_corrected": 0,
-    "first_seen_at": "2026-04-15T17:06:22",
+    "first_seen_at": "2026-04-20T11:07:46",
     "last_confirmed_at": ""
   },
   "1426|ROSES|VINTAGE|60|25|": {
@@ -38427,8 +38427,8 @@
     "last_confirmed_at": ""
   },
   "90020|ROSES|SHIMMER|50|25|": {
-    "articulo_id": 32375,
-    "articulo_name": "ROSA COL SHIMMER 50CM 25U",
+    "articulo_id": 36464,
+    "articulo_name": "ROSA SHIMMER 50CM 25U INFINITY",
     "origen": "auto",
     "status": "aprendido_en_prueba",
     "provider_id": 90020,
@@ -38442,12 +38442,12 @@
     "times_used": 0,
     "times_confirmed": 0,
     "times_corrected": 0,
-    "first_seen_at": "2026-04-15T17:07:02",
+    "first_seen_at": "2026-04-20T11:42:28",
     "last_confirmed_at": ""
   },
   "90020|ROSES|PINK FLOYD|50|25|": {
-    "articulo_id": 32340,
-    "articulo_name": "ROSA COL PINK FLOYD 50CM 25U",
+    "articulo_id": 35991,
+    "articulo_name": "ROSA PINK FLOYD 50CM 25U INFINITY",
     "origen": "auto",
     "status": "aprendido_en_prueba",
     "provider_id": 90020,
@@ -38461,12 +38461,12 @@
     "times_used": 0,
     "times_confirmed": 0,
     "times_corrected": 0,
-    "first_seen_at": "2026-04-15T17:07:02",
+    "first_seen_at": "2026-04-20T11:42:28",
     "last_confirmed_at": ""
   },
   "90020|ROSES|CANDLELIGHT|50|25|": {
-    "articulo_id": 32220,
-    "articulo_name": "ROSA COL CANDLELIGHT 50CM 25U",
+    "articulo_id": 32077,
+    "articulo_name": "ROSA CANDLELIGHT 50CM 25U INFINITY",
     "origen": "auto",
     "status": "aprendido_en_prueba",
     "provider_id": 90020,
@@ -38480,12 +38480,12 @@
     "times_used": 0,
     "times_confirmed": 0,
     "times_corrected": 0,
-    "first_seen_at": "2026-04-15T17:07:03",
+    "first_seen_at": "2026-04-20T11:42:28",
     "last_confirmed_at": ""
   },
   "90020|ROSES|VENDELA|50|25|": {
-    "articulo_id": 32426,
-    "articulo_name": "ROSA COL VENDELA 50CM 25U",
+    "articulo_id": 37566,
+    "articulo_name": "ROSA VENDELA 50CM 25U INFINITY",
     "origen": "auto",
     "status": "aprendido_en_prueba",
     "provider_id": 90020,
@@ -38499,7 +38499,7 @@
     "times_used": 0,
     "times_confirmed": 0,
     "times_corrected": 0,
-    "first_seen_at": "2026-04-15T17:07:03",
+    "first_seen_at": "2026-04-20T11:42:29",
     "last_confirmed_at": ""
   },
   "90020|ROSES|BRIGHTON|50|25|": {
@@ -38522,8 +38522,8 @@
     "last_confirmed_at": ""
   },
   "90020|ROSES|FREEDOM GR|60|25|": {
-    "articulo_id": 33980,
-    "articulo_name": "ROSA FREEDOM 60CM 25U",
+    "articulo_id": 43296,
+    "articulo_name": "ROSA FREEDOM 60CM 25U INFINITY",
     "origen": "auto",
     "status": "aprendido_en_prueba",
     "provider_id": 90020,
@@ -38537,12 +38537,12 @@
     "times_used": 0,
     "times_confirmed": 0,
     "times_corrected": 0,
-    "first_seen_at": "2026-04-15T17:07:05",
+    "first_seen_at": "2026-04-20T11:08:24",
     "last_confirmed_at": ""
   },
   "90020|ROSES|FREEDOM|70|25|": {
-    "articulo_id": 34014,
-    "articulo_name": "ROSA FREEDOM 70CM 25U",
+    "articulo_id": 43221,
+    "articulo_name": "ROSA FREEDOM 70CM 25U INFINITY",
     "origen": "auto",
     "status": "aprendido_en_prueba",
     "provider_id": 90020,
@@ -38556,7 +38556,7 @@
     "times_used": 0,
     "times_confirmed": 0,
     "times_corrected": 0,
-    "first_seen_at": "2026-04-15T17:07:05",
+    "first_seen_at": "2026-04-20T11:08:24",
     "last_confirmed_at": ""
   },
   "90022|ROSES|FREEDOM|50|25|": {
@@ -38703,7 +38703,7 @@
     "size": 60,
     "stems_per_bunch": 25,
     "grade": "",
-    "raw": "20 HB VINTAGE 25 X .00    10       250 0.35 87.50",
+    "raw": "4 HB VINTAGE 25 X .00    12       300.00 0.35 105.00",
     "invoice": "",
     "times_used": 0,
     "times_confirmed": 1,
@@ -39444,7 +39444,7 @@
     "size": 40,
     "stems_per_bunch": 25,
     "grade": "",
-    "raw": "ROSES CAFE DEL MAR X 25 - 40 Milagro 5 125 0.300",
+    "raw": "ROSES CAFE DEL MAR X 25 - 40 Milagro 5 125 0.400",
     "invoice": "",
     "times_used": 0,
     "times_confirmed": 0,
@@ -39520,7 +39520,7 @@
     "size": 40,
     "stems_per_bunch": 25,
     "grade": "",
-    "raw": "ROSES MONDIAL X 25 - 40 Milagro 1 25 0.250",
+    "raw": "ROSES MONDIAL X 25 - 40 Milagro 10 250 0.250",
     "invoice": "",
     "times_used": 0,
     "times_confirmed": 0,
@@ -39577,7 +39577,7 @@
     "size": 50,
     "stems_per_bunch": 25,
     "grade": "",
-    "raw": "ROSES FREEDOM X 25 - 50 Milagro 10 250 0.220",
+    "raw": "ROSES FREEDOM X 25 - 50 Milagro 10 250 0.280",
     "invoice": "",
     "times_used": 0,
     "times_confirmed": 0,
@@ -39776,8 +39776,8 @@
     "last_confirmed_at": ""
   },
   "90026|ROSES|VENDELA|50|25|": {
-    "articulo_id": 32426,
-    "articulo_name": "ROSA COL VENDELA 50CM 25U",
+    "articulo_id": 37580,
+    "articulo_name": "ROSA VENDELA 50CM 25U MILONGA",
     "origen": "auto",
     "status": "aprendido_en_prueba",
     "provider_id": 90026,
@@ -39791,12 +39791,12 @@
     "times_used": 0,
     "times_confirmed": 0,
     "times_corrected": 0,
-    "first_seen_at": "2026-04-15T17:09:11",
+    "first_seen_at": "2026-04-20T11:44:24",
     "last_confirmed_at": ""
   },
   "90026|ROSES|CANDLELIGHT|50|25|": {
-    "articulo_id": 32220,
-    "articulo_name": "ROSA COL CANDLELIGHT 50CM 25U",
+    "articulo_id": 32086,
+    "articulo_name": "ROSA CANDLELIGHT 50CM 25U MILONGA",
     "origen": "auto",
     "status": "aprendido_en_prueba",
     "provider_id": 90026,
@@ -39810,7 +39810,7 @@
     "times_used": 0,
     "times_confirmed": 0,
     "times_corrected": 0,
-    "first_seen_at": "2026-04-15T17:09:11",
+    "first_seen_at": "2026-04-20T11:44:24",
     "last_confirmed_at": ""
   },
   "1434|ROSES|NENA|50|25|": {
@@ -39890,8 +39890,8 @@
     "last_confirmed_at": ""
   },
   "90029|ROSES|VENDELA|60|25|": {
-    "articulo_id": 33602,
-    "articulo_name": "ROSA EC VENDELA 60CM 25U",
+    "articulo_id": 37602,
+    "articulo_name": "ROSA VENDELA 60CM 25U NATIVE",
     "origen": "auto",
     "status": "aprendido_en_prueba",
     "provider_id": 90029,
@@ -39905,7 +39905,7 @@
     "times_used": 0,
     "times_confirmed": 0,
     "times_corrected": 0,
-    "first_seen_at": "2026-04-15T17:09:28",
+    "first_seen_at": "2026-04-20T11:44:39",
     "last_confirmed_at": ""
   },
   "90029|ROSES|TOPAZ|60|25|": {
@@ -40175,8 +40175,8 @@
     "last_confirmed_at": ""
   },
   "2226|ROSES|FREEDOM|60|25|": {
-    "articulo_id": 32993,
-    "articulo_name": "ROSA EC FREEDOM 60CM 25U",
+    "articulo_id": 33986,
+    "articulo_name": "ROSA FREEDOM 60CM 25U LA ROSALEDA",
     "origen": "auto",
     "status": "aprendido_en_prueba",
     "provider_id": 2226,
@@ -40190,7 +40190,7 @@
     "times_used": 0,
     "times_confirmed": 0,
     "times_corrected": 0,
-    "first_seen_at": "2026-04-15T17:10:52",
+    "first_seen_at": "2026-04-20T11:45:41",
     "last_confirmed_at": ""
   },
   "2226|ROSES|EURO ROSALEDA DEEP PURPLE|50|25|": {
@@ -40213,8 +40213,8 @@
     "last_confirmed_at": ""
   },
   "2226|ROSES|EXPLORER|70|25|": {
-    "articulo_id": 32953,
-    "articulo_name": "ROSA EC EXPLORER 70CM 25U",
+    "articulo_id": 33820,
+    "articulo_name": "ROSA EXPLORER 70CM 25U LA ROSALEDA",
     "origen": "auto",
     "status": "aprendido_en_prueba",
     "provider_id": 2226,
@@ -40228,7 +40228,7 @@
     "times_used": 0,
     "times_confirmed": 0,
     "times_corrected": 0,
-    "first_seen_at": "2026-04-15T17:10:52",
+    "first_seen_at": "2026-04-20T11:45:41",
     "last_confirmed_at": ""
   },
   "2226|ROSES|EURO ROSALEDA ANDREA|50|25|": {
@@ -40403,8 +40403,8 @@
     "last_confirmed_at": ""
   },
   "90034|ROSES|BRIGHTON|80|25|": {
-    "articulo_id": 32784,
-    "articulo_name": "ROSA EC BRIGHTON 80CM 25U",
+    "articulo_id": 31962,
+    "articulo_name": "ROSA BRIGHTON 80CM 25U ROSELY",
     "origen": "auto",
     "status": "aprendido_en_prueba",
     "provider_id": 90034,
@@ -40418,7 +40418,7 @@
     "times_used": 0,
     "times_confirmed": 0,
     "times_corrected": 0,
-    "first_seen_at": "2026-04-15T17:11:13",
+    "first_seen_at": "2026-04-20T11:45:57",
     "last_confirmed_at": ""
   },
   "90034|ROSES|ASSORTED YELLOW|50|25|": {
@@ -41125,8 +41125,8 @@
     "last_confirmed_at": ""
   },
   "90039|ROSES|VENDELA WHITE|40|25|": {
-    "articulo_id": 32424,
-    "articulo_name": "ROSA COL VENDELA 40CM 25U",
+    "articulo_id": 37534,
+    "articulo_name": "ROSA VENDELA 40CM 25U TIMANÁ",
     "origen": "auto",
     "status": "aprendido_en_prueba",
     "provider_id": 90039,
@@ -41135,17 +41135,17 @@
     "size": 40,
     "stems_per_bunch": 25,
     "grade": "",
-    "raw": "ROSE VENDELA WHITE 40CM OF CO-FREE0603110050 2 HB 12 25 600 0.220 $ 132.000",
+    "raw": "ROSE VENDELA WHITE 40CM CO-FREE0603110050 1 HB 12 25 300 0.240 $ 72.00",
     "invoice": "",
     "times_used": 0,
     "times_confirmed": 0,
     "times_corrected": 0,
-    "first_seen_at": "2026-04-15T17:11:59",
+    "first_seen_at": "2026-04-20T11:38:44",
     "last_confirmed_at": ""
   },
   "90039|ROSES|PINK MONDIAL PINK|40|25|": {
-    "articulo_id": 32344,
-    "articulo_name": "ROSA COL PINK MONDIAL 40CM 25U",
+    "articulo_id": 36101,
+    "articulo_name": "ROSA PINK MONDIAL 40CM 25U TIMANÁ",
     "origen": "auto",
     "status": "aprendido_en_prueba",
     "provider_id": 90039,
@@ -41154,17 +41154,17 @@
     "size": 40,
     "stems_per_bunch": 25,
     "grade": "",
-    "raw": "ROSE PINK MONDIAL PINK 40CM 4 25 0.220",
+    "raw": "ROSE PINK MONDIAL PINK 40CM CO-FREE0603110050 1 HB 12 25 300 0.240 $ 72.00",
     "invoice": "",
     "times_used": 0,
     "times_confirmed": 0,
     "times_corrected": 0,
-    "first_seen_at": "2026-04-15T17:12:00",
+    "first_seen_at": "2026-04-20T11:38:46",
     "last_confirmed_at": ""
   },
   "90039|ROSES|FREEDOM RED|40|25|": {
-    "articulo_id": 33908,
-    "articulo_name": "ROSA FREEDOM 40CM 25U",
+    "articulo_id": 33925,
+    "articulo_name": "ROSA FREEDOM 40CM 25U TIMANÁ",
     "origen": "auto",
     "status": "aprendido_en_prueba",
     "provider_id": 90039,
@@ -41178,12 +41178,12 @@
     "times_used": 0,
     "times_confirmed": 0,
     "times_corrected": 0,
-    "first_seen_at": "2026-04-15T17:12:01",
+    "first_seen_at": "2026-04-20T11:12:13",
     "last_confirmed_at": ""
   },
   "90039|ROSES|FREEDOM RED|50|25|": {
-    "articulo_id": 33938,
-    "articulo_name": "ROSA FREEDOM 50CM 25U",
+    "articulo_id": 33969,
+    "articulo_name": "ROSA FREEDOM 50CM 25U TIMANÁ",
     "origen": "auto",
     "status": "aprendido_en_prueba",
     "provider_id": 90039,
@@ -41197,7 +41197,7 @@
     "times_used": 0,
     "times_confirmed": 0,
     "times_corrected": 0,
-    "first_seen_at": "2026-04-15T17:12:01",
+    "first_seen_at": "2026-04-20T11:12:13",
     "last_confirmed_at": ""
   },
   "306|CARNATIONS|CARNATION SPECIAL MIX|0|0|FANCY": {
@@ -41296,8 +41296,8 @@
     "last_confirmed_at": ""
   },
   "90012|ROSES|MONDIAL|50|25|": {
-    "articulo_id": 33230,
-    "articulo_name": "ROSA EC MONDIAL 50CM 25U",
+    "articulo_id": 35492,
+    "articulo_name": "ROSA MONDIAL 50CM 10U ECOFLOR",
     "origen": "auto",
     "status": "aprendido_en_prueba",
     "provider_id": 90012,
@@ -41311,12 +41311,12 @@
     "times_used": 0,
     "times_confirmed": 0,
     "times_corrected": 0,
-    "first_seen_at": "2026-04-15T17:24:47",
+    "first_seen_at": "2026-04-20T11:41:17",
     "last_confirmed_at": ""
   },
   "90012|ROSES|VENDELA|50|25|": {
-    "articulo_id": 33599,
-    "articulo_name": "ROSA EC VENDELA 50CM 25U",
+    "articulo_id": 37564,
+    "articulo_name": "ROSA VENDELA 50CM 10U ECOFLOR",
     "origen": "auto",
     "status": "aprendido_en_prueba",
     "provider_id": 90012,
@@ -41330,7 +41330,7 @@
     "times_used": 0,
     "times_confirmed": 0,
     "times_corrected": 0,
-    "first_seen_at": "2026-04-15T17:24:48",
+    "first_seen_at": "2026-04-20T11:41:17",
     "last_confirmed_at": ""
   },
   "90012|ROSES|BRIGHTON|50|25|": {
@@ -41581,8 +41581,8 @@
     "last_confirmed_at": ""
   },
   "435|ROSES|ABSOLUT IN PINK|40|25|": {
-    "articulo_id": 31616,
-    "articulo_name": "ROSA ABSOLUT IN PINK 40CM 25U SCARLET",
+    "articulo_id": 31609,
+    "articulo_name": "ROSA ABSOLUT IN PINK 40CM 25U CANTIZA",
     "origen": "auto",
     "status": "aprendido_en_prueba",
     "provider_id": 435,
@@ -41596,12 +41596,12 @@
     "times_used": 0,
     "times_confirmed": 0,
     "times_corrected": 0,
-    "first_seen_at": "2026-04-16T09:28:41",
+    "first_seen_at": "2026-04-20T11:06:38",
     "last_confirmed_at": ""
   },
   "435|ROSES|CHERRY O|40|25|": {
-    "articulo_id": 32836,
-    "articulo_name": "ROSA EC CHERRY-O! 40CM 25U",
+    "articulo_id": 32168,
+    "articulo_name": "ROSA CHERRY O! 40CM 25U CANTIZA",
     "origen": "auto",
     "status": "aprendido_en_prueba",
     "provider_id": 435,
@@ -41615,12 +41615,12 @@
     "times_used": 0,
     "times_confirmed": 0,
     "times_corrected": 0,
-    "first_seen_at": "2026-04-16T09:28:42",
+    "first_seen_at": "2026-04-20T11:40:04",
     "last_confirmed_at": ""
   },
   "435|ROSES|PINK CANDY|40|25|": {
-    "articulo_id": 33337,
-    "articulo_name": "ROSA EC PINK MONDIAL 40CM 25U",
+    "articulo_id": 35971,
+    "articulo_name": "ROSA PINK CANDY 40CM 25U CANTIZA",
     "origen": "auto",
     "status": "aprendido_en_prueba",
     "provider_id": 435,
@@ -41634,7 +41634,7 @@
     "times_used": 0,
     "times_confirmed": 0,
     "times_corrected": 0,
-    "first_seen_at": "2026-04-16T09:28:42",
+    "first_seen_at": "2026-04-20T11:40:04",
     "last_confirmed_at": ""
   },
   "435|ROSES|ROSEBERRY|40|25|": {
@@ -41733,8 +41733,8 @@
     "last_confirmed_at": ""
   },
   "435|ROSES|MISS PIGGY|40|25|": {
-    "articulo_id": 33208,
-    "articulo_name": "ROSA EC MISS WHITE 40CM 25U",
+    "articulo_id": 35353,
+    "articulo_name": "ROSA MISS PIGGY 40CM 25U CANTIZA",
     "origen": "auto",
     "status": "aprendido_en_prueba",
     "provider_id": 435,
@@ -41748,7 +41748,7 @@
     "times_used": 0,
     "times_confirmed": 0,
     "times_corrected": 0,
-    "first_seen_at": "2026-04-16T09:28:44",
+    "first_seen_at": "2026-04-20T11:40:06",
     "last_confirmed_at": ""
   },
   "435|ROSES|PURPLE MOON|40|25|": {
@@ -42512,8 +42512,8 @@
     "last_confirmed_at": ""
   },
   "90014|ROSES|DEEP PURPLE|50|25|": {
-    "articulo_id": 32915,
-    "articulo_name": "ROSA EC DEEP PURPLE  50CM 25U",
+    "articulo_id": 32617,
+    "articulo_name": "ROSA DEEP PURPLE 50CM 25U FLORAROMA",
     "origen": "auto",
     "status": "aprendido_en_prueba",
     "provider_id": 90014,
@@ -42527,12 +42527,12 @@
     "times_used": 0,
     "times_confirmed": 0,
     "times_corrected": 0,
-    "first_seen_at": "2026-04-16T10:02:11",
+    "first_seen_at": "2026-04-20T11:41:49",
     "last_confirmed_at": ""
   },
   "90014|ROSES|BRIGHTON|50|25|": {
-    "articulo_id": 32780,
-    "articulo_name": "ROSA EC BRIGHTON 50CM 25U",
+    "articulo_id": 31902,
+    "articulo_name": "ROSA BRIGHTON 50CM 25U FLORAROMA",
     "origen": "auto",
     "status": "aprendido_en_prueba",
     "provider_id": 90014,
@@ -42546,12 +42546,12 @@
     "times_used": 0,
     "times_confirmed": 0,
     "times_corrected": 0,
-    "first_seen_at": "2026-04-16T10:02:22",
+    "first_seen_at": "2026-04-20T11:41:54",
     "last_confirmed_at": ""
   },
   "90014|ROSES|VINTAGE|50|25|": {
-    "articulo_id": 37688,
-    "articulo_name": "ROSA VINTAGE 50CM 25U UMA",
+    "articulo_id": 37681,
+    "articulo_name": "ROSA VINTAGE 50CM 25U FLORAROMA",
     "origen": "auto",
     "status": "aprendido_en_prueba",
     "provider_id": 90014,
@@ -42565,12 +42565,12 @@
     "times_used": 0,
     "times_confirmed": 0,
     "times_corrected": 0,
-    "first_seen_at": "2026-04-16T10:02:26",
+    "first_seen_at": "2026-04-20T11:08:01",
     "last_confirmed_at": ""
   },
   "90014|ROSES|VINTAGE|40|25|": {
-    "articulo_id": 37679,
-    "articulo_name": "ROSA VINTAGE 40CM 25U UMA",
+    "articulo_id": 37674,
+    "articulo_name": "ROSA VINTAGE 40CM 25U FLORAROMA",
     "origen": "auto",
     "status": "aprendido_en_prueba",
     "provider_id": 90014,
@@ -42584,12 +42584,12 @@
     "times_used": 0,
     "times_confirmed": 0,
     "times_corrected": 0,
-    "first_seen_at": "2026-04-16T10:02:27",
+    "first_seen_at": "2026-04-20T11:08:02",
     "last_confirmed_at": ""
   },
   "90014|ROSES|MAGIC TIME|40|25|": {
-    "articulo_id": 33167,
-    "articulo_name": "ROSA EC MAGIC TIMES BICOLOR 40CM 25U",
+    "articulo_id": 35180,
+    "articulo_name": "ROSA MAGIC TIMES 40CM 25U FLORAROMA",
     "origen": "auto",
     "status": "aprendido_en_prueba",
     "provider_id": 90014,
@@ -42603,12 +42603,12 @@
     "times_used": 0,
     "times_confirmed": 0,
     "times_corrected": 0,
-    "first_seen_at": "2026-04-16T10:02:31",
+    "first_seen_at": "2026-04-20T11:42:01",
     "last_confirmed_at": ""
   },
   "90014|ROSES|TIBET|40|25|": {
-    "articulo_id": 33552,
-    "articulo_name": "ROSA EC TIBET 40CM 25U",
+    "articulo_id": 37117,
+    "articulo_name": "ROSA TIBET 40CM 25U FLORAROMA",
     "origen": "auto",
     "status": "aprendido_en_prueba",
     "provider_id": 90014,
@@ -42622,12 +42622,12 @@
     "times_used": 0,
     "times_confirmed": 0,
     "times_corrected": 0,
-    "first_seen_at": "2026-04-16T10:02:32",
+    "first_seen_at": "2026-04-20T11:42:01",
     "last_confirmed_at": ""
   },
   "90014|ROSES|BRIGHTON|40|25|": {
-    "articulo_id": 32779,
-    "articulo_name": "ROSA EC BRIGHTON 40CM 25U",
+    "articulo_id": 31878,
+    "articulo_name": "ROSA BRIGHTON 40CM 25U FLORAROMA",
     "origen": "auto",
     "status": "aprendido_en_prueba",
     "provider_id": 90014,
@@ -42641,12 +42641,12 @@
     "times_used": 0,
     "times_confirmed": 0,
     "times_corrected": 0,
-    "first_seen_at": "2026-04-16T10:02:35",
+    "first_seen_at": "2026-04-20T11:42:02",
     "last_confirmed_at": ""
   },
   "90014|ROSES|QUICKSAND|50|25|": {
-    "articulo_id": 33381,
-    "articulo_name": "ROSA EC QUICKSAND 50CM 25U",
+    "articulo_id": 36311,
+    "articulo_name": "ROSA QUICKSAND 50CM 25U FLORAROMA",
     "origen": "auto",
     "status": "aprendido_en_prueba",
     "provider_id": 90014,
@@ -42660,12 +42660,12 @@
     "times_used": 0,
     "times_confirmed": 0,
     "times_corrected": 0,
-    "first_seen_at": "2026-04-16T10:02:39",
+    "first_seen_at": "2026-04-20T11:42:05",
     "last_confirmed_at": ""
   },
   "90014|ROSES|COOL WATER|50|25|": {
-    "articulo_id": 32879,
-    "articulo_name": "ROSA EC COOL WATER 50CM 25U",
+    "articulo_id": 32465,
+    "articulo_name": "ROSA COOL WATER 50CM 25U FLORAROMA",
     "origen": "auto",
     "status": "aprendido_en_prueba",
     "provider_id": 90014,
@@ -42679,12 +42679,12 @@
     "times_used": 0,
     "times_confirmed": 0,
     "times_corrected": 0,
-    "first_seen_at": "2026-04-16T10:02:39",
+    "first_seen_at": "2026-04-20T11:42:06",
     "last_confirmed_at": ""
   },
   "2226|ROSES|ALQUIMIA|50|25|": {
-    "articulo_id": 32710,
-    "articulo_name": "ROSA EC ALQUIMIA 50CM 25U",
+    "articulo_id": 31655,
+    "articulo_name": "ROSA ALQUIMIA 50CM 25U LA ROSALEDA",
     "origen": "auto",
     "status": "aprendido_en_prueba",
     "provider_id": 2226,
@@ -42698,12 +42698,12 @@
     "times_used": 0,
     "times_confirmed": 0,
     "times_corrected": 0,
-    "first_seen_at": "2026-04-16T10:07:28",
+    "first_seen_at": "2026-04-20T11:45:39",
     "last_confirmed_at": ""
   },
   "2226|ROSES|NEXUS|40|25|": {
-    "articulo_id": 33266,
-    "articulo_name": "ROSA EC NEXUS 40CM 25U",
+    "articulo_id": 35698,
+    "articulo_name": "ROSA NEXUS 40CM 25U LA ROSALEDA",
     "origen": "auto",
     "status": "aprendido_en_prueba",
     "provider_id": 2226,
@@ -42717,12 +42717,12 @@
     "times_used": 0,
     "times_confirmed": 0,
     "times_corrected": 0,
-    "first_seen_at": "2026-04-16T10:07:30",
+    "first_seen_at": "2026-04-20T11:45:39",
     "last_confirmed_at": ""
   },
   "2226|ROSES|QUICKSAND|50|25|": {
-    "articulo_id": 33381,
-    "articulo_name": "ROSA EC QUICKSAND 50CM 25U",
+    "articulo_id": 36316,
+    "articulo_name": "ROSA QUICKSAND 50CM 25U LA ROSALEDA",
     "origen": "auto",
     "status": "aprendido_en_prueba",
     "provider_id": 2226,
@@ -42736,12 +42736,12 @@
     "times_used": 0,
     "times_confirmed": 0,
     "times_corrected": 0,
-    "first_seen_at": "2026-04-16T10:07:30",
+    "first_seen_at": "2026-04-20T11:45:39",
     "last_confirmed_at": ""
   },
   "2226|ROSES|LIGHTHOUSE|50|25|": {
-    "articulo_id": 33138,
-    "articulo_name": "ROSA EC LIGHTHOUSE 50CM 25U",
+    "articulo_id": 35112,
+    "articulo_name": "ROSA LIGHTHOUSE 50CM 25U LA ROSALEDA",
     "origen": "auto",
     "status": "aprendido_en_prueba",
     "provider_id": 2226,
@@ -42755,7 +42755,7 @@
     "times_used": 0,
     "times_confirmed": 0,
     "times_corrected": 0,
-    "first_seen_at": "2026-04-16T10:07:31",
+    "first_seen_at": "2026-04-20T11:45:40",
     "last_confirmed_at": ""
   },
   "435|ROSES|ENGAGEMENT|60|25|": {
@@ -43942,7 +43942,7 @@
   "90031|ROSES|FREEDOM|60|2|": {
     "articulo_id": 34001,
     "articulo_name": "ROSA FREEDOM 60CM 25U EL PROGRESO",
-    "origen": "auto-matching",
+    "origen": "auto",
     "status": "aprendido_en_prueba",
     "provider_id": 90031,
     "species": "ROSES",
@@ -43961,7 +43961,7 @@
   "90031|ROSES|FREEDOM|50|8|": {
     "articulo_id": 33964,
     "articulo_name": "ROSA FREEDOM 50CM 25U EL PROGRESO",
-    "origen": "auto-matching",
+    "origen": "auto",
     "status": "aprendido_en_prueba",
     "provider_id": 90031,
     "species": "ROSES",
@@ -43980,7 +43980,7 @@
   "90014|ROSES|OB SRIG.OHTON|50|25|": {
     "articulo_id": 31902,
     "articulo_name": "ROSA BRIGHTON 50CM 25U FLORAROMA",
-    "origen": "auto-fuzzy",
+    "origen": "auto",
     "status": "aprendido_en_prueba",
     "provider_id": 90014,
     "species": "ROSES",
@@ -44018,7 +44018,7 @@
   "90014|ROSES|AWDOAS SAB.OI|40|25|": {
     "articulo_id": 37711,
     "articulo_name": "ROSA WASABI 40CM 25U FLORAROMA",
-    "origen": "auto-fuzzy",
+    "origen": "auto",
     "status": "aprendido_en_prueba",
     "provider_id": 90014,
     "species": "ROSES",
@@ -44037,7 +44037,7 @@
   "90014|ROSES|AE XSP.OLORER|50|25|": {
     "articulo_id": 33758,
     "articulo_name": "ROSA EXPLORER 50CM 25U FLORAROMA",
-    "origen": "auto-fuzzy",
+    "origen": "auto",
     "status": "aprendido_en_prueba",
     "provider_id": 90014,
     "species": "ROSES",
@@ -44056,7 +44056,7 @@
   "90014|ROSES|AB SRI.GOHTON|50|25|": {
     "articulo_id": 31902,
     "articulo_name": "ROSA BRIGHTON 50CM 25U FLORAROMA",
-    "origen": "auto-fuzzy",
+    "origen": "auto",
     "status": "aprendido_en_prueba",
     "provider_id": 90014,
     "species": "ROSES",
@@ -44075,7 +44075,7 @@
   "90014|ROSES|EBLOLU SSH.O|40|25|": {
     "articulo_id": 31818,
     "articulo_name": "ROSA BLUSH 40CM 25U FLORAROMA",
-    "origen": "auto-fuzzy",
+    "origen": "auto",
     "status": "aprendido_en_prueba",
     "provider_id": 90014,
     "species": "ROSES",
@@ -44094,7 +44094,7 @@
   "90014|ROSES|EBLLUOSH|40|25|": {
     "articulo_id": 31818,
     "articulo_name": "ROSA BLUSH 40CM 25U FLORAROMA",
-    "origen": "auto-fuzzy",
+    "origen": "auto",
     "status": "aprendido_en_prueba",
     "provider_id": 90014,
     "species": "ROSES",
@@ -44132,7 +44132,7 @@
   "90014|ROSES|SE.XOPLORER|50|25|": {
     "articulo_id": 33758,
     "articulo_name": "ROSA EXPLORER 50CM 25U FLORAROMA",
-    "origen": "auto-matching",
+    "origen": "auto",
     "status": "aprendido_en_prueba",
     "provider_id": 90014,
     "species": "ROSES",
@@ -44415,8 +44415,8 @@
     "last_confirmed_at": ""
   },
   "90034|ROSES|PLAYA BLANCA|60|25|": {
-    "articulo_id": 33349,
-    "articulo_name": "ROSA EC PLAYA BLANCA 60CM 25U",
+    "articulo_id": 36162,
+    "articulo_name": "ROSA PLAYA BLANCA 60CM 25U ROSELY",
     "origen": "auto",
     "status": "aprendido_en_prueba",
     "provider_id": 90034,
@@ -44430,12 +44430,12 @@
     "times_used": 0,
     "times_confirmed": 0,
     "times_corrected": 0,
-    "first_seen_at": "2026-04-17T10:39:54",
+    "first_seen_at": "2026-04-20T11:45:56",
     "last_confirmed_at": ""
   },
   "90034|ROSES|FREEDOM|80|25|": {
-    "articulo_id": 32995,
-    "articulo_name": "ROSA EC FREEDOM 80CM 25U",
+    "articulo_id": 34040,
+    "articulo_name": "ROSA FREEDOM 80CM 25U ROSELY",
     "origen": "auto",
     "status": "aprendido_en_prueba",
     "provider_id": 90034,
@@ -44449,13 +44449,13 @@
     "times_used": 0,
     "times_confirmed": 0,
     "times_corrected": 0,
-    "first_seen_at": "2026-04-17T11:05:24",
+    "first_seen_at": "2026-04-20T11:45:57",
     "last_confirmed_at": ""
   },
   "90034|ROSES|SALMA|50|25|": {
     "articulo_id": 36421,
     "articulo_name": "ROSA SALMA 50CM 25U ROSELY",
-    "origen": "auto-matching",
+    "origen": "auto",
     "status": "aprendido_en_prueba",
     "provider_id": 90034,
     "species": "ROSES",
@@ -46030,8 +46030,8 @@
     "last_confirmed_at": ""
   },
   "90029|ROSES|NECTARINE|60|25|": {
-    "articulo_id": 33255,
-    "articulo_name": "ROSA EC NECTARINE 60CM 25U",
+    "articulo_id": 35665,
+    "articulo_name": "ROSA NECTARINE 60CM 25U NATIVE",
     "origen": "auto",
     "status": "aprendido_en_prueba",
     "provider_id": 90029,
@@ -46045,7 +46045,7 @@
     "times_used": 0,
     "times_confirmed": 0,
     "times_corrected": 0,
-    "first_seen_at": "2026-04-17T10:38:01",
+    "first_seen_at": "2026-04-20T11:44:40",
     "last_confirmed_at": ""
   },
   "90030|CARNATIONS|WHITE|55|25|": {
@@ -46296,8 +46296,8 @@
     "last_confirmed_at": ""
   },
   "90029|ROSES|FREEDOM|60|25|": {
-    "articulo_id": 32993,
-    "articulo_name": "ROSA EC FREEDOM 60CM 25U",
+    "articulo_id": 34010,
+    "articulo_name": "ROSA FREEDOM 60CM 25U NATIVE",
     "origen": "auto",
     "status": "aprendido_en_prueba",
     "provider_id": 90029,
@@ -46311,7 +46311,7 @@
     "times_used": 0,
     "times_confirmed": 0,
     "times_corrected": 0,
-    "first_seen_at": "2026-04-17T10:45:38",
+    "first_seen_at": "2026-04-20T11:44:39",
     "last_confirmed_at": ""
   },
   "2652|ROSES|CAFE DEL MAR|60|25|": {
@@ -46657,8 +46657,8 @@
     "last_confirmed_at": ""
   },
   "90039|ROSES|VENDELA WHITE|50|25|": {
-    "articulo_id": 32426,
-    "articulo_name": "ROSA COL VENDELA 50CM 25U",
+    "articulo_id": 37568,
+    "articulo_name": "ROSA VENDELA 50CM 25U TIMANÁ",
     "origen": "auto",
     "status": "aprendido_en_prueba",
     "provider_id": 90039,
@@ -46672,7 +46672,7 @@
     "times_used": 0,
     "times_confirmed": 0,
     "times_corrected": 0,
-    "first_seen_at": "2026-04-17T11:59:25",
+    "first_seen_at": "2026-04-20T11:38:44",
     "last_confirmed_at": ""
   },
   "90039|ROSES|PINK FLOYD HOT PINK|40|25|": {
@@ -46695,8 +46695,8 @@
     "last_confirmed_at": ""
   },
   "90039|ROSES|MONDIAL WHITE|60|25|": {
-    "articulo_id": 32319,
-    "articulo_name": "ROSA COL MONDIAL 60CM 25U",
+    "articulo_id": 35542,
+    "articulo_name": "ROSA MONDIAL 60CM 25U TIMANÁ",
     "origen": "auto",
     "status": "aprendido_en_prueba",
     "provider_id": 90039,
@@ -46710,7 +46710,7 @@
     "times_used": 0,
     "times_confirmed": 0,
     "times_corrected": 0,
-    "first_seen_at": "2026-04-17T11:59:26",
+    "first_seen_at": "2026-04-20T11:38:45",
     "last_confirmed_at": ""
   },
   "90039|ROSES|GOLDFINCH YELLOW|40|25|": {
@@ -47115,7 +47115,7 @@
   "435|ROSES|ALOHA|40|255|": {
     "articulo_id": 31643,
     "articulo_name": "ROSA ALOHA 40CM 25U CANTIZA",
-    "origen": "auto-matching",
+    "origen": "auto",
     "status": "aprendido_en_prueba",
     "provider_id": 435,
     "species": "ROSES",
@@ -47132,8 +47132,8 @@
     "last_confirmed_at": ""
   },
   "90026|ROSES|VENDELA|40|25|": {
-    "articulo_id": 32424,
-    "articulo_name": "ROSA COL VENDELA 40CM 25U",
+    "articulo_id": 37547,
+    "articulo_name": "ROSA VENDELA 40CM 25U MILONGA",
     "origen": "auto",
     "status": "aprendido_en_prueba",
     "provider_id": 90026,
@@ -47147,7 +47147,292 @@
     "times_used": 0,
     "times_confirmed": 0,
     "times_corrected": 0,
-    "first_seen_at": "2026-04-17T13:50:28",
+    "first_seen_at": "2026-04-20T11:44:24",
+    "last_confirmed_at": ""
+  },
+  "443|ROSES|TUTTI FRUTTI|50|25|A": {
+    "articulo_id": 37492,
+    "articulo_name": "ROSA TUTTI FRUTTI 50CM 25U AGRINAG",
+    "origen": "auto",
+    "status": "aprendido_en_prueba",
+    "provider_id": 443,
+    "species": "ROSES",
+    "variety": "TUTTI FRUTTI",
+    "size": 50,
+    "stems_per_bunch": 25,
+    "grade": "A",
+    "raw": "1 HB1 AGR TUTTI FRUTTI 50CM 25ST AGCT A ROSES 10 $7.5000 250 $0.3000 $75.00",
+    "invoice": "",
+    "times_used": 0,
+    "times_confirmed": 0,
+    "times_corrected": 0,
+    "first_seen_at": "2026-04-20T11:05:36",
+    "last_confirmed_at": ""
+  },
+  "435|ROSES|ALOHA|50|25|": {
+    "articulo_id": 31648,
+    "articulo_name": "ROSA ALOHA 50CM 25U CANTIZA",
+    "origen": "auto",
+    "status": "aprendido_en_prueba",
+    "provider_id": 435,
+    "species": "ROSES",
+    "variety": "ALOHA",
+    "size": 50,
+    "stems_per_bunch": 25,
+    "grade": "",
+    "raw": "ALOHA 50CM N 25ST CZ",
+    "invoice": "",
+    "times_used": 0,
+    "times_confirmed": 0,
+    "times_corrected": 0,
+    "first_seen_at": "2026-04-20T11:06:37",
+    "last_confirmed_at": ""
+  },
+  "90007|ROSES|BARISTA|60|25|": {
+    "articulo_id": 31750,
+    "articulo_name": "ROSA BARISTA 60CM 25U CERES",
+    "origen": "auto",
+    "status": "aprendido_en_prueba",
+    "provider_id": 90007,
+    "species": "ROSES",
+    "variety": "BARISTA",
+    "size": 60,
+    "stems_per_bunch": 25,
+    "grade": "",
+    "raw": "1 HB BARISTA 25 X 0    8       200 0.32 64.00",
+    "invoice": "",
+    "times_used": 0,
+    "times_confirmed": 0,
+    "times_corrected": 0,
+    "first_seen_at": "2026-04-20T11:06:57",
+    "last_confirmed_at": ""
+  },
+  "90007|ROSES|ZAZU|50|25|": {
+    "articulo_id": 37755,
+    "articulo_name": "ROSA ZAZU 50CM 25U CERES",
+    "origen": "auto",
+    "status": "aprendido_en_prueba",
+    "provider_id": 90007,
+    "species": "ROSES",
+    "variety": "ZAZU",
+    "size": 50,
+    "stems_per_bunch": 25,
+    "grade": "",
+    "raw": "1 HB ZAZU 25 X 0   1        25 0.30 7.50",
+    "invoice": "",
+    "times_used": 0,
+    "times_confirmed": 0,
+    "times_corrected": 0,
+    "first_seen_at": "2026-04-20T11:07:02",
+    "last_confirmed_at": ""
+  },
+  "90012|ROSES|CAFÉ DEL MAR|40|25|": {
+    "articulo_id": 32055,
+    "articulo_name": "ROSA CAFE DEL MAR 40CM 25U ECOFLOR",
+    "origen": "auto",
+    "status": "aprendido_en_prueba",
+    "provider_id": 90012,
+    "species": "ROSES",
+    "variety": "CAFÉ DEL MAR",
+    "size": 40,
+    "stems_per_bunch": 25,
+    "grade": "",
+    "raw": "7 Q CAFÉ DEL MAR 2 25 40 50 0,400 20,000",
+    "invoice": "",
+    "times_used": 0,
+    "times_confirmed": 0,
+    "times_corrected": 0,
+    "first_seen_at": "2026-04-20T11:07:35",
+    "last_confirmed_at": ""
+  },
+  "90014|ROSES|ESX.OPLORER|50|25|": {
+    "articulo_id": 33758,
+    "articulo_name": "ROSA EXPLORER 50CM 25U FLORAROMA",
+    "origen": "auto",
+    "status": "aprendido_en_prueba",
+    "provider_id": 90014,
+    "species": "ROSES",
+    "variety": "ESX.OPLORER",
+    "size": 50,
+    "stems_per_bunch": 25,
+    "grade": "",
+    "raw": "12 - 2 QB GAIA.0040.ROSA.TEEIXEIRA2 ESx.Oplorer 50 25 50 0.280 14.000",
+    "invoice": "",
+    "times_used": 0,
+    "times_confirmed": 0,
+    "times_corrected": 0,
+    "first_seen_at": "2026-04-20T11:08:00",
+    "last_confirmed_at": ""
+  },
+  "90014|ROSES|OEXPLORER|50|25|": {
+    "articulo_id": 33758,
+    "articulo_name": "ROSA EXPLORER 50CM 25U FLORAROMA",
+    "origen": "auto",
+    "status": "aprendido_en_prueba",
+    "provider_id": 90014,
+    "species": "ROSES",
+    "variety": "OEXPLORER",
+    "size": 50,
+    "stems_per_bunch": 25,
+    "grade": "",
+    "raw": "111 - 11QB GAIA.0040.FLORESECER S.2OExplorer 50 25 50 0.280 14.000",
+    "invoice": "",
+    "times_used": 0,
+    "times_confirmed": 0,
+    "times_corrected": 0,
+    "first_seen_at": "2026-04-20T11:08:00",
+    "last_confirmed_at": ""
+  },
+  "90014|ROSES|SB.ROIGHTON|50|25|": {
+    "articulo_id": 31902,
+    "articulo_name": "ROSA BRIGHTON 50CM 25U FLORAROMA",
+    "origen": "auto",
+    "status": "aprendido_en_prueba",
+    "provider_id": 90014,
+    "species": "ROSES",
+    "variety": "SB.ROIGHTON",
+    "size": 50,
+    "stems_per_bunch": 25,
+    "grade": "",
+    "raw": "15 - 5 QB GAIA.0001 CLAUDIEA NETO1 SB.rOighton 50 25 25 0.280 7.000",
+    "invoice": "",
+    "times_used": 0,
+    "times_confirmed": 0,
+    "times_corrected": 0,
+    "first_seen_at": "2026-04-20T11:08:00",
+    "last_confirmed_at": ""
+  },
+  "90014|ROSES|SE.OXPLORER|50|25|": {
+    "articulo_id": 33758,
+    "articulo_name": "ROSA EXPLORER 50CM 25U FLORAROMA",
+    "origen": "auto",
+    "status": "aprendido_en_prueba",
+    "provider_id": 90014,
+    "species": "ROSES",
+    "variety": "SE.OXPLORER",
+    "size": 50,
+    "stems_per_bunch": 25,
+    "grade": "",
+    "raw": "112 - 12HB GAIA.0001 GUILHEERMINO 2SE.Oxplorer 50 25 50 0.280 14.000",
+    "invoice": "",
+    "times_used": 0,
+    "times_confirmed": 0,
+    "times_corrected": 0,
+    "first_seen_at": "2026-04-20T11:08:01",
+    "last_confirmed_at": ""
+  },
+  "90014|ROSES|PRIMAVERA|50|25|": {
+    "articulo_id": 36217,
+    "articulo_name": "ROSA PRIMAVERA 50CM 25U FLORAROMA",
+    "origen": "auto",
+    "status": "aprendido_en_prueba",
+    "provider_id": 90014,
+    "species": "ROSES",
+    "variety": "PRIMAVERA",
+    "size": 50,
+    "stems_per_bunch": 25,
+    "grade": "",
+    "raw": "E 1Primavera 50 25 25 0.280 7.000",
+    "invoice": "",
+    "times_used": 0,
+    "times_confirmed": 0,
+    "times_corrected": 0,
+    "first_seen_at": "2026-04-20T11:08:02",
+    "last_confirmed_at": ""
+  },
+  "90014|ROSES|CARAMELO|60|25|": {
+    "articulo_id": 32119,
+    "articulo_name": "ROSA CARAMELO 60CM 25U FLORAROMA",
+    "origen": "auto",
+    "status": "aprendido_en_prueba",
+    "provider_id": 90014,
+    "species": "ROSES",
+    "variety": "CARAMELO",
+    "size": 60,
+    "stems_per_bunch": 25,
+    "grade": "",
+    "raw": "E 2 Caramelo 60 25 50 0.500 25.000",
+    "invoice": "",
+    "times_used": 0,
+    "times_confirmed": 0,
+    "times_corrected": 0,
+    "first_seen_at": "2026-04-20T11:08:06",
+    "last_confirmed_at": ""
+  },
+  "1429|ROSES|COTTON X-PRESSION|50|25|": {
+    "articulo_id": 32501,
+    "articulo_name": "ROSA COTTON X-PRESSION 50CM 25U LUXUS",
+    "origen": "auto",
+    "status": "aprendido_en_prueba",
+    "provider_id": 1429,
+    "species": "ROSES",
+    "variety": "COTTON X-PRESSION",
+    "size": 50,
+    "stems_per_bunch": 25,
+    "grade": "",
+    "raw": "COTTON X-PRESSION 50 25 1 50 0.22 11.00",
+    "invoice": "",
+    "times_used": 0,
+    "times_confirmed": 0,
+    "times_corrected": 0,
+    "first_seen_at": "2026-04-20T11:09:37",
+    "last_confirmed_at": ""
+  },
+  "90026|ROSES|EXPLORAR|50|25|": {
+    "articulo_id": 33775,
+    "articulo_name": "ROSA EXPLORER 50CM 25U MILONGA",
+    "origen": "auto",
+    "status": "aprendido_en_prueba",
+    "provider_id": 90026,
+    "species": "ROSES",
+    "variety": "EXPLORAR",
+    "size": 50,
+    "stems_per_bunch": 25,
+    "grade": "",
+    "raw": "Explorar X 25 -50 50 50 50 ST 0.31",
+    "invoice": "",
+    "times_used": 0,
+    "times_confirmed": 0,
+    "times_corrected": 0,
+    "first_seen_at": "2026-04-20T11:44:25",
+    "last_confirmed_at": ""
+  },
+  "90026|ROSES|MJNDIAL|50|25|": {
+    "articulo_id": 35488,
+    "articulo_name": "ROSA MONDIAL 50CM 25U MILONGA",
+    "origen": "auto",
+    "status": "aprendido_en_prueba",
+    "provider_id": 90026,
+    "species": "ROSES",
+    "variety": "MJNDIAL",
+    "size": 50,
+    "stems_per_bunch": 25,
+    "grade": "",
+    "raw": "MJndial X25-50 50 225 225 ST 0.31",
+    "invoice": "",
+    "times_used": 0,
+    "times_confirmed": 0,
+    "times_corrected": 0,
+    "first_seen_at": "2026-04-20T11:44:25",
+    "last_confirmed_at": ""
+  },
+  "90014|ROSES|BRIGTHON|40|25|": {
+    "articulo_id": 31878,
+    "articulo_name": "ROSA BRIGHTON 40CM 25U FLORAROMA",
+    "origen": "auto-matching",
+    "status": "aprendido_en_prueba",
+    "provider_id": 90014,
+    "species": "ROSES",
+    "variety": "BRIGTHON",
+    "size": 40,
+    "stems_per_bunch": 25,
+    "grade": "",
+    "raw": "1 16 - 16 HB MARISA APARICIO S.O. E 4 Brigthon 40 25 100 0.240 24.000",
+    "invoice": "",
+    "times_used": 0,
+    "times_confirmed": 0,
+    "times_corrected": 0,
+    "first_seen_at": "2026-04-20T11:49:40",
     "last_confirmed_at": ""
   }
 }

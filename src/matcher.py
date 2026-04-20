@@ -320,23 +320,27 @@ def _score_candidate(line: InvoiceLine, cand: Candidate,
         score += 0.10
         reasons.append('spb_match')
 
-    # — Marca/proveedor en nombre del artículo
+    # — Marca/proveedor en nombre del artículo.
+    # Comparamos con acentos normalizados: pkey='TIMANA' debe matchear
+    # 'ROSA VENDELA ... TIMANÁ'. El catalog_brand lleva tilde en BD.
+    from src.articulos import _normalize
     pkey = (line.provider_key or '').upper()
-    # Marca propia: pkey + brand_by_provider del catálogo
-    own_brands = set()
-    if pkey:
-        own_brands.add(pkey)
+    pkey_norm = _normalize(pkey) if pkey else ''
+    nombre_norm = _normalize(nombre)
+    own_brands_norm = set()
+    if pkey_norm:
+        own_brands_norm.add(pkey_norm)
     if art_loader and provider_id:
         catalog_brand = art_loader.brand_by_provider.get(provider_id)
         if catalog_brand:
-            own_brands.add(catalog_brand.upper())
-    own_brand_match = any(b in nombre for b in own_brands if b)
+            own_brands_norm.add(_normalize(catalog_brand))
+    own_brand_match = any(b in nombre_norm for b in own_brands_norm if b)
     if own_brand_match:
         score += 0.25
         reasons.append(f'brand_in_name({pkey})')
     else:
         foreign_brand = _detect_foreign_brand(nombre, pkey)
-        if foreign_brand and foreign_brand not in own_brands:
+        if foreign_brand and _normalize(foreign_brand) not in own_brands_norm:
             score -= 0.25
             penalties.append(f'foreign_brand({foreign_brand})')
 
@@ -408,6 +412,9 @@ def _strip_life_delegation(variety: str, art_index: dict) -> str:
 _COLOR_PREFIX_RE = re.compile(
     r'^(?:PINK|RED|ORANGE|YELLOW|WHITE|PEACH|CREAM|SALMON|HOT PINK|LIGHT PINK)\s+', re.I)
 
+_COLOR_SUFFIX_RE = re.compile(
+    r'\s+(?:PINK|RED|ORANGE|YELLOW|WHITE|PEACH|CREAM|SALMON|HOT\s+PINK|LIGHT\s+PINK|BLANCO|NARANJA|AMARILLO|ROJO|ROSA)$', re.I)
+
 
 def _strip_color_prefix(variety: str, art_index: dict) -> str | None:
     """Strip a color prefix from a variety if the remainder is a known article variety.
@@ -421,6 +428,29 @@ def _strip_color_prefix(variety: str, art_index: dict) -> str | None:
     if not m:
         return None
     candidate = v[m.end():].strip()
+    if candidate and candidate in art_index:
+        return candidate
+    return None
+
+
+def _strip_color_suffix(variety: str, art_index: dict) -> str | None:
+    """Strip a color suffix from a variety if the remainder is a known article variety.
+
+    Muchas facturas de rosas añaden el color al final ("VENDELA WHITE",
+    "MONDIAL WHITE", "PINK MONDIAL PINK") mientras que el catálogo indexa
+    la variedad sin color ("VENDELA", "MONDIAL", "PINK MONDIAL"). Este
+    strip permite recuperar la variedad base cuando el catálogo la tiene.
+
+    "VENDELA WHITE" → "VENDELA" (if VENDELA exists in catalog)
+    "PINK MONDIAL PINK" → "PINK MONDIAL" (if PINK MONDIAL exists)
+    "MONDIAL WHITE" → "MONDIAL" (if MONDIAL exists)
+    """
+    from src.articulos import _normalize
+    v = _normalize(variety)
+    m = _COLOR_SUFFIX_RE.search(v)
+    if not m:
+        return None
+    candidate = v[:m.start()].strip()
     if candidate and candidate in art_index:
         return candidate
     return None
@@ -498,7 +528,7 @@ class Matcher:
                         method_hint=f'delegacion+{method}',
                     ))
 
-        # 2c) Color-strip para rosas
+        # 2c) Color-strip (prefijo) para rosas
         if line.variety and line.species == 'ROSES':
             stripped = _strip_color_prefix(line.variety, self.art.by_variety)
             if stripped:
@@ -510,6 +540,23 @@ class Matcher:
                     cands.append(Candidate(
                         articulo=result, source='color_strip',
                         method_hint=f'color-strip+{method}',
+                    ))
+
+        # 2d) Color-strip (sufijo) para rosas: "VENDELA WHITE" → "VENDELA"
+        # si la base existe. Recupera los artículos con marca del proveedor
+        # (ROSA VENDELA ... TIMANÁ) que no aparecen por by_variety con la
+        # variedad completa, porque el catálogo indexa solo la base.
+        if line.variety and line.species == 'ROSES':
+            stripped = _strip_color_suffix(line.variety, self.art.by_variety)
+            if stripped:
+                result, confidence, method = self.art.search_with_priority(
+                    variety=stripped, size=line.size,
+                    provider_id=provider_id, provider_key=pkey,
+                )
+                if result:
+                    cands.append(Candidate(
+                        articulo=result, source='color_strip',
+                        method_hint=f'color-suffix+{method}',
                     ))
 
         # 3) Exact name
@@ -596,7 +643,17 @@ class Matcher:
         `candidate_count`, `match_reasons`, `match_penalties`,
         `top_candidates` para trazabilidad.
         """
-        pkey = getattr(line, 'provider_key', '')
+        pkey = getattr(line, 'provider_key', '') or ''
+        # Fallback: algunos parsers no rellenan provider_key. Lo derivamos
+        # del provider_id para que brand_in_name/foreign_brand/brand_boost
+        # funcionen aunque el parser lo haya dejado vacío.
+        if not pkey and provider_id:
+            from src.config import PROVIDERS
+            for k, pdata in PROVIDERS.items():
+                if pdata.get('id') == provider_id:
+                    pkey = k
+                    line.provider_key = k
+                    break
         syn_entry = self.syn.find(provider_id, line)
 
         candidates = self._gather_candidates(provider_id, line)
@@ -628,19 +685,42 @@ class Matcher:
         # proveedor en el nombre Y tiene variety+size EXACTO, promoverlo.
         # Regla de negocio: el artículo con marca propia SIEMPRE gana
         # sobre genéricos o marcas ajenas con la misma variedad+talla.
-        # Score > 1.0 garantiza que gana cualquier empate.
+        # Score 1.20 garantiza que domina synonyms legacy del genérico
+        # (trust 0.55 + provider_history llegaban a 1.18–1.20).
         # size_close (±10cm) NO cuenta: si el parser leyó 50CM y hay
         # un artículo 60CM con la misma marca, no queremos empatarlos.
-        own_brand = (self.art.brand_by_provider.get(provider_id) or '').upper()
-        if own_brand:
-            for c in viable:
-                nombre = (c.articulo.get('nombre') or '').upper()
-                if (own_brand in nombre
-                        and 'variety_match' in c.reasons
-                        and 'size_exact' in c.reasons):
-                    c.score = max(c.score, 1.05)
-                    if 'brand_boost' not in c.reasons:
-                        c.reasons.append('brand_boost')
+        # Marca propia se deriva del catálogo (brand_by_provider) y
+        # también del pkey — el provider_id del config (p.ej. 90039
+        # TIMANA) no siempre coincide con el id_proveedor del catálogo
+        # (2651), así que pkey normalizado es el fallback más fiable.
+        from src.articulos import _normalize
+        catalog_brand = self.art.brand_by_provider.get(provider_id) or ''
+        pkey_norm = _normalize(pkey) if pkey else ''
+        catalog_brand_norm = _normalize(catalog_brand) if catalog_brand else ''
+        own_brands_norm = {b for b in (catalog_brand_norm, pkey_norm) if b}
+        if own_brands_norm:
+            boost_candidates = [
+                c for c in viable
+                if any(b in _normalize(c.articulo.get('nombre') or '')
+                       for b in own_brands_norm)
+                and 'variety_match' in c.reasons
+                and 'size_exact' in c.reasons
+            ]
+            # Solo boost si hay un único candidato con marca propia +
+            # variety+size exactos; múltiples empatarían y generarían
+            # ambiguous_match (−11pp autoapprove en provs con mucho
+            # catálogo marcado como ECOFLOR/MYSTIC).
+            # El boost debe superar synonyms legacy que llegan a ~1.19
+            # apuntando al genérico (caso TIMANA). Elevamos sobre el
+            # top alternativo + margen; la regla de negocio es: marca
+            # propia + variedad + talla exactas SIEMPRE gana.
+            if len(boost_candidates) == 1:
+                c = boost_candidates[0]
+                other_top = max(
+                    (o.score for o in viable if o is not c), default=0.0)
+                c.score = max(c.score, 1.05, other_top + 0.05)
+                if 'brand_boost' not in c.reasons:
+                    c.reasons.append('brand_boost')
 
         viable.sort(key=lambda c: c.score, reverse=True)
         line.candidate_count = len(viable)

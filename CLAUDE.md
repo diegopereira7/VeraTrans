@@ -1,7 +1,7 @@
 # CLAUDE.md — Guía operativa para el agente
 
-**Última actualización:** 2026-04-17 (sesión 9q)
-**Estado:** 87.8% autoapprove · Golden 100% (88/88) · NO_PARSEA 7
+**Última actualización:** 2026-04-20 (sesión 9r)
+**Estado:** 89.4% autoapprove · Golden 148/148 reviewed (link 93.9%) · NO_PARSEA 7
 
 ---
 
@@ -25,29 +25,46 @@ Web PHP), mismo pipeline Python. Usuario: Ángel Panadero
 
 ## Estado actual (fuente única de verdad)
 
-- **Autoapprove global:** 87.8% (3309 líneas sobre 82 proveedores)
-- **Golden set:** 100% (88/88 líneas con `_status: "reviewed"`) + 3
-  drafts pendientes de revisión humana (timana, benchmark, florifrut)
+- **Autoapprove global:** 89.4% (3309 líneas sobre 82 proveedores)
+- **Golden set:** 148/148 reviewed (8 proveedores). **Link accuracy
+  93.9% (139/148)** — 9 mismatches restantes, todos gap del matcher:
+  5 en timana (HIGH AND MAGIC ORANGE x2, ASSORTED ASSORTED, GOLDFINCH
+  60, CHERRY BRANDY 60), 3 en benchmark (MINICARNS → CLAVEL FANCY),
+  1 en florifrut (IGUAZU → IGUAZU BICOLOR).
 - **NO_PARSEA restantes:** 7 proveedores
 - **Buckets:** OK 71 · NO_PARSEA 7 · TOTALES_MAL 3 · NO_DETECTADO 1
-- **Última sesión:** 9q (2026-04-17) — IWA reclassify + CANTIZA/
-  MILAGRO/MILONGA parsers + fuzzy cache + golden drafts
+- **Última sesión:** 9r (2026-04-20) — revisión golden drafts +
+  matcher: color-suffix strip, pkey fallback desde provider_id,
+  brand_boost contextual. Autoapprove 87.8→89.4, golden 91.2→93.9.
 
 ### Próximos pasos posibles
 
-1. **Shadow mode** (Fase 10) — procesar facturas reales, comparar
+1. **Matcher: cerrar los 9 mismatches restantes del golden**
+   ([src/matcher.py](src/matcher.py)). Casos pendientes que requieren
+   trabajo más específico:
+   - **HIGH AND MAGIC ORANGE → HIGH MAGIC BICOLOR** (2 casos timana):
+     remover stopword "AND" + fuzzy a prefijo "HIGH MAGIC*".
+   - **ASSORTED ASSORTED → COLOR MIXTO** (1 caso): sinónimo o mapping
+     de ASSORTED/MIXED/SURTIDO a COLOR MIXTO en la búsqueda de variety.
+   - **GOLDFINCH 60CM / CHERRY BRANDY 60CM** (2 casos): relajar
+     `_SIZE_TOL` de 10→20cm cuando no hay candidato con marca propia
+     (usuario prefiere genérico con variety correcta aunque size off
+     sobre marca ajena con size exacto).
+   - **IGUAZU → IGUAZU BICOLOR** (1 florifrut): búsqueda por prefijo
+     de variety si no hay match exacto en by_variety.
+   - **MINICARNS → CLAVEL FANCY** (3 benchmark): el parser produce
+     `spb=10` (mini) pero gold dice spb=20 (fancy). Caso golden-
+     específico, revisar si es el parser o el mapping.
+2. **Shadow mode** (Fase 10) — procesar facturas reales, comparar
    propuesta vs decisión humana, capturar fallos de producción.
-2. **Revisar golden drafts** (timana_88112, benchmark_103685,
-   florifrut_0001093134) — marcar `_status: "reviewed"` tras
-   verificar a mano.
 3. **NO_PARSEA restantes (7)**: CANANVALLE, CEAN GLOBAL, DAFLOR,
    ELITE, NATIVE BLOOMS, SAYONARA, UNIQUE. OCR duro o match, no
    parse.
 4. **TOTALES_MAL (3)**: CANTIZA, MILAGRO, MILONGA — parse OK pero
    sum no cuadra con header en algunos samples.
-3. **Ampliar golden set** a más proveedores para robustecer el
-   feedback loop (bootstrap → review → apply → evaluate).
-4. **Optimizar matcher** (backlog) — ~6.5s para 43 líneas contra 42k
+5. **Ampliar golden set** a más proveedores para robustecer el
+   feedback loop.
+6. **Optimizar matcher** (backlog) — ~6.5s para 43 líneas contra 42k
    artículos. Indexar por variety+size, precalcular brand set, limitar
    fan-out fuzzy.
 
@@ -354,6 +371,52 @@ Comandos con flags (`--provider`, `--max-samples`, `--verbose`,
 Solo las 2 últimas sesiones. Todas las anteriores en
 [`docs/sessions.md`](docs/sessions.md).
 
+### 2026-04-20 — sesión 9r: revisión golden + matcher prioridad de marca
+
+- **Golden drafts** (timana_88112, benchmark_103685, florifrut_0001093134):
+  confirmados como reviewed en sesión 9q pero quedaba pegada la
+  `_note` DRAFT — limpiada en los 3 archivos. Estado: 148/148
+  líneas reviewed en 8 proveedores.
+- **Diagnóstico golden**: link accuracy inicial 91.2% (135/148), 13
+  mismatches, todos gap del matcher (no del golden). Patrón: el
+  sistema elige genérico `ROSA COL ...` o artículo con marca ajena
+  (CANTIZA, LUXUS, CERES) en lugar del artículo con marca del
+  proveedor actual (TIMANÁ, GOLDEN).
+- **Regla de negocio confirmada por el usuario** (guardada en
+  `feedback_matcher_priority.md`): marca del proveedor > genérico
+  COL/EC > marca ajena. Variedad correcta con tamaño aproximado
+  pesa más que variedad+tamaño exactos con marca ajena.
+- **[src/matcher.py](src/matcher.py) → `_strip_color_suffix`**:
+  nuevo helper paralelo a `_strip_color_prefix`. Quita sufijos de
+  color (`WHITE`, `PINK`, etc.) si la base resultante existe en
+  `by_variety`. Permite que `VENDELA WHITE` resuelva a `VENDELA`
+  y encuentre el artículo TIMANÁ. Generador adicional añadido en
+  `_gather_candidates` (case 2d).
+- **[src/matcher.py](src/matcher.py) → `_score_candidate`**:
+  comparación de `own_brands` vs `nombre` ahora usa `_normalize`
+  (strip acentos). Antes `'TIMANA' in 'TIMANÁ'` = False y
+  `brand_in_name` nunca disparaba para proveedores con tilde en el
+  sufijo del catálogo. `foreign_brand` también normalizado.
+- **[src/matcher.py](src/matcher.py) → `match_line` fallback
+  `pkey`**: si el parser deja `line.provider_key=''` (caso TIMANA
+  y otros), se deriva del `provider_id` iterando `PROVIDERS`.
+  Desbloquea `brand_boost` para proveedores donde antes nunca
+  disparaba por el id mismatch entre PROVIDERS config (90039) y
+  `id_proveedor` del catálogo (2651).
+- **[src/matcher.py](src/matcher.py) → `match_line` brand_boost
+  contextual**: solo aplica si hay **exactamente un** candidato con
+  `own_brand + variety_match + size_exact`; el score se eleva sobre
+  el top alternativo + 0.05 (antes 1.05 fijo, insuficiente para
+  superar synonyms legacy que llegaban a ~1.19). El gating por
+  unicidad evita empates en proveedores con mucho catálogo marcado
+  (ECOFLOR, MYSTIC) que causaban −11pp al aplicar boost a varios.
+- **Globales**: autoapprove **87.8% → 89.4%** (+1.6pp). ok 2795→
+  2833 (+38), ambiguous 228→205 (−23), autoapprovable 2666→2715
+  (+49). Golden **91.2% → 93.9%** (+2.7pp, −4 mismatches: 4
+  cerrados en TIMANA — VENDELA WHITE 40/50, MONDIAL WHITE 60,
+  PINK MONDIAL PINK 40). Quedan 9 mismatches que requieren trabajo
+  más específico (ver "Próximos pasos").
+
 ### 2026-04-17 — sesión 9q: IWA mixed_box + CANTIZA/MILAGRO/MILONGA + fuzzy cache
 
 - **[src/matcher.py](src/matcher.py) → `reclassify_assorted`**:
@@ -390,40 +453,6 @@ Solo las 2 últimas sesiones. Todas las anteriores en
   (+12). **Buckets**: OK 70→71, NO_PARSEA 10→7 (−3), TOTALES_MAL
   1→3 (CANTIZA→OK; MILAGRO+MILONGA+CANANVALLE suben desde
   NO_PARSEA). Golden 100% (88/88).
-
-### 2026-04-17 — sesión 9p: IWA + PREMIUM + CIRCASIA + ECOFLOR + MILONGA + MILAGRO + PRESTIGE
-
-- **[src/parsers/otros.py](src/parsers/otros.py) → IwaParser**:
-  regex reescrita anclada en tariff 10-dígitos + bloque final
-  `Stems N USD$ P USD$ T`; `CM` opcional; farm codes tipo `R19-Pili`
-  y `size` opcional (líneas sin size). IWA: MUCHO_RESCATE → OK,
-  rescued 32→0, parsed 21→53.
-- **[src/parsers/otros.py](src/parsers/otros.py) → PremiumColParser**:
-  OCR cleanup (`l`→`1`, `Rl4`→`R14`, `.US$`→`US$`, `US$0.120`→
-  `US$ 0.120`, `'CARNATION`→`CARNATION`). Tolera `ORDEN` entre
-  tariff y `Stems`. Nueva variante B factura electrónica DIAN
-  (`CARNATION DIANTHUS CARYOPHYLLUS ... stems $price $total`) solo
-  como fallback. PREMIUM: NO_PARSEA → OK.
-- **[src/parsers/otros.py](src/parsers/otros.py) → ColFarmParser**:
-  nuevo pm5 para CIRCASIA (`1 Q Rose Tiffany 50 - 50 R14-
-  0603.11.00.00 150 150 Stems 0.28 $42.00`); relajado `\s+[-_]?\s*`
-  para aceptar `X25 -40` (MILONGA). CIRCASIA: NO_PARSEA → OK.
-- **[src/parsers/mystic.py](src/parsers/mystic.py)**: variety class
-  ampliada a `[A-Za-zÀ-ÿ\ufffd]` — acepta caracteres Latin-extended
-  y el placeholder OCR `\ufffd` (ECOFLOR tiene variedades con `É`
-  corrompida a `�`). ECOFLOR: TOTALES_MAL → OK (5/5 sum=header).
-- **[src/parsers/auto_milagro.py](src/parsers/auto_milagro.py)**:
-  `_TOTAL_RE` acepta coma de miles en `TOTAL INVOICE (Dollars) 1,193.50`.
-  MILAGRO 02a: header 1.0 → 1193.5.
-- **[src/parsers/otros.py](src/parsers/otros.py) → PrestigeParser**:
-  nueva variante OCR `ROSE FREEDOM 40 CM 2 250 500 0,16 80,00`
-  (PRESTIGE escaneado simple). PRESTIGE: NO_PARSEA → OK (9→24 parsed,
-  5/5 totals_ok).
-- **Global**: autoapprove **87.1% → 86.7%** (−0.4pp, dilución por
-  +78 líneas nuevas con mayor tasa ambiguous). ok 2739→2785 (+46),
-  líneas totales 3219→3297 (+78). Buckets: OK 65→70 (+5),
-  NO_PARSEA 13→10 (−3), MUCHO_RESCATE 1→0, TOTALES_MAL 2→1.
-  Golden 100%.
 
 ---
 
