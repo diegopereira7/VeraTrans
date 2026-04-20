@@ -10,6 +10,20 @@ Para lecciones transversales reutilizables, ver [`lessons.md`](lessons.md).
 
 ---
 
+## 2026-04-20 — sesión 9w: brand_boost preferir spb_match (+3.1pp golden)
+
+Con los 3 drafts de 9v promovidos a reviewed, `evaluate_golden.py`
+destapó 31 mismatches. El culpable recurrente: brand_boost
+suprimido cuando hay **varios candidatos** con marca propia +
+variety + size_exact, aunque uno sea claramente superior por
+`spb_match`. Ejemplo MONDIAL valtho: 35473 CANTIZA 25U (spb_match,
+1.100) vs 35472 CANTIZA 20U (0.950) — con 2 candidatos el código
+exigía `len==1` y el boost no disparaba.
+
+Fix en [src/matcher.py:823-838](../src/matcher.py): ordenar
+`boost_candidates` por `(spb_match, score)` y requerir líder
+claro. Impacto: golden link 89.4→92.5% (+3.1pp).
+
 ## 2026-04-20 — sesión 9v: bootstrap golden set (+3 drafts, +144 líneas)
 
 Bootstrap de drafts nuevos en los 3 proveedores de mayor volumen

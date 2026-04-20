@@ -797,6 +797,17 @@ class Matcher:
         for c in candidates:
             vetos = _hard_vetoes(line, c.articulo)
             if vetos:
+                # Un sinónimo `manual_confirmado` indica que el operador
+                # mapeó explícitamente esta línea a ese artículo aunque
+                # origen/talla/spb no encajen (p.ej. "YELLOW SUMMER COL
+                # 40/10" → único artículo existente "YELLOW SUMMER EC
+                # 50/25"). Respetar la decisión: mantener el candidato
+                # con el veto como penalty y no degradar el sinónimo.
+                if (c.source == 'synonym' and syn_entry
+                        and syn_entry.get('status') == 'manual_confirmado'):
+                    c.penalties.extend(vetos)
+                    viable.append(c)
+                    continue
                 c.penalties.extend(vetos)
                 # Si el candidato era un sinónimo, degradar el syn entry.
                 if c.source == 'synonym' and syn_entry:

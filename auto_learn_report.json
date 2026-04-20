@@ -11548,13 +11548,13 @@
     "totals_ok": 3,
     "total_parsed": 198,
     "total_rescued": 0,
-    "ok_lines": 192,
-    "ambiguous_lines": 6,
+    "ok_lines": 191,
+    "ambiguous_lines": 7,
     "sin_match_lines": 0,
     "sin_parser_lines": 0,
-    "autoapprovable_lines": 192,
-    "autoapprove_rate": 0.97,
-    "needs_review_lines": 6,
+    "autoapprovable_lines": 191,
+    "autoapprove_rate": 0.965,
+    "needs_review_lines": 7,
     "validation_errors_lines": 0,
     "extraction_source_mix": {
       "ocr": 2,
@@ -11565,13 +11565,14 @@
       "-": 3
     },
     "penalties": {
-      "weak_synonym": 27,
+      "weak_synonym": 26,
       "foreign_brand": 6,
-      "low_evidence": 6
+      "low_evidence": 6,
+      "tie_top2_margin": 1
     },
     "match_statuses": {
-      "ok": 192,
-      "ambiguous_match": 6
+      "ok": 191,
+      "ambiguous_match": 7
     },
     "samples_raw": [
       {
@@ -11644,8 +11645,8 @@
         "fmt": "verdesestacion",
         "parsed_lines": 92,
         "rescued_lines": 0,
-        "ok_lines": 92,
-        "ambiguous_lines": 0,
+        "ok_lines": 91,
+        "ambiguous_lines": 1,
         "sin_match_lines": 0,
         "sin_parser_lines": 0,
         "header_total": 4412.3,
@@ -11657,19 +11658,20 @@
         "extraction_confidence": 1.0,
         "extraction_degraded": false,
         "avg_link_confidence": 1.0,
-        "autoapprovable_lines": 92,
-        "needs_review_lines": 0,
+        "autoapprovable_lines": 91,
+        "needs_review_lines": 1,
         "validation_errors_lines": 0,
         "penalties": {
-          "weak_synonym": 1
+          "tie_top2_margin": 1
         },
         "match_statuses": {
-          "ok": 92
+          "ok": 91,
+          "ambiguous_match": 1
         },
         "invoice": "1896",
         "error": "",
-        "lane_auto": 92,
-        "lane_quick": 0,
+        "lane_auto": 91,
+        "lane_quick": 1,
         "lane_full": 0
       },
       {

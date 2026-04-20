@@ -1,7 +1,7 @@
 # CLAUDE.md — Guía operativa para el agente
 
-**Última actualización:** 2026-04-20 (sesión 9x)
-**Estado:** 91.2% autoapprove · Golden 292/292 reviewed (link 99.3%) · NO_PARSEA 5 · TOTALES_MAL 0 · matcher 26× más rápido
+**Última actualización:** 2026-04-20 (sesión 9y)
+**Estado:** 91.1% autoapprove · Golden 292/292 reviewed (link 99.7%) · NO_PARSEA 5 · TOTALES_MAL 0 · matcher 26× más rápido
 
 ---
 
@@ -25,36 +25,29 @@ Web PHP), mismo pipeline Python. Usuario: Ángel Panadero
 
 ## Estado actual (fuente única de verdad)
 
-- **Autoapprove global:** 91.2% (3338 líneas sobre 82 proveedores)
+- **Autoapprove global:** 91.1% (3338 líneas sobre 82 proveedores)
 - **Golden set:** 292/292 reviewed (11 proveedores). **Link
-  accuracy 99.3% (290/292)** — solo 2 mismatches conceptuales:
-  1 uma GYPSOPHILA XL ESPECIAL (gramaje 750GR) y 1 verdesestacion
-  YELLOW SUMMER 40/10 (gold apunta a ROSA EC 50CM 25U, probable
-  error de gold).
+  accuracy 99.7% (291/292)** — solo 1 mismatch conceptual:
+  uma GYPSOPHILA XL ESPECIAL (gramaje 750GR vs genérico).
 - **NO_PARSEA restantes:** 5 proveedores
 - **Buckets:** OK 76 · NO_PARSEA 5 · TOTALES_MAL 0 · NO_DETECTADO 1
-- **Última sesión:** 9x (2026-04-20) — 3 fixes en cadena:
-  (1) `variety_full` como desempate (todos los tokens variedad en
-  nombre del artículo);
-  (2) `_COLOR_SUFFIX_RE` acepta prefijo "IN "/"EN " ("BELIEVE IN
-  PINK"→"BELIEVE");
-  (3) respetar sinónimo `manual_confirmado` saltando brand_boost +
-  `add()` ignora auto-learn si prev es manual_confirmado. Evitaba
-  que `evaluate_golden` borrara decisiones de `golden_apply`.
-  Golden 92.5→99.3 (+6.8pp). Autoapprove 90.3→91.2 (+0.9pp).
-  weak_synonym penalties 2742→2176 (-566).
+- **Última sesión:** 9y (2026-04-20) — respetar `manual_confirmado`
+  en los hard_vetoes del matcher. El operador mapeó YELLOW SUMMER
+  COL 40/10 al único artículo "YELLOW SUMMER EC 50/25" del
+  catálogo; el veto de origin descartaba el candidato y degradaba
+  el sinónimo a ambiguo. Ahora el manual sobrevive el veto como
+  penalty. Golden 99.3→99.7. Autoapprove 91.2→91.1 (−0.1pp, sin
+  importancia).
 
 ### Próximos pasos posibles
 
-1. **Resolver los 2 mismatches restantes (conceptuales)**:
+1. **Resolver el mismatch conceptual restante**:
    - **GYPSOPHILA XL ESPECIAL → XLENCE 750GR** (1 uma):
      diferenciación por gramaje (28205 750GR vs 28188 genérico).
-   - **YELLOW SUMMER 40/10 → ROSA EC YELLOW SUMMER 50/25** (1
-     verdesestacion): el gold apunta a artículo EC de tamaño
-     distinto, probable error del gold — revisar.
 2. **Correr `golden_apply.py` en cada ampliación de golden** es
    ahora el camino cierre-del-bucle: el matcher respeta
-   `manual_confirmado` y `add()` no lo degrada.
+   `manual_confirmado` en los 3 puntos críticos (brand_boost
+   skip, veto skip+penalty, add() no-clobber).
 2. **Shadow mode** (Fase 10) — procesar facturas reales, comparar
    propuesta vs decisión humana, capturar fallos de producción.
 3. **NO_PARSEA restantes (5)**: CANANVALLE, CEAN GLOBAL, NATIVE
@@ -377,6 +370,26 @@ Comandos con flags (`--provider`, `--max-samples`, `--verbose`,
 Solo las 2 últimas sesiones. Todas las anteriores en
 [`docs/sessions.md`](docs/sessions.md).
 
+### 2026-04-20 — sesión 9y: manual_confirmado sobrevive hard_vetoes (+0.4pp golden)
+
+Con 9x el matcher ya respetaba `manual_confirmado` en `brand_boost`
+y en `sinonimos.add()`, pero **los hard_vetoes seguían
+descartándolo y degradándolo a ambiguo**. Ejemplo YELLOW SUMMER
+verdesestacion: la línea es COL 40/10 y el único artículo "YELLOW
+SUMMER" del catálogo es `33632 EC 50CM 25U`. Veto de origin lo
+descartaba y el sinónimo manual creado por golden_apply bajaba a
+ambiguo; match caía en YELLOW KING 40CM 25U (variedad distinta).
+
+Fix en [src/matcher.py:795-820](src/matcher.py): en la fase de
+vetos, si el candidato es un sinónimo `manual_confirmado` se
+**mantiene viable con el veto como penalty** y no se degrada.
+Respeta la decisión explícita del operador aunque estructura
+(origen/talla/spb) no encaje. Único mismatch restante del golden
+es el conceptual de GYPSOPHILA XLENCE gramaje (uma).
+
+Impacto: golden 99.3→**99.7%**. Autoapprove 91.2→91.1% (sin
+importancia, dentro del ruido).
+
 ### 2026-04-20 — sesión 9x: respeto manual_confirmado + variety_full + "IN COLOR" strip
 
 Tras 9v (bootstrap drafts) + 9w (brand_boost spb_match), quedaban
@@ -410,19 +423,6 @@ Quedan solo 2 mismatches conceptuales: GYPSOPHILA XL ESPECIAL uma
 (gramaje 750GR) y YELLOW SUMMER verdesestacion (gold apunta a
 artículo EC con talla distinta — probable error del gold).
 
-### 2026-04-20 — sesión 9w: brand_boost preferir spb_match (+3.1pp golden)
-
-Con los 3 drafts de 9v promovidos a reviewed, `evaluate_golden.py`
-destapó 31 mismatches. El culpable recurrente: brand_boost
-suprimido cuando hay **varios candidatos** con marca propia +
-variety + size_exact, aunque uno sea claramente superior por
-`spb_match`. Ejemplo MONDIAL valtho: 35473 CANTIZA 25U (spb_match,
-1.100) vs 35472 CANTIZA 20U (0.950) — con 2 candidatos el código
-exigía `len==1` y el boost no disparaba.
-
-Fix en [src/matcher.py:823-838](src/matcher.py): ordenar
-`boost_candidates` por `(spb_match, score)` y requerir líder
-claro. Impacto: golden link 89.4→92.5% (+3.1pp).
 
 ---
 

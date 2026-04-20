@@ -284,19 +284,12 @@
       "stems": 1.0,
       "line_total": 1.0
     },
-    "link_accuracy": 0.989,
-    "link_correct": 91,
+    "link_accuracy": 1.0,
+    "link_correct": 92,
     "link_total": 92,
-    "full_line_accuracy": 0.989,
-    "full_correct": 91,
+    "full_line_accuracy": 1.0,
+    "full_correct": 92,
     "full_total": 92,
-    "discrepancies": [
-      {
-        "type": "link_mismatch",
-        "gold_variety": "YELLOW SUMMER",
-        "gold_articulo": "33632 (ROSA EC YELLOW SUMMER 50CM 25U)",
-        "sys_articulo": "32434 (ROSA COL YELLOW KING 40CM 25U)"
-      }
-    ]
+    "discrepancies": []
   }
 ]
