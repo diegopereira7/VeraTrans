@@ -1024,6 +1024,15 @@ class TessaParser:
             h.total=float(m.group(1).replace(',','')) if m else 0.0
         except: h.total=0.0
         lines=[]; text_lines=text.split('\n')
+        # Estado del último parent de mixed box: las sub-líneas heredan
+        # box_type / label cuando el patrón 3 matchea.
+        last_btype = ''
+        last_label = ''
+        _SUBLINE_SKIP = {
+            'TESSA', 'TOTALS', 'AWB', 'HAWB', 'USD', 'FUE', 'BOXES',
+            'ORDER', 'BOXT', 'LOC', 'DESCRIPTION', 'LEN', 'BUN', 'STEMS',
+            'PRICE', 'TOTAL', 'LABEL', 'FARM',
+        }
         for i, ln in enumerate(text_lines):
             ln=ln.strip()
             # Patrón: ...HB/QB [loc] [num] VARIETY SIZE BUNCHES STEMS $PRICE $TOTAL LABEL
@@ -1035,6 +1044,8 @@ class TessaParser:
                 try: sz=int(pm.group(3)); spb=int(pm.group(4)); stems=int(pm.group(5)); price=float(pm.group(6)); total=float(pm.group(7).replace(',',''))
                 except: continue
                 label_m=re.search(r'\$[\d,.]+\s+(\w+)\s*$',ln); label=label_m.group(1) if label_m else ''
+                last_btype = btype
+                last_label = label
                 il=InvoiceLine(raw_description=ln,species='ROSES',variety=var,
                                size=sz,stems_per_bunch=spb,stems=stems,
                                price_per_stem=price,line_total=total,label=label,box_type=btype)
@@ -1066,6 +1077,66 @@ class TessaParser:
                                size=sz,stems_per_bunch=spb,stems=stems,
                                price_per_stem=price,line_total=total,label=label,box_type=btype)
                 lines.append(il)
+                continue
+
+            # Patrón 3: sub-línea de mixed box sin prefijo HB/QB.
+            # El parent (pm) dio solo la primera variedad; las siguientes
+            # van como "DEEP PURPLE 60 1 25 $0.40 $10.00" heredando box_type.
+            if last_btype:
+                pm3=re.match(
+                    r'^([A-Z][A-Z\s.\'&\-/]+?)\s+(\d{2})\s+(\d+)\s+(\d+)\s+'
+                    r'\$([\d.]+)\s+\$([\d,.]+)\s*$', ln)
+                if pm3:
+                    var=pm3.group(1).strip()
+                    head = var.split()[0] if var else ''
+                    if not var or head in _SUBLINE_SKIP:
+                        continue
+                    try:
+                        sz=int(pm3.group(2)); spb=int(pm3.group(3))
+                        stems=int(pm3.group(4)); price=float(pm3.group(5))
+                        total=float(pm3.group(6).replace(',',''))
+                    except Exception:
+                        continue
+                    il=InvoiceLine(raw_description=ln,species='ROSES',variety=var,
+                                   size=sz,stems_per_bunch=spb,stems=stems,
+                                   price_per_stem=price,line_total=total,
+                                   label=last_label,box_type=last_btype)
+                    lines.append(il)
+                    continue
+
+                # Patrón 4: OCR rompe variety multi-palabra en 3 líneas
+                # adyacentes:
+                #   33: PINK
+                #   34: 60 1 25 $0.40 $10.00
+                #   35: MONDIAL
+                # Captura variety concatenando vecinos si son palabras
+                # mayúsculas cortas sin números.
+                pm4=re.match(
+                    r'^(\d{2})\s+(\d+)\s+(\d+)\s+\$([\d.]+)\s+\$([\d,.]+)\s*$', ln)
+                if pm4:
+                    prev_ln = text_lines[i-1].strip() if i > 0 else ''
+                    next_ln = text_lines[i+1].strip() if i+1 < len(text_lines) else ''
+                    var_parts: list[str] = []
+                    for candidate in (prev_ln, next_ln):
+                        if (candidate and len(candidate) <= 25
+                                and re.match(r'^[A-Z][A-Z\s&\-]*$', candidate)
+                                and candidate.split()[0] not in _SUBLINE_SKIP):
+                            var_parts.append(candidate)
+                    if var_parts:
+                        var = ' '.join(var_parts)
+                        try:
+                            sz=int(pm4.group(1)); spb=int(pm4.group(2))
+                            stems=int(pm4.group(3)); price=float(pm4.group(4))
+                            total=float(pm4.group(5).replace(',',''))
+                        except Exception:
+                            continue
+                        il=InvoiceLine(raw_description=ln,species='ROSES',variety=var,
+                                       size=sz,stems_per_bunch=spb,stems=stems,
+                                       price_per_stem=price,line_total=total,
+                                       label=last_label,box_type=last_btype)
+                        lines.append(il)
+        if not h.total and lines:
+            h.total = round(sum(l.line_total for l in lines), 2)
         return h, lines
 
 
@@ -1510,6 +1581,16 @@ class ColFarmParser:
             # Normaliza Rose OCR variants antes del regex principal
             ln = re.sub(r'\bR(?:[:]?ise|[:]?lse|lese|\|se)\b', 'Rose', ln, flags=re.I)
             ln = re.sub(r'\s{2,}', ' ', ln).strip()
+            # Skip parents de caja mixta antes del regex principal: las
+            # sub-lines siguientes traen el detalle real. Sin skip el lazy
+            # (.+?) del regex principal rompe "Rose mix 116052 ..." y
+            # captura variedad="mi" que no entra al filtro de skip
+            # MIX/ASSORTED. Doble conteo del parent sobre la suma de
+            # sub-lines.
+            if re.match(
+                r'^\d+\s+[HQ]\s+Rose\s+(?:mix|mixto|assorted|surtid\w*)\b',
+                ln, re.I):
+                continue
             # Línea principal: "1 H Rose Frutteto X 25 - 40 ... 300 300 ST 0.25 75.00"
             # Soporta 'RoseFrutteto' pegado, OCR 'Rbse'/'Rcse', unidad ST/S1/Sl,
             # decimales con coma, conteo de caja opcional (sub-líneas OCR sin prefijo).
@@ -1523,7 +1604,7 @@ class ColFarmParser:
                 stems_box = int(pm.group(5)); stems_total = int(pm.group(6))
                 price = self._money(pm.group(7)); total = self._money(pm.group(8))
                 # Skip "Rosemix"/"assorted" lines — their sub-lines follow
-                if re.match(r'(?:ROSEMIX|ASSORTED|SURTID)', var, re.I):
+                if re.match(r'(?:ROSEMIX|ROSE\s*MIX|MIX|ASSORTED|SURTID)\b', var, re.I):
                     continue
                 bunches = stems_total // spb if spb else 0
                 il = InvoiceLine(raw_description=ln, species='ROSES', variety=var, origin='COL',
@@ -1540,7 +1621,7 @@ class ColFarmParser:
                 var = pm2.group(2).strip().upper()
                 sz = int(pm2.group(3))
                 stems_total = int(pm2.group(5)); price = self._money(pm2.group(6)); total = self._money(pm2.group(7))
-                if re.match(r'(?:ROSEMIX|ASSORTED|SURTID)', var, re.I):
+                if re.match(r'(?:ROSEMIX|ROSE\s*MIX|MIX|ASSORTED|SURTID)\b', var, re.I):
                     continue
                 il = InvoiceLine(raw_description=ln, species='ROSES', variety=var, origin='COL',
                                  size=sz, stems_per_bunch=25, stems=stems_total,

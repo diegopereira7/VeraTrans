@@ -1,7 +1,7 @@
 # CLAUDE.md — Guía operativa para el agente
 
 **Última actualización:** 2026-04-20 (sesión 9r)
-**Estado:** 90.2% autoapprove · Golden 148/148 reviewed (link 97.3%) · NO_PARSEA 5
+**Estado:** 90.2% autoapprove · Golden 148/148 reviewed (link 97.3%) · NO_PARSEA 5 · TOTALES_MAL 0
 
 ---
 
@@ -25,7 +25,7 @@ Web PHP), mismo pipeline Python. Usuario: Ángel Panadero
 
 ## Estado actual (fuente única de verdad)
 
-- **Autoapprove global:** 90.2% (3312 líneas sobre 82 proveedores)
+- **Autoapprove global:** 90.2% (3338 líneas sobre 82 proveedores)
 - **Golden set:** 148/148 reviewed (8 proveedores). **Link accuracy
   97.3% (144/148)** — 4 mismatches restantes, casos conceptuales:
   3 en benchmark (MINICARNS spb=10 vs CLAVEL FANCY spb=20 — decisión
@@ -33,7 +33,7 @@ Web PHP), mismo pipeline Python. Usuario: Ángel Panadero
   → gold quiere COLOR MIXTO pero `reclassify_assorted` lo marca como
   mixed_box, conflicto de política).
 - **NO_PARSEA restantes:** 5 proveedores
-- **Buckets:** OK 73 · NO_PARSEA 5 · TOTALES_MAL 3 · NO_DETECTADO 1
+- **Buckets:** OK 76 · NO_PARSEA 5 · TOTALES_MAL 0 · NO_DETECTADO 1
 - **Última sesión:** 9r (2026-04-20) — revisión golden + matcher
   completo: color-suffix strip, connector strip (AND/&), BICOLOR
   extension encadenada, pkey fallback, brand_boost contextual,
@@ -373,6 +373,36 @@ Comandos con flags (`--provider`, `--max-samples`, `--verbose`,
 Solo las 2 últimas sesiones. Todas las anteriores en
 [`docs/sessions.md`](docs/sessions.md).
 
+### 2026-04-20 — sesión 9t: TOTALES_MAL cleanup (TESSA + MILAGRO + MILONGA)
+
+Ataque a los 3 proveedores TOTALES_MAL. Los 3 subieron a OK.
+
+- **[src/parsers/otros.py](src/parsers/otros.py) → TessaParser**:
+  añadidos dos patrones nuevos para mixed boxes. **Pattern 3**
+  captura sub-líneas sin prefijo HB/QB (`DEEP PURPLE 60 1 25 $0.40
+  $10.00`) heredando `box_type` y `label` del último parent. El
+  parser anterior solo capturaba el parent. **Pattern 4** maneja
+  OCR que rompe variedad multi-palabra en 3 líneas adyacentes
+  (`PINK\n60 1 25 $0.40 $10.00\nMONDIAL` → variety "PINK MONDIAL")
+  concatenando vecinos si son palabras mayúsculas cortas sin
+  números. TESSA: 22 → 50 líneas parseadas, tot_ok 1/5 → 4/5.
+- **[src/parsers/auto_milagro.py](src/parsers/auto_milagro.py)**:
+  estrategia por parent — si `is_mixto=True` emitir sub-líneas
+  (detalle por variedad); si NO, emitir el parent directamente.
+  Antes siempre emitía sub-líneas, pero para mono-variedad la
+  sub-línea solo describe 1 box mientras el parent agrega todos
+  los boxes del item. MILAGRO 01-1062749: diff 24% → OK.
+  tot_ok 2/5 → 3/5.
+- **[src/parsers/otros.py](src/parsers/otros.py) → ColFarmParser**:
+  pre-skip de parents de caja mixta (`1 H Rose mix ...`) antes del
+  regex principal. El lazy `(.+?)` rompía "mix" en "mi X" y escapaba
+  al filtro de skip MIX/ASSORTED. MILONGA 02-45937360: diff 12% →
+  OK. tot_ok 2/5 → 3/5.
+- **Globales**: autoapprove mantiene **90.2%**. **Buckets**: OK
+  73 → **76** (+3: TESSA, MILAGRO, MILONGA suben), **TOTALES_MAL
+  3 → 0**. Líneas 3312 → 3338 (+26 sub-líneas TESSA recuperadas).
+  ok 2853 → **2880** (+27).
+
 ### 2026-04-20 — sesión 9s: NO_PARSEA cleanup (ELITE + DAFLOR + SAYONARA)
 
 Ataque a los 7 proveedores NO_PARSEA. Cerrados 2 a OK y mejoradas
@@ -409,66 +439,6 @@ Ataque a los 7 proveedores NO_PARSEA. Cerrados 2 a OK y mejoradas
   OK 71 → **73**, NO_PARSEA 7 → **5**. Líneas 3309 → 3312
   (+3 capturadas). ok 2833 → **2853** (+20), ambiguous 205 →
   **196** (−9), autoapprovable 2715 → **2749** (+34).
-
-### 2026-04-20 — sesión 9r: revisión golden + matcher prioridad de marca
-
-- **Golden drafts** (timana/benchmark/florifrut): limpiada la
-  `_note` DRAFT en los 3 archivos. 148/148 reviewed en 8 proveedores.
-- **Diagnóstico golden**: link accuracy inicial 91.2% (135/148), 13
-  mismatches, todos gap del matcher. Patrón: el sistema elige
-  genérico COL o marca ajena (CANTIZA, LUXUS, CERES) en lugar del
-  artículo con marca del proveedor actual, o no encuentra el
-  candidato correcto porque la variedad de factura no matchea literal
-  con la del catálogo (WHITE/PINK suffix, AND connector, BICOLOR
-  suffix ausente).
-- **Regla de negocio confirmada** (guardada en
-  `feedback_matcher_priority.md`): marca del proveedor > genérico
-  COL/EC > marca ajena. Variedad correcta con tamaño aproximado pesa
-  más que variedad+tamaño exactos con marca ajena.
-- **[src/matcher.py](src/matcher.py) → `_strip_color_suffix`**:
-  paralelo a `_strip_color_prefix`. `VENDELA WHITE` → `VENDELA`
-  cuando la base existe en `by_variety`. Generador 2d en
-  `_gather_candidates`. Cerró 3 TIMANA (VENDELA WHITE 40/50,
-  MONDIAL WHITE 60, PINK MONDIAL PINK 40).
-- **[src/matcher.py](src/matcher.py) → `_strip_connector`**:
-  quita `AND`/`&`/`Y` del medio si el resultado existe. Cerró 2
-  TIMANA (HIGH AND MAGIC ORANGE 40/60 → HIGH MAGIC BICOLOR via 2f).
-- **[src/matcher.py](src/matcher.py) → `_simplified_variants` +
-  generador 2f BICOLOR extension**: explora todas las combinaciones
-  de simplificación (directa, color-suffix, connector-strip,
-  ambos) y prueba añadir `BICOLOR` al final si existe en
-  `by_variety`. Cerró IGUAZU → IGUAZU BICOLOR (florifrut) y CHERRY
-  BRANDY PEACH 60 → CHERRY BRANDY BICOLOR (timana).
-- **[src/matcher.py](src/matcher.py) → `_score_candidate`**:
-  comparación `own_brands` vs `nombre` con `_normalize` (strip
-  acentos). Arregla `'TIMANA' in 'TIMANÁ'` = False que bloqueaba
-  `brand_in_name` en proveedores con tilde en el sufijo. Idem
-  `foreign_brand`.
-- **[src/matcher.py](src/matcher.py) → `match_line` pkey fallback**:
-  si el parser deja `line.provider_key=''`, se deriva del
-  `provider_id` via PROVIDERS. Desbloquea brand_boost en
-  proveedores donde el ID del config (p.ej. 90039 TIMANA) no
-  coincide con el `id_proveedor` del catálogo (2651).
-- **[src/matcher.py](src/matcher.py) → brand_boost contextual**:
-  solo aplica si hay **un único** candidato con `own_brand +
-  variety_match + size_exact`; el score se eleva sobre el top
-  alternativo + 0.05 para superar synonyms legacy del genérico
-  (trust+history llegaba a ~1.19). El gating por unicidad evita
-  empates catastróficos (−11pp autoapprove) en catálogos muy
-  marcados como ECOFLOR/MYSTIC.
-- **[src/matcher.py](src/matcher.py) → size tolerance dual**:
-  `_SIZE_TOL=10` para bonus/penalty suave (`size_close` +0.05) y
-  `_SIZE_TOL_MAX=20` para el veto duro. Entre 10 y 20cm el
-  candidato no se descarta pero recibe penalty `size_off(Ncm)
-  −0.10`. Permite al genérico COL/EC con variedad correcta ganar a
-  una marca ajena con size exacto cuando no hay otra alternativa.
-  Cerró GOLDFINCH YELLOW 60 → GOLDFINCH 40CM COL (diff 20cm).
-- **Globales**: autoapprove **87.8% → 90.2%** (+2.4pp). ok 2795→
-  2852 (+57), ambiguous 228→196 (−32), autoapprovable 2666→
-  ~2720 (+54). Golden **91.2% → 97.3%** (+6.1pp, 13 → 4
-  mismatches). Los 4 restantes son decisiones conceptuales
-  (MINICARNS→CLAVEL FANCY en benchmark, ASSORTED→COLOR MIXTO vs
-  mixed_box en timana) — ver "Próximos pasos".
 
 ---
 

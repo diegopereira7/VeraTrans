@@ -125,27 +125,60 @@ class AutoParser:
                 parents.append({
                     'box_type': mp.group('box_type'),
                     'is_mixto': bool(mp.group('mixto')),
+                    'match': mp,
                 })
 
-        # Emitir SIEMPRE las sub-líneas: traen variedad + precio reales por split.
-        # La parent se ignora (sería doble conteo).
+        # Estrategia por parent:
+        # - is_mixto=True → emitir sub-líneas (detalle por variedad, cada una
+        #   con su precio/cantidad dentro del box mixto).
+        # - is_mixto=False → emitir el parent directamente; la sub-línea
+        #   describe solo UN box (12 bunches/300 stems), mientras el parent
+        #   agrega todos los boxes del item (24 bunches/600 stems/$132) que
+        #   es lo que suma con el header.
         lines: list[InvoiceLine] = []
         current_box_idx = -1
         for raw in text.split('\n'):
             s = raw.strip()
             if not s:
                 continue
-            # Si es un parent, avanzamos al siguiente box
-            if _PARENT_RE.match(s):
+            mp = _PARENT_RE.match(s)
+            if mp:
                 current_box_idx += 1
+                # Emitir parent si no es mixto
+                p = parents[current_box_idx] if 0 <= current_box_idx < len(parents) else None
+                if p and not p['is_mixto']:
+                    species = _SPECIES_MAP.get(mp.group('species').upper(), 'OTHER')
+                    total_stems = int(mp.group('total_stems'))
+                    total_bunch = int(mp.group('total_bunch'))
+                    spb = int(mp.group('spb'))
+                    price = _num(mp.group('price'))
+                    lines.append(InvoiceLine(
+                        raw_description=s[:120],
+                        species=species,
+                        variety=mp.group('variety').strip().upper(),
+                        origin='COL',
+                        size=int(mp.group('size')),
+                        stems_per_bunch=spb,
+                        bunches=total_bunch,
+                        stems=total_stems,
+                        price_per_stem=price,
+                        line_total=_num(mp.group('total')),
+                        box_type=f"{mp.group('box_type')}B",
+                        provider_key=provider_data.get('key', ''),
+                    ))
                 continue
+
+            # Sub-línea: solo se emite si el box actual es mixto.
             m = _SUBLINE_RE.match(s)
             if not m:
                 continue
+            parent = parents[current_box_idx] if 0 <= current_box_idx < len(parents) else None
+            if parent and not parent['is_mixto']:
+                # Ya emitimos el parent; evitar doble conteo.
+                continue
             box_type = 'HB'
-            if 0 <= current_box_idx < len(parents):
-                t = parents[current_box_idx]['box_type']
-                box_type = f'{t}B'
+            if parent:
+                box_type = f"{parent['box_type']}B"
             species = _SPECIES_MAP.get(m.group('species').upper(), 'OTHER')
             stems = int(m.group('stems'))
             spb = int(m.group('spb'))
