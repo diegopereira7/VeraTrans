@@ -290,6 +290,19 @@ class SynonymStore:
         prev = self.syns.get(k)
         now = datetime.now().isoformat(timespec='seconds')
 
+        # No permitir que un auto-learn sobrescriba una decisión manual
+        # (manual_confirmado). Esto ocurría cuando, tras golden_apply,
+        # el matcher seguía eligiendo un artículo distinto y la siguiente
+        # ejecución de `match_all` degradaba el sinónimo a
+        # `aprendido_en_prueba`, perdiendo la verdad-terreno.
+        is_manual_origin = origin in ('manual', 'manual-web',
+                                      'manual-batch', 'revisado')
+        if (prev and prev.get('status') == 'manual_confirmado'
+                and prev.get('articulo_id')
+                and prev['articulo_id'] != articulo_id
+                and not is_manual_origin):
+            return
+
         # Si cambia el artículo, marcar el viejo como corregido antes de pisarlo.
         if prev and prev.get('articulo_id') and prev['articulo_id'] != articulo_id:
             prev['times_corrected'] = int(prev.get('times_corrected', 0) or 0) + 1

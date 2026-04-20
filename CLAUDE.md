@@ -1,7 +1,7 @@
 # CLAUDE.md — Guía operativa para el agente
 
-**Última actualización:** 2026-04-20 (sesión 9w)
-**Estado:** 90.3% autoapprove · Golden 292/292 reviewed (link 92.5%) · NO_PARSEA 5 · TOTALES_MAL 0 · matcher 26× más rápido
+**Última actualización:** 2026-04-20 (sesión 9x)
+**Estado:** 91.2% autoapprove · Golden 292/292 reviewed (link 99.3%) · NO_PARSEA 5 · TOTALES_MAL 0 · matcher 26× más rápido
 
 ---
 
@@ -25,55 +25,36 @@ Web PHP), mismo pipeline Python. Usuario: Ángel Panadero
 
 ## Estado actual (fuente única de verdad)
 
-- **Autoapprove global:** 90.3% (3338 líneas sobre 82 proveedores)
-- **Golden set:** 292/292 reviewed (11 proveedores, 148 + 3 drafts
-  reviewed de uma/valtho/verdesestacion = +144 líneas). **Link
-  accuracy 92.5% (270/292)** — 22 mismatches restantes:
-  - 5 conceptuales ya conocidos (3 MINICARNS benchmark, 1 ASSORTED
-    timana, 1 GYPSOPHILA XLENCE uma).
-  - 2 valtho (BELIEVE IN PINK, PURPLE FICTION) — fuzzy elige
-    hermano CANTIZA equivocado (ABSOLUT IN PINK, PURPLE CEZANNE).
-  - 15 verdesestacion — **convención de usuario no documentada**:
-    el gold consolida líneas con spb distinto al mismo artículo
-    PONDEROSA (p.ej. FRUTTETO 50/25U → artículo 10U; CALIXTA
-    40/10U → artículo 25U). No hay una regla simple spb-match
-    que cuadre. También 2 PINK MONDIAL donde la ambigüedad entre
-    MONDIAL y PINK MONDIAL PONDEROSA hace ganar al genérico COL.
+- **Autoapprove global:** 91.2% (3338 líneas sobre 82 proveedores)
+- **Golden set:** 292/292 reviewed (11 proveedores). **Link
+  accuracy 99.3% (290/292)** — solo 2 mismatches conceptuales:
+  1 uma GYPSOPHILA XL ESPECIAL (gramaje 750GR) y 1 verdesestacion
+  YELLOW SUMMER 40/10 (gold apunta a ROSA EC 50CM 25U, probable
+  error de gold).
 - **NO_PARSEA restantes:** 5 proveedores
 - **Buckets:** OK 76 · NO_PARSEA 5 · TOTALES_MAL 0 · NO_DETECTADO 1
-- **Última sesión:** 9w (2026-04-20) — fix brand_boost: entre
-  candidatos con marca propia preferir `spb_match` y desempatar
-  por score con margen ≥0.05. Antes sólo boosteaba con
-  `len(boost_candidates)==1`, ignorando al líder obvio por spb.
-  Golden 89.4→92.5 (+3.1pp). Autoapprove 90.2→90.3.
+- **Última sesión:** 9x (2026-04-20) — 3 fixes en cadena:
+  (1) `variety_full` como desempate (todos los tokens variedad en
+  nombre del artículo);
+  (2) `_COLOR_SUFFIX_RE` acepta prefijo "IN "/"EN " ("BELIEVE IN
+  PINK"→"BELIEVE");
+  (3) respetar sinónimo `manual_confirmado` saltando brand_boost +
+  `add()` ignora auto-learn si prev es manual_confirmado. Evitaba
+  que `evaluate_golden` borrara decisiones de `golden_apply`.
+  Golden 92.5→99.3 (+6.8pp). Autoapprove 90.3→91.2 (+0.9pp).
+  weak_synonym penalties 2742→2176 (-566).
 
 ### Próximos pasos posibles
 
-1. **Convención verdesestacion/PONDEROSA (13 mismatches)**: el
-   gold mapea distintos spb del mismo (variety,size) a un mismo
-   artículo PONDEROSA pero **sin regla consistente** (FRUTTETO
-   50 cualquier spb → 10U, CALIXTA 40 cualquier spb → 25U,
-   BLUSH 40 → 25U pero BLUSH 50 → 10U). Requiere decisión del
-   usuario: ¿consolidar al "dominante" y cuál es? ¿o revisar el
-   gold para que cada spb mapee a su SKU exacto?
-2. **Resolver los 5 mismatches conceptuales ya conocidos**.
-   Requieren decisión de negocio, no más matcher:
-   - **MINICARNS → CLAVEL FANCY** (3 benchmark): el parser produce
-     spb=10 (mini) pero el gold dice spb=20 (fancy). En benchmark las
-     líneas "MINI CARN" se tratan convencionalmente como clavel
-     fancy; tocar parser benchmark o añadir override GOLDEN.
-   - **ASSORTED ASSORTED → COLOR MIXTO** (1 timana): gold quiere
-     match a `ROSA COL COLOR MIXTO` pero actualmente
-     `reclassify_assorted` marca las variedades "mixto" como
-     `mixed_box` (no ok). Conflicto de política — revisar si
-     queremos match explícito a COLOR MIXTO para algunos proveedores.
+1. **Resolver los 2 mismatches restantes (conceptuales)**:
    - **GYPSOPHILA XL ESPECIAL → XLENCE 750GR** (1 uma):
      diferenciación por gramaje (28205 750GR vs 28188 genérico).
-3. **Valtho BELIEVE IN PINK / PURPLE FICTION** (2 mismatches):
-   fuzzy full-name elige hermano CANTIZA (ABSOLUT IN PINK,
-   PURPLE CEZANNE) sobre el literal. Requiere mejorar variety
-   matching con overlap completo de tokens o un bonus
-   `variety_full`.
+   - **YELLOW SUMMER 40/10 → ROSA EC YELLOW SUMMER 50/25** (1
+     verdesestacion): el gold apunta a artículo EC de tamaño
+     distinto, probable error del gold — revisar.
+2. **Correr `golden_apply.py` en cada ampliación de golden** es
+   ahora el camino cierre-del-bucle: el matcher respeta
+   `manual_confirmado` y `add()` no lo degrada.
 2. **Shadow mode** (Fase 10) — procesar facturas reales, comparar
    propuesta vs decisión humana, capturar fallos de producción.
 3. **NO_PARSEA restantes (5)**: CANANVALLE, CEAN GLOBAL, NATIVE
@@ -396,48 +377,52 @@ Comandos con flags (`--provider`, `--max-samples`, `--verbose`,
 Solo las 2 últimas sesiones. Todas las anteriores en
 [`docs/sessions.md`](docs/sessions.md).
 
+### 2026-04-20 — sesión 9x: respeto manual_confirmado + variety_full + "IN COLOR" strip
+
+Tras 9v (bootstrap drafts) + 9w (brand_boost spb_match), quedaban
+22 mismatches. Arreglados 20/22 con tres fixes en cadena:
+
+1. **`variety_full`** ([src/matcher.py:321-331](src/matcher.py))
+   — nuevo reason cuando todos los tokens ≥3 chars de la variedad
+   de factura aparecen en el nombre del artículo (+0.03 bonus) y
+   como desempate en `brand_boost` (`sort(spb_match, variety_full,
+   score)`). Desambigua PINK MONDIAL PONDEROSA vs MONDIAL
+   PONDEROSA de la misma marca.
+2. **`_COLOR_SUFFIX_RE` acepta "IN "/"EN " opcional antes del
+   color** ([src/matcher.py:454-455](src/matcher.py)) — `BELIEVE
+   IN PINK` ahora strippa `IN PINK` → `BELIEVE` (si existe en
+   catálogo). Evita match al hermano `ABSOLUT IN PINK`.
+3. **Respetar `manual_confirmado`** (el fix más impactante):
+   - [src/matcher.py:817-831](src/matcher.py) — match_line salta
+     brand_boost si syn_entry es `manual_confirmado`.
+   - [src/sinonimos.py:293-304](src/sinonimos.py) — `add()` retorna
+     sin modificar si prev es `manual_confirmado` y el auto-learn
+     apunta a un artículo distinto. Antes `evaluate_golden` y
+     `match_all` degradaban silenciosamente las correcciones del
+     golden a `aprendido_en_prueba` con cada ejecución.
+
+Tras los 3 fixes + `golden_apply` sobre los 3 drafts (total 284
+confirmados + 8 corregidos), golden link **92.5→99.3% (+6.8pp)**
+y autoapprove **90.3→91.2% (+0.9pp)**. weak_synonym penalties
+bajan de 2742 a 2176 (−566) por la preservación del manual.
+
+Quedan solo 2 mismatches conceptuales: GYPSOPHILA XL ESPECIAL uma
+(gramaje 750GR) y YELLOW SUMMER verdesestacion (gold apunta a
+artículo EC con talla distinta — probable error del gold).
+
 ### 2026-04-20 — sesión 9w: brand_boost preferir spb_match (+3.1pp golden)
 
-Con los 3 drafts de la sesión 9v promovidos a reviewed el golden
-pasó a 292 líneas; `evaluate_golden.py` destapó 31 mismatches
-nuevos (link 89.4%). El culpable recurrente: brand_boost suprimido
-cuando hay **varios candidatos** con marca propia + variety +
-size_exact, aunque uno sea claramente superior por `spb_match`.
-Ejemplo MONDIAL valtho: 35473 CANTIZA 25U (spb_match, score 1.100)
-vs 35472 CANTIZA 20U (score 0.950) — con 2 candidatos elegibles el
-código exigía `len==1` y el boost no disparaba → ganaba el genérico
-EC MONDIAL con synonym legacy (1.188).
+Con los 3 drafts de 9v promovidos a reviewed, `evaluate_golden.py`
+destapó 31 mismatches. El culpable recurrente: brand_boost
+suprimido cuando hay **varios candidatos** con marca propia +
+variety + size_exact, aunque uno sea claramente superior por
+`spb_match`. Ejemplo MONDIAL valtho: 35473 CANTIZA 25U (spb_match,
+1.100) vs 35472 CANTIZA 20U (0.950) — con 2 candidatos el código
+exigía `len==1` y el boost no disparaba.
 
-- **[src/matcher.py:823-838](src/matcher.py)** — `match_line`:
-  ordenar `boost_candidates` por `(spb_match, score)` y requerir
-  líder claro (diferencia de spb_match o score +0.05) para
-  promover. Empates reales siguen sin boost (evita
-  ambiguous_match artificial en ECOFLOR/MYSTIC).
-- **Impacto**: golden link 89.4→92.5% (+3.1pp, 9/31 mismatches
-  resueltos). Autoapprove 90.2→90.3 (sin regresión). Casos
-  resueltos: MONDIAL, IGUAZU, CABARET, TUTTI FRUTTI valtho;
-  FREEDOM/BRIGHTON/CALIXTA/BLUSH varios verdesestacion.
-- **Quedan 22 mismatches** — 15 verdesestacion con convención
-  "spb consolidado" no uniforme del usuario; 5 conceptuales
-  conocidos; 2 valtho fuzzy (BELIEVE IN PINK, PURPLE FICTION).
-
-### 2026-04-20 — sesión 9v: bootstrap golden set (+3 drafts, +144 líneas)
-
-Bootstrap de drafts nuevos en los 3 proveedores de mayor volumen
-que aún no estaban en golden: UMA FLOWERS, VALTHOMIG, PONDEROSA
-(via Verdes La Estación).
-
-- **[golden/uma_18222.json](golden/uma_18222.json)** — UMA FLOWERS,
-  14 líneas (13 ok + 1 ambiguous_match, 3 ok con match_conf<0.80).
-  Las 4 sospechosas son todas gypsophila XLENCE: el matcher las
-  enlaza a "PANICULATA XLENCE" con gramaje distinto (750gr vs
-  1000gr) → requiere criterio del operador para confirmar/corregir.
-- **[golden/valtho_25061663.json](golden/valtho_25061663.json)** —
-  VALTHOMIG, 38 líneas, **100% ok con match_conf≥0.80**. Candidato
-  claro a reviewed con revisión rápida.
-- **[golden/verdesestacion_1896.json](golden/verdesestacion_1896.json)**
-  — PONDEROSA (Verdes La Estación), 92 líneas, **100% ok con
-  match_conf≥0.80**. Casi idem, revisión rápida.
+Fix en [src/matcher.py:823-838](src/matcher.py): ordenar
+`boost_candidates` por `(spb_match, score)` y requerir líder
+claro. Impacto: golden link 89.4→92.5% (+3.1pp).
 
 ---
 

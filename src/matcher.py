@@ -315,6 +315,15 @@ def _score_candidate(line: InvoiceLine, cand: Candidate,
     if line_var_tokens and any(t in nombre for t in line_var_tokens):
         score += 0.30
         reasons.append('variety_match')
+        # `variety_full`: todos los tokens ≥3 chars de la variedad de
+        # la factura aparecen en el nombre. Marca útil para desempatar
+        # en brand_boost (p.ej. línea "PINK MONDIAL" debe preferir
+        # artículo "PINK MONDIAL" sobre el hermano "MONDIAL" de la
+        # misma marca propia). Bonus pequeño para también influir en
+        # el ranking fuera de brand_boost.
+        if all(t in nombre for t in line_var_tokens):
+            score += 0.03
+            reasons.append('variety_full')
     elif line.variety:
         penalties.append('variety_no_overlap')
         score -= 0.10
@@ -443,7 +452,7 @@ _COLOR_PREFIX_RE = re.compile(
 # El input a la regex viene ya por _normalize (espacios colapsados a
 # un espacio único), así que basta 'HOT PINK' literal en ambas regex.
 _COLOR_SUFFIX_RE = re.compile(
-    r'\s+(?:PINK|RED|ORANGE|YELLOW|WHITE|PEACH|CREAM|SALMON|HOT PINK|LIGHT PINK|BLANCO|NARANJA|AMARILLO|ROJO|ROSA)$', re.I)
+    r'\s+(?:(?:IN|EN)\s+)?(?:HOT\s+PINK|LIGHT\s+PINK|PINK|RED|ORANGE|YELLOW|WHITE|PEACH|CREAM|SALMON|BLANCO|NARANJA|AMARILLO|ROJO|ROSA)$', re.I)
 
 _CONNECTOR_RE = re.compile(r'\s+(?:AND|&|Y)\s+', re.I)
 
@@ -811,8 +820,19 @@ class Matcher:
         # sobre genéricos o marcas ajenas con la misma variedad+talla.
         # size_close (±10cm) NO cuenta: si el parser leyó 50CM y hay
         # un artículo 60CM con la misma marca, no queremos empatarlos.
+        # Si existe un sinónimo `manual_confirmado` para esta línea
+        # (p.ej. tras `golden_apply.py`) respetar esa decisión: saltar
+        # brand_boost, que de otro modo promovería un candidato distinto
+        # con la misma marca pero spb/variante diferente y sobrescribiría
+        # la elección del operador.
+        manual_syn_locked = (
+            syn_entry is not None
+            and syn_entry.get('status') == 'manual_confirmado'
+            and int(syn_entry.get('articulo_id', 0) or 0) > 0
+        )
+
         own_brands_norm = _own_brands_norm(pkey, provider_id, self.art)
-        if own_brands_norm:
+        if own_brands_norm and not manual_syn_locked:
             boost_candidates = [
                 c for c in viable
                 if any(b in _normalize(c.articulo.get('nombre') or '')
@@ -827,7 +847,9 @@ class Matcher:
             # ambiguous_match artificial en provs con mucho catálogo
             # marcado (ECOFLOR/MYSTIC).
             boost_candidates.sort(
-                key=lambda c: ('spb_match' in c.reasons, c.score),
+                key=lambda c: ('spb_match' in c.reasons,
+                               'variety_full' in c.reasons,
+                               c.score),
                 reverse=True)
             second = (boost_candidates[1] if len(boost_candidates) > 1
                       else None)
@@ -836,6 +858,8 @@ class Matcher:
                 or (second is not None
                     and (('spb_match' in boost_candidates[0].reasons
                           and 'spb_match' not in second.reasons)
+                         or ('variety_full' in boost_candidates[0].reasons
+                             and 'variety_full' not in second.reasons)
                          or boost_candidates[0].score > second.score + 0.05))
             )
             if boost_candidates and clear_winner:

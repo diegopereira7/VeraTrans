@@ -43,32 +43,13 @@
       "stems": 1.0,
       "line_total": 1.0
     },
-    "link_accuracy": 0.906,
-    "link_correct": 29,
+    "link_accuracy": 1.0,
+    "link_correct": 32,
     "link_total": 32,
-    "full_line_accuracy": 0.906,
-    "full_correct": 29,
+    "full_line_accuracy": 1.0,
+    "full_correct": 32,
     "full_total": 32,
-    "discrepancies": [
-      {
-        "type": "link_mismatch",
-        "gold_variety": "MIXTO",
-        "gold_articulo": "12792 (CLAVEL FANCY MIXTO 70CM 20U GOLDEN)",
-        "sys_articulo": "26786 (MINI CLAVEL FANCY MIXTO 70CM 10U GOLDEN)"
-      },
-      {
-        "type": "link_mismatch",
-        "gold_variety": "MIXTO",
-        "gold_articulo": "12792 (CLAVEL FANCY MIXTO 70CM 20U GOLDEN)",
-        "sys_articulo": "26786 (MINI CLAVEL FANCY MIXTO 70CM 10U GOLDEN)"
-      },
-      {
-        "type": "link_mismatch",
-        "gold_variety": "MIXTO",
-        "gold_articulo": "12792 (CLAVEL FANCY MIXTO 70CM 20U GOLDEN)",
-        "sys_articulo": "26786 (MINI CLAVEL FANCY MIXTO 70CM 10U GOLDEN)"
-      }
-    ]
+    "discrepancies": []
   },
   {
     "provider_key": "fiorentina",
@@ -218,20 +199,13 @@
       "stems": 1.0,
       "line_total": 1.0
     },
-    "link_accuracy": 0.929,
-    "link_correct": 13,
+    "link_accuracy": 1.0,
+    "link_correct": 14,
     "link_total": 14,
-    "full_line_accuracy": 0.929,
-    "full_correct": 13,
+    "full_line_accuracy": 1.0,
+    "full_correct": 14,
     "full_total": 14,
-    "discrepancies": [
-      {
-        "type": "link_mismatch",
-        "gold_variety": "ASSORTED ASSORTED",
-        "gold_articulo": "32226 (ROSA COL COLOR MIXTO 40CM 25U)",
-        "sys_articulo": "None ()"
-      }
-    ]
+    "discrepancies": []
   },
   {
     "provider_key": "uma",
@@ -284,26 +258,13 @@
       "stems": 1.0,
       "line_total": 1.0
     },
-    "link_accuracy": 0.947,
-    "link_correct": 36,
+    "link_accuracy": 1.0,
+    "link_correct": 38,
     "link_total": 38,
-    "full_line_accuracy": 0.947,
-    "full_correct": 36,
+    "full_line_accuracy": 1.0,
+    "full_correct": 38,
     "full_total": 38,
-    "discrepancies": [
-      {
-        "type": "link_mismatch",
-        "gold_variety": "BELIEVE IN PINK",
-        "gold_articulo": "31776 (ROSA BELIEVE 50CM 25U CANTIZA)",
-        "sys_articulo": "31608 (ROSA ABSOLUT IN PINK 50CM 25U CANTIZA)"
-      },
-      {
-        "type": "link_mismatch",
-        "gold_variety": "PURPLE FICTION",
-        "gold_articulo": "36271 (ROSA PURPLE FICTION 50CM 25U CANTIZA)",
-        "sys_articulo": "36270 (ROSA PURPLE CEZANNE 50CM 25U CANTIZA)"
-      }
-    ]
+    "discrepancies": []
   },
   {
     "provider_key": "verdesestacion",
@@ -323,102 +284,18 @@
       "stems": 1.0,
       "line_total": 1.0
     },
-    "link_accuracy": 0.837,
-    "link_correct": 77,
+    "link_accuracy": 0.989,
+    "link_correct": 91,
     "link_total": 92,
-    "full_line_accuracy": 0.837,
-    "full_correct": 77,
+    "full_line_accuracy": 0.989,
+    "full_correct": 91,
     "full_total": 92,
     "discrepancies": [
-      {
-        "type": "link_mismatch",
-        "gold_variety": "PINK MONDIAL",
-        "gold_articulo": "36047 (ROSA PINK MONDIAL 40CM 25U PONDEROSA)",
-        "sys_articulo": "32344 (ROSA COL PINK MONDIAL 40CM 25U)"
-      },
-      {
-        "type": "link_mismatch",
-        "gold_variety": "PINK MONDIAL",
-        "gold_articulo": "36047 (ROSA PINK MONDIAL 40CM 25U PONDEROSA)",
-        "sys_articulo": "32344 (ROSA COL PINK MONDIAL 40CM 25U)"
-      },
-      {
-        "type": "link_mismatch",
-        "gold_variety": "FREEDOM",
-        "gold_articulo": "33948 (ROSA FREEDOM 50CM 20U PONDEROSA)",
-        "sys_articulo": "33942 (ROSA FREEDOM 50CM 25U PONDEROSA)"
-      },
-      {
-        "type": "link_mismatch",
-        "gold_variety": "BRIGHTON",
-        "gold_articulo": "31918 (ROSA BRIGHTON 50CM 10U PONDEROSA)",
-        "sys_articulo": "31916 (ROSA BRIGHTON 50CM 25U PONDEROSA)"
-      },
-      {
-        "type": "link_mismatch",
-        "gold_variety": "BRIGHTON",
-        "gold_articulo": "31918 (ROSA BRIGHTON 50CM 10U PONDEROSA)",
-        "sys_articulo": "31916 (ROSA BRIGHTON 50CM 25U PONDEROSA)"
-      },
-      {
-        "type": "link_mismatch",
-        "gold_variety": "FREEDOM",
-        "gold_articulo": "33948 (ROSA FREEDOM 50CM 20U PONDEROSA)",
-        "sys_articulo": "33942 (ROSA FREEDOM 50CM 25U PONDEROSA)"
-      },
-      {
-        "type": "link_mismatch",
-        "gold_variety": "FRUTTETO",
-        "gold_articulo": "34096 (ROSA FRUTTETO 50CM 10U PONDEROSA)",
-        "sys_articulo": "34094 (ROSA FRUTTETO 50CM 25U PONDEROSA)"
-      },
-      {
-        "type": "link_mismatch",
-        "gold_variety": "PINK MONDIAL",
-        "gold_articulo": "36074 (ROSA PINK MONDIAL 50CM 10U PONDEROSA)",
-        "sys_articulo": "32345 (ROSA COL PINK MONDIAL 50CM 25U)"
-      },
-      {
-        "type": "link_mismatch",
-        "gold_variety": "SILANTOI",
-        "gold_articulo": "36537 (ROSA SILANTOI 50CM 10U PONDEROSA)",
-        "sys_articulo": "36536 (ROSA SILANTOI 50CM 25U PONDEROSA)"
-      },
-      {
-        "type": "link_mismatch",
-        "gold_variety": "FREEDOM",
-        "gold_articulo": "33912 (ROSA FREEDOM 40CM 25U PONDEROSA)",
-        "sys_articulo": "33935 (ROSA FREEDOM 40CM 10U PONDEROSA)"
-      },
-      {
-        "type": "link_mismatch",
-        "gold_variety": "MONDIAL",
-        "gold_articulo": "35436 (ROSA MONDIAL 40CM 25U PONDEROSA)",
-        "sys_articulo": "35445 (ROSA MONDIAL 40CM 10U PONDEROSA)"
-      },
       {
         "type": "link_mismatch",
         "gold_variety": "YELLOW SUMMER",
         "gold_articulo": "33632 (ROSA EC YELLOW SUMMER 50CM 25U)",
         "sys_articulo": "32434 (ROSA COL YELLOW KING 40CM 25U)"
-      },
-      {
-        "type": "link_mismatch",
-        "gold_variety": "CALIXTA",
-        "gold_articulo": "32058 (ROSA CALIXTA 40CM 25U PONDEROSA)",
-        "sys_articulo": "32059 (ROSA CALIXTA 40CM 10U PONDEROSA)"
-      },
-      {
-        "type": "link_mismatch",
-        "gold_variety": "BLUSH",
-        "gold_articulo": "31817 (ROSA BLUSH 40CM 25U PONDEROSA)",
-        "sys_articulo": "31816 (ROSA BLUSH 40CM 10U PONDEROSA)"
-      },
-      {
-        "type": "link_mismatch",
-        "gold_variety": "BRIGHTON",
-        "gold_articulo": "31887 (ROSA BRIGHTON 40CM 25U PONDEROSA)",
-        "sys_articulo": "31891 (ROSA BRIGHTON 40CM 10U PONDEROSA)"
       }
     ]
   }

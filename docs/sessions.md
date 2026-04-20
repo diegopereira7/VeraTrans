@@ -10,6 +10,25 @@ Para lecciones transversales reutilizables, ver [`lessons.md`](lessons.md).
 
 ---
 
+## 2026-04-20 — sesión 9v: bootstrap golden set (+3 drafts, +144 líneas)
+
+Bootstrap de drafts nuevos en los 3 proveedores de mayor volumen
+que aún no estaban en golden: UMA FLOWERS, VALTHOMIG, PONDEROSA
+(via Verdes La Estación).
+
+- **[golden/uma_18222.json](../golden/uma_18222.json)** — UMA
+  FLOWERS, 14 líneas (13 ok + 1 ambiguous_match, 3 ok con
+  match_conf<0.80). Las 4 sospechosas son todas gypsophila
+  XLENCE: el matcher las enlaza a "PANICULATA XLENCE" con
+  gramaje distinto (750gr vs 1000gr) → requiere criterio del
+  operador para confirmar/corregir.
+- **[golden/valtho_25061663.json](../golden/valtho_25061663.json)**
+  — VALTHOMIG, 38 líneas, **100% ok con match_conf≥0.80**.
+  Candidato claro a reviewed con revisión rápida.
+- **[golden/verdesestacion_1896.json](../golden/verdesestacion_1896.json)**
+  — PONDEROSA (Verdes La Estación), 92 líneas, **100% ok con
+  match_conf≥0.80**. Casi idem, revisión rápida.
+
 ## 2026-04-20 — sesión 9u: matcher perf 26× (deferred save + bulk MySQL)
 
 Optimización de performance del matcher. El profiling reveló que el
