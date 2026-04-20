@@ -2,11 +2,11 @@
   "top": [
     [
       "weak_synonym",
-      2724
+      2725
     ],
     [
       "variety_no_overlap",
-      243
+      244
     ],
     [
       "low_evidence",
@@ -25,5 +25,5 @@
       18
     ]
   ],
-  "total_penalties": 3343
+  "total_penalties": 3345
 }

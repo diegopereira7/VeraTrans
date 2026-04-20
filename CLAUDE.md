@@ -1,7 +1,7 @@
 # CLAUDE.md — Guía operativa para el agente
 
 **Última actualización:** 2026-04-20 (sesión 9r)
-**Estado:** 90.2% autoapprove · Golden 148/148 reviewed (link 97.3%) · NO_PARSEA 7
+**Estado:** 90.2% autoapprove · Golden 148/148 reviewed (link 97.3%) · NO_PARSEA 5
 
 ---
 
@@ -25,15 +25,15 @@ Web PHP), mismo pipeline Python. Usuario: Ángel Panadero
 
 ## Estado actual (fuente única de verdad)
 
-- **Autoapprove global:** 90.2% (3309 líneas sobre 82 proveedores)
+- **Autoapprove global:** 90.2% (3312 líneas sobre 82 proveedores)
 - **Golden set:** 148/148 reviewed (8 proveedores). **Link accuracy
   97.3% (144/148)** — 4 mismatches restantes, casos conceptuales:
   3 en benchmark (MINICARNS spb=10 vs CLAVEL FANCY spb=20 — decisión
   de convención GOLDEN, no matcher) y 1 en timana (ASSORTED ASSORTED
   → gold quiere COLOR MIXTO pero `reclassify_assorted` lo marca como
   mixed_box, conflicto de política).
-- **NO_PARSEA restantes:** 7 proveedores
-- **Buckets:** OK 71 · NO_PARSEA 7 · TOTALES_MAL 3 · NO_DETECTADO 1
+- **NO_PARSEA restantes:** 5 proveedores
+- **Buckets:** OK 73 · NO_PARSEA 5 · TOTALES_MAL 3 · NO_DETECTADO 1
 - **Última sesión:** 9r (2026-04-20) — revisión golden + matcher
   completo: color-suffix strip, connector strip (AND/&), BICOLOR
   extension encadenada, pkey fallback, brand_boost contextual,
@@ -55,9 +55,13 @@ Web PHP), mismo pipeline Python. Usuario: Ángel Panadero
      queremos match explícito a COLOR MIXTO para algunos proveedores.
 2. **Shadow mode** (Fase 10) — procesar facturas reales, comparar
    propuesta vs decisión humana, capturar fallos de producción.
-3. **NO_PARSEA restantes (7)**: CANANVALLE, CEAN GLOBAL, DAFLOR,
-   ELITE, NATIVE BLOOMS, SAYONARA, UNIQUE. OCR duro o match, no
-   parse.
+3. **NO_PARSEA restantes (5)**: CANANVALLE, CEAN GLOBAL, NATIVE
+   BLOOMS, SAYONARA, UNIQUE. Restos típicamente con 1 sample por
+   proveedor con OCR muy corrupto o formato "Bouquet" exótico que
+   no compensa en ROI. SAYONARA y NATIVE BLOOMS ya parsean 4/5.
+   CEAN GLOBAL requeriría extender parser para rosas en español
+   ("ROSAS EXPLORER 40CM ..."). CANANVALLE tiene totales mal
+   interpretados (fmt=custinv compartido con otros).
 4. **TOTALES_MAL (3)**: CANTIZA, MILAGRO, MILONGA — parse OK pero
    sum no cuadra con header en algunos samples.
 5. **Ampliar golden set** a más proveedores para robustecer el
@@ -369,6 +373,43 @@ Comandos con flags (`--provider`, `--max-samples`, `--verbose`,
 Solo las 2 últimas sesiones. Todas las anteriores en
 [`docs/sessions.md`](docs/sessions.md).
 
+### 2026-04-20 — sesión 9s: NO_PARSEA cleanup (ELITE + DAFLOR + SAYONARA)
+
+Ataque a los 7 proveedores NO_PARSEA. Cerrados 2 a OK y mejoradas
+3 más.
+
+- **[src/parsers/auto_elite.py](src/parsers/auto_elite.py)**: regex
+  `_PARENT_ALSTRO_RE` acepta coma de miles en los campos numéricos
+  (`1,200` para stems en sample 045-10594065 de FLORA CONCEPT LLC).
+  Nuevo helper `_num()` quita comas antes de int/float. ELITE
+  4/5 parsed → **5/5**, 4/5 tot_ok → **5/5**.
+- **[src/parsers/otros.py](src/parsers/otros.py) → DaflorParser**:
+  cleanup OCR ampliado — normaliza `]`/`[` residuales del scrape
+  con pipes y acepta em-dash/en-dash/underscore antes de `o.` (OCR
+  "— o.15" → "$0.15"). Header total: intenta regex `INVOICE TOTAL
+  US$ N` y cae a suma de líneas si no. DAFLOR 4/5 parsed → **5/5**,
+  0/5 tot_ok → **5/5** (salto grande — antes no cuadraba ningún
+  sample).
+- **[src/parsers/sayonara.py](src/parsers/sayonara.py)**: helper
+  `_ocr_clean()` quita pipes `|`, corchetes `]/[`, em-dash/en-dash
+  entre números. Regex del total ampliado con variante "Total Value
+  USE US N" (OCR "USE" por "USD"). Fallback a suma de líneas.
+  SAYONARA 3/5 parsed → **4/5**, 0/5 tot_ok → **2/5**.
+- **Sin tocar (ROI bajo)**:
+  - **NATIVE BLOOMS**: 1 sample con formato "Bouquet Round Mix"
+    distinto del layout roses/tropical que soporta auto_native.
+  - **CANANVALLE**: custinv comparte fmt con otros; totales mal
+    interpretados (hdr=3.5 vs sum=7.0 en sample 03).
+  - **CEAN GLOBAL**: requeriría extender para rosas en español
+    ("ROSAS EXPLORER 40CM" en vez de "Carnation Red Select") y
+    split de `box_type` con barra ("HB/EXPLORER").
+  - **UNIQUE**: volumen pequeño (8 líneas), OCR irregular.
+- **Globales**: autoapprove mantiene **90.2%** (cambio pequeño,
+  los samples recuperados son pocos en magnitud). **Buckets**:
+  OK 71 → **73**, NO_PARSEA 7 → **5**. Líneas 3309 → 3312
+  (+3 capturadas). ok 2833 → **2853** (+20), ambiguous 205 →
+  **196** (−9), autoapprovable 2715 → **2749** (+34).
+
 ### 2026-04-20 — sesión 9r: revisión golden + matcher prioridad de marca
 
 - **Golden drafts** (timana/benchmark/florifrut): limpiada la
@@ -428,43 +469,6 @@ Solo las 2 últimas sesiones. Todas las anteriores en
   mismatches). Los 4 restantes son decisiones conceptuales
   (MINICARNS→CLAVEL FANCY en benchmark, ASSORTED→COLOR MIXTO vs
   mixed_box en timana) — ver "Próximos pasos".
-
-### 2026-04-17 — sesión 9q: IWA mixed_box + CANTIZA/MILAGRO/MILONGA + fuzzy cache
-
-- **[src/matcher.py](src/matcher.py) → `reclassify_assorted`**:
-  ampliado el regex para aceptar `SURTIDO MIXTO`, `ASSORTED ROSA`,
-  `MIXTO` y variantes de 2 palabras. Reclasifica `ambiguous_match`
-  con variedad claramente "mixed box" a `mixed_box`. IWA ambig
-  19→2, líneas a `mixed_box` = 17.
-- **[src/parsers/cantiza.py](src/parsers/cantiza.py)**: OCR cleanup
-  para sample `01 - V. 075-6577 1440` (N255T→N 25ST, S0/SOCM→50,
-  `2351`→`25ST`, pipes a espacios). CANTIZA NO_PARSEA → OK
-  (100 líneas, 95 ok).
-- **[src/parsers/otros.py](src/parsers/otros.py) → ColFarmParser**:
-  aliases `_ROSE` y `_UNIT` amplicados (R:ise/R:lse/Rlse/SR); pre-
-  normalización OCR (pipes, `¡`/`!`, ruido `\d~` entre stems y ST,
-  Rose-variants → Rose uniform). Header fallback (`TOTAL (Dolares)`
-  y `Vlr.Total FCA BOGOTA`). MILONGA NO_PARSEA → TOTALES_MAL,
-  02b sample 0→5 parsed.
-- **[src/parsers/auto_milagro.py](src/parsers/auto_milagro.py)**:
-  nuevo `_ocr_normalize()` (`~OSES`→`ROSES`, `FREE DOM`→`FREEDOM`,
-  `SO/S0`→`50` contextual, `25(`/`0.28(`→`250`/`0.280` paréntesis
-  OCR de un cero, `\ufffd`/`\u2022`/`\u00b0`/`\u00b7` → `-`).
-  MILAGRO NO_PARSEA → TOTALES_MAL, 02b sample 0→1 parsed.
-- **[src/articulos.py](src/articulos.py) → `fuzzy_search`**: cache
-  por `(sp_key, query, threshold)` + prefiltro con
-  `real_quick_ratio()`/`quick_ratio()` antes de `ratio()`. El cache
-  ayuda en facturas con variedades repetidas; el prefiltro skipea
-  ~2% (aporta poco por naturaleza de los nombres).
-- **Golden set**: +3 drafts (timana_88112, benchmark_103685,
-  florifrut_0001093134) generados con `golden_bootstrap.py` —
-  pendientes de revisión manual para convertirlos en reviewed.
-- **Global**: autoapprove **86.7% → 87.8%** (+1.1pp, mejor sesión
-  de las últimas 3). ok 2785→2795 (+10), ambiguous 268→228 (−40,
-  gracias al reclassify a mixed_box). Líneas totales 3297→3309
-  (+12). **Buckets**: OK 70→71, NO_PARSEA 10→7 (−3), TOTALES_MAL
-  1→3 (CANTIZA→OK; MILAGRO+MILONGA+CANANVALLE suben desde
-  NO_PARSEA). Golden 100% (88/88).
 
 ---
 

@@ -113,18 +113,36 @@ class SayonaraParser:
         m = re.search(r'Invoice\s+Date\s+([\w\-/]+)', text, re.I); h.date = m.group(1) if m else ''
         m = re.search(r'Master\s+AWB\s+([\d\-]+)', text, re.I); h.awb = re.sub(r'\s+', '', m.group(1)) if m else ''
         m = re.search(r'House\s+AWB\s+([\w\-]+)', text, re.I); h.hawb = m.group(1) if m else ''
-        try:
-            m = re.search(r'(?:TOTAL|Total\s+USD)[:\s]*([\d,]+\.\d+)', text, re.I)
-            h.total = float(m.group(1).replace(',', '')) if m else 0.0
-        except Exception:
-            h.total = 0.0
+        h.total = 0.0
+        for pat in (
+            r'Total\s+Value\s+\w*\s*US\$?\s*([\d,]+\.\d+)',  # "Total Value USE US 1,520.00"
+            r'(?:TOTAL|Total\s+USD)[:\s]*([\d,]+\.\d+)',
+        ):
+            m = re.search(pat, text, re.I)
+            if m:
+                try:
+                    h.total = float(m.group(1).replace(',', ''))
+                    break
+                except Exception:
+                    continue
 
         # Fase 1: clasificar líneas en PACK y DETAIL
         raw_lines = [ln.strip() for ln in text.split('\n') if ln.strip()]
         packs = []      # lista de {line, tipo, prefix, bunch, stems, price, total, label, is_mix, details:[]}
         current_pack = None
 
-        for ln in raw_lines:
+        def _ocr_clean(s: str) -> str:
+            """Quita ruido de OCR pobre: pipes, corchetes, em-dash, underscore
+            entre números. Sample 45997243 tiene '0.950] — 760.00' y '|'
+            separadores."""
+            s2 = s.replace('|', ' ').replace(']', ' ').replace('[', ' ')
+            # em-dash/en-dash/underscore entre números → quitar
+            s2 = re.sub(r'[\u2013\u2014\u2015_]\s*(?=\d)', '', s2)
+            s2 = re.sub(r'\s{2,}', ' ', s2).strip()
+            return s2
+
+        for raw_ln in raw_lines:
+            ln = _ocr_clean(raw_ln)
             if self._TOTAL_RE.match(ln):
                 continue
 
@@ -220,4 +238,6 @@ class SayonaraParser:
                         box_type='MIX', provider_key='sayonara',
                     ))
 
+        if not h.total and lines:
+            h.total = round(sum(l.line_total for l in lines), 2)
         return h, lines

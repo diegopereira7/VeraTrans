@@ -341,10 +341,11 @@ class DaflorParser:
                 pending_desc = f"{hdr_m.group(1).strip()} {hdr_m.group(2).strip()}"
                 continue
 
-            # Normaliza pipes y OCR errors (€ vs $, o por 0 antes de .)
-            # antes de buscar el patrón principal.
-            ln_norm = ln.replace('|', ' ')
-            ln_norm = re.sub(r'[\u20ac�]\s*o\.', '$0.', ln_norm)  # "� o.15" -> "$0.15"
+            # Normaliza pipes, corchetes residuales, OCR errors (€/—/\ufffd
+            # vs $, "o" por "0" antes de ".") antes del patrón principal.
+            # Sample DAFLOR 26423 scrape: "1,000]" y "— o.15".
+            ln_norm = ln.replace('|', ' ').replace(']', ' ').replace('[', ' ')
+            ln_norm = re.sub(r'[\u20ac\u2013\u2014\ufffd]\s*o\.', '$0.', ln_norm)  # "— o.15" -> "$0.15"
             ln_norm = re.sub(r'\bo\.(\d)', r'0.\1', ln_norm)      # "o.15" -> "0.15"
             ln_norm = re.sub(r'\s{2,}', ' ', ln_norm).strip()
             # FIX: usar re.I para mixed-case: "1 QB Alstroemeria Assorted - Fancy"
@@ -407,6 +408,16 @@ class DaflorParser:
             if used_pending:
                 pending_desc = ''
                 pending_sp = ''
+        # Header total: intentar extraerlo del PDF; si no, sumar líneas.
+        if not h.total:
+            m = re.search(r'INVOICE\s+TOTAL\s+US\$?\s*([\d,.]+)', text, re.I)
+            if m:
+                try:
+                    h.total = float(m.group(1).replace(',', ''))
+                except Exception:
+                    pass
+        if not h.total and lines:
+            h.total = round(sum(l.line_total for l in lines), 2)
         return h, lines
 
 

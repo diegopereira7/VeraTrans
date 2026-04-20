@@ -22,6 +22,8 @@ from src.models import InvoiceHeader, InvoiceLine
 
 # Parent alstroemeria: species variety grade <type> <boxstems> <totalstems>
 #                     <totalbunch> <pricestem> <pricebunch> <totalprice> <fullbox>
+# Los numéricos aceptan coma de miles (FLORA CONCEPT LLC emite
+# "1,200" para totalstems en facturas como 045-10594065).
 _PARENT_ALSTRO_RE = re.compile(
     r'^(?P<species>ALSTROEMERIA|ALSTRO|SPRAY\s+ROSES?|GARDEN\s+ROSES?|ROSES?|CARNATIONS?|HYDRANGEAS?)\s+'
     r'(?:\*\s*\d+\s*STEMS\s+)?'
@@ -29,15 +31,20 @@ _PARENT_ALSTRO_RE = re.compile(
     r'(?P<grade>PREMIUM|INCREDIBLE|SELECT|FANCY|STANDARD)\s+'
     r'(?:(?P<size>\d{2,3})\s*CM\s+)?'
     r'(?P<type>\d+[HT]ALF|\d+FULL|\d+QUARTER|\dHALF|\dFULL)\s+'
-    r'(?P<stems_box>\d+)\s+'
-    r'(?P<total_stems>\d+)\s+'
-    r'(?P<total_bunch>\d+)\s+'
-    r'(?P<p_stem>[\d.]+)\s+'
-    r'(?P<p_bunch>[\d.]+)\s+'
-    r'(?P<total>[\d.]+)\s+'
-    r'(?P<fullbox>[\d.]+)\s*$',
+    r'(?P<stems_box>[\d,]+)\s+'
+    r'(?P<total_stems>[\d,]+)\s+'
+    r'(?P<total_bunch>[\d,]+)\s+'
+    r'(?P<p_stem>[\d,.]+)\s+'
+    r'(?P<p_bunch>[\d,.]+)\s+'
+    r'(?P<total>[\d,.]+)\s+'
+    r'(?P<fullbox>[\d,.]+)\s*$',
     re.IGNORECASE,
 )
+
+
+def _num(s: str) -> str:
+    """Quita comas de miles para convertir a int/float."""
+    return s.replace(',', '')
 
 # Sub-línea: species variety grade <stems>
 _SUBLINE_RE = re.compile(
@@ -126,10 +133,10 @@ class AutoParser:
                 default_size = {'ROSES': 60, 'ALSTROEMERIA': 70,
                                 'CARNATIONS': 60, 'HYDRANGEAS': 60}.get(species, 0)
                 size = int(m.group('size')) if m.group('size') else default_size
-                total_stems = int(m.group('total_stems'))
-                total_bunch = int(m.group('total_bunch'))
+                total_stems = int(_num(m.group('total_stems')))
+                total_bunch = int(_num(m.group('total_bunch')))
                 spb = total_stems // total_bunch if total_bunch else 10
-                p_stem = float(m.group('p_stem'))
+                p_stem = float(_num(m.group('p_stem')))
                 box_type = _box_type_from_elite(m.group('type'))
                 grade = m.group('grade').upper()
 
@@ -142,7 +149,7 @@ class AutoParser:
                         raw_description=s[:120], species=species, variety=variety,
                         grade=grade, origin='COL', size=size, stems_per_bunch=spb,
                         bunches=total_bunch, stems=total_stems,
-                        price_per_stem=p_stem, line_total=float(m.group('total')),
+                        price_per_stem=p_stem, line_total=float(_num(m.group('total'))),
                         box_type=box_type, provider_key=provider_data.get('key', ''),
                     ))
                 continue
