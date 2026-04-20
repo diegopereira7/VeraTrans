@@ -56,7 +56,8 @@
       "Bash(php -l c:/wamp64/www/verabuy/web/api.php)",
       "Bash(php -l c:/verabuy-traductor/web/api.php)",
       "Bash(\"/c/wamp64/bin/php/php8.3.14/php.exe\" -l c:/verabuy-traductor/web/api.php)",
-      "Bash(\"/c/wamp64/bin/php/php8.3.28/php.exe\" -l c:/verabuy-traductor/web/api.php)"
+      "Bash(\"/c/wamp64/bin/php/php8.3.28/php.exe\" -l c:/verabuy-traductor/web/api.php)",
+      "Bash(powershell:*)"
     ]
   }
 }
