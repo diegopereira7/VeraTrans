@@ -10,6 +10,38 @@ Para lecciones transversales reutilizables, ver [`lessons.md`](lessons.md).
 
 ---
 
+## 2026-04-20 — sesión 9t: TOTALES_MAL cleanup (TESSA + MILAGRO + MILONGA)
+
+Ataque a los 3 proveedores TOTALES_MAL. Los 3 subieron a OK.
+
+- **[src/parsers/otros.py](../src/parsers/otros.py) → TessaParser**:
+  añadidos dos patrones nuevos para mixed boxes. **Pattern 3**
+  captura sub-líneas sin prefijo HB/QB (`DEEP PURPLE 60 1 25 $0.40
+  $10.00`) heredando `box_type` y `label` del último parent. El
+  parser anterior solo capturaba el parent. **Pattern 4** maneja
+  OCR que rompe variedad multi-palabra en 3 líneas adyacentes
+  (`PINK\n60 1 25 $0.40 $10.00\nMONDIAL` → variety "PINK MONDIAL")
+  concatenando vecinos si son palabras mayúsculas cortas sin
+  números. TESSA: 22 → 50 líneas parseadas, tot_ok 1/5 → 4/5.
+- **[src/parsers/auto_milagro.py](../src/parsers/auto_milagro.py)**:
+  estrategia por parent — si `is_mixto=True` emitir sub-líneas
+  (detalle por variedad); si NO, emitir el parent directamente.
+  Antes siempre emitía sub-líneas, pero para mono-variedad la
+  sub-línea solo describe 1 box mientras el parent agrega todos
+  los boxes del item. MILAGRO 01-1062749: diff 24% → OK.
+  tot_ok 2/5 → 3/5.
+- **[src/parsers/otros.py](../src/parsers/otros.py) → ColFarmParser**:
+  pre-skip de parents de caja mixta (`1 H Rose mix ...`) antes del
+  regex principal. El lazy `(.+?)` rompía "mix" en "mi X" y escapaba
+  al filtro de skip MIX/ASSORTED. MILONGA 02-45937360: diff 12% →
+  OK. tot_ok 2/5 → 3/5.
+- **Globales**: autoapprove mantiene **90.2%**. **Buckets**: OK
+  73 → **76** (+3: TESSA, MILAGRO, MILONGA suben), **TOTALES_MAL
+  3 → 0**. Líneas 3312 → 3338 (+26 sub-líneas TESSA recuperadas).
+  ok 2853 → **2880** (+27).
+
+---
+
 ## 2026-04-20 — sesión 9s: NO_PARSEA cleanup (ELITE + DAFLOR + SAYONARA)
 
 Ataque a los 7 proveedores NO_PARSEA. Cerrados 2 a OK y mejoradas

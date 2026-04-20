@@ -1,7 +1,7 @@
 # CLAUDE.md — Guía operativa para el agente
 
-**Última actualización:** 2026-04-20 (sesión 9u)
-**Estado:** 90.2% autoapprove · Golden 148/148 reviewed (link 97.3%) · NO_PARSEA 5 · TOTALES_MAL 0 · matcher 26× más rápido
+**Última actualización:** 2026-04-20 (sesión 9v)
+**Estado:** 90.2% autoapprove · Golden 148/148 reviewed (link 97.3%) + 3 drafts pendientes (+144 líneas) · NO_PARSEA 5 · TOTALES_MAL 0 · matcher 26× más rápido
 
 ---
 
@@ -26,8 +26,11 @@ Web PHP), mismo pipeline Python. Usuario: Ángel Panadero
 ## Estado actual (fuente única de verdad)
 
 - **Autoapprove global:** 90.2% (3338 líneas sobre 82 proveedores)
-- **Golden set:** 148/148 reviewed (8 proveedores). **Link accuracy
-  97.3% (144/148)** — 4 mismatches restantes, casos conceptuales:
+- **Golden set:** 148/148 reviewed (8 proveedores) + 3 drafts nuevos
+  pendientes (uma_18222, valtho_25061663, verdesestacion_1896 —
+  144 líneas adicionales que casi duplican el golden). **Link
+  accuracy 97.3% (144/148)** — 4 mismatches restantes, casos
+  conceptuales:
   3 en benchmark (MINICARNS spb=10 vs CLAVEL FANCY spb=20 — decisión
   de convención GOLDEN, no matcher) y 1 en timana (ASSORTED ASSORTED
   → gold quiere COLOR MIXTO pero `reclassify_assorted` lo marca como
@@ -375,6 +378,30 @@ Comandos con flags (`--provider`, `--max-samples`, `--verbose`,
 Solo las 2 últimas sesiones. Todas las anteriores en
 [`docs/sessions.md`](docs/sessions.md).
 
+### 2026-04-20 — sesión 9v: bootstrap golden set (+3 drafts, +144 líneas)
+
+Bootstrap de drafts nuevos en los 3 proveedores de mayor volumen
+que aún no estaban en golden: UMA FLOWERS, VALTHOMIG, PONDEROSA
+(via Verdes La Estación).
+
+- **[golden/uma_18222.json](golden/uma_18222.json)** — UMA FLOWERS,
+  14 líneas (13 ok + 1 ambiguous_match, 3 ok con match_conf<0.80).
+  Las 4 sospechosas son todas gypsophila XLENCE: el matcher las
+  enlaza a "PANICULATA XLENCE" con gramaje distinto (750gr vs
+  1000gr) → requiere criterio del operador para confirmar/corregir.
+- **[golden/valtho_25061663.json](golden/valtho_25061663.json)** —
+  VALTHOMIG, 38 líneas, **100% ok con match_conf≥0.80**. Candidato
+  claro a reviewed con revisión rápida.
+- **[golden/verdesestacion_1896.json](golden/verdesestacion_1896.json)**
+  — PONDEROSA (Verdes La Estación), 92 líneas, **100% ok con
+  match_conf≥0.80**. Casi idem, revisión rápida.
+- **Siguiente paso** (manual, requiere criterio): abrir los 3 JSONs,
+  corregir lo necesario y cambiar `_status` a "reviewed". Tras eso
+  el golden sube a 292 líneas (2× el actual) y se podrá correr
+  `evaluate_golden.py` para detectar nuevos gaps del matcher. El
+  primer PDF de PONDEROSA (01-6537 6964) falló detección (bucket
+  NO_DETECTADO conocido); se usó el 02 que sí detecta.
+
 ### 2026-04-20 — sesión 9u: matcher perf 26× (deferred save + bulk MySQL)
 
 Optimización de performance del matcher. El profiling reveló que el
@@ -397,36 +424,6 @@ era solo 1s.
 - **Perf**: factura ALEGRIA (43 líneas) **10.2s → 0.39s** (26×).
   Por línea: **238ms → 9ms**. Sin regresión de métricas: golden
   97.3%, autoapprove 90.2%, OK 76 idénticos a antes.
-
-### 2026-04-20 — sesión 9t: TOTALES_MAL cleanup (TESSA + MILAGRO + MILONGA)
-
-Ataque a los 3 proveedores TOTALES_MAL. Los 3 subieron a OK.
-
-- **[src/parsers/otros.py](src/parsers/otros.py) → TessaParser**:
-  añadidos dos patrones nuevos para mixed boxes. **Pattern 3**
-  captura sub-líneas sin prefijo HB/QB (`DEEP PURPLE 60 1 25 $0.40
-  $10.00`) heredando `box_type` y `label` del último parent. El
-  parser anterior solo capturaba el parent. **Pattern 4** maneja
-  OCR que rompe variedad multi-palabra en 3 líneas adyacentes
-  (`PINK\n60 1 25 $0.40 $10.00\nMONDIAL` → variety "PINK MONDIAL")
-  concatenando vecinos si son palabras mayúsculas cortas sin
-  números. TESSA: 22 → 50 líneas parseadas, tot_ok 1/5 → 4/5.
-- **[src/parsers/auto_milagro.py](src/parsers/auto_milagro.py)**:
-  estrategia por parent — si `is_mixto=True` emitir sub-líneas
-  (detalle por variedad); si NO, emitir el parent directamente.
-  Antes siempre emitía sub-líneas, pero para mono-variedad la
-  sub-línea solo describe 1 box mientras el parent agrega todos
-  los boxes del item. MILAGRO 01-1062749: diff 24% → OK.
-  tot_ok 2/5 → 3/5.
-- **[src/parsers/otros.py](src/parsers/otros.py) → ColFarmParser**:
-  pre-skip de parents de caja mixta (`1 H Rose mix ...`) antes del
-  regex principal. El lazy `(.+?)` rompía "mix" en "mi X" y escapaba
-  al filtro de skip MIX/ASSORTED. MILONGA 02-45937360: diff 12% →
-  OK. tot_ok 2/5 → 3/5.
-- **Globales**: autoapprove mantiene **90.2%**. **Buckets**: OK
-  73 → **76** (+3: TESSA, MILAGRO, MILONGA suben), **TOTALES_MAL
-  3 → 0**. Líneas 3312 → 3338 (+26 sub-líneas TESSA recuperadas).
-  ok 2853 → **2880** (+27).
 
 ---
 
