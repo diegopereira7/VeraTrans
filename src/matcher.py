@@ -927,18 +927,24 @@ class Matcher:
                    invoice: str = '') -> list[InvoiceLine]:
         """Matchea todas las líneas y combina link_confidence con
         extraction/ocr para el match_confidence global (retrocompat).
+
+        Envuelve el loop en ``syn.batch()`` para diferir la escritura del
+        JSON de sinónimos y el sync a MySQL hasta el final: antes cada
+        línea disparaba un save completo del archivo (~190ms/línea
+        dominante, ~80% del tiempo total del match).
         """
         out = []
-        for l in lines:
-            matched = self.match_line(provider_id, l, invoice=invoice)
-            ocr = matched.ocr_confidence if matched.ocr_confidence > 0 else 1.0
-            ext = matched.extraction_confidence if matched.extraction_confidence > 0 else 1.0
-            # match_confidence = link_confidence × extraction × ocr.
-            # Los 3 factores son independientes; si alguno flaquea el score
-            # final baja aunque el enlace sea sólido.
-            matched.match_confidence = round(
-                matched.link_confidence * ocr * ext, 3)
-            out.append(matched)
+        with self.syn.batch():
+            for l in lines:
+                matched = self.match_line(provider_id, l, invoice=invoice)
+                ocr = matched.ocr_confidence if matched.ocr_confidence > 0 else 1.0
+                ext = matched.extraction_confidence if matched.extraction_confidence > 0 else 1.0
+                # match_confidence = link_confidence × extraction × ocr.
+                # Los 3 factores son independientes; si alguno flaquea el score
+                # final baja aunque el enlace sea sólido.
+                matched.match_confidence = round(
+                    matched.link_confidence * ocr * ext, 3)
+                out.append(matched)
         return out
 
 

@@ -1,7 +1,7 @@
 # CLAUDE.md — Guía operativa para el agente
 
-**Última actualización:** 2026-04-20 (sesión 9r)
-**Estado:** 90.2% autoapprove · Golden 148/148 reviewed (link 97.3%) · NO_PARSEA 5 · TOTALES_MAL 0
+**Última actualización:** 2026-04-20 (sesión 9u)
+**Estado:** 90.2% autoapprove · Golden 148/148 reviewed (link 97.3%) · NO_PARSEA 5 · TOTALES_MAL 0 · matcher 26× más rápido
 
 ---
 
@@ -66,9 +66,11 @@ Web PHP), mismo pipeline Python. Usuario: Ángel Panadero
    sum no cuadra con header en algunos samples.
 5. **Ampliar golden set** a más proveedores para robustecer el
    feedback loop.
-6. **Optimizar matcher** (backlog) — ~6.5s para 43 líneas contra 42k
-   artículos. Indexar por variety+size, precalcular brand set, limitar
-   fan-out fuzzy.
+6. **Optimizar matcher** — cerrado en sesión 9u con fix de deferred
+   save (26× speedup, 238→9ms/línea). El fuzzy ya no es dominante.
+   Si hace falta más perf: indexar por variety+size en
+   `_gather_candidates`, precalcular brand set, limitar fan-out
+   fuzzy (top-5 actual).
 
 ## Documentación de seguimiento
 
@@ -373,6 +375,29 @@ Comandos con flags (`--provider`, `--max-samples`, `--verbose`,
 Solo las 2 últimas sesiones. Todas las anteriores en
 [`docs/sessions.md`](docs/sessions.md).
 
+### 2026-04-20 — sesión 9u: matcher perf 26× (deferred save + bulk MySQL)
+
+Optimización de performance del matcher. El profiling reveló que el
+80% del tiempo se iba en `json.dump()` dentro de `SynonymStore.save()`
+— cada línea disparaba un save completo del archivo (≈190ms × 42
+líneas = 8s de I/O). El fuzzy que la doc mencionaba como bottleneck
+era solo 1s.
+
+- **[src/sinonimos.py](src/sinonimos.py) → `SynonymStore`**: nuevo
+  flag `_batch_depth` + context manager `batch()` que difiere el
+  save del JSON hasta salir del contexto. Durante batch, los
+  `add()` / `mark_*` solo marcan `_dirty`; al salir hay un único
+  `_write_to_disk()`.
+- **[src/sinonimos.py](src/sinonimos.py) → `_sync_to_mysql` /
+  `_bulk_sync_to_mysql`**: sync MySQL también diferido y convertido
+  a `executemany` con una sola conexión al flush (antes 18ms ×
+  42 líneas abriendo/cerrando conexión = 0.77s).
+- **[src/matcher.py](src/matcher.py) → `match_all`**: envuelve el
+  loop en `with self.syn.batch():` para activar el modo diferido.
+- **Perf**: factura ALEGRIA (43 líneas) **10.2s → 0.39s** (26×).
+  Por línea: **238ms → 9ms**. Sin regresión de métricas: golden
+  97.3%, autoapprove 90.2%, OK 76 idénticos a antes.
+
 ### 2026-04-20 — sesión 9t: TOTALES_MAL cleanup (TESSA + MILAGRO + MILONGA)
 
 Ataque a los 3 proveedores TOTALES_MAL. Los 3 subieron a OK.
@@ -402,43 +427,6 @@ Ataque a los 3 proveedores TOTALES_MAL. Los 3 subieron a OK.
   73 → **76** (+3: TESSA, MILAGRO, MILONGA suben), **TOTALES_MAL
   3 → 0**. Líneas 3312 → 3338 (+26 sub-líneas TESSA recuperadas).
   ok 2853 → **2880** (+27).
-
-### 2026-04-20 — sesión 9s: NO_PARSEA cleanup (ELITE + DAFLOR + SAYONARA)
-
-Ataque a los 7 proveedores NO_PARSEA. Cerrados 2 a OK y mejoradas
-3 más.
-
-- **[src/parsers/auto_elite.py](src/parsers/auto_elite.py)**: regex
-  `_PARENT_ALSTRO_RE` acepta coma de miles en los campos numéricos
-  (`1,200` para stems en sample 045-10594065 de FLORA CONCEPT LLC).
-  Nuevo helper `_num()` quita comas antes de int/float. ELITE
-  4/5 parsed → **5/5**, 4/5 tot_ok → **5/5**.
-- **[src/parsers/otros.py](src/parsers/otros.py) → DaflorParser**:
-  cleanup OCR ampliado — normaliza `]`/`[` residuales del scrape
-  con pipes y acepta em-dash/en-dash/underscore antes de `o.` (OCR
-  "— o.15" → "$0.15"). Header total: intenta regex `INVOICE TOTAL
-  US$ N` y cae a suma de líneas si no. DAFLOR 4/5 parsed → **5/5**,
-  0/5 tot_ok → **5/5** (salto grande — antes no cuadraba ningún
-  sample).
-- **[src/parsers/sayonara.py](src/parsers/sayonara.py)**: helper
-  `_ocr_clean()` quita pipes `|`, corchetes `]/[`, em-dash/en-dash
-  entre números. Regex del total ampliado con variante "Total Value
-  USE US N" (OCR "USE" por "USD"). Fallback a suma de líneas.
-  SAYONARA 3/5 parsed → **4/5**, 0/5 tot_ok → **2/5**.
-- **Sin tocar (ROI bajo)**:
-  - **NATIVE BLOOMS**: 1 sample con formato "Bouquet Round Mix"
-    distinto del layout roses/tropical que soporta auto_native.
-  - **CANANVALLE**: custinv comparte fmt con otros; totales mal
-    interpretados (hdr=3.5 vs sum=7.0 en sample 03).
-  - **CEAN GLOBAL**: requeriría extender para rosas en español
-    ("ROSAS EXPLORER 40CM" en vez de "Carnation Red Select") y
-    split de `box_type` con barra ("HB/EXPLORER").
-  - **UNIQUE**: volumen pequeño (8 líneas), OCR irregular.
-- **Globales**: autoapprove mantiene **90.2%** (cambio pequeño,
-  los samples recuperados son pocos en magnitud). **Buckets**:
-  OK 71 → **73**, NO_PARSEA 7 → **5**. Líneas 3309 → 3312
-  (+3 capturadas). ok 2833 → **2853** (+20), ambiguous 205 →
-  **196** (−9), autoapprovable 2715 → **2749** (+34).
 
 ---
 

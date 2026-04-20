@@ -66,15 +66,64 @@ class SynonymStore:
     def __init__(self, fp: str | Path = SYNS_FILE):
         self.fp = Path(fp)
         self.syns: dict = {}
+        # Batch mode: durante `batch()` los save() no tocan disco; se marca
+        # _dirty y al salir del contexto se hace un único save real.
+        # Acelera match_all (antes 42 saves/factura = ~8s; ahora 1 save
+        # o cero si no hay cambios).
+        self._batch_depth = 0
+        self._dirty = False
+        self._pending_mysql: list[tuple[str, dict]] = []
         if self.fp.exists():
             with open(self.fp, 'r', encoding=FILE_ENCODING) as f:
                 self.syns = json.load(f)
             logger.debug("Sinónimos cargados: %d desde %s", len(self.syns), self.fp)
 
     def save(self) -> None:
-        """Persiste los sinónimos a JSON."""
+        """Persiste los sinónimos a JSON.
+
+        En modo batch (entre `batch()` y salida), solo marca dirty; el
+        save real corre al salir del contexto o explícitamente via `flush`.
+        """
+        if self._batch_depth > 0:
+            self._dirty = True
+            return
+        self._write_to_disk()
+
+    def _write_to_disk(self) -> None:
         with open(self.fp, 'w', encoding=FILE_ENCODING) as f:
             json.dump(self.syns, f, indent=2, ensure_ascii=False)
+        self._dirty = False
+
+    def batch(self):
+        """Context manager que difiere save() y sync MySQL hasta salir.
+
+        Uso::
+
+            with syn.batch():
+                for l in lines:
+                    matcher.match_line(..., l)
+
+        Al salir se hace un único save si hubo cambios y se sincronizan
+        todas las entradas acumuladas a MySQL con una sola conexión.
+        """
+        store = self
+        class _Ctx:
+            def __enter__(self):
+                store._batch_depth += 1
+                return store
+            def __exit__(self, *a):
+                store._batch_depth -= 1
+                if store._batch_depth == 0:
+                    store._flush()
+        return _Ctx()
+
+    def _flush(self) -> None:
+        """Persiste lo acumulado durante batch."""
+        if self._dirty:
+            self._write_to_disk()
+        if self._pending_mysql:
+            self._bulk_sync_to_mysql(self._pending_mysql)
+            self._pending_mysql.clear()
 
     @classmethod
     def trust_score(cls, entry: dict) -> float:
@@ -157,42 +206,55 @@ class SynonymStore:
     def _sync_to_mysql(self, key: str, entry: dict) -> None:
         """Sincroniza una entrada a MySQL (best-effort, no falla si MySQL caído).
 
-        El schema real de la tabla `sinonimos` usa nombres en español
-        (id_articulo, nombre_articulo, id_proveedor, nombre_factura, especie,
-        talla, grado) y `origen` es un ENUM restringido. Esta función mapea
-        los campos del entry interno (estilo JSON) a esas columnas.
+        En modo batch se acumula y al salir se hace un único bulk insert
+        con ``_bulk_sync_to_mysql``. Antes cada add abría/cerraba conexión
+        MySQL (~18ms × 42 lines = 0.77s).
         """
         if not MYSQL_AVAILABLE:
             return
+        if self._batch_depth > 0:
+            self._pending_mysql.append((key, dict(entry)))
+            return
+        self._bulk_sync_to_mysql([(key, entry)])
+
+    def _bulk_sync_to_mysql(self, items: list[tuple[str, dict]]) -> None:
+        """Inserta/actualiza N entradas con una única conexión MySQL."""
+        if not MYSQL_AVAILABLE or not items:
+            return
         try:
             conn = get_connection()
-            cur = conn.cursor()
-            origen = self._ORIGEN_MAP.get(entry.get('origen', ''), 'manual')
-            cur.execute("""
-                INSERT INTO sinonimos
-                    (clave, id_proveedor, nombre_factura, especie, talla,
-                     stems_per_bunch, grado, id_articulo, nombre_articulo, origen)
-                VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
-                ON DUPLICATE KEY UPDATE
-                    id_articulo     = VALUES(id_articulo),
-                    nombre_articulo = VALUES(nombre_articulo),
-                    origen          = VALUES(origen)
-            """, (
-                key,
-                int(entry.get('provider_id', 0) or 0),
-                entry.get('variety', ''),
-                entry.get('species', ''),
-                int(entry.get('size', 0) or 0),
-                int(entry.get('stems_per_bunch', 0) or 0),
-                entry.get('grade', ''),
-                int(entry.get('articulo_id', 0) or 0),
-                entry.get('articulo_name', ''),
-                origen,
-            ))
-            conn.commit()
-            conn.close()
+            try:
+                cur = conn.cursor()
+                payload = [
+                    (
+                        key,
+                        int(entry.get('provider_id', 0) or 0),
+                        entry.get('variety', ''),
+                        entry.get('species', ''),
+                        int(entry.get('size', 0) or 0),
+                        int(entry.get('stems_per_bunch', 0) or 0),
+                        entry.get('grade', ''),
+                        int(entry.get('articulo_id', 0) or 0),
+                        entry.get('articulo_name', ''),
+                        self._ORIGEN_MAP.get(entry.get('origen', ''), 'manual'),
+                    )
+                    for key, entry in items
+                ]
+                cur.executemany("""
+                    INSERT INTO sinonimos
+                        (clave, id_proveedor, nombre_factura, especie, talla,
+                         stems_per_bunch, grado, id_articulo, nombre_articulo, origen)
+                    VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
+                    ON DUPLICATE KEY UPDATE
+                        id_articulo     = VALUES(id_articulo),
+                        nombre_articulo = VALUES(nombre_articulo),
+                        origen          = VALUES(origen)
+                """, payload)
+                conn.commit()
+            finally:
+                conn.close()
         except Exception as e:
-            logger.warning("MySQL sync sinónimo falló: %s", e)
+            logger.warning("MySQL bulk sync sinónimos falló: %s", e)
 
     def _key(self, provider_id: int, line: InvoiceLine) -> str:
         return f"{provider_id}|{line.match_key()}"

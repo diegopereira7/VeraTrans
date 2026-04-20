@@ -10,6 +10,39 @@ Para lecciones transversales reutilizables, ver [`lessons.md`](lessons.md).
 
 ---
 
+## 2026-04-20 — sesión 9s: NO_PARSEA cleanup (ELITE + DAFLOR + SAYONARA)
+
+Ataque a los 7 proveedores NO_PARSEA. Cerrados 2 a OK y mejoradas
+3 más.
+
+- **[src/parsers/auto_elite.py](../src/parsers/auto_elite.py)**: regex
+  `_PARENT_ALSTRO_RE` acepta coma de miles en los campos numéricos
+  (`1,200` para stems en sample 045-10594065 de FLORA CONCEPT LLC).
+  Nuevo helper `_num()` quita comas antes de int/float. ELITE
+  4/5 parsed → **5/5**, 4/5 tot_ok → **5/5**.
+- **[src/parsers/otros.py](../src/parsers/otros.py) → DaflorParser**:
+  cleanup OCR ampliado — normaliza `]`/`[` residuales del scrape
+  con pipes y acepta em-dash/en-dash/underscore antes de `o.` (OCR
+  "— o.15" → "$0.15"). Header total: intenta regex `INVOICE TOTAL
+  US$ N` y cae a suma de líneas si no. DAFLOR 4/5 parsed → **5/5**,
+  0/5 tot_ok → **5/5** (salto grande — antes no cuadraba ningún
+  sample).
+- **[src/parsers/sayonara.py](../src/parsers/sayonara.py)**: helper
+  `_ocr_clean()` quita pipes `|`, corchetes `]/[`, em-dash/en-dash
+  entre números. Regex del total ampliado con variante "Total Value
+  USE US N" (OCR "USE" por "USD"). Fallback a suma de líneas.
+  SAYONARA 3/5 parsed → **4/5**, 0/5 tot_ok → **2/5**.
+- **Sin tocar (ROI bajo)**: NATIVE BLOOMS (formato Bouquet distinto),
+  CANANVALLE (custinv compartido, totales mal), CEAN GLOBAL
+  (requeriría extender para rosas en español), UNIQUE (volumen
+  pequeño, OCR irregular).
+- **Globales**: autoapprove mantiene **90.2%**. **Buckets**: OK 71
+  → **73**, NO_PARSEA 7 → **5**. Líneas 3309 → 3312. ok 2833 →
+  **2853** (+20), ambiguous 205 → **196** (−9), autoapprovable
+  2715 → **2749** (+34).
+
+---
+
 ## 2026-04-20 — sesión 9r: revisión golden + matcher prioridad de marca
 
 - **Golden drafts** (timana/benchmark/florifrut): limpiada la
