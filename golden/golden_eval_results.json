@@ -156,6 +156,32 @@
     "discrepancies": []
   },
   {
+    "provider_key": "colibri",
+    "invoice": "FA-117549",
+    "pdf": "02 - 729-45937522 - COLIBRI COLIBRI.pdf",
+    "gold_lines": 28,
+    "sys_lines": 28,
+    "matched_pairs": 28,
+    "missing_lines": 0,
+    "extra_lines": 0,
+    "field_accuracy": {
+      "variety": 1.0,
+      "species": 1.0,
+      "origin": 1.0,
+      "size": 1.0,
+      "stems_per_bunch": 1.0,
+      "stems": 1.0,
+      "line_total": 1.0
+    },
+    "link_accuracy": 1.0,
+    "link_correct": 28,
+    "link_total": 28,
+    "full_line_accuracy": 1.0,
+    "full_correct": 28,
+    "full_total": 28,
+    "discrepancies": []
+  },
+  {
     "provider_key": "fiorentina",
     "invoice": "0000141933",
     "pdf": "01 - 369-99022674 - FIORENTINA FIORENTINA (2).pdf",

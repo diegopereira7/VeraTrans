@@ -2,7 +2,7 @@
   "top": [
     [
       "weak_synonym",
-      2127
+      2124
     ],
     [
       "variety_no_overlap",
@@ -18,12 +18,12 @@
     ],
     [
       "tie_top2_margin",
-      99
+      98
     ],
     [
       "size_off",
       18
     ]
   ],
-  "total_penalties": 2733
+  "total_penalties": 2729
 }

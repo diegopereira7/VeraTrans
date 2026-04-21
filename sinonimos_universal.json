@@ -13,10 +13,10 @@
     "raw": "BRIGHTON 40CM N 25ST CZ",
     "invoice": "",
     "times_used": 0,
-    "times_confirmed": 4,
+    "times_confirmed": 5,
     "times_corrected": 0,
     "first_seen_at": "2026-04-16T16:55:00",
-    "last_confirmed_at": "2026-04-21T12:43:39"
+    "last_confirmed_at": "2026-04-21T13:01:15"
   },
   "435|ROSES|CABARET|40|25|": {
     "articulo_id": 32013,
@@ -32,10 +32,10 @@
     "raw": "CABARET 40CM N 25ST CZ",
     "invoice": "",
     "times_used": 0,
-    "times_confirmed": 4,
+    "times_confirmed": 5,
     "times_corrected": 0,
     "first_seen_at": "2026-04-16T16:55:09",
-    "last_confirmed_at": "2026-04-21T12:43:39"
+    "last_confirmed_at": "2026-04-21T13:01:15"
   },
   "435|ROSES|DEEP PURPLE|40|25|": {
     "articulo_id": 32603,
@@ -51,10 +51,10 @@
     "raw": "DEEP PURPLE 40CM N 25ST CZ",
     "invoice": "",
     "times_used": 0,
-    "times_confirmed": 4,
+    "times_confirmed": 5,
     "times_corrected": 0,
     "first_seen_at": "2026-04-16T16:55:04",
-    "last_confirmed_at": "2026-04-21T12:43:39"
+    "last_confirmed_at": "2026-04-21T13:01:15"
   },
   "435|ROSES|FRUTTETO|40|25|": {
     "articulo_id": 34058,
@@ -70,10 +70,10 @@
     "raw": "FRUTTETO 40CM N 25ST CZ",
     "invoice": "",
     "times_used": 0,
-    "times_confirmed": 4,
+    "times_confirmed": 5,
     "times_corrected": 0,
     "first_seen_at": "2026-04-16T16:55:01",
-    "last_confirmed_at": "2026-04-21T12:43:39"
+    "last_confirmed_at": "2026-04-21T13:01:15"
   },
   "435|ROSES|BRIGHTON|50|25|": {
     "articulo_id": 31899,
@@ -89,10 +89,10 @@
     "raw": "BRIGHTON 50CM N 25ST CZ",
     "invoice": "",
     "times_used": 0,
-    "times_confirmed": 8,
+    "times_confirmed": 10,
     "times_corrected": 0,
     "first_seen_at": "2026-04-16T16:54:48",
-    "last_confirmed_at": "2026-04-21T12:43:39"
+    "last_confirmed_at": "2026-04-21T13:01:15"
   },
   "435|ROSES|MONDIAL|50|25|": {
     "articulo_id": 35473,
@@ -108,10 +108,10 @@
     "raw": "MONDIAL 50CM N 25ST CZ",
     "invoice": "",
     "times_used": 0,
-    "times_confirmed": 4,
+    "times_confirmed": 5,
     "times_corrected": 0,
     "first_seen_at": "2026-04-20T16:15:45",
-    "last_confirmed_at": "2026-04-21T12:43:39"
+    "last_confirmed_at": "2026-04-21T13:01:15"
   },
   "435|ROSES|IGUAZU|50|25|": {
     "articulo_id": 34637,
@@ -127,10 +127,10 @@
     "raw": "IGUAZU 50CM N 25ST CZ",
     "invoice": "",
     "times_used": 0,
-    "times_confirmed": 8,
+    "times_confirmed": 10,
     "times_corrected": 0,
     "first_seen_at": "2026-04-20T16:15:45",
-    "last_confirmed_at": "2026-04-21T12:43:39"
+    "last_confirmed_at": "2026-04-21T13:01:15"
   },
   "435|ROSES|PALOMA|50|25|": {
     "articulo_id": 35873,
@@ -146,10 +146,10 @@
     "raw": "PALOMA 50CM N 25ST CZ",
     "invoice": "",
     "times_used": 0,
-    "times_confirmed": 4,
+    "times_confirmed": 5,
     "times_corrected": 0,
     "first_seen_at": "2026-04-16T16:55:06",
-    "last_confirmed_at": "2026-04-21T12:43:40"
+    "last_confirmed_at": "2026-04-21T13:01:15"
   },
   "435|ROSES|PINK MONDIAL|50|25|": {
     "articulo_id": 36045,
@@ -165,10 +165,10 @@
     "raw": "PINK MONDIAL 50CM N 25ST CZ",
     "invoice": "",
     "times_used": 0,
-    "times_confirmed": 8,
+    "times_confirmed": 10,
     "times_corrected": 0,
     "first_seen_at": "2026-04-20T16:12:49",
-    "last_confirmed_at": "2026-04-21T12:43:40"
+    "last_confirmed_at": "2026-04-21T13:01:15"
   },
   "435|ROSES|BRIGHTON|60|25|": {
     "articulo_id": 31927,
@@ -184,10 +184,10 @@
     "raw": "BRIGHTON 60CM N 25ST CZ",
     "invoice": "",
     "times_used": 0,
-    "times_confirmed": 4,
+    "times_confirmed": 5,
     "times_corrected": 0,
     "first_seen_at": "2026-04-16T17:03:02",
-    "last_confirmed_at": "2026-04-21T12:43:40"
+    "last_confirmed_at": "2026-04-21T13:01:15"
   },
   "435|ROSES|CABARET|60|25|": {
     "articulo_id": 32047,
@@ -203,10 +203,10 @@
     "raw": "CABARET 60CM N 25ST CZ",
     "invoice": "",
     "times_used": 0,
-    "times_confirmed": 4,
+    "times_confirmed": 5,
     "times_corrected": 0,
     "first_seen_at": "2026-04-16T17:03:02",
-    "last_confirmed_at": "2026-04-21T12:43:40"
+    "last_confirmed_at": "2026-04-21T13:01:15"
   },
   "435|ROSES|EXPLORER|60|25|": {
     "articulo_id": 33788,
@@ -222,10 +222,10 @@
     "raw": "EXPLORER 60CM N 25ST CZ",
     "invoice": "",
     "times_used": 0,
-    "times_confirmed": 4,
+    "times_confirmed": 5,
     "times_corrected": 0,
     "first_seen_at": "2026-04-16T17:03:02",
-    "last_confirmed_at": "2026-04-21T12:43:40"
+    "last_confirmed_at": "2026-04-21T13:01:15"
   },
   "435|ROSES|FRUTTETO|60|25|": {
     "articulo_id": 34112,
@@ -241,10 +241,10 @@
     "raw": "FRUTTETO 60CM N 25ST CZ",
     "invoice": "",
     "times_used": 0,
-    "times_confirmed": 4,
+    "times_confirmed": 5,
     "times_corrected": 0,
     "first_seen_at": "2026-04-16T17:03:02",
-    "last_confirmed_at": "2026-04-21T12:43:40"
+    "last_confirmed_at": "2026-04-21T13:01:15"
   },
   "435|ROSES|MONDIAL|60|25|": {
     "articulo_id": 35525,
@@ -260,10 +260,10 @@
     "raw": "MONDIAL 60CM N 25ST CZ",
     "invoice": "",
     "times_used": 0,
-    "times_confirmed": 4,
+    "times_confirmed": 5,
     "times_corrected": 0,
     "first_seen_at": "2026-04-16T17:03:02",
-    "last_confirmed_at": "2026-04-21T12:43:40"
+    "last_confirmed_at": "2026-04-21T13:01:15"
   },
   "435|ROSES|CABARET|50|25|": {
     "articulo_id": 32026,
@@ -279,10 +279,10 @@
     "raw": "CABARET 50CM N 25ST CZ",
     "invoice": "",
     "times_used": 0,
-    "times_confirmed": 8,
+    "times_confirmed": 10,
     "times_corrected": 0,
     "first_seen_at": "2026-04-20T16:12:49",
-    "last_confirmed_at": "2026-04-21T12:43:40"
+    "last_confirmed_at": "2026-04-21T13:01:16"
   },
   "435|ROSES|IGUANA|50|25|": {
     "articulo_id": 34604,
@@ -298,10 +298,10 @@
     "raw": "IGUANA 50CM N 25ST CZ",
     "invoice": "",
     "times_used": 0,
-    "times_confirmed": 8,
+    "times_confirmed": 10,
     "times_corrected": 0,
     "first_seen_at": "2026-04-16T16:55:06",
-    "last_confirmed_at": "2026-04-21T12:43:40"
+    "last_confirmed_at": "2026-04-21T13:01:16"
   },
   "435|ROSES|DEEP PURPLE|50|25|": {
     "articulo_id": 32615,
@@ -317,10 +317,10 @@
     "raw": "DEEP PURPLE 50CM N 25ST CZ",
     "invoice": "",
     "times_used": 0,
-    "times_confirmed": 8,
+    "times_confirmed": 10,
     "times_corrected": 0,
     "first_seen_at": "2026-04-16T16:55:08",
-    "last_confirmed_at": "2026-04-21T12:43:40"
+    "last_confirmed_at": "2026-04-21T13:01:16"
   },
   "435|ROSES|FRUTTETO|50|25|": {
     "articulo_id": 34079,
@@ -336,10 +336,10 @@
     "raw": "FRUTTETO 50CM N 25ST CZ",
     "invoice": "",
     "times_used": 0,
-    "times_confirmed": 4,
+    "times_confirmed": 5,
     "times_corrected": 0,
     "first_seen_at": "2026-04-16T16:54:48",
-    "last_confirmed_at": "2026-04-21T12:43:40"
+    "last_confirmed_at": "2026-04-21T13:01:16"
   },
   "435|ROSES|MAGIC TIMES|50|25|": {
     "articulo_id": 35203,
@@ -355,10 +355,10 @@
     "raw": "MAGIC TIMES 50CM N 25ST CZ",
     "invoice": "",
     "times_used": 0,
-    "times_confirmed": 8,
+    "times_confirmed": 10,
     "times_corrected": 0,
     "first_seen_at": "2026-04-16T16:55:06",
-    "last_confirmed_at": "2026-04-21T12:43:40"
+    "last_confirmed_at": "2026-04-21T13:01:16"
   },
   "435|ROSES|FELICITY|50|25|": {
     "articulo_id": 32972,
@@ -385,10 +385,10 @@
     "raw": "PINK FLOYD 50CM N 25ST CZ",
     "invoice": "",
     "times_used": 0,
-    "times_confirmed": 4,
+    "times_confirmed": 5,
     "times_corrected": 0,
     "first_seen_at": "2026-04-16T17:02:59",
-    "last_confirmed_at": "2026-04-21T12:43:39"
+    "last_confirmed_at": "2026-04-21T13:01:15"
   },
   "435|ROSES|SILANTOI|50|25|": {
     "articulo_id": 33446,
@@ -415,10 +415,10 @@
     "raw": "SUPER SUN 50CM N 25ST CZ",
     "invoice": "",
     "times_used": 0,
-    "times_confirmed": 4,
+    "times_confirmed": 5,
     "times_corrected": 0,
     "first_seen_at": "2026-04-16T17:03:00",
-    "last_confirmed_at": "2026-04-21T12:43:39"
+    "last_confirmed_at": "2026-04-21T13:01:15"
   },
   "435|ROSES|TUTTI FRUTTI|50|20|": {
     "articulo_id": 37487,
@@ -434,10 +434,10 @@
     "raw": "TUTTI FRUTTI 50CM N 20ST CZ",
     "invoice": "",
     "times_used": 0,
-    "times_confirmed": 4,
+    "times_confirmed": 5,
     "times_corrected": 0,
     "first_seen_at": "2026-04-20T16:15:46",
-    "last_confirmed_at": "2026-04-21T12:43:40"
+    "last_confirmed_at": "2026-04-21T13:01:16"
   },
   "435|ROSES|JOY|50|25|": {
     "articulo_id": 34689,
@@ -453,10 +453,10 @@
     "raw": "JOY 50CM N 25ST CZ",
     "invoice": "",
     "times_used": 0,
-    "times_confirmed": 4,
+    "times_confirmed": 5,
     "times_corrected": 0,
     "first_seen_at": "2026-04-20T11:47:03",
-    "last_confirmed_at": "2026-04-21T12:43:39"
+    "last_confirmed_at": "2026-04-21T13:01:15"
   },
   "435|ROSES|JOY|60|25|": {
     "articulo_id": 34690,
@@ -472,10 +472,10 @@
     "raw": "JOY 60CM N 25ST CZ",
     "invoice": "",
     "times_used": 0,
-    "times_confirmed": 4,
+    "times_confirmed": 5,
     "times_corrected": 0,
     "first_seen_at": "2026-04-20T11:47:03",
-    "last_confirmed_at": "2026-04-21T12:43:40"
+    "last_confirmed_at": "2026-04-21T13:01:15"
   },
   "435|ROSES|PURPLE FICTION|50|25|": {
     "articulo_id": 36271,
@@ -491,10 +491,10 @@
     "raw": "PURPLE FICTION 50CM N 25ST CZ",
     "invoice": "",
     "times_used": 0,
-    "times_confirmed": 4,
+    "times_confirmed": 5,
     "times_corrected": 0,
     "first_seen_at": "2026-04-20T16:34:51",
-    "last_confirmed_at": "2026-04-21T12:43:39"
+    "last_confirmed_at": "2026-04-21T13:01:15"
   },
   "435|ROSES|CAROUSEL|50|25|": {
     "articulo_id": 32150,
@@ -510,10 +510,10 @@
     "raw": "CAROUSEL 50CM N 25ST CZ",
     "invoice": "",
     "times_used": 0,
-    "times_confirmed": 4,
+    "times_confirmed": 5,
     "times_corrected": 0,
     "first_seen_at": "2026-04-16T16:55:02",
-    "last_confirmed_at": "2026-04-21T12:43:39"
+    "last_confirmed_at": "2026-04-21T13:01:15"
   },
   "2228|ROSES|QUARTER CARPE DIEM|50|25|": {
     "articulo_id": 32816,
@@ -1263,10 +1263,10 @@
     "raw": "2 H Carnation White X 20 - FAN 598574- FAN ALMACEN CO-0603129000 500 1000 ST 0.190 190.000",
     "invoice": "",
     "times_used": 0,
-    "times_confirmed": 6,
+    "times_confirmed": 10,
     "times_corrected": 0,
     "first_seen_at": "2026-04-21T12:39:13",
-    "last_confirmed_at": "2026-04-21T12:43:19"
+    "last_confirmed_at": "2026-04-21T13:00:55"
   },
   "313|CARNATIONS|RED|0|20|FANCY": {
     "articulo_id": 12819,
@@ -1282,10 +1282,10 @@
     "raw": "14 H Carnation Red X 20 - FAN 591688- FAN CO-0603129000 500 7000 ST 0.190 1,330.000",
     "invoice": "",
     "times_used": 0,
-    "times_confirmed": 6,
+    "times_confirmed": 11,
     "times_corrected": 0,
     "first_seen_at": "2026-04-21T12:39:13",
-    "last_confirmed_at": "2026-04-21T12:43:21"
+    "last_confirmed_at": "2026-04-21T13:00:55"
   },
   "313|CARNATIONS|GOBI|0|20|FANCY": {
     "articulo_id": 12804,
@@ -1314,10 +1314,10 @@
     "raw": "1 H Carnation Red X 20 - SEL 591733 SEL CO-0603129000 500 500 ST 0.200 100.000",
     "invoice": "",
     "times_used": 0,
-    "times_confirmed": 4,
+    "times_confirmed": 7,
     "times_corrected": 0,
     "first_seen_at": "2026-04-21T12:39:14",
-    "last_confirmed_at": "2026-04-21T12:43:21"
+    "last_confirmed_at": "2026-04-21T13:00:56"
   },
   "313|CARNATIONS|WHITE|0|20|SELECT": {
     "articulo_id": 12891,
@@ -1333,10 +1333,10 @@
     "raw": "2 H Carnation White X 20 - SEL 598580- SEL LILAS CO-0603129000 500 1000 ST 0.200 200.000",
     "invoice": "",
     "times_used": 0,
-    "times_confirmed": 4,
+    "times_confirmed": 7,
     "times_corrected": 0,
     "first_seen_at": "2026-04-21T12:39:14",
-    "last_confirmed_at": "2026-04-21T12:43:20"
+    "last_confirmed_at": "2026-04-21T13:00:56"
   },
   "313|CARNATIONS|YELLOW|0|20|FANCY": {
     "articulo_id": 12705,
@@ -1352,10 +1352,10 @@
     "raw": "1 H Carnation Yellow X 20 - FAN 591732 FAN CO-0603129000 500 500 ST 0.190 95.000",
     "invoice": "",
     "times_used": 0,
-    "times_confirmed": 2,
+    "times_confirmed": 3,
     "times_corrected": 0,
     "first_seen_at": "2026-04-21T12:39:15",
-    "last_confirmed_at": "2026-04-21T12:43:21"
+    "last_confirmed_at": "2026-04-21T13:00:53"
   },
   "313|CARNATIONS|PINK|0|20|FANCY": {
     "articulo_id": 12837,
@@ -1371,10 +1371,10 @@
     "raw": "1 H Carnation Pink X 20 - FAN 591731 FAN CO-0603129000 500 500 ST 0.190 95.000",
     "invoice": "",
     "times_used": 0,
-    "times_confirmed": 2,
+    "times_confirmed": 3,
     "times_corrected": 0,
     "first_seen_at": "2026-04-21T12:39:15",
-    "last_confirmed_at": "2026-04-21T12:43:21"
+    "last_confirmed_at": "2026-04-21T13:00:53"
   },
   "313|CARNATIONS|PINK|0|20|SELECT": {
     "articulo_id": 12579,
@@ -1428,10 +1428,10 @@
     "raw": "17 H Carnation Bicolor X 20 - FAN 591715- FAN CO-0603129000 500 8500 ST 0.190 1,615.000",
     "invoice": "",
     "times_used": 0,
-    "times_confirmed": 4,
+    "times_confirmed": 6,
     "times_corrected": 0,
     "first_seen_at": "2026-04-21T12:39:14",
-    "last_confirmed_at": "2026-04-21T12:43:21"
+    "last_confirmed_at": "2026-04-21T13:00:53"
   },
   "313|CARNATIONS|BURGUNDY|0|20|FANCY": {
     "articulo_id": 12760,
@@ -1447,10 +1447,10 @@
     "raw": "8 H Carnation Burgundy X 20 - FAN 594795- FAN CO-0603129000 500 4000 ST 0.190 760.000",
     "invoice": "",
     "times_used": 0,
-    "times_confirmed": 2,
+    "times_confirmed": 3,
     "times_corrected": 0,
     "first_seen_at": "2026-04-16T16:55:35",
-    "last_confirmed_at": "2026-04-21T12:43:21"
+    "last_confirmed_at": "2026-04-21T13:00:53"
   },
   "6916|ROSES|FREEDOM|40|25|": {
     "articulo_id": 33920,
@@ -1559,10 +1559,10 @@
     "raw": "5 H 500 2500 CONSUMER BUNCH CARNATION FANCY BURGUNDY FCY CB S2 0.190 475.00",
     "invoice": "",
     "times_used": 0,
-    "times_confirmed": 40,
+    "times_confirmed": 53,
     "times_corrected": 0,
     "first_seen_at": "2026-04-15T17:04:42",
-    "last_confirmed_at": "2026-04-21T12:43:24"
+    "last_confirmed_at": "2026-04-21T13:00:59"
   },
   "310|CARNATIONS|BLANCO|70|20|FANCY": {
     "articulo_id": 12728,
@@ -1578,10 +1578,10 @@
     "raw": "6 H 500 3000 CONSUMER BUNCH CARNATION FANCY BLANCO FCY CB S2 0.165 495.00",
     "invoice": "",
     "times_used": 0,
-    "times_confirmed": 15,
+    "times_confirmed": 20,
     "times_corrected": 0,
     "first_seen_at": "2026-04-15T17:04:49",
-    "last_confirmed_at": "2026-04-21T12:43:09"
+    "last_confirmed_at": "2026-04-21T13:00:39"
   },
   "310|CARNATIONS|ROJO|70|20|FANCY": {
     "articulo_id": 12820,
@@ -1597,10 +1597,10 @@
     "raw": "4 H 500 2000 CONSUMER BUNCH CARNATION FANCY RED FCY CB S2 0.190 380.00",
     "invoice": "",
     "times_used": 0,
-    "times_confirmed": 9,
+    "times_confirmed": 12,
     "times_corrected": 0,
     "first_seen_at": "2026-04-17T09:27:00",
-    "last_confirmed_at": "2026-04-21T12:43:09"
+    "last_confirmed_at": "2026-04-21T13:00:39"
   },
   "310|CARNATIONS|ROSA|70|20|FANCY": {
     "articulo_id": 12838,
@@ -1616,10 +1616,10 @@
     "raw": "1 H 500 500 CONSUMER BUNCH CARNATION FANCY PUERTO CARN PK+ WH X CB S2 0.170 85.00",
     "invoice": "",
     "times_used": 0,
-    "times_confirmed": 6,
+    "times_confirmed": 8,
     "times_corrected": 0,
     "first_seen_at": "2026-04-17T09:27:00",
-    "last_confirmed_at": "2026-04-21T12:43:08"
+    "last_confirmed_at": "2026-04-21T13:00:39"
   },
   "310|CARNATIONS|AMARILLO|70|20|FANCY": {
     "articulo_id": 12706,
@@ -1635,10 +1635,10 @@
     "raw": "4 H 500 2000 CONSUMER BUNCH CARNATION FANCY YELLOW FCY CB S2 0.190 380.00",
     "invoice": "",
     "times_used": 0,
-    "times_confirmed": 3,
+    "times_confirmed": 4,
     "times_corrected": 0,
     "first_seen_at": "2026-04-15T17:04:49",
-    "last_confirmed_at": "2026-04-21T12:43:08"
+    "last_confirmed_at": "2026-04-21T13:00:39"
   },
   "310|CARNATIONS|NOVEDADES|70|20|FANCY": {
     "articulo_id": 12812,
@@ -1654,10 +1654,10 @@
     "raw": "1 H 500 500 CONSUMER BUNCH CARNATION FANCY R45 NOVEDADES+ BICOL CB S2 0.170 85.00",
     "invoice": "",
     "times_used": 0,
-    "times_confirmed": 6,
+    "times_confirmed": 8,
     "times_corrected": 0,
     "first_seen_at": "2026-04-15T17:04:49",
-    "last_confirmed_at": "2026-04-21T12:43:09"
+    "last_confirmed_at": "2026-04-21T13:00:40"
   },
   "310|CARNATIONS|BICOLOR|70|20|FANCY": {
     "articulo_id": 12717,
@@ -1673,10 +1673,10 @@
     "raw": "1 H 500 500 CONSUMER BUNCH CARNATION FANCY ASTURIAS BIC CB S2 0.180 90.00",
     "invoice": "",
     "times_used": 0,
-    "times_confirmed": 12,
+    "times_confirmed": 16,
     "times_corrected": 0,
     "first_seen_at": "2026-04-15T17:04:50",
-    "last_confirmed_at": "2026-04-21T12:43:09"
+    "last_confirmed_at": "2026-04-21T13:00:40"
   },
   "310|CARNATIONS|MIXTO|70|10|FANCY": {
     "articulo_id": 12792,
@@ -1692,10 +1692,10 @@
     "raw": "1 Q 300 300 MINICARNS ASSORTED GIJON CARN MIX MC AT 0.165 49.50",
     "invoice": "",
     "times_used": 0,
-    "times_confirmed": 9,
+    "times_confirmed": 12,
     "times_corrected": 0,
     "first_seen_at": "2026-04-20T16:50:10",
-    "last_confirmed_at": "2026-04-21T12:43:09"
+    "last_confirmed_at": "2026-04-21T13:00:40"
   },
   "6323|HYDRANGEAS|PREMIUM BLANCO|60|1|": {
     "articulo_id": 22725,
@@ -2853,10 +2853,10 @@
     "raw": "1 Q Minicarnation mix 591736 SEL R12-Loli CO-0603121000 250 250 ST 0.200 50.000",
     "invoice": "",
     "times_used": 0,
-    "times_confirmed": 10,
+    "times_confirmed": 17,
     "times_corrected": 0,
     "first_seen_at": "2026-04-21T12:39:14",
-    "last_confirmed_at": "2026-04-21T12:43:21"
+    "last_confirmed_at": "2026-04-21T13:00:56"
   },
   "313|CARNATIONS|NOVELTY|0|10|SELECT": {
     "articulo_id": 26825,
@@ -2872,10 +2872,10 @@
     "raw": "1 H Minicarnation Novelty X 10 - SEL 598589 SEL FBE CO-0603121000 500 500 ST 0.200 100.000",
     "invoice": "",
     "times_used": 0,
-    "times_confirmed": 4,
+    "times_confirmed": 7,
     "times_corrected": 0,
     "first_seen_at": "2026-04-17T11:50:46",
-    "last_confirmed_at": "2026-04-21T12:43:20"
+    "last_confirmed_at": "2026-04-21T13:00:56"
   },
   "6323|HYDRANGEAS|PREMIUM TENIDA MELOCOTON|60|1|": {
     "articulo_id": 22734,
@@ -3043,10 +3043,10 @@
     "raw": "3 QB EXPLORER 25 X .00     2      50 0.40 20.00",
     "invoice": "",
     "times_used": 0,
-    "times_confirmed": 12,
+    "times_confirmed": 15,
     "times_corrected": 0,
     "first_seen_at": "2026-04-16T15:58:03",
-    "last_confirmed_at": "2026-04-21T12:43:06"
+    "last_confirmed_at": "2026-04-21T13:00:37"
   },
   "8870|ROSES|MONDIAL|70|25|": {
     "articulo_id": 35576,
@@ -3062,10 +3062,10 @@
     "raw": "4 HB MONDIAL 25 X .00     12      300.00 0.40 120.00",
     "invoice": "",
     "times_used": 0,
-    "times_confirmed": 16,
+    "times_confirmed": 20,
     "times_corrected": 0,
     "first_seen_at": "2026-04-16T15:58:04",
-    "last_confirmed_at": "2026-04-21T12:43:07"
+    "last_confirmed_at": "2026-04-21T13:00:37"
   },
   "8870|ROSES|EXPLORER|50|25|": {
     "articulo_id": 33773,
@@ -3081,10 +3081,10 @@
     "raw": "4 HB EXPLORER 25 X .00   5        125 0.30 37.50",
     "invoice": "",
     "times_used": 0,
-    "times_confirmed": 28,
+    "times_confirmed": 35,
     "times_corrected": 0,
     "first_seen_at": "2026-04-16T15:58:04",
-    "last_confirmed_at": "2026-04-21T12:43:07"
+    "last_confirmed_at": "2026-04-21T13:00:38"
   },
   "8870|ROSES|MONDIAL|50|25|": {
     "articulo_id": 35491,
@@ -3100,10 +3100,10 @@
     "raw": "4 HB MONDIAL 25 X .00   5        125 0.30 37.50",
     "invoice": "",
     "times_used": 0,
-    "times_confirmed": 20,
+    "times_confirmed": 25,
     "times_corrected": 0,
     "first_seen_at": "2026-04-16T15:58:04",
-    "last_confirmed_at": "2026-04-21T12:43:07"
+    "last_confirmed_at": "2026-04-21T13:00:38"
   },
   "8870|ROSES|BRIGHTON|50|25|": {
     "articulo_id": 31921,
@@ -3119,10 +3119,10 @@
     "raw": "4 HB BRIGHTON 25 X .00   1        25 0.30 7.50",
     "invoice": "",
     "times_used": 0,
-    "times_confirmed": 16,
+    "times_confirmed": 20,
     "times_corrected": 0,
     "first_seen_at": "2026-04-16T15:58:04",
-    "last_confirmed_at": "2026-04-21T12:43:07"
+    "last_confirmed_at": "2026-04-21T13:00:38"
   },
   "8870|ROSES|FRUTTETO|50|25|": {
     "articulo_id": 34100,
@@ -3138,10 +3138,10 @@
     "raw": "16 HB FRUTTETO 25 X .00   6        150 0.30 45.00",
     "invoice": "",
     "times_used": 0,
-    "times_confirmed": 20,
+    "times_confirmed": 25,
     "times_corrected": 0,
     "first_seen_at": "2026-04-16T15:58:04",
-    "last_confirmed_at": "2026-04-21T12:43:07"
+    "last_confirmed_at": "2026-04-21T13:00:38"
   },
   "8870|ROSES|MOMENTUM|50|25|": {
     "articulo_id": 35393,
@@ -3157,10 +3157,10 @@
     "raw": "16 HB MOMENTUM 25 X .00   3        75 0.30 22.50",
     "invoice": "",
     "times_used": 0,
-    "times_confirmed": 8,
+    "times_confirmed": 10,
     "times_corrected": 0,
     "first_seen_at": "2026-04-16T15:58:05",
-    "last_confirmed_at": "2026-04-21T12:43:07"
+    "last_confirmed_at": "2026-04-21T13:00:38"
   },
   "8870|ROSES|FRUTTETO|60|25|": {
     "articulo_id": 34128,
@@ -3176,10 +3176,10 @@
     "raw": "3 QB FRUTTETO 25 X .00    1       25 0.35 8.75",
     "invoice": "",
     "times_used": 0,
-    "times_confirmed": 4,
+    "times_confirmed": 5,
     "times_corrected": 0,
     "first_seen_at": "2026-04-16T15:58:05",
-    "last_confirmed_at": "2026-04-21T12:43:07"
+    "last_confirmed_at": "2026-04-21T13:00:37"
   },
   "8870|ROSES|MONDIAL|60|25|": {
     "articulo_id": 35557,
@@ -3195,10 +3195,10 @@
     "raw": "3 QB MONDIAL 25 X .00    1       25 0.35 8.75",
     "invoice": "",
     "times_used": 0,
-    "times_confirmed": 12,
+    "times_confirmed": 15,
     "times_corrected": 0,
     "first_seen_at": "2026-04-16T15:58:05",
-    "last_confirmed_at": "2026-04-21T12:43:07"
+    "last_confirmed_at": "2026-04-21T13:00:38"
   },
   "8870|ROSES|MOMENTUM|60|25|": {
     "articulo_id": 35420,
@@ -3214,10 +3214,10 @@
     "raw": "5 QB MOMENTUM 25 X .00    1       25 0.35 8.75",
     "invoice": "",
     "times_used": 0,
-    "times_confirmed": 4,
+    "times_confirmed": 5,
     "times_corrected": 0,
     "first_seen_at": "2026-04-16T15:58:06",
-    "last_confirmed_at": "2026-04-21T12:43:07"
+    "last_confirmed_at": "2026-04-21T13:00:37"
   },
   "8870|ROSES|EXPLORER|60|25|": {
     "articulo_id": 33807,
@@ -3233,10 +3233,10 @@
     "raw": "1 HB EXPLORER 25 X .00    12       300.00 0.35 105.00",
     "invoice": "",
     "times_used": 0,
-    "times_confirmed": 12,
+    "times_confirmed": 15,
     "times_corrected": 0,
     "first_seen_at": "2026-04-16T15:58:08",
-    "last_confirmed_at": "2026-04-21T12:43:07"
+    "last_confirmed_at": "2026-04-21T13:00:38"
   },
   "8870|ROSES|HIGH MAGIC|60|25|": {
     "articulo_id": 34523,
@@ -3252,10 +3252,10 @@
     "raw": "18 HB HIGH MAGIC 25 X .00    1       25 0.35 8.75",
     "invoice": "",
     "times_used": 0,
-    "times_confirmed": 4,
+    "times_confirmed": 5,
     "times_corrected": 0,
     "first_seen_at": "2026-04-16T15:58:09",
-    "last_confirmed_at": "2026-04-21T12:43:07"
+    "last_confirmed_at": "2026-04-21T13:00:38"
   },
   "8870|ROSES|PINK FLOYD|60|25|": {
     "articulo_id": 36021,
@@ -3271,10 +3271,10 @@
     "raw": "18 HB PINK FLOYD 25 X .00    1       25 0.35 8.75",
     "invoice": "",
     "times_used": 0,
-    "times_confirmed": 4,
+    "times_confirmed": 5,
     "times_corrected": 0,
     "first_seen_at": "2026-04-15T17:07:21",
-    "last_confirmed_at": "2026-04-21T12:43:07"
+    "last_confirmed_at": "2026-04-21T13:00:38"
   },
   "430|ROSES|EXPLORER|70|25|": {
     "articulo_id": 33837,
@@ -3659,10 +3659,10 @@
     "raw": "17/57 HB 0,50 1,00 FREEDOM 50CM 240 240 MARL CO 0603110000 $ 0,30 $ 72,00",
     "invoice": "",
     "times_used": 0,
-    "times_confirmed": 120,
+    "times_confirmed": 132,
     "times_corrected": 0,
     "first_seen_at": "2026-04-17T09:33:24",
-    "last_confirmed_at": "2026-04-21T12:43:47"
+    "last_confirmed_at": "2026-04-21T13:01:23"
   },
   "11748|ROSES|MONDIAL|40|20|": {
     "articulo_id": 35459,
@@ -6977,10 +6977,10 @@
     "raw": "17 H Carnation Novelty X 20 - FAN 591708- FAN CO-0603129000 500 8500 ST 0.190 1,615.000",
     "invoice": "",
     "times_used": 0,
-    "times_confirmed": 2,
+    "times_confirmed": 3,
     "times_corrected": 0,
     "first_seen_at": "2026-04-21T12:39:15",
-    "last_confirmed_at": "2026-04-21T12:43:21"
+    "last_confirmed_at": "2026-04-21T13:00:53"
   },
   "313|CARNATIONS|RED|0|10|SELECT": {
     "articulo_id": 12576,
@@ -7053,10 +7053,10 @@
     "raw": "55/57 HB 0,50 1,00 FREEDOM 60CM 250 250 CO 0603110000 $ 0,34 $ 85,00",
     "invoice": "",
     "times_used": 0,
-    "times_confirmed": 60,
+    "times_confirmed": 66,
     "times_corrected": 0,
     "first_seen_at": "2026-04-16T16:53:04",
-    "last_confirmed_at": "2026-04-21T12:43:49"
+    "last_confirmed_at": "2026-04-21T13:01:26"
   },
   "11748|ROSES|MONDIAL|40|25|": {
     "articulo_id": 35436,
@@ -7072,10 +7072,10 @@
     "raw": "1/57 HB 0,50 1,00 MONDIAL 40CM 300 300 ALHOJA CO 0603110000 $ 0,28 $ 84,00",
     "invoice": "",
     "times_used": 0,
-    "times_confirmed": 10,
+    "times_confirmed": 11,
     "times_corrected": 0,
     "first_seen_at": "2026-04-16T16:53:03",
-    "last_confirmed_at": "2026-04-21T12:43:46"
+    "last_confirmed_at": "2026-04-21T13:01:23"
   },
   "11748|ROSES|EXPLORER|40|25|": {
     "articulo_id": 33731,
@@ -7091,10 +7091,10 @@
     "raw": "2/57 HB 0,50 1,00 EXPLORER 40CM 300 300 R11 CO 0603110000 $ 0,33 $ 99,00",
     "invoice": "",
     "times_used": 0,
-    "times_confirmed": 10,
+    "times_confirmed": 11,
     "times_corrected": 0,
     "first_seen_at": "2026-04-16T16:53:04",
-    "last_confirmed_at": "2026-04-21T12:43:46"
+    "last_confirmed_at": "2026-04-21T13:01:23"
   },
   "11748|ROSES|EXPLORER|50|25|": {
     "articulo_id": 33757,
@@ -7110,10 +7110,10 @@
     "raw": "41/57 HB 0,50 1,00 EXPLORER 50CM 250 250 CO 0603110000 $ 0,40 $ 100,00",
     "invoice": "",
     "times_used": 0,
-    "times_confirmed": 20,
+    "times_confirmed": 22,
     "times_corrected": 0,
     "first_seen_at": "2026-04-16T16:53:05",
-    "last_confirmed_at": "2026-04-21T12:43:49"
+    "last_confirmed_at": "2026-04-21T13:01:25"
   },
   "11748|ROSES|FREEDOM|50|25|": {
     "articulo_id": 33948,
@@ -7129,10 +7129,10 @@
     "raw": "48/48 HB 0,50 1,00 FREEDOM 50CM 25 25 TIPO B CO 0603110000 $ 0,16 $ 4,00",
     "invoice": "",
     "times_used": 0,
-    "times_confirmed": 12,
+    "times_confirmed": 14,
     "times_corrected": 0,
     "first_seen_at": "2026-04-20T16:50:39",
-    "last_confirmed_at": "2026-04-21T12:43:49"
+    "last_confirmed_at": "2026-04-21T13:01:25"
   },
   "11748|ROSES|MONDIAL|50|25|": {
     "articulo_id": 35475,
@@ -7148,10 +7148,10 @@
     "raw": "MONDIAL 50CM 100 100 R45 CO 0603110000 $ 0,32 $ 32,00",
     "invoice": "",
     "times_used": 0,
-    "times_confirmed": 10,
+    "times_confirmed": 11,
     "times_corrected": 0,
     "first_seen_at": "2026-04-16T16:53:05",
-    "last_confirmed_at": "2026-04-21T12:43:48"
+    "last_confirmed_at": "2026-04-21T13:01:24"
   },
   "11748|ROSES|MONDIAL|60|25|": {
     "articulo_id": 35529,
@@ -7167,10 +7167,10 @@
     "raw": "50/57 HB 0,50 1,00 MONDIAL 60CM 200 200 CO 0603110000 $ 0,36 $ 72,00",
     "invoice": "",
     "times_used": 0,
-    "times_confirmed": 10,
+    "times_confirmed": 11,
     "times_corrected": 0,
     "first_seen_at": "2026-04-16T16:53:03",
-    "last_confirmed_at": "2026-04-21T12:43:49"
+    "last_confirmed_at": "2026-04-21T13:01:25"
   },
   "11748|ROSES|EXPLORER|60|25|": {
     "articulo_id": 33793,
@@ -7186,10 +7186,10 @@
     "raw": "56/57 HB 0,50 1,00 EXPLORER 60CM 200 200 CO 0603110000 $ 0,50 $ 100,00",
     "invoice": "",
     "times_used": 0,
-    "times_confirmed": 10,
+    "times_confirmed": 11,
     "times_corrected": 0,
     "first_seen_at": "2026-04-16T16:53:06",
-    "last_confirmed_at": "2026-04-21T12:43:49"
+    "last_confirmed_at": "2026-04-21T13:01:26"
   },
   "11748|ROSES|FRUTTETO|60|25|": {
     "articulo_id": 34122,
@@ -7243,10 +7243,10 @@
     "raw": "39/57 HB 0,50 1,00 BRIGHTON 60CM 250 250 CO 0603110000 $ 0,36 $ 90,00",
     "invoice": "",
     "times_used": 0,
-    "times_confirmed": 10,
+    "times_confirmed": 11,
     "times_corrected": 0,
     "first_seen_at": "2026-04-16T16:53:03",
-    "last_confirmed_at": "2026-04-21T12:43:48"
+    "last_confirmed_at": "2026-04-21T13:01:25"
   },
   "313|CARNATIONS|ORANGE|0|20|FANCY": {
     "articulo_id": 12558,
@@ -7377,10 +7377,10 @@
     "raw": "ATOMIC 40CM 50 50 PYTI CO 0603110000 $ 0,28 $ 14,00",
     "invoice": "",
     "times_used": 0,
-    "times_confirmed": 20,
+    "times_confirmed": 22,
     "times_corrected": 0,
     "first_seen_at": "2026-04-15T17:07:42",
-    "last_confirmed_at": "2026-04-21T12:43:48"
+    "last_confirmed_at": "2026-04-21T13:01:24"
   },
   "11748|ROSES|BRIGHTON|50|25|": {
     "articulo_id": 31918,
@@ -7396,10 +7396,10 @@
     "raw": "38/57 HB 0,50 1,00 BRIGHTON 50CM 300 300 CO 0603110000 $ 0,32 $ 96,00",
     "invoice": "",
     "times_used": 0,
-    "times_confirmed": 14,
+    "times_confirmed": 16,
     "times_corrected": 0,
     "first_seen_at": "2026-04-20T16:49:07",
-    "last_confirmed_at": "2026-04-21T12:43:48"
+    "last_confirmed_at": "2026-04-21T13:01:25"
   },
   "11748|ROSES|PINK MONDIAL|50|25|": {
     "articulo_id": 36074,
@@ -7415,10 +7415,10 @@
     "raw": "51/57 HB 0,50 1,00 PINK MONDIAL 50CM 250 250 CO 0603110000 $ 0,30 $ 75,00",
     "invoice": "",
     "times_used": 0,
-    "times_confirmed": 7,
+    "times_confirmed": 8,
     "times_corrected": 0,
     "first_seen_at": "2026-04-20T16:49:07",
-    "last_confirmed_at": "2026-04-21T12:43:49"
+    "last_confirmed_at": "2026-04-21T13:01:25"
   },
   "11748|ROSES|PINK FLOYD|50|25|": {
     "articulo_id": 35992,
@@ -7447,10 +7447,10 @@
     "raw": "49/57 HB 0,50 1,00 FRUTTETO 50CM 300 300 CO 0603110000 $ 0,32 $ 96,00",
     "invoice": "",
     "times_used": 0,
-    "times_confirmed": 7,
+    "times_confirmed": 8,
     "times_corrected": 0,
     "first_seen_at": "2026-04-20T16:49:07",
-    "last_confirmed_at": "2026-04-21T12:43:49"
+    "last_confirmed_at": "2026-04-21T13:01:25"
   },
   "11748|ROSES|SILANTOI|50|25|": {
     "articulo_id": 36537,
@@ -7466,10 +7466,10 @@
     "raw": "52/57 QB 0,25 1,00 SILANTOI 50CM 100 100 CO 0603110000 $ 0,32 $ 32,00",
     "invoice": "",
     "times_used": 0,
-    "times_confirmed": 7,
+    "times_confirmed": 8,
     "times_corrected": 0,
     "first_seen_at": "2026-04-20T16:49:07",
-    "last_confirmed_at": "2026-04-21T12:43:49"
+    "last_confirmed_at": "2026-04-21T13:01:25"
   },
   "11748|ROSES|HIGH AND MAGIC|50|25|": {
     "articulo_id": 34483,
@@ -7517,10 +7517,10 @@
     "raw": "VENDELA 40CM 50 50 TIPO B CO 0603110000 $ 0,16 $ 8,00",
     "invoice": "",
     "times_used": 0,
-    "times_confirmed": 50,
+    "times_confirmed": 55,
     "times_corrected": 0,
     "first_seen_at": "2026-04-16T16:53:03",
-    "last_confirmed_at": "2026-04-21T12:43:48"
+    "last_confirmed_at": "2026-04-21T13:01:25"
   },
   "11748|ROSES|PINK FLOYD|40|25|": {
     "articulo_id": 35974,
@@ -7536,10 +7536,10 @@
     "raw": "PINK FLOYD 40CM 50 50 PYTI CO 0603110000 $ 0,26 $ 13,00",
     "invoice": "",
     "times_used": 0,
-    "times_confirmed": 30,
+    "times_confirmed": 33,
     "times_corrected": 0,
     "first_seen_at": "2026-04-16T16:53:11",
-    "last_confirmed_at": "2026-04-21T12:43:48"
+    "last_confirmed_at": "2026-04-21T13:01:24"
   },
   "11748|ROSES|SWEET CAKE|40|25|": {
     "articulo_id": 36962,
@@ -7555,10 +7555,10 @@
     "raw": "21/57 QB 0,25 1,00 SWEET CAKE 40CM 25 25 NAVARRA CO 0603110000 $ 0,28 $ 7,00",
     "invoice": "",
     "times_used": 0,
-    "times_confirmed": 10,
+    "times_confirmed": 11,
     "times_corrected": 0,
     "first_seen_at": "2026-04-16T16:53:10",
-    "last_confirmed_at": "2026-04-21T12:43:47"
+    "last_confirmed_at": "2026-04-21T13:01:24"
   },
   "11748|ROSES|BRIGHTON|40|25|": {
     "articulo_id": 31887,
@@ -7574,10 +7574,10 @@
     "raw": "BRIGHTON 40CM 175 175 TIPO B CO 0603110000 $ 0,16 $ 28,00",
     "invoice": "",
     "times_used": 0,
-    "times_confirmed": 40,
+    "times_confirmed": 44,
     "times_corrected": 0,
     "first_seen_at": "2026-04-16T16:53:10",
-    "last_confirmed_at": "2026-04-21T12:43:48"
+    "last_confirmed_at": "2026-04-21T13:01:25"
   },
   "11748|ROSES|FROST|40|25|": {
     "articulo_id": 34052,
@@ -7593,10 +7593,10 @@
     "raw": "FROST 40CM 25 25 PYTI CO 0603110000 $ 0,28 $ 7,00",
     "invoice": "",
     "times_used": 0,
-    "times_confirmed": 20,
+    "times_confirmed": 22,
     "times_corrected": 0,
     "first_seen_at": "2026-04-15T17:10:10",
-    "last_confirmed_at": "2026-04-21T12:43:48"
+    "last_confirmed_at": "2026-04-21T13:01:24"
   },
   "11748|ROSES|CALIXTA|40|25|": {
     "articulo_id": 32058,
@@ -7612,10 +7612,10 @@
     "raw": "CALIXTA 40CM 50 50 PYTI CO 0603110000 $ 0,28 $ 14,00",
     "invoice": "",
     "times_used": 0,
-    "times_confirmed": 20,
+    "times_confirmed": 22,
     "times_corrected": 0,
     "first_seen_at": "2026-04-15T17:10:17",
-    "last_confirmed_at": "2026-04-21T12:43:48"
+    "last_confirmed_at": "2026-04-21T13:01:24"
   },
   "11748|ROSES|PINK MONDIAL|40|25|": {
     "articulo_id": 36047,
@@ -7631,10 +7631,10 @@
     "raw": "PINK MONDIAL 40CM 25 25 PYTI CO 0603110000 $ 0,26 $ 6,50",
     "invoice": "",
     "times_used": 0,
-    "times_confirmed": 20,
+    "times_confirmed": 22,
     "times_corrected": 0,
     "first_seen_at": "2026-04-20T16:34:56",
-    "last_confirmed_at": "2026-04-21T12:43:48"
+    "last_confirmed_at": "2026-04-21T13:01:24"
   },
   "11748|ROSES|HIGH AND MAGIC|40|25|": {
     "articulo_id": 34468,
@@ -7669,10 +7669,10 @@
     "raw": "BLUSH 40CM 50 50 PYTI CO 0603110000 $ 0,26 $ 13,00",
     "invoice": "",
     "times_used": 0,
-    "times_confirmed": 20,
+    "times_confirmed": 22,
     "times_corrected": 0,
     "first_seen_at": "2026-04-15T16:20:48",
-    "last_confirmed_at": "2026-04-21T12:43:48"
+    "last_confirmed_at": "2026-04-21T13:01:24"
   },
   "11748|ROSES|FREEDOM|40|25|": {
     "articulo_id": 33912,
@@ -7688,10 +7688,10 @@
     "raw": "32/57 HB 0,50 1,00 FREEDOM 40CM 300 300 TECLY CO 0603110000 $ 0,26 $ 78,00",
     "invoice": "",
     "times_used": 0,
-    "times_confirmed": 40,
+    "times_confirmed": 44,
     "times_corrected": 0,
     "first_seen_at": "2026-04-16T16:53:06",
-    "last_confirmed_at": "2026-04-21T12:43:48"
+    "last_confirmed_at": "2026-04-21T13:01:25"
   },
   "11748|ROSES|FRUTTETO|40|25|": {
     "articulo_id": 34066,
@@ -7707,10 +7707,10 @@
     "raw": "48/57 HB 0,50 1,00 FRUTTETO 40CM 300 300 CO 0603110000 $ 0,28 $ 84,00",
     "invoice": "",
     "times_used": 0,
-    "times_confirmed": 30,
+    "times_confirmed": 33,
     "times_corrected": 0,
     "first_seen_at": "2026-04-16T16:53:09",
-    "last_confirmed_at": "2026-04-21T12:43:49"
+    "last_confirmed_at": "2026-04-21T13:01:25"
   },
   "11748|ROSES|MALIBU|40|25|": {
     "articulo_id": 35219,
@@ -7745,10 +7745,10 @@
     "raw": "46/57 HB 0,50 1,00 FREEDOM 70CM 200 200 CO 0603110000 $ 0,38 $ 76,00",
     "invoice": "",
     "times_used": 0,
-    "times_confirmed": 20,
+    "times_confirmed": 22,
     "times_corrected": 0,
     "first_seen_at": "2026-04-16T16:58:01",
-    "last_confirmed_at": "2026-04-21T12:43:49"
+    "last_confirmed_at": "2026-04-21T13:01:25"
   },
   "11748|ROSES|VENDELA|60|25|": {
     "articulo_id": 37593,
@@ -7783,10 +7783,10 @@
     "raw": "40/57 QB 0,25 1,00 CARROUSEL 40CM 100 100 CO 0603110000 $ 0,33 $ 33,00",
     "invoice": "",
     "times_used": 0,
-    "times_confirmed": 10,
+    "times_confirmed": 11,
     "times_corrected": 0,
     "first_seen_at": "2026-04-15T16:20:50",
-    "last_confirmed_at": "2026-04-21T12:43:48"
+    "last_confirmed_at": "2026-04-21T13:01:25"
   },
   "11748|ROSES|CARROUSEL|50|25|": {
     "articulo_id": 32152,
@@ -7853,10 +7853,10 @@
     "raw": "4 H MONDIAL 12 25 50 300 0,300 90,000",
     "invoice": "",
     "times_used": 0,
-    "times_confirmed": 20,
+    "times_confirmed": 25,
     "times_corrected": 0,
     "first_seen_at": "2026-04-16T15:58:10",
-    "last_confirmed_at": "2026-04-21T12:43:22"
+    "last_confirmed_at": "2026-04-21T13:00:57"
   },
   "6916|ROSES|MONDIAL|60|25|": {
     "articulo_id": 35546,
@@ -8623,10 +8623,10 @@
     "raw": "19/57 HB 0,50 1,00 BRIGHTON 50CM 40 40 GONZA CO 0603110000 $ 0,32 $ 12,80",
     "invoice": "",
     "times_used": 0,
-    "times_confirmed": 20,
+    "times_confirmed": 22,
     "times_corrected": 0,
     "first_seen_at": "2026-04-15T17:10:14",
-    "last_confirmed_at": "2026-04-21T12:43:47"
+    "last_confirmed_at": "2026-04-21T13:01:23"
   },
   "11748|ROSES|PINK MONDIAL|50|10|": {
     "articulo_id": 36074,
@@ -8642,10 +8642,10 @@
     "raw": "PINK MONDIAL 50CM 40 40 GONZA CO 0603110000 $ 0,30 $ 12,00",
     "invoice": "",
     "times_used": 0,
-    "times_confirmed": 20,
+    "times_confirmed": 22,
     "times_corrected": 0,
     "first_seen_at": "2026-04-17T09:33:41",
-    "last_confirmed_at": "2026-04-21T12:43:47"
+    "last_confirmed_at": "2026-04-21T13:01:24"
   },
   "11748|ROSES|PINK FLOYD|50|10|": {
     "articulo_id": 35995,
@@ -8661,10 +8661,10 @@
     "raw": "PINK FLOYD 50CM 30 30 GONZA CO 0603110000 $ 0,30 $ 9,00",
     "invoice": "",
     "times_used": 0,
-    "times_confirmed": 20,
+    "times_confirmed": 22,
     "times_corrected": 0,
     "first_seen_at": "2026-04-15T17:10:14",
-    "last_confirmed_at": "2026-04-21T12:43:47"
+    "last_confirmed_at": "2026-04-21T13:01:24"
   },
   "11748|ROSES|FRUTTETO|50|10|": {
     "articulo_id": 34096,
@@ -8680,10 +8680,10 @@
     "raw": "FRUTTETO 50CM 10 10 GONZA CO 0603110000 $ 0,32 $ 3,20",
     "invoice": "",
     "times_used": 0,
-    "times_confirmed": 10,
+    "times_confirmed": 11,
     "times_corrected": 0,
     "first_seen_at": "2026-04-17T09:33:41",
-    "last_confirmed_at": "2026-04-21T12:43:47"
+    "last_confirmed_at": "2026-04-21T13:01:23"
   },
   "11748|ROSES|SILANTOI|50|10|": {
     "articulo_id": 36537,
@@ -8699,10 +8699,10 @@
     "raw": "SILANTOI 50CM 30 30 GONZA CO 0603110000 $ 0,32 $ 9,60",
     "invoice": "",
     "times_used": 0,
-    "times_confirmed": 20,
+    "times_confirmed": 22,
     "times_corrected": 0,
     "first_seen_at": "2026-04-15T17:10:14",
-    "last_confirmed_at": "2026-04-21T12:43:47"
+    "last_confirmed_at": "2026-04-21T13:01:24"
   },
   "11748|ROSES|BLUSH|50|10|": {
     "articulo_id": 31822,
@@ -8718,10 +8718,10 @@
     "raw": "BLUSH 50CM 30 30 GONZA CO 0603110000 $ 0,30 $ 9,00",
     "invoice": "",
     "times_used": 0,
-    "times_confirmed": 20,
+    "times_confirmed": 22,
     "times_corrected": 0,
     "first_seen_at": "2026-04-15T17:10:14",
-    "last_confirmed_at": "2026-04-21T12:43:47"
+    "last_confirmed_at": "2026-04-21T13:01:24"
   },
   "11748|ROSES|VENDELA|50|10|": {
     "articulo_id": 37573,
@@ -8737,10 +8737,10 @@
     "raw": "VENDELA 50CM 80 80 GONZA CO 0603110000 $ 0,30 $ 24,00",
     "invoice": "",
     "times_used": 0,
-    "times_confirmed": 10,
+    "times_confirmed": 11,
     "times_corrected": 0,
     "first_seen_at": "2026-04-20T16:15:49",
-    "last_confirmed_at": "2026-04-21T12:43:47"
+    "last_confirmed_at": "2026-04-21T13:01:23"
   },
   "11748|ROSES|ATOMIC|50|10|": {
     "articulo_id": 31712,
@@ -8756,10 +8756,10 @@
     "raw": "ATOMIC 50CM 30 30 GONZA CO 0603110000 $ 0,32 $ 9,60",
     "invoice": "",
     "times_used": 0,
-    "times_confirmed": 20,
+    "times_confirmed": 22,
     "times_corrected": 0,
     "first_seen_at": "2026-04-15T17:10:14",
-    "last_confirmed_at": "2026-04-21T12:43:47"
+    "last_confirmed_at": "2026-04-21T13:01:24"
   },
   "11748|ROSES|VENDELA|40|10|": {
     "articulo_id": 37551,
@@ -8820,10 +8820,10 @@
     "raw": "BRIGHTON 40CM 20 20 FYP CO 0603110000 $ 0,28 $ 5,60",
     "invoice": "",
     "times_used": 0,
-    "times_confirmed": 7,
+    "times_confirmed": 8,
     "times_corrected": 0,
     "first_seen_at": "2026-04-20T16:49:08",
-    "last_confirmed_at": "2026-04-21T12:43:49"
+    "last_confirmed_at": "2026-04-21T13:01:26"
   },
   "11748|ROSES|FREEDOM|50|10|": {
     "articulo_id": 33958,
@@ -8878,10 +8878,10 @@
     "raw": "MONDIAL 40CM 40 40 FYP CO 0603110000 $ 0,28 $ 11,20",
     "invoice": "",
     "times_used": 0,
-    "times_confirmed": 7,
+    "times_confirmed": 8,
     "times_corrected": 0,
     "first_seen_at": "2026-04-20T16:49:07",
-    "last_confirmed_at": "2026-04-21T12:43:49"
+    "last_confirmed_at": "2026-04-21T13:01:25"
   },
   "11748|ROSES|FREEDOM|40|10|": {
     "articulo_id": 33912,
@@ -8897,10 +8897,10 @@
     "raw": "53/57 HB 0,50 1,00 FREEDOM 40CM 40 40 FYP CO 0603110000 $ 0,26 $ 10,40",
     "invoice": "",
     "times_used": 0,
-    "times_confirmed": 7,
+    "times_confirmed": 8,
     "times_corrected": 0,
     "first_seen_at": "2026-04-20T16:49:07",
-    "last_confirmed_at": "2026-04-21T12:43:49"
+    "last_confirmed_at": "2026-04-21T13:01:25"
   },
   "11748|ROSES|CALIXTA|40|10|": {
     "articulo_id": 32058,
@@ -8916,10 +8916,10 @@
     "raw": "CALIXTA 40CM 20 20 FYP CO 0603110000 $ 0,28 $ 5,60",
     "invoice": "",
     "times_used": 0,
-    "times_confirmed": 7,
+    "times_confirmed": 8,
     "times_corrected": 0,
     "first_seen_at": "2026-04-20T16:49:07",
-    "last_confirmed_at": "2026-04-21T12:43:49"
+    "last_confirmed_at": "2026-04-21T13:01:25"
   },
   "11748|ROSES|MALIBU|40|10|": {
     "articulo_id": 35218,
@@ -8935,10 +8935,10 @@
     "raw": "MALIBU 40CM 20 20 FYP CO 0603110000 $ 0,26 $ 5,20",
     "invoice": "",
     "times_used": 0,
-    "times_confirmed": 10,
+    "times_confirmed": 11,
     "times_corrected": 0,
     "first_seen_at": "2026-04-15T17:10:23",
-    "last_confirmed_at": "2026-04-21T12:43:49"
+    "last_confirmed_at": "2026-04-21T13:01:25"
   },
   "11748|ROSES|BLUSH|40|10|": {
     "articulo_id": 31817,
@@ -8954,10 +8954,10 @@
     "raw": "BLUSH 40CM 20 20 FYP CO 0603110000 $ 0,26 $ 5,20",
     "invoice": "",
     "times_used": 0,
-    "times_confirmed": 7,
+    "times_confirmed": 8,
     "times_corrected": 0,
     "first_seen_at": "2026-04-20T16:49:08",
-    "last_confirmed_at": "2026-04-21T12:43:49"
+    "last_confirmed_at": "2026-04-21T13:01:26"
   },
   "4471|ROSES|CROWN|50|25|": {
     "articulo_id": 36289,
@@ -10021,10 +10021,10 @@
     "raw": "1 H R19 IGLESIAS EXPLORER 3 25 50 75 0,300 22,500",
     "invoice": "",
     "times_used": 0,
-    "times_confirmed": 8,
+    "times_confirmed": 10,
     "times_corrected": 0,
     "first_seen_at": "2026-04-15T16:13:14",
-    "last_confirmed_at": "2026-04-21T12:43:27"
+    "last_confirmed_at": "2026-04-21T13:01:02"
   },
   "442|ROSES|GREY KNIGHTS|50|25|": {
     "articulo_id": 33037,
@@ -10040,10 +10040,10 @@
     "raw": "H R19 IGLESIAS GREY KNIGHTS 1 25 50 25 0,300 7,500",
     "invoice": "",
     "times_used": 0,
-    "times_confirmed": 4,
+    "times_confirmed": 5,
     "times_corrected": 0,
     "first_seen_at": "2026-04-15T16:11:41",
-    "last_confirmed_at": "2026-04-21T12:43:27"
+    "last_confirmed_at": "2026-04-21T13:01:02"
   },
   "442|ROSES|MONDIAL|50|25|": {
     "articulo_id": 33230,
@@ -10059,10 +10059,10 @@
     "raw": "H R19 IGLESIAS MONDIAL 3 25 50 75 0,300 22,500",
     "invoice": "",
     "times_used": 0,
-    "times_confirmed": 8,
+    "times_confirmed": 10,
     "times_corrected": 0,
     "first_seen_at": "2026-04-15T16:13:15",
-    "last_confirmed_at": "2026-04-21T12:43:27"
+    "last_confirmed_at": "2026-04-21T13:01:02"
   },
   "442|ROSES|PINK MONDIAL|50|25|": {
     "articulo_id": 33338,
@@ -10078,10 +10078,10 @@
     "raw": "H R14 PINK MONDIAL 2 25 50 50 0,300 15,000",
     "invoice": "",
     "times_used": 0,
-    "times_confirmed": 4,
+    "times_confirmed": 5,
     "times_corrected": 0,
     "first_seen_at": "2026-04-15T16:13:14",
-    "last_confirmed_at": "2026-04-21T12:43:27"
+    "last_confirmed_at": "2026-04-21T13:01:02"
   },
   "442|ROSES|SWEETNESS|50|25|": {
     "articulo_id": 33501,
@@ -10097,10 +10097,10 @@
     "raw": "H R14 SWEETNESS 4 25 50 100 0,300 30,000",
     "invoice": "",
     "times_used": 0,
-    "times_confirmed": 4,
+    "times_confirmed": 5,
     "times_corrected": 0,
     "first_seen_at": "2026-04-16T16:12:57",
-    "last_confirmed_at": "2026-04-21T12:43:27"
+    "last_confirmed_at": "2026-04-21T13:01:02"
   },
   "442|ROSES|PROUD|40|25|": {
     "articulo_id": 33364,
@@ -10355,10 +10355,10 @@
     "raw": "57/57 HB 0,50 1,00 BLUSH 60CM 250 250 CO 0603110000 $ 0,34 $ 85,00",
     "invoice": "",
     "times_used": 0,
-    "times_confirmed": 10,
+    "times_confirmed": 11,
     "times_corrected": 0,
     "first_seen_at": "2026-04-15T16:20:49",
-    "last_confirmed_at": "2026-04-21T12:43:49"
+    "last_confirmed_at": "2026-04-21T13:01:26"
   },
   "11748|ROSES|MALIBU|60|25|": {
     "articulo_id": 35230,
@@ -11913,10 +11913,10 @@
     "raw": "6 H GAIA ABSOLUT IN PINK 10 25 60 250 0,300 75,000",
     "invoice": "",
     "times_used": 0,
-    "times_confirmed": 4,
+    "times_confirmed": 5,
     "times_corrected": 0,
     "first_seen_at": "2026-04-15T17:06:28",
-    "last_confirmed_at": "2026-04-21T12:43:22"
+    "last_confirmed_at": "2026-04-21T13:00:57"
   },
   "6916|ROSES|TWILIGHT|50|25|": {
     "articulo_id": 37502,
@@ -14018,10 +14018,10 @@
     "invoice": ""
   },
   "313|CARNATIONS|GOLEM|0|20|FANCY": {
-    "articulo_id": 12779,
-    "articulo_name": "CLAVEL FANCY LILA 70CM 20U COLIBRI",
+    "articulo_id": 12715,
+    "articulo_name": "CLAVEL FANCY BICOLOR 70CM 20U COLIBRI",
     "origen": "auto",
-    "status": "aprendido_en_prueba",
+    "status": "manual_confirmado",
     "provider_id": 313,
     "species": "CARNATIONS",
     "variety": "GOLEM",
@@ -14031,16 +14031,16 @@
     "raw": "2 H Carnation Golem X 20 - FAN 598618- FAN CO-0603129000 500 1000 ST 0.190 190.000",
     "invoice": "",
     "times_used": 0,
-    "times_confirmed": 0,
+    "times_confirmed": 1,
     "times_corrected": 0,
-    "first_seen_at": "2026-04-16T16:55:34",
-    "last_confirmed_at": ""
+    "first_seen_at": "2026-04-21T13:00:55",
+    "last_confirmed_at": "2026-04-21T13:00:55"
   },
   "313|CARNATIONS|NOVIA|0|20|FANCY": {
     "articulo_id": 12559,
     "articulo_name": "CLAVEL COL FANCY NOVIA 70CM 20U",
     "origen": "auto",
-    "status": "aprendido_en_prueba",
+    "status": "aprendido_confirmado",
     "provider_id": 313,
     "species": "CARNATIONS",
     "variety": "NOVIA",
@@ -14050,16 +14050,16 @@
     "raw": "1 H Carnation Novia X 20 - FAN 598622 FAN CO-0603129000 500 500 ST 0.190 95.000",
     "invoice": "",
     "times_used": 0,
-    "times_confirmed": 0,
+    "times_confirmed": 1,
     "times_corrected": 0,
     "first_seen_at": "2026-04-15T17:05:45",
-    "last_confirmed_at": ""
+    "last_confirmed_at": "2026-04-21T13:00:56"
   },
   "313|CARNATIONS|CREAM|0|20|FANCY": {
     "articulo_id": 12539,
     "articulo_name": "CLAVEL COL FANCY CREMA 70CM 20U",
     "origen": "auto",
-    "status": "aprendido_en_prueba",
+    "status": "aprendido_confirmado",
     "provider_id": 313,
     "species": "CARNATIONS",
     "variety": "CREAM",
@@ -14069,16 +14069,16 @@
     "raw": "2 H Carnation Cream X 20 - FAN 598623- FAN CO-0603129000 500 1000 ST 0.190 190.000",
     "invoice": "",
     "times_used": 0,
-    "times_confirmed": 0,
+    "times_confirmed": 1,
     "times_corrected": 0,
     "first_seen_at": "2026-04-17T10:33:15",
-    "last_confirmed_at": ""
+    "last_confirmed_at": "2026-04-21T13:00:56"
   },
   "313|CARNATIONS|RED|0|25|SELECT": {
     "articulo_id": 12581,
     "articulo_name": "CLAVEL COL SELECT ROJO 70CM 25U",
     "origen": "auto",
-    "status": "aprendido_en_prueba",
+    "status": "aprendido_confirmado",
     "provider_id": 313,
     "species": "CARNATIONS",
     "variety": "RED",
@@ -14088,16 +14088,16 @@
     "raw": "10 H Carnation Red X 25 - SEL 599064- SEL BEA CO-0603129000 500 5000 ST 0.100 500.000",
     "invoice": "",
     "times_used": 0,
-    "times_confirmed": 0,
+    "times_confirmed": 1,
     "times_corrected": 0,
     "first_seen_at": "2026-04-17T10:33:16",
-    "last_confirmed_at": ""
+    "last_confirmed_at": "2026-04-21T13:00:56"
   },
   "313|CARNATIONS|NOVELTY|0|25|SELECT": {
     "articulo_id": 12578,
     "articulo_name": "CLAVEL COL SELECT NOVEDADES 70CM 20U",
     "origen": "auto",
-    "status": "aprendido_en_prueba",
+    "status": "aprendido_confirmado",
     "provider_id": 313,
     "species": "CARNATIONS",
     "variety": "NOVELTY",
@@ -14107,10 +14107,10 @@
     "raw": "10 H Carnation Novelty X 25 - SEL 599074- SEL BEA CO-0603129000 500 5000 ST 0.100 500.000",
     "invoice": "",
     "times_used": 0,
-    "times_confirmed": 0,
+    "times_confirmed": 1,
     "times_corrected": 0,
     "first_seen_at": "2026-04-17T10:33:16",
-    "last_confirmed_at": ""
+    "last_confirmed_at": "2026-04-21T13:00:56"
   },
   "1429|ROSES|ENGAGEMENT|50|25|": {
     "articulo_id": 33654,
@@ -14229,10 +14229,10 @@
     "raw": "1 H Carnation Carn Mix - Pink/Yellow 598582 SEL LILAS CO-0603129000 500 500 ST 0.200 100.000",
     "invoice": "",
     "times_used": 0,
-    "times_confirmed": 2,
+    "times_confirmed": 4,
     "times_corrected": 0,
     "first_seen_at": "2026-04-21T12:39:14",
-    "last_confirmed_at": "2026-04-21T12:43:20"
+    "last_confirmed_at": "2026-04-21T13:00:56"
   },
   "11748|ROSES|PINK MONDIAL|60|25|": {
     "articulo_id": 36062,
@@ -14267,10 +14267,10 @@
     "raw": "97024 1 qb 150 Gypso Xlence Natural 80 cm / 750 gr Violeta Flowers 150 25 6 $ 5,25 $ 3 1,50",
     "invoice": "",
     "times_used": 0,
-    "times_confirmed": 8,
+    "times_confirmed": 10,
     "times_corrected": 0,
     "first_seen_at": "2026-04-15T17:12:08",
-    "last_confirmed_at": "2026-04-21T12:43:35"
+    "last_confirmed_at": "2026-04-21T13:01:11"
   },
   "440|GYPSOPHILA|GYPSOPHILA XL RAINBOW MIX LIGHT|80|25|": {
     "articulo_id": 28255,
@@ -14286,10 +14286,10 @@
     "raw": "97341 1 hb 450 Gyp XL Rainbow Mix Light 80/750gr Violeta Flowers 450 25 18 $ 8 ,50 $ 1 53,00",
     "invoice": "",
     "times_used": 0,
-    "times_confirmed": 4,
+    "times_confirmed": 5,
     "times_corrected": 0,
     "first_seen_at": "2026-04-15T17:12:08",
-    "last_confirmed_at": "2026-04-21T12:43:35"
+    "last_confirmed_at": "2026-04-21T13:01:11"
   },
   "2226|ROSES|UNFORGIVEN|50|25|": {
     "articulo_id": 37518,
@@ -17084,10 +17084,10 @@
     "raw": "YELLOW SUMMER 40CM 20 20 FYP CO 0603110000 $ 0,28 $ 5,60",
     "invoice": "",
     "times_used": 0,
-    "times_confirmed": 3,
+    "times_confirmed": 4,
     "times_corrected": 0,
     "first_seen_at": "2026-04-20T17:11:17",
-    "last_confirmed_at": "2026-04-21T12:43:49"
+    "last_confirmed_at": "2026-04-21T13:01:25"
   },
   "11748|ROSES|HIGH AND MAGIC|40|10|": {
     "articulo_id": 34541,
@@ -17193,7 +17193,7 @@
     "raw": "15,00 QB HYD WHITE PREMIUM 350603199010 525 0,48 252,00",
     "invoice": "",
     "status": "ambiguo",
-    "times_corrected": 238
+    "times_corrected": 243
   },
   "440|GYPSOPHILA|GYPSOPHILA XL RAINBOW MIX|80|25|": {
     "articulo_id": 34976,
@@ -17208,7 +17208,7 @@
     "raw": "96632 1 hb 450 Gyp Xl Rainbow Mix 80 cm/750 gr Violeta Flowers 450 25 18 $ 8 ,50 $ 1 53,00",
     "invoice": "",
     "status": "ambiguo",
-    "times_corrected": 46
+    "times_corrected": 47
   },
   "6323|HYDRANGEAS|PREMIUM TENIDA YELLOW|60|1|": {
     "articulo_id": 22735,
@@ -23594,10 +23594,10 @@
     "raw": "1 H R19 SORIALES BRIGHTON 1 25 50 25 0,300 7,500",
     "invoice": "",
     "times_used": 0,
-    "times_confirmed": 8,
+    "times_confirmed": 10,
     "times_corrected": 0,
     "first_seen_at": "2026-04-15T16:13:13",
-    "last_confirmed_at": "2026-04-21T12:43:27"
+    "last_confirmed_at": "2026-04-21T13:01:02"
   },
   "442|ROSES|BRIGHTON|60|25|": {
     "articulo_id": 31948,
@@ -23678,10 +23678,10 @@
     "raw": "H R19 IGLESIAS FRUTTETO 1 25 50 25 0,300 7,500",
     "invoice": "",
     "times_used": 0,
-    "times_confirmed": 12,
+    "times_confirmed": 15,
     "times_corrected": 0,
     "first_seen_at": "2026-04-15T16:13:13",
-    "last_confirmed_at": "2026-04-21T12:43:27"
+    "last_confirmed_at": "2026-04-21T13:01:02"
   },
   "442|ROSES|HERMOSA|50|25|": {
     "articulo_id": 33054,
@@ -23710,10 +23710,10 @@
     "raw": "H R14 HIGH & MAGIC 2 25 50 50 0,300 15,000",
     "invoice": "",
     "times_used": 0,
-    "times_confirmed": 12,
+    "times_confirmed": 15,
     "times_corrected": 0,
     "first_seen_at": "2026-04-16T16:12:57",
-    "last_confirmed_at": "2026-04-21T12:43:28"
+    "last_confirmed_at": "2026-04-21T13:01:03"
   },
   "442|ROSES|HIGH & MAGIC|60|25|": {
     "articulo_id": 34508,
@@ -23963,10 +23963,10 @@
     "raw": "H R14 TOPAZ 2 25 50 50 0,300 15,000",
     "invoice": "",
     "times_used": 0,
-    "times_confirmed": 4,
+    "times_confirmed": 5,
     "times_corrected": 0,
     "first_seen_at": "2026-04-15T16:13:17",
-    "last_confirmed_at": "2026-04-21T12:43:28"
+    "last_confirmed_at": "2026-04-21T13:01:03"
   },
   "442|ROSES|TWILIGHT|50|25|": {
     "articulo_id": 37502,
@@ -26336,7 +26336,7 @@
     "raw": "ALSTRO (TSTEM ASSORTED SUPERSELEC 1 80 80 .240 19.20",
     "invoice": "93725",
     "status": "ambiguo",
-    "times_corrected": 799
+    "times_corrected": 816
   },
   "281|ALSTROEMERIA|MIXTO|0|10|SELECT": {
     "articulo_id": 12787,
@@ -26351,7 +26351,7 @@
     "raw": "ALSTRO (TSTEM ASSORTED SELECT 2 100 200 .180 36.00",
     "invoice": "94114",
     "status": "ambiguo",
-    "times_corrected": 329
+    "times_corrected": 336
   },
   "281|ALSTROEMERIA|WHITE|0|10|SELECT": {
     "articulo_id": 12723,
@@ -26366,7 +26366,7 @@
     "raw": "ALSTRO (TSTEM WHITE SELECT 1 100 100 .180 18.00",
     "invoice": "94114",
     "status": "ambiguo",
-    "times_corrected": 141
+    "times_corrected": 144
   },
   "281|ROSES|GARDEN MAYRA`S WHITE|40|25|": {
     "articulo_id": 34182,
@@ -26426,7 +26426,7 @@
     "raw": "1 H LIMONADA 12 25 50 300 0,320 96,000",
     "invoice": "0000254785",
     "status": "ambiguo",
-    "times_corrected": 114
+    "times_corrected": 117
   },
   "13001|ROSES|TESSA-D LIMONADA|60|4|": {
     "articulo_id": 35087,
@@ -27687,10 +27687,10 @@
     "raw": "53 - 53 VALENT 1 HB ROSE EXPLORER 50 300 300 0.280 84.000 Standing VALENT ROSES",
     "invoice": "",
     "times_used": 0,
-    "times_confirmed": 48,
+    "times_confirmed": 72,
     "times_corrected": 0,
     "first_seen_at": "2026-04-21T10:23:56",
-    "last_confirmed_at": "2026-04-21T12:43:18"
+    "last_confirmed_at": "2026-04-21T13:00:49"
   },
   "90001|ROSES|MONDIAL|50|25|": {
     "articulo_id": 35523,
@@ -27706,10 +27706,10 @@
     "raw": "49 - 50 FENIX 2 HB ROSE MONDIAL 50 350 700 0.280 196.000 Standing FENIX",
     "invoice": "",
     "times_used": 0,
-    "times_confirmed": 48,
+    "times_confirmed": 72,
     "times_corrected": 0,
     "first_seen_at": "2026-04-21T10:23:56",
-    "last_confirmed_at": "2026-04-21T12:43:18"
+    "last_confirmed_at": "2026-04-21T13:00:49"
   },
   "90001|ROSES|MOMENTUM|50|25|": {
     "articulo_id": 35402,
@@ -27725,10 +27725,10 @@
     "raw": "7 - 7 HIGH CONNECTION 1 HB ROSE MOMENTUM 50 150 150 0.280 42.000 Standing HIGH CONNECTION",
     "invoice": "",
     "times_used": 0,
-    "times_confirmed": 2,
+    "times_confirmed": 3,
     "times_corrected": 0,
     "first_seen_at": "2026-04-21T10:24:01",
-    "last_confirmed_at": "2026-04-21T12:43:16"
+    "last_confirmed_at": "2026-04-21T13:00:48"
   },
   "90001|ROSES|MOMENTUM|60|25|": {
     "articulo_id": 35424,
@@ -27744,10 +27744,10 @@
     "raw": "ROSE MOMENTUM 60 150 150 0.320 48.000 Standing HIGH CONNECTION",
     "invoice": "",
     "times_used": 0,
-    "times_confirmed": 2,
+    "times_confirmed": 3,
     "times_corrected": 0,
     "first_seen_at": "2026-04-21T10:24:00",
-    "last_confirmed_at": "2026-04-21T12:43:16"
+    "last_confirmed_at": "2026-04-21T13:00:48"
   },
   "90001|ROSES|MONDIAL|60|25|": {
     "articulo_id": 35567,
@@ -27763,10 +27763,10 @@
     "raw": "44 - 44 ASDEL ROSES 1 HB ROSE MONDIAL 60 300 300 0.320 96.000 Standing ASDEL ROSES",
     "invoice": "",
     "times_used": 0,
-    "times_confirmed": 14,
+    "times_confirmed": 21,
     "times_corrected": 0,
     "first_seen_at": "2026-04-21T10:23:56",
-    "last_confirmed_at": "2026-04-21T12:43:17"
+    "last_confirmed_at": "2026-04-21T13:00:49"
   },
   "90001|ROSES|EXPLORER|40|25|": {
     "articulo_id": 33750,
@@ -27782,10 +27782,10 @@
     "raw": "ROSE EXPLORER 40 150 150 0.220 33.000 Standing FENIX",
     "invoice": "",
     "times_used": 0,
-    "times_confirmed": 6,
+    "times_confirmed": 9,
     "times_corrected": 0,
     "first_seen_at": "2026-04-21T10:23:57",
-    "last_confirmed_at": "2026-04-21T12:43:17"
+    "last_confirmed_at": "2026-04-21T13:00:49"
   },
   "90001|ROSES|FRUTTETO|50|25|": {
     "articulo_id": 34111,
@@ -27801,10 +27801,10 @@
     "raw": "48 - 48 BYDDA ROSES 1 HB ROSE FRUTTETO 50 300 300 0.280 84.000 Standing BYDDA ROSES",
     "invoice": "",
     "times_used": 0,
-    "times_confirmed": 10,
+    "times_confirmed": 15,
     "times_corrected": 0,
     "first_seen_at": "2026-04-21T10:23:56",
-    "last_confirmed_at": "2026-04-21T12:43:17"
+    "last_confirmed_at": "2026-04-21T13:00:49"
   },
   "90001|ROSES|EXPLORER|60|25|": {
     "articulo_id": 33813,
@@ -27820,10 +27820,10 @@
     "raw": "ROSE EXPLORER 60 200 200 0.320 64.000 Standing RICC ROSES",
     "invoice": "",
     "times_used": 0,
-    "times_confirmed": 16,
+    "times_confirmed": 24,
     "times_corrected": 0,
     "first_seen_at": "2026-04-21T10:23:57",
-    "last_confirmed_at": "2026-04-21T12:43:17"
+    "last_confirmed_at": "2026-04-21T13:00:49"
   },
   "90001|ROSES|PINK MONDIAL|50|25|": {
     "articulo_id": 36133,
@@ -27839,10 +27839,10 @@
     "raw": "ROSE PINK MONDIAL 50 75 75 0.280 21.000 Standing VALENT ROSES",
     "invoice": "",
     "times_used": 0,
-    "times_confirmed": 6,
+    "times_confirmed": 9,
     "times_corrected": 0,
     "first_seen_at": "2026-04-21T10:23:58",
-    "last_confirmed_at": "2026-04-21T12:43:17"
+    "last_confirmed_at": "2026-04-21T13:00:49"
   },
   "90001|ROSES|PLAYA BLANCA|50|25|": {
     "articulo_id": 33348,
@@ -27858,10 +27858,10 @@
     "raw": "18 - 18 SHADDAI ROSES 1 HB ROSE PLAYA BLANCA 50 300 300 0.280 84.000 Standing SHADDAI ROSES",
     "invoice": "",
     "times_used": 0,
-    "times_confirmed": 2,
+    "times_confirmed": 3,
     "times_corrected": 0,
     "first_seen_at": "2026-04-21T10:48:01",
-    "last_confirmed_at": "2026-04-21T12:43:12"
+    "last_confirmed_at": "2026-04-21T13:00:44"
   },
   "90001|ROSES|TOFFE|50|25|": {
     "articulo_id": 33564,
@@ -27877,10 +27877,10 @@
     "raw": "19 - 19 SHADDAI ROSES 1 HB ROSE TOFFE 50 300 300 0.280 84.000 Standing SHADDAI ROSES",
     "invoice": "",
     "times_used": 0,
-    "times_confirmed": 2,
+    "times_confirmed": 3,
     "times_corrected": 0,
     "first_seen_at": "2026-04-21T10:23:58",
-    "last_confirmed_at": "2026-04-21T12:43:12"
+    "last_confirmed_at": "2026-04-21T13:00:44"
   },
   "90001|ROSES|MONDIAL|40|25|": {
     "articulo_id": 35470,
@@ -27934,10 +27934,10 @@
     "raw": "7 - 9 GOLDENLAND 3 QB ROSE CANDLELIGHT 50 100 300 0.280 84.000 Standing GOLDENLAND",
     "invoice": "",
     "times_used": 0,
-    "times_confirmed": 4,
+    "times_confirmed": 6,
     "times_corrected": 0,
     "first_seen_at": "2026-04-21T10:23:58",
-    "last_confirmed_at": "2026-04-21T12:43:17"
+    "last_confirmed_at": "2026-04-21T13:00:49"
   },
   "90001|ROSES|SILANTOI|50|25|": {
     "articulo_id": 36542,
@@ -27953,10 +27953,10 @@
     "raw": "41 - 41 GOLDENLAD 1 HB ROSE SILANTOI 50 300 300 0.280 84.000 Standing GOLDENLAND",
     "invoice": "",
     "times_used": 0,
-    "times_confirmed": 2,
+    "times_confirmed": 3,
     "times_corrected": 0,
     "first_seen_at": "2026-04-21T10:23:57",
-    "last_confirmed_at": "2026-04-21T12:43:12"
+    "last_confirmed_at": "2026-04-21T13:00:43"
   },
   "90001|ROSES|BRIGHTON|50|25|": {
     "articulo_id": 31925,
@@ -27972,10 +27972,10 @@
     "raw": "26 - 26 VALENT ROSES 1 HB ROSE BRIGHTON 50 250 250 0.280 70.000 Standing VALENT ROSES",
     "invoice": "",
     "times_used": 0,
-    "times_confirmed": 6,
+    "times_confirmed": 9,
     "times_corrected": 0,
     "first_seen_at": "2026-04-21T10:23:56",
-    "last_confirmed_at": "2026-04-21T12:43:17"
+    "last_confirmed_at": "2026-04-21T13:00:49"
   },
   "90001|ROSES|MANDARIN|50|25|": {
     "articulo_id": 33184,
@@ -28023,10 +28023,10 @@
     "raw": "7 - 7 GALAXITRADE 1 HB ROSE VENDELA 40 150 150 0.220 33.000 Standing GALAXYTRADE",
     "invoice": "",
     "times_used": 0,
-    "times_confirmed": 2,
+    "times_confirmed": 3,
     "times_corrected": 0,
     "first_seen_at": "2026-04-21T10:23:57",
-    "last_confirmed_at": "2026-04-21T12:43:12"
+    "last_confirmed_at": "2026-04-21T13:00:43"
   },
   "90001|ROSES|VENDELA|50|25|": {
     "articulo_id": 37592,
@@ -28042,10 +28042,10 @@
     "raw": "ROSE VENDELA 50 200 200 0.280 56.000 Standing GALAXYTRADE",
     "invoice": "",
     "times_used": 0,
-    "times_confirmed": 2,
+    "times_confirmed": 3,
     "times_corrected": 0,
     "first_seen_at": "2026-04-21T10:23:57",
-    "last_confirmed_at": "2026-04-21T12:43:17"
+    "last_confirmed_at": "2026-04-21T13:00:49"
   },
   "90001|ROSES|JESSIKA|50|25|": {
     "articulo_id": 34679,
@@ -28118,10 +28118,10 @@
     "raw": "20 - 20 FLOR GOLD 1 HB ROSE EXPLORER 70 125 125 0.380 47.500 Standing FLOR GOLD",
     "invoice": "",
     "times_used": 0,
-    "times_confirmed": 2,
+    "times_confirmed": 3,
     "times_corrected": 0,
     "first_seen_at": "2026-04-21T10:23:57",
-    "last_confirmed_at": "2026-04-21T12:43:16"
+    "last_confirmed_at": "2026-04-21T13:00:48"
   },
   "90001|ROSES|MONDIAL|70|25|": {
     "articulo_id": 35592,
@@ -28156,10 +28156,10 @@
     "raw": "4 - 4 SANTA CLARA 1 HB ROSE CARROUSEL 40 300 300 0.220 66.000 Standing SANTA CLARA GAR",
     "invoice": "",
     "times_used": 0,
-    "times_confirmed": 2,
+    "times_confirmed": 3,
     "times_corrected": 0,
     "first_seen_at": "2026-04-21T10:23:56",
-    "last_confirmed_at": "2026-04-21T12:43:16"
+    "last_confirmed_at": "2026-04-21T13:00:48"
   },
   "90001|ROSES|CARROUSEL|50|25|": {
     "articulo_id": 32155,
@@ -28175,10 +28175,10 @@
     "raw": "6 - 6 SANTA CLARA 1 HB ROSE CARROUSEL 50 150 150 0.280 42.000 Standing SANTA CLARA GAR",
     "invoice": "",
     "times_used": 0,
-    "times_confirmed": 2,
+    "times_confirmed": 3,
     "times_corrected": 0,
     "first_seen_at": "2026-04-21T10:23:56",
-    "last_confirmed_at": "2026-04-21T12:43:17"
+    "last_confirmed_at": "2026-04-21T13:00:48"
   },
   "90001|ROSES|CABARET|50|25|": {
     "articulo_id": 32041,
@@ -28194,10 +28194,10 @@
     "raw": "2 - 2 EXXIDE 1 HB ROSE CABARET 50 350 350 0.280 98.000 Venta diaria EXXIDE S.A.",
     "invoice": "",
     "times_used": 0,
-    "times_confirmed": 4,
+    "times_confirmed": 6,
     "times_corrected": 0,
     "first_seen_at": "2026-04-21T10:23:56",
-    "last_confirmed_at": "2026-04-21T12:43:16"
+    "last_confirmed_at": "2026-04-21T13:00:48"
   },
   "90001|ROSES|HERMOSA|50|25|": {
     "articulo_id": 34434,
@@ -28213,10 +28213,10 @@
     "raw": "12 - 12 SANTA CLARA 1 HB ROSE HERMOSA 50 100 100 0.280 28.000 Standing SANTA CLARA GAR",
     "invoice": "",
     "times_used": 0,
-    "times_confirmed": 2,
+    "times_confirmed": 3,
     "times_corrected": 0,
     "first_seen_at": "2026-04-21T10:23:56",
-    "last_confirmed_at": "2026-04-21T12:43:16"
+    "last_confirmed_at": "2026-04-21T13:00:48"
   },
   "90001|ROSES|LIGHT HOUSE|50|25|": {
     "articulo_id": 35118,
@@ -28245,10 +28245,10 @@
     "raw": "3 - 3 ARGENA FLOWERS 1 HB ROSE FRUTTETO 60 100 100 0.320 32.000 Standing ARGENA FLOWERS",
     "invoice": "",
     "times_used": 0,
-    "times_confirmed": 4,
+    "times_confirmed": 6,
     "times_corrected": 0,
     "first_seen_at": "2026-04-21T10:23:58",
-    "last_confirmed_at": "2026-04-21T12:43:17"
+    "last_confirmed_at": "2026-04-21T13:00:49"
   },
   "90001|ROSES|PALOMA|50|25|": {
     "articulo_id": 35862,
@@ -28283,10 +28283,10 @@
     "raw": "21 - 21 KANUN ROSES 1 HB ROSE HIGH AND 50 350 350 0.280 98.000 Standing KANUN ROSES",
     "invoice": "",
     "times_used": 0,
-    "times_confirmed": 2,
+    "times_confirmed": 3,
     "times_corrected": 0,
     "first_seen_at": "2026-04-21T10:48:10",
-    "last_confirmed_at": "2026-04-21T12:43:17"
+    "last_confirmed_at": "2026-04-21T13:00:49"
   },
   "90001|ROSES|HIGH AND MAGIC|60|25|": {
     "articulo_id": 34524,
@@ -28302,10 +28302,10 @@
     "raw": "42 - 42 RICC ROSES 1 HB ROSE HIGH AND 60 300 300 0.320 96.000 Standing RICC ROSES",
     "invoice": "",
     "times_used": 0,
-    "times_confirmed": 4,
+    "times_confirmed": 6,
     "times_corrected": 0,
     "first_seen_at": "2026-04-21T10:48:02",
-    "last_confirmed_at": "2026-04-21T12:43:17"
+    "last_confirmed_at": "2026-04-21T13:00:49"
   },
   "90001|ROSES|KAHALA|60|25|": {
     "articulo_id": 34729,
@@ -28475,10 +28475,10 @@
     "raw": "2 - 2 RICC ROSES 1 HB ROSE FREEDOM 60 300 300 0.320 96.000 Standing RICC ROSES",
     "invoice": "",
     "times_used": 0,
-    "times_confirmed": 2,
+    "times_confirmed": 3,
     "times_corrected": 0,
     "first_seen_at": "2026-04-21T10:23:59",
-    "last_confirmed_at": "2026-04-21T12:43:16"
+    "last_confirmed_at": "2026-04-21T13:00:48"
   },
   "90001|ROSES|FREEDOM|50|25|": {
     "articulo_id": 33979,
@@ -28578,10 +28578,10 @@
     "raw": "18 - 19 KANUN ROSES 2 HB ROSE VENDELA 60 350 700 0.320 224.000 Standing KANUN ROSES",
     "invoice": "",
     "times_used": 0,
-    "times_confirmed": 2,
+    "times_confirmed": 3,
     "times_corrected": 0,
     "first_seen_at": "2026-04-21T10:23:56",
-    "last_confirmed_at": "2026-04-21T12:43:17"
+    "last_confirmed_at": "2026-04-21T13:00:49"
   },
   "90001|ROSES|ATOMIC|60|25|": {
     "articulo_id": 31733,
@@ -28610,10 +28610,10 @@
     "raw": "46 - 46 RICC ROSES 1 QB ROSE TOFFE 60 125 125 0.320 40.000 Standing RICC ROSES",
     "invoice": "",
     "times_used": 0,
-    "times_confirmed": 2,
+    "times_confirmed": 3,
     "times_corrected": 0,
     "first_seen_at": "2026-04-21T12:39:07",
-    "last_confirmed_at": "2026-04-21T12:43:13"
+    "last_confirmed_at": "2026-04-21T13:00:45"
   },
   "90001|ROSES|BRIGHTON|60|25|": {
     "articulo_id": 31949,
@@ -28629,10 +28629,10 @@
     "raw": "23 - 23 SANI ROSES 1 HB ROSE BRIGHTON 60 350 350 0.320 112.000 Venta diaria SANI ROSES",
     "invoice": "",
     "times_used": 0,
-    "times_confirmed": 6,
+    "times_confirmed": 9,
     "times_corrected": 0,
     "first_seen_at": "2026-04-21T10:23:58",
-    "last_confirmed_at": "2026-04-21T12:43:18"
+    "last_confirmed_at": "2026-04-21T13:00:49"
   },
   "90001|ROSES|FREE SPIRIT|50|25|": {
     "articulo_id": 33893,
@@ -29274,10 +29274,10 @@
     "raw": "ROSE LIGHT HOUSE 60 100 100 0.320 32.000 Standing RICC ROSES",
     "invoice": "",
     "times_used": 0,
-    "times_confirmed": 2,
+    "times_confirmed": 3,
     "times_corrected": 0,
     "first_seen_at": "2026-04-21T10:24:01",
-    "last_confirmed_at": "2026-04-21T12:43:16"
+    "last_confirmed_at": "2026-04-21T13:00:48"
   },
   "90001|ROSES|PALOMA|60|25|": {
     "articulo_id": 35878,
@@ -30948,7 +30948,7 @@
     "raw": "5 H Rose Freedom X 10 - 50 47806- 50 GONZA x 10 0603.11.00.00 200 1000 ST 0.32 320.00",
     "invoice": "",
     "status": "ambiguo",
-    "times_corrected": 49
+    "times_corrected": 50
   },
   "90012|ROSES|TIFFANY|60|25|": {
     "articulo_id": 37198,
@@ -31517,10 +31517,10 @@
     "raw": "2 H Frutteto 8 25 40 200 0,220 44,000",
     "invoice": "",
     "times_used": 0,
-    "times_confirmed": 3,
+    "times_confirmed": 4,
     "times_corrected": 0,
     "first_seen_at": "2026-04-15T17:04:38",
-    "last_confirmed_at": "2026-04-21T12:43:23"
+    "last_confirmed_at": "2026-04-21T13:00:58"
   },
   "90015|ROSES|MOMENTUM|40|25|": {
     "articulo_id": 33222,
@@ -31536,10 +31536,10 @@
     "raw": "H Momentum 2 25 40 50 0,220 11,000",
     "invoice": "",
     "times_used": 0,
-    "times_confirmed": 3,
+    "times_confirmed": 4,
     "times_corrected": 0,
     "first_seen_at": "2026-04-15T17:04:39",
-    "last_confirmed_at": "2026-04-21T12:43:23"
+    "last_confirmed_at": "2026-04-21T13:00:58"
   },
   "90015|ROSES|BRIGHTON|50|25|": {
     "articulo_id": 32780,
@@ -31555,10 +31555,10 @@
     "raw": "2 H FVIDA Brighton 4 25 50 100 0,300 30,000",
     "invoice": "",
     "times_used": 0,
-    "times_confirmed": 3,
+    "times_confirmed": 4,
     "times_corrected": 0,
     "first_seen_at": "2026-04-15T17:04:39",
-    "last_confirmed_at": "2026-04-21T12:43:23"
+    "last_confirmed_at": "2026-04-21T13:00:58"
   },
   "90015|ROSES|FRUTTETO|50|25|": {
     "articulo_id": 33000,
@@ -31574,10 +31574,10 @@
     "raw": "H Frutteto 4 25 50 100 0,280 28,000",
     "invoice": "",
     "times_used": 0,
-    "times_confirmed": 3,
+    "times_confirmed": 4,
     "times_corrected": 0,
     "first_seen_at": "2026-04-15T17:04:39",
-    "last_confirmed_at": "2026-04-21T12:43:23"
+    "last_confirmed_at": "2026-04-21T13:00:58"
   },
   "90015|ROSES|IGUANA|40|25|": {
     "articulo_id": 33096,
@@ -31682,10 +31682,10 @@
     "raw": "7 H Mondial 14 25 60 350 0,350 122,500",
     "invoice": "",
     "times_used": 0,
-    "times_confirmed": 12,
+    "times_confirmed": 16,
     "times_corrected": 0,
     "first_seen_at": "2026-04-17T11:48:28",
-    "last_confirmed_at": "2026-04-21T12:43:23"
+    "last_confirmed_at": "2026-04-21T13:00:58"
   },
   "90015|ROSES|MONDIAL|70|25|": {
     "articulo_id": 35590,
@@ -31714,10 +31714,10 @@
     "raw": "9 H Explorer 14 25 60 350 0,350 122,500",
     "invoice": "",
     "times_used": 0,
-    "times_confirmed": 6,
+    "times_confirmed": 8,
     "times_corrected": 0,
     "first_seen_at": "2026-04-17T11:48:29",
-    "last_confirmed_at": "2026-04-21T12:43:24"
+    "last_confirmed_at": "2026-04-21T13:00:59"
   },
   "90015|ROSES|BLIZZARD|50|25|": {
     "articulo_id": 31803,
@@ -33167,7 +33167,7 @@
     "raw": "SALMA 60 25 4 100 0.400 40.000",
     "invoice": "",
     "status": "ambiguo",
-    "times_corrected": 48
+    "times_corrected": 49
   },
   "90018|ROSES|ABSOLUTE IN PINK|60|25|": {
     "articulo_id": 31605,
@@ -33647,10 +33647,10 @@
     "raw": "Rosas - Mondial 50cm 0,00 0,00 150 0,30 45,00",
     "invoice": "",
     "times_used": 0,
-    "times_confirmed": 24,
+    "times_confirmed": 30,
     "times_corrected": 0,
     "first_seen_at": "2026-04-15T17:08:39",
-    "last_confirmed_at": "2026-04-21T12:43:25"
+    "last_confirmed_at": "2026-04-21T13:01:00"
   },
   "90024|ROSES|EXPLORER|50|25|": {
     "articulo_id": 32950,
@@ -33666,10 +33666,10 @@
     "raw": "Rosas - Explorer 50cm 0,00 0,00 350 0,35 122,50",
     "invoice": "",
     "times_used": 0,
-    "times_confirmed": 16,
+    "times_confirmed": 20,
     "times_corrected": 0,
     "first_seen_at": "2026-04-15T17:08:40",
-    "last_confirmed_at": "2026-04-21T12:43:24"
+    "last_confirmed_at": "2026-04-21T13:01:00"
   },
   "90024|ROSES|VENDELA|50|25|": {
     "articulo_id": 32426,
@@ -33698,10 +33698,10 @@
     "raw": "Rosas - Frutteto 50cm 0,00 0,00 300 0,25 75,00",
     "invoice": "",
     "times_used": 0,
-    "times_confirmed": 4,
+    "times_confirmed": 5,
     "times_corrected": 0,
     "first_seen_at": "2026-04-15T17:08:41",
-    "last_confirmed_at": "2026-04-21T12:43:25"
+    "last_confirmed_at": "2026-04-21T13:01:00"
   },
   "90024|ROSES|EXPLORER|40|25|": {
     "articulo_id": 32251,
@@ -33834,10 +33834,10 @@
     "raw": "Rosas - Atomic 50cm 0,00 0,00 300 0,26 78,00",
     "invoice": "",
     "times_used": 0,
-    "times_confirmed": 4,
+    "times_confirmed": 5,
     "times_corrected": 0,
     "first_seen_at": "2026-04-16T16:12:52",
-    "last_confirmed_at": "2026-04-21T12:43:24"
+    "last_confirmed_at": "2026-04-21T13:00:59"
   },
   "90024|ROSES|SALMA|60|25|": {
     "articulo_id": 32370,
@@ -34879,7 +34879,7 @@
     "raw": "2 HB MONDIAL. 25 X .00   2        50.00 0.30 15.00",
     "invoice": "",
     "status": "ambiguo",
-    "times_corrected": 141
+    "times_corrected": 144
   },
   "90038|ROSES|MONDIAL.|60|25|": {
     "articulo_id": 32319,
@@ -34894,7 +34894,7 @@
     "raw": "2 HB MONDIAL. 25 X .00    7       175.00 0.35 61.25",
     "invoice": "",
     "status": "ambiguo",
-    "times_corrected": 94
+    "times_corrected": 96
   },
   "90038|ROSES|PALOMA|50|25|": {
     "articulo_id": 35877,
@@ -35342,7 +35342,7 @@
     "raw": "1 H Rose Freedom X 10 - 50 45337 50 GONZA X 10 0603.11.00.00 200 200 ST 0.30 60.00",
     "invoice": "",
     "status": "ambiguo",
-    "times_corrected": 92
+    "times_corrected": 94
   },
   "90044|ROSES|VENDELA|50|25|": {
     "articulo_id": 32426,
@@ -35913,7 +35913,7 @@
     "raw": "2 HB EXPLORER. 25 X .00   4        100 0.30 30.00",
     "invoice": "1775728457_TIERRA_VERDE2.pdf",
     "status": "ambiguo",
-    "times_corrected": 94
+    "times_corrected": 96
   },
   "90038|ROSES|EXPLORER°|50|25|": {
     "articulo_id": 32252,
@@ -35928,7 +35928,7 @@
     "raw": "2 HB EXPLORER° 25 X .00   8        200 0.30 60.00",
     "invoice": "1775728457_TIERRA_VERDE2.pdf",
     "status": "ambiguo",
-    "times_corrected": 94
+    "times_corrected": 96
   },
   "11748|ROSES|MAGIC TIMES|40|25|": {
     "articulo_id": 35187,
@@ -35982,10 +35982,10 @@
     "raw": "SILANTOI 40CM 20 20 FYP CO 0603110000 $ 0,28 $ 5,60",
     "invoice": "",
     "times_used": 0,
-    "times_confirmed": 10,
+    "times_confirmed": 11,
     "times_corrected": 0,
     "first_seen_at": "2026-04-15T17:10:23",
-    "last_confirmed_at": "2026-04-21T12:43:49"
+    "last_confirmed_at": "2026-04-21T13:01:25"
   },
   "90044|ROSES|SURTIDO MIXTO|50|10|": {
     "articulo_id": 36944,
@@ -36782,7 +36782,7 @@
     "raw": "HB 1 0,5 EXPLORER 0603.11.00.60 25 14 14 350 0,32 112,00",
     "invoice": "1776252553_ROSABELLA.pdf",
     "status": "ambiguo",
-    "times_corrected": 94
+    "times_corrected": 96
   },
   "90010|CARNATIONS|SELECT CREAM|0|20|": {
     "articulo_id": 12908,
@@ -36900,10 +36900,10 @@
     "raw": "H R14 GOTCHA 2 25 50 50 0,300 15,000",
     "invoice": "",
     "times_used": 0,
-    "times_confirmed": 12,
+    "times_confirmed": 15,
     "times_corrected": 0,
     "first_seen_at": "2026-04-15T16:12:22",
-    "last_confirmed_at": "2026-04-21T12:43:28"
+    "last_confirmed_at": "2026-04-21T13:01:03"
   },
   "442|ROSES|GOLDFINCH|50|25|": {
     "articulo_id": 33020,
@@ -36919,10 +36919,10 @@
     "raw": "H R19 IGLESIAS GOLDFINCH 1 25 50 25 0,300 7,500",
     "invoice": "",
     "times_used": 0,
-    "times_confirmed": 4,
+    "times_confirmed": 5,
     "times_corrected": 0,
     "first_seen_at": "2026-04-15T16:12:23",
-    "last_confirmed_at": "2026-04-21T12:43:27"
+    "last_confirmed_at": "2026-04-21T13:01:02"
   },
   "442|ROSES|DEEP PURPLE|50|25|": {
     "articulo_id": 32915,
@@ -36938,10 +36938,10 @@
     "raw": "1 H R14 DEEP PURPLE 2 25 50 50 0,300 15,000",
     "invoice": "",
     "times_used": 0,
-    "times_confirmed": 8,
+    "times_confirmed": 10,
     "times_corrected": 0,
     "first_seen_at": "2026-04-15T16:13:14",
-    "last_confirmed_at": "2026-04-21T12:43:27"
+    "last_confirmed_at": "2026-04-21T13:01:03"
   },
   "442|ROSES|TIFFANY|50|25|": {
     "articulo_id": 33557,
@@ -36957,10 +36957,10 @@
     "raw": "H R14 TIFFANY 2 25 50 50 0,300 15,000",
     "invoice": "",
     "times_used": 0,
-    "times_confirmed": 4,
+    "times_confirmed": 5,
     "times_corrected": 0,
     "first_seen_at": "2026-04-15T16:13:17",
-    "last_confirmed_at": "2026-04-21T12:43:28"
+    "last_confirmed_at": "2026-04-21T13:01:03"
   },
   "11748|ROSES|FREEDOM - KENTIA|60|25|": {
     "articulo_id": 33980,
@@ -37033,10 +37033,10 @@
     "raw": "44/57 HB 0,50 1,00 EXPLORER 70CM 150 150 CO 0603110000 $ 0,60 $ 90,00",
     "invoice": "",
     "times_used": 0,
-    "times_confirmed": 30,
+    "times_confirmed": 33,
     "times_corrected": 0,
     "first_seen_at": "2026-04-16T16:57:43",
-    "last_confirmed_at": "2026-04-21T12:43:49"
+    "last_confirmed_at": "2026-04-21T13:01:25"
   },
   "11748|ROSES|TOPAZ|50|25|": {
     "articulo_id": 37222,
@@ -37413,10 +37413,10 @@
     "raw": "H Brighton 1 25 40 25 0,250 6,250",
     "invoice": "",
     "times_used": 0,
-    "times_confirmed": 3,
+    "times_confirmed": 4,
     "times_corrected": 0,
     "first_seen_at": "2026-04-15T17:04:38",
-    "last_confirmed_at": "2026-04-21T12:43:23"
+    "last_confirmed_at": "2026-04-21T13:00:58"
   },
   "90015|ROSES|RISE & SHINE|40|25|": {
     "articulo_id": 33402,
@@ -37432,10 +37432,10 @@
     "raw": "H DANS Rise & Shine 1 25 40 25 0,220 5,500",
     "invoice": "",
     "times_used": 0,
-    "times_confirmed": 3,
+    "times_confirmed": 4,
     "times_corrected": 0,
     "first_seen_at": "2026-04-15T17:04:39",
-    "last_confirmed_at": "2026-04-21T12:43:23"
+    "last_confirmed_at": "2026-04-21T13:00:58"
   },
   "2331|ROSES|TUTTI FRUTTI|50|20|": {
     "articulo_id": 37491,
@@ -39047,10 +39047,10 @@
     "raw": "4 HB VINTAGE 25 X .00    12       300.00 0.35 105.00",
     "invoice": "",
     "times_used": 0,
-    "times_confirmed": 4,
+    "times_confirmed": 5,
     "times_corrected": 0,
     "first_seen_at": "2026-04-15T17:07:21",
-    "last_confirmed_at": "2026-04-21T12:43:07"
+    "last_confirmed_at": "2026-04-21T13:00:38"
   },
   "8870|ROSES|SILANTOI|50|25|": {
     "articulo_id": 33446,
@@ -39066,10 +39066,10 @@
     "raw": "21 HB SILANTOI 25 X .00   12        300 0.30 90.00",
     "invoice": "",
     "times_used": 0,
-    "times_confirmed": 4,
+    "times_confirmed": 5,
     "times_corrected": 0,
     "first_seen_at": "2026-04-16T16:12:49",
-    "last_confirmed_at": "2026-04-21T12:43:07"
+    "last_confirmed_at": "2026-04-21T13:00:38"
   },
   "90018|ROSES|VINTAGE|80|25|": {
     "articulo_id": 33613,
@@ -41479,10 +41479,10 @@
     "raw": "ROSE VENDELA WHITE 40CM CO-FREE0603110050 1 HB 12 25 300 0.240 $ 72.00",
     "invoice": "",
     "times_used": 0,
-    "times_confirmed": 3,
+    "times_confirmed": 4,
     "times_corrected": 0,
     "first_seen_at": "2026-04-20T11:38:44",
-    "last_confirmed_at": "2026-04-21T12:43:32"
+    "last_confirmed_at": "2026-04-21T13:01:07"
   },
   "90039|ROSES|PINK MONDIAL PINK|40|25|": {
     "articulo_id": 36101,
@@ -41498,10 +41498,10 @@
     "raw": "ROSE PINK MONDIAL PINK 40CM CO-FREE0603110050 1 HB 12 25 300 0.240 $ 72.00",
     "invoice": "",
     "times_used": 0,
-    "times_confirmed": 3,
+    "times_confirmed": 4,
     "times_corrected": 0,
     "first_seen_at": "2026-04-20T11:38:46",
-    "last_confirmed_at": "2026-04-21T12:43:32"
+    "last_confirmed_at": "2026-04-21T13:01:07"
   },
   "90039|ROSES|FREEDOM RED|40|25|": {
     "articulo_id": 33925,
@@ -42296,10 +42296,10 @@
     "raw": "CORAL REEF 50CM N 25ST CZ",
     "invoice": "",
     "times_used": 0,
-    "times_confirmed": 4,
+    "times_confirmed": 5,
     "times_corrected": 0,
     "first_seen_at": "2026-04-16T16:55:08",
-    "last_confirmed_at": "2026-04-21T12:43:39"
+    "last_confirmed_at": "2026-04-21T13:01:15"
   },
   "435|ROSES|TIFFANY|50|25|": {
     "articulo_id": 37181,
@@ -42524,10 +42524,10 @@
     "raw": "2744 2 hb 350 Mondial 50 cm Zurita Maria / Sae Flowers 700 25 28 $ 0,28 $ 1 96,00",
     "invoice": "",
     "times_used": 0,
-    "times_confirmed": 32,
+    "times_confirmed": 40,
     "times_corrected": 0,
     "first_seen_at": "2026-04-16T17:02:30",
-    "last_confirmed_at": "2026-04-21T12:43:36"
+    "last_confirmed_at": "2026-04-21T13:01:11"
   },
   "440|ROSES|NECTARINE|50|25|": {
     "articulo_id": 35660,
@@ -42543,10 +42543,10 @@
     "raw": "6088 1 hb 300 Nectarine 50 cm Blooming Acress 300 25 12 $ 0 ,35 $ 1 05,00",
     "invoice": "",
     "times_used": 0,
-    "times_confirmed": 4,
+    "times_confirmed": 5,
     "times_corrected": 0,
     "first_seen_at": "2026-04-16T17:02:31",
-    "last_confirmed_at": "2026-04-21T12:43:35"
+    "last_confirmed_at": "2026-04-21T13:01:11"
   },
   "440|ROSES|MONDIAL|40|25|": {
     "articulo_id": 35468,
@@ -42562,10 +42562,10 @@
     "raw": "1 hb 350 Mondial 40 cm Franco Luzpa/ Comexiger 350 25 14 $ 0,22 $ 7 7,00",
     "invoice": "",
     "times_used": 0,
-    "times_confirmed": 4,
+    "times_confirmed": 5,
     "times_corrected": 0,
     "first_seen_at": "2026-04-16T17:02:31",
-    "last_confirmed_at": "2026-04-21T12:43:36"
+    "last_confirmed_at": "2026-04-21T13:01:11"
   },
   "440|ROSES|MONDIAL|60|25|": {
     "articulo_id": 35562,
@@ -42695,10 +42695,10 @@
     "raw": "BELIEVE IN PINK 50CM N 25ST CZ",
     "invoice": "",
     "times_used": 0,
-    "times_confirmed": 4,
+    "times_confirmed": 5,
     "times_corrected": 0,
     "first_seen_at": "2026-04-20T16:44:10",
-    "last_confirmed_at": "2026-04-21T12:43:39"
+    "last_confirmed_at": "2026-04-21T13:01:15"
   },
   "435|ROSES|STARDUST|40|25|": {
     "articulo_id": 36764,
@@ -43208,10 +43208,10 @@
     "raw": "20 HB VINTAGE 25 X .00   2        50 0.30 15.00",
     "invoice": "",
     "times_used": 0,
-    "times_confirmed": 4,
+    "times_confirmed": 5,
     "times_corrected": 0,
     "first_seen_at": "2026-04-16T15:58:09",
-    "last_confirmed_at": "2026-04-21T12:43:07"
+    "last_confirmed_at": "2026-04-21T13:00:38"
   },
   "2219|ROSES|BLUSH|70|25|": {
     "articulo_id": 31839,
@@ -44275,10 +44275,10 @@
     "raw": "1 H Minicarnation Mini Mix Rainbow 594803 SEL CO-0603121000 500 500 ST 0.200 100.000",
     "invoice": "",
     "times_used": 0,
-    "times_confirmed": 2,
+    "times_confirmed": 3,
     "times_corrected": 0,
     "first_seen_at": "2026-04-16T16:55:35",
-    "last_confirmed_at": "2026-04-21T12:43:21"
+    "last_confirmed_at": "2026-04-21T13:00:53"
   },
   "90031|ROSES|FREEDOM|60|2|": {
     "articulo_id": 34001,
@@ -44883,10 +44883,10 @@
     "raw": "FREEDOM 50CM N 25ST CZ",
     "invoice": "",
     "times_used": 0,
-    "times_confirmed": 4,
+    "times_confirmed": 5,
     "times_corrected": 0,
     "first_seen_at": "2026-04-16T17:02:59",
-    "last_confirmed_at": "2026-04-21T12:43:39"
+    "last_confirmed_at": "2026-04-21T13:01:15"
   },
   "435|ROSES|ATOMIC|50|25|": {
     "articulo_id": 31713,
@@ -45092,10 +45092,10 @@
     "raw": "HIGH MAGIC 50CM N 25ST CZ",
     "invoice": "",
     "times_used": 0,
-    "times_confirmed": 4,
+    "times_confirmed": 5,
     "times_corrected": 0,
     "first_seen_at": "2026-04-17T09:22:50",
-    "last_confirmed_at": "2026-04-21T12:43:39"
+    "last_confirmed_at": "2026-04-21T13:01:15"
   },
   "435|ROSES|HIGH YELLOW M.FLAME|40|25|": {
     "articulo_id": 34461,
@@ -45187,10 +45187,10 @@
     "raw": "ABSOLUT IN PINK 50CM N 25ST CZ",
     "invoice": "",
     "times_used": 0,
-    "times_confirmed": 4,
+    "times_confirmed": 5,
     "times_corrected": 0,
     "first_seen_at": "2026-04-17T09:24:54",
-    "last_confirmed_at": "2026-04-21T12:43:39"
+    "last_confirmed_at": "2026-04-21T13:01:15"
   },
   "435|ROSES|BLESSING|50|25|": {
     "articulo_id": 31795,
@@ -46118,10 +46118,10 @@
     "raw": "H R19 IGLESIAS SWEET UNIQUE 1 25 50 25 0,300 7,500",
     "invoice": "",
     "times_used": 0,
-    "times_confirmed": 3,
+    "times_confirmed": 4,
     "times_corrected": 0,
     "first_seen_at": "2026-04-17T10:31:24",
-    "last_confirmed_at": "2026-04-21T12:43:27"
+    "last_confirmed_at": "2026-04-21T13:01:03"
   },
   "90015|ROSES|SUPER SUN|40|25|": {
     "articulo_id": 33488,
@@ -46137,10 +46137,10 @@
     "raw": "H DANS Super Sun 2 25 40 50 0,220 11,000",
     "invoice": "",
     "times_used": 0,
-    "times_confirmed": 3,
+    "times_confirmed": 4,
     "times_corrected": 0,
     "first_seen_at": "2026-04-17T10:32:05",
-    "last_confirmed_at": "2026-04-21T12:43:23"
+    "last_confirmed_at": "2026-04-21T13:00:58"
   },
   "313|CARNATIONS|BURGUNDY|0|20|SELECT": {
     "articulo_id": 12914,
@@ -46156,10 +46156,10 @@
     "raw": "5 H Carnation Burgundy X 20 - SEL 598610- SEL CO-0603129000 500 2500 ST 0.200 500.000",
     "invoice": "",
     "times_used": 0,
-    "times_confirmed": 2,
+    "times_confirmed": 4,
     "times_corrected": 0,
     "first_seen_at": "2026-04-17T10:33:13",
-    "last_confirmed_at": "2026-04-21T12:43:20"
+    "last_confirmed_at": "2026-04-21T13:00:56"
   },
   "90002|ROSES|TWILIGHT|50|25|": {
     "articulo_id": 37501,
@@ -47011,10 +47011,10 @@
     "raw": "ROSE VENDELA WHITE 50CM OF CO-FREE0603110050 1 HB 12 25 300 0.320 $ 96.000",
     "invoice": "",
     "times_used": 0,
-    "times_confirmed": 3,
+    "times_confirmed": 4,
     "times_corrected": 0,
     "first_seen_at": "2026-04-20T11:38:44",
-    "last_confirmed_at": "2026-04-21T12:43:32"
+    "last_confirmed_at": "2026-04-21T13:01:07"
   },
   "90039|ROSES|PINK FLOYD HOT PINK|40|25|": {
     "articulo_id": 32342,
@@ -47030,10 +47030,10 @@
     "raw": "ROSE PINK FLOYD HOT PINK 40CM 4 25 0.220",
     "invoice": "",
     "times_used": 0,
-    "times_confirmed": 3,
+    "times_confirmed": 4,
     "times_corrected": 0,
     "first_seen_at": "2026-04-17T11:59:25",
-    "last_confirmed_at": "2026-04-21T12:43:32"
+    "last_confirmed_at": "2026-04-21T13:01:07"
   },
   "90039|ROSES|MONDIAL WHITE|60|25|": {
     "articulo_id": 35542,
@@ -47049,10 +47049,10 @@
     "raw": "ROSE MONDIAL WHITE 60CM OF CO-FREE0603110050 1 HB 10 25 250 0.350 $ 87.500",
     "invoice": "",
     "times_used": 0,
-    "times_confirmed": 3,
+    "times_confirmed": 4,
     "times_corrected": 0,
     "first_seen_at": "2026-04-20T11:38:45",
-    "last_confirmed_at": "2026-04-21T12:43:32"
+    "last_confirmed_at": "2026-04-21T13:01:07"
   },
   "90039|ROSES|GOLDFINCH YELLOW|40|25|": {
     "articulo_id": 32268,
@@ -47068,10 +47068,10 @@
     "raw": "ROSE GOLDFINCH YELLOW 40CM 4 25 0.220",
     "invoice": "",
     "times_used": 0,
-    "times_confirmed": 3,
+    "times_confirmed": 4,
     "times_corrected": 0,
     "first_seen_at": "2026-04-17T11:59:26",
-    "last_confirmed_at": "2026-04-21T12:43:32"
+    "last_confirmed_at": "2026-04-21T13:01:07"
   },
   "90039|ROSES|DEEP PURPLE LAVANDER|40|25|": {
     "articulo_id": 32245,
@@ -47087,10 +47087,10 @@
     "raw": "ROSE DEEP PURPLE LAVANDER 40CM 4 25 0.220",
     "invoice": "",
     "times_used": 0,
-    "times_confirmed": 3,
+    "times_confirmed": 4,
     "times_corrected": 0,
     "first_seen_at": "2026-04-17T11:59:27",
-    "last_confirmed_at": "2026-04-21T12:43:32"
+    "last_confirmed_at": "2026-04-21T13:01:07"
   },
   "90039|ROSES|PRICELESS PINK|60|25|": {
     "articulo_id": 32356,
@@ -47106,10 +47106,10 @@
     "raw": "ROSE PRICELESS PINK 60CM 3 25 0.350",
     "invoice": "",
     "times_used": 0,
-    "times_confirmed": 3,
+    "times_confirmed": 4,
     "times_corrected": 0,
     "first_seen_at": "2026-04-17T11:59:27",
-    "last_confirmed_at": "2026-04-21T12:43:32"
+    "last_confirmed_at": "2026-04-21T13:01:07"
   },
   "90039|ROSES|PINK FLOYD HOT PINK|60|25|": {
     "articulo_id": 32341,
@@ -47125,10 +47125,10 @@
     "raw": "ROSE PINK FLOYD HOT PINK 60CM 3 25 0.350",
     "invoice": "",
     "times_used": 0,
-    "times_confirmed": 3,
+    "times_confirmed": 4,
     "times_corrected": 0,
     "first_seen_at": "2026-04-17T11:59:27",
-    "last_confirmed_at": "2026-04-21T12:43:32"
+    "last_confirmed_at": "2026-04-21T13:01:07"
   },
   "90008|ROSES|TIFFANY|50|25|": {
     "articulo_id": 32416,
@@ -47790,10 +47790,10 @@
     "raw": "1 H Iguazu 12 25 50 300 0,380 114,000",
     "invoice": "",
     "times_used": 0,
-    "times_confirmed": 3,
+    "times_confirmed": 4,
     "times_corrected": 0,
     "first_seen_at": "2026-04-20T12:01:56",
-    "last_confirmed_at": "2026-04-21T12:43:23"
+    "last_confirmed_at": "2026-04-21T13:00:58"
   },
   "443|ROSES|HOT MERENGUE|60|25|A": {
     "articulo_id": 33085,
@@ -47923,10 +47923,10 @@
     "raw": "ROSE CHERRY BRANDY PEACH 60CM 2 25 0.350",
     "invoice": "",
     "times_used": 0,
-    "times_confirmed": 3,
+    "times_confirmed": 4,
     "times_corrected": 0,
     "first_seen_at": "2026-04-20T12:11:27",
-    "last_confirmed_at": "2026-04-21T12:43:32"
+    "last_confirmed_at": "2026-04-21T13:01:07"
   },
   "90039|ROSES|HIGH AND MAGIC ORANGE|40|25|": {
     "articulo_id": 32279,
@@ -47942,10 +47942,10 @@
     "raw": "ROSE HIGH AND MAGIC ORANGE 40CM 4 25 0.220",
     "invoice": "",
     "times_used": 0,
-    "times_confirmed": 3,
+    "times_confirmed": 4,
     "times_corrected": 0,
     "first_seen_at": "2026-04-20T12:30:06",
-    "last_confirmed_at": "2026-04-21T12:43:32"
+    "last_confirmed_at": "2026-04-21T13:01:07"
   },
   "90039|ROSES|HIGH AND MAGIC ORANGE|60|25|": {
     "articulo_id": 32278,
@@ -47961,10 +47961,10 @@
     "raw": "ROSE HIGH AND MAGIC ORANGE 60CM 2 25 0.350",
     "invoice": "",
     "times_used": 0,
-    "times_confirmed": 3,
+    "times_confirmed": 4,
     "times_corrected": 0,
     "first_seen_at": "2026-04-20T12:30:08",
-    "last_confirmed_at": "2026-04-21T12:43:32"
+    "last_confirmed_at": "2026-04-21T13:01:07"
   },
   "90039|ROSES|GOLDFINCH YELLOW|60|25|": {
     "articulo_id": 32268,
@@ -47980,10 +47980,10 @@
     "raw": "ROSE GOLDFINCH YELLOW 60CM 2 25 0.350",
     "invoice": "",
     "times_used": 0,
-    "times_confirmed": 3,
+    "times_confirmed": 4,
     "times_corrected": 0,
     "first_seen_at": "2026-04-20T12:40:15",
-    "last_confirmed_at": "2026-04-21T12:43:32"
+    "last_confirmed_at": "2026-04-21T13:01:07"
   },
   "13001|ROSES|FREE SPIRIT|40|1|": {
     "articulo_id": 33890,
@@ -48713,10 +48713,10 @@
     "raw": "H R14 MISS PIGGY 2 25 50 50 0,300 15,000",
     "invoice": "",
     "times_used": 0,
-    "times_confirmed": 3,
+    "times_confirmed": 4,
     "times_corrected": 0,
     "first_seen_at": "2026-04-20T16:34:41",
-    "last_confirmed_at": "2026-04-21T12:43:28"
+    "last_confirmed_at": "2026-04-21T13:01:03"
   },
   "2166|CHRYSANTHEMUM|BI SPIDER ANASTASIA GR VERDE|70|10|": {
     "articulo_id": 14535,
@@ -48789,10 +48789,10 @@
     "raw": "97341 1 hb 450 Gyp XL Especial 80 cm /750gr Violeta Flowers 450 25 18 $ 8 ,50 $ 1 53,00",
     "invoice": "",
     "times_used": 0,
-    "times_confirmed": 4,
+    "times_confirmed": 5,
     "times_corrected": 0,
     "first_seen_at": "2026-04-20T16:44:33",
-    "last_confirmed_at": "2026-04-21T12:43:35"
+    "last_confirmed_at": "2026-04-21T13:01:11"
   },
   "90039|ROSES|ASSORTED ASSORTED|40|25|": {
     "articulo_id": 32226,
@@ -48808,10 +48808,10 @@
     "raw": "ROSE ASSORTED ASSORTED 40CM 4 25 0.220",
     "invoice": "",
     "times_used": 0,
-    "times_confirmed": 3,
+    "times_confirmed": 4,
     "times_corrected": 0,
     "first_seen_at": "2026-04-20T16:50:22",
-    "last_confirmed_at": "2026-04-21T12:43:32"
+    "last_confirmed_at": "2026-04-21T13:01:07"
   },
   "90001|ROSES|MIX COLORS|50|25|": {
     "articulo_id": 36901,
@@ -48827,10 +48827,10 @@
     "raw": "17 - 17 SHADDAI ROSES 1 HB ROSE MIX COLORS 50 300 300 0.280 84.000 Standing SHADDAI ROSES",
     "invoice": "",
     "times_used": 0,
-    "times_confirmed": 10,
+    "times_confirmed": 15,
     "times_corrected": 0,
     "first_seen_at": "2026-04-21T12:39:06",
-    "last_confirmed_at": "2026-04-21T12:43:17"
+    "last_confirmed_at": "2026-04-21T13:00:49"
   },
   "90001|ROSES|BLUE SKY|50|25|": {
     "articulo_id": 37069,
@@ -48846,10 +48846,10 @@
     "raw": "43 - 43 RICC ROSES 1 QB ROSE BLUE SKY 50 125 125 0.450 56.250 Standing RICC ROSES",
     "invoice": "",
     "times_used": 0,
-    "times_confirmed": 2,
+    "times_confirmed": 3,
     "times_corrected": 0,
     "first_seen_at": "2026-04-21T12:39:07",
-    "last_confirmed_at": "2026-04-21T12:43:13"
+    "last_confirmed_at": "2026-04-21T13:00:44"
   },
   "90001|ROSES|TINTED BLUE|50|25|": {
     "articulo_id": 37069,
@@ -48865,10 +48865,10 @@
     "raw": "20 - 20 VALENT 1 QB ROSE TINTED BLUE 50 100 100 0.450 45.000 Standing VALENT ROSES",
     "invoice": "",
     "times_used": 0,
-    "times_confirmed": 2,
+    "times_confirmed": 3,
     "times_corrected": 0,
     "first_seen_at": "2026-04-21T12:39:09",
-    "last_confirmed_at": "2026-04-21T12:43:17"
+    "last_confirmed_at": "2026-04-21T13:00:48"
   },
   "90001|ROSES|MIX COLORS|40|25|": {
     "articulo_id": 36900,
@@ -48884,10 +48884,10 @@
     "raw": "5 - 5 SANTA CLARA 1 HB ROSE MIX COLORS 40 300 300 0.220 66.000 Standing SANTA CLARA GAR",
     "invoice": "",
     "times_used": 0,
-    "times_confirmed": 2,
+    "times_confirmed": 3,
     "times_corrected": 0,
     "first_seen_at": "2026-04-21T12:39:10",
-    "last_confirmed_at": "2026-04-21T12:43:16"
+    "last_confirmed_at": "2026-04-21T13:00:48"
   },
   "313|CARNATIONS|EMINENCE|0|20|SELECT": {
     "articulo_id": 12883,
@@ -48903,10 +48903,10 @@
     "raw": "1 H Carnation Eminence X 20 - SEL 587014 SEL FYP CO-0603129000 500 500 ST 0.200 100.000",
     "invoice": "",
     "times_used": 0,
-    "times_confirmed": 2,
+    "times_confirmed": 3,
     "times_corrected": 0,
     "first_seen_at": "2026-04-21T12:39:14",
-    "last_confirmed_at": "2026-04-21T12:43:20"
+    "last_confirmed_at": "2026-04-21T13:00:51"
   },
   "313|CARNATIONS|ANTIGUA|0|20|SELECT": {
     "articulo_id": 12883,
@@ -48922,10 +48922,10 @@
     "raw": "1 H Carnation Antigua X 20 - SEL 587015 SEL FYP CO-0603129000 500 500 ST 0.200 100.000",
     "invoice": "",
     "times_used": 0,
-    "times_confirmed": 2,
+    "times_confirmed": 3,
     "times_corrected": 0,
     "first_seen_at": "2026-04-21T12:39:14",
-    "last_confirmed_at": "2026-04-21T12:43:20"
+    "last_confirmed_at": "2026-04-21T13:00:51"
   },
   "313|CARNATIONS|HYPNOSIS|0|20|SELECT": {
     "articulo_id": 12883,
@@ -48941,10 +48941,10 @@
     "raw": "8 H Carnation Hypnosis X 20 - SEL 591737- SEL BEA CO-0603129000 500 4000 ST 0.200 800.000",
     "invoice": "",
     "times_used": 0,
-    "times_confirmed": 2,
+    "times_confirmed": 3,
     "times_corrected": 0,
     "first_seen_at": "2026-04-21T12:39:16",
-    "last_confirmed_at": "2026-04-21T12:43:21"
+    "last_confirmed_at": "2026-04-21T13:00:53"
   },
   "313|CARNATIONS|MIX|0|20|FANCY": {
     "articulo_id": 12790,
@@ -48960,10 +48960,10 @@
     "raw": "42 H Carnation mix 591661- FAN CO-0603129000 500 21000 ST 0.190 3,990.000",
     "invoice": "",
     "times_used": 0,
-    "times_confirmed": 10,
+    "times_confirmed": 29,
     "times_corrected": 0,
     "first_seen_at": "2026-04-21T12:43:19",
-    "last_confirmed_at": "2026-04-21T12:43:21"
+    "last_confirmed_at": "2026-04-21T13:00:55"
   },
   "313|CARNATIONS|MIX|0|20|STANDARD": {
     "articulo_id": 12659,
@@ -48979,15 +48979,15 @@
     "raw": "1 H Carnation mix 591735 STA R17 CO-0603129000 500 500 ST 0.170 85.000",
     "invoice": "",
     "times_used": 0,
-    "times_confirmed": 1,
+    "times_confirmed": 2,
     "times_corrected": 0,
     "first_seen_at": "2026-04-21T12:43:21",
-    "last_confirmed_at": "2026-04-21T12:43:21"
+    "last_confirmed_at": "2026-04-21T13:00:53"
   },
   "90001|ROSES|KAHALA|40|25|": {
     "articulo_id": 34704,
     "articulo_name": "ROSA KAHALA 40CM 25U BRISSAS",
-    "origen": "auto-matching",
+    "origen": "auto",
     "status": "aprendido_en_prueba",
     "provider_id": 90001,
     "species": "ROSES",
@@ -49021,5 +49021,81 @@
     "times_corrected": 0,
     "first_seen_at": "2026-04-21T12:45:24",
     "last_confirmed_at": ""
+  },
+  "313|CARNATIONS|MUSTARD|0|20|FANCY": {
+    "articulo_id": 12715,
+    "articulo_name": "CLAVEL FANCY BICOLOR 70CM 20U COLIBRI",
+    "origen": "auto",
+    "status": "manual_confirmado",
+    "provider_id": 313,
+    "species": "CARNATIONS",
+    "variety": "MUSTARD",
+    "size": 0,
+    "stems_per_bunch": 20,
+    "grade": "FANCY",
+    "raw": "1 H Carnation Mustard X 20 - FAN 598620 FAN CO-0603129000 500 500 ST 0.190 95.000",
+    "invoice": "",
+    "times_used": 0,
+    "times_confirmed": 1,
+    "times_corrected": 0,
+    "first_seen_at": "2026-04-21T13:00:55",
+    "last_confirmed_at": "2026-04-21T13:00:55"
+  },
+  "313|CARNATIONS|ANTIGUA|0|20|FANCY": {
+    "articulo_id": 12715,
+    "articulo_name": "CLAVEL FANCY BICOLOR 70CM 20U COLIBRI",
+    "origen": "auto",
+    "status": "manual_confirmado",
+    "provider_id": 313,
+    "species": "CARNATIONS",
+    "variety": "ANTIGUA",
+    "size": 0,
+    "stems_per_bunch": 20,
+    "grade": "FANCY",
+    "raw": "1 H Carnation Antigua X 20 - FAN 598621 FAN CO-0603129000 500 500 ST 0.190 95.000",
+    "invoice": "",
+    "times_used": 0,
+    "times_confirmed": 1,
+    "times_corrected": 0,
+    "first_seen_at": "2026-04-21T13:00:56",
+    "last_confirmed_at": "2026-04-21T13:00:56"
+  },
+  "313|CARNATIONS|ROYAL DAMASCUS|0|20|FANCY": {
+    "articulo_id": 12715,
+    "articulo_name": "CLAVEL FANCY BICOLOR 70CM 20U COLIBRI",
+    "origen": "auto",
+    "status": "manual_confirmado",
+    "provider_id": 313,
+    "species": "CARNATIONS",
+    "variety": "ROYAL DAMASCUS",
+    "size": 0,
+    "stems_per_bunch": 20,
+    "grade": "FANCY",
+    "raw": "2 H Carnation Royal Damascus X 20 - FAN 598625- FAN CO-0603129000 500 1000 ST 0.190 190.000",
+    "invoice": "",
+    "times_used": 0,
+    "times_confirmed": 1,
+    "times_corrected": 0,
+    "first_seen_at": "2026-04-21T13:00:56",
+    "last_confirmed_at": "2026-04-21T13:00:56"
+  },
+  "313|CARNATIONS|SPRITZ SPORT|0|20|FANCY": {
+    "articulo_id": 12715,
+    "articulo_name": "CLAVEL FANCY BICOLOR 70CM 20U COLIBRI",
+    "origen": "auto",
+    "status": "manual_confirmado",
+    "provider_id": 313,
+    "species": "CARNATIONS",
+    "variety": "SPRITZ SPORT",
+    "size": 0,
+    "stems_per_bunch": 20,
+    "grade": "FANCY",
+    "raw": "1 H Carnation Spritz Sport X 20 - FAN 599129 FAN CO-0603129000 500 500 ST 0.190 95.000",
+    "invoice": "",
+    "times_used": 0,
+    "times_confirmed": 1,
+    "times_corrected": 0,
+    "first_seen_at": "2026-04-21T13:00:56",
+    "last_confirmed_at": "2026-04-21T13:00:56"
   }
 }

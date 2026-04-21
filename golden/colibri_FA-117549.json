@@ -1,6 +1,5 @@
 {
-  "_status": "draft",
-  "_note": "DRAFT — Review and correct ALL fields before marking as reviewed. Delete _review fields and change _status to \"reviewed\" when done.",
+  "_status": "reviewed",
   "_created": "2026-04-21T10:37:24",
   "_created_by": "golden_bootstrap.py",
   "pdf": "02 - 729-45937522 - COLIBRI COLIBRI.pdf",
@@ -15,31 +14,15 @@
     {
       "raw_description": "1 H Carnation Carn Mix Red/Yellow 598569 FAN GARCIA CO-0603129000 500 500 ST 0.190 95.000",
       "species": "CARNATIONS",
-      "variety": "RED",
+      "variety": "MIX",
       "origin": "COL",
       "size": 0,
       "stems_per_bunch": 20,
       "bunches": 0,
-      "stems": 250,
-      "line_total": 47.5,
-      "articulo_id": 12819,
-      "articulo_name": "CLAVEL FANCY ROJO 70CM 20U COLIBRI",
-      "match_status": "ok",
-      "match_confidence": 0.987,
-      "link_confidence": 0.987
-    },
-    {
-      "raw_description": "1 H Carnation Carn Mix Red/Yellow 598569 FAN GARCIA CO-0603129000 500 500 ST 0.190 95.000",
-      "species": "CARNATIONS",
-      "variety": "YELLOW",
-      "origin": "COL",
-      "size": 0,
-      "stems_per_bunch": 20,
-      "bunches": 0,
-      "stems": 250,
-      "line_total": 47.5,
-      "articulo_id": 12705,
-      "articulo_name": "CLAVEL FANCY AMARILLO 70CM 20U COLIBRI",
+      "stems": 500,
+      "line_total": 95.0,
+      "articulo_id": 12790,
+      "articulo_name": "CLAVEL FANCY MIXTO 70CM 20U COLIBRI",
       "match_status": "ok",
       "match_confidence": 0.987,
       "link_confidence": 0.987
@@ -63,69 +46,34 @@
     {
       "raw_description": "1 H Carnation Carn Mix Red/White 598572 FAN R45 CO-0603129000 500 500 ST 0.190 95.000",
       "species": "CARNATIONS",
-      "variety": "RED",
+      "variety": "MIX",
       "origin": "COL",
       "size": 0,
       "stems_per_bunch": 20,
       "bunches": 0,
-      "stems": 250,
-      "line_total": 47.5,
-      "articulo_id": 12819,
-      "articulo_name": "CLAVEL FANCY ROJO 70CM 20U COLIBRI",
+      "stems": 500,
+      "line_total": 95.0,
+      "articulo_id": 12790,
+      "articulo_name": "CLAVEL FANCY MIXTO 70CM 20U COLIBRI",
       "match_status": "ok",
       "match_confidence": 0.987,
       "link_confidence": 0.987
     },
     {
-      "raw_description": "1 H Carnation Carn Mix Red/White 598572 FAN R45 CO-0603129000 500 500 ST 0.190 95.000",
-      "species": "CARNATIONS",
-      "variety": "WHITE",
-      "origin": "COL",
-      "size": 0,
-      "stems_per_bunch": 20,
-      "bunches": 0,
-      "stems": 250,
-      "line_total": 47.5,
-      "articulo_id": 12532,
-      "articulo_name": "CLAVEL COL FANCY BLANCO 70CM 20U",
-      "match_status": "ok",
-      "match_confidence": 0.987,
-      "link_confidence": 0.987,
-      "_review": "CHECK — verify variety, size, origin, articulo_id"
-    },
-    {
       "raw_description": "1 H Carnation Carn Mix Pink/Bicolor 598573 FAN R45 CO-0603129000 500 500 ST 0.190 95.000",
       "species": "CARNATIONS",
-      "variety": "PINK",
+      "variety": "MIX",
       "origin": "COL",
       "size": 0,
       "stems_per_bunch": 20,
       "bunches": 0,
-      "stems": 250,
-      "line_total": 47.5,
-      "articulo_id": 12566,
-      "articulo_name": "CLAVEL COL FANCY ROSA 70CM 20U",
+      "stems": 500,
+      "line_total": 95.0,
+      "articulo_id": 12790,
+      "articulo_name": "CLAVEL FANCY MIXTO 70CM 20U COLIBRI",
       "match_status": "ok",
       "match_confidence": 0.987,
-      "link_confidence": 0.987,
-      "_review": "CHECK — verify variety, size, origin, articulo_id"
-    },
-    {
-      "raw_description": "1 H Carnation Carn Mix Pink/Bicolor 598573 FAN R45 CO-0603129000 500 500 ST 0.190 95.000",
-      "species": "CARNATIONS",
-      "variety": "BICOLOR",
-      "origin": "COL",
-      "size": 0,
-      "stems_per_bunch": 20,
-      "bunches": 0,
-      "stems": 250,
-      "line_total": 47.5,
-      "articulo_id": 12534,
-      "articulo_name": "CLAVEL COL FANCY BICOLOR 70CM 20U",
-      "match_status": "ok",
-      "match_confidence": 1.0,
-      "link_confidence": 1.0,
-      "_review": "CHECK — verify variety, size, origin, articulo_id"
+      "link_confidence": 0.987
     },
     {
       "raw_description": "2 H Carnation White X 20 - FAN 598574- FAN ALMACEN CO-0603129000 500 1000 ST 0.190 190.000",
@@ -137,12 +85,11 @@
       "bunches": 0,
       "stems": 1000,
       "line_total": 190.0,
-      "articulo_id": 12532,
-      "articulo_name": "CLAVEL COL FANCY BLANCO 70CM 20U",
+      "articulo_id": 12727,
+      "articulo_name": "CLAVEL FANCY BLANCO 70CM 20U COLIBRI",
       "match_status": "ok",
       "match_confidence": 0.987,
-      "link_confidence": 0.987,
-      "_review": "CHECK — verify variety, size, origin, articulo_id"
+      "link_confidence": 0.987
     },
     {
       "raw_description": "1 H Carnation Red X 20 - FAN 598576 FAN ALMACEN CO-0603129000 500 500 ST 0.190 95.000",
@@ -154,12 +101,11 @@
       "bunches": 0,
       "stems": 500,
       "line_total": 95.0,
-      "articulo_id": 12564,
-      "articulo_name": "CLAVEL COL FANCY ROJO 70CM 20U",
+      "articulo_id": 12819,
+      "articulo_name": "CLAVEL FANCY ROJO 70CM 20U COLIBRI",
       "match_status": "ok",
       "match_confidence": 0.987,
-      "link_confidence": 0.987,
-      "_review": "CHECK — verify variety, size, origin, articulo_id"
+      "link_confidence": 0.987
     },
     {
       "raw_description": "1 H Carnation mix 598577 FAN ALMACEN CO-0603129000 500 500 ST 0.190 95.000",
@@ -171,12 +117,11 @@
       "bunches": 0,
       "stems": 500,
       "line_total": 95.0,
-      "articulo_id": 12549,
-      "articulo_name": "CLAVEL COL FANCY MIXTO 70CM 20U",
+      "articulo_id": 12790,
+      "articulo_name": "CLAVEL FANCY MIXTO 70CM 20U COLIBRI",
       "match_status": "ok",
       "match_confidence": 1.0,
-      "link_confidence": 1.0,
-      "_review": "CHECK — verify variety, size, origin, articulo_id"
+      "link_confidence": 1.0
     },
     {
       "raw_description": "2 H Carnation mix 598583- FAN GARCIA CO-0603129000 500 1000 ST 0.190 190.000",
@@ -188,12 +133,11 @@
       "bunches": 0,
       "stems": 1000,
       "line_total": 190.0,
-      "articulo_id": 12549,
-      "articulo_name": "CLAVEL COL FANCY MIXTO 70CM 20U",
+      "articulo_id": 12790,
+      "articulo_name": "CLAVEL FANCY MIXTO 70CM 20U COLIBRI",
       "match_status": "ok",
       "match_confidence": 1.0,
-      "link_confidence": 1.0,
-      "_review": "CHECK — verify variety, size, origin, articulo_id"
+      "link_confidence": 1.0
     },
     {
       "raw_description": "1 H Carnation mix 598586 FAN MARIÑO CO-0603129000 480 480 ST 0.190 91.200",
@@ -205,12 +149,11 @@
       "bunches": 0,
       "stems": 480,
       "line_total": 91.2,
-      "articulo_id": 12549,
-      "articulo_name": "CLAVEL COL FANCY MIXTO 70CM 20U",
+      "articulo_id": 12790,
+      "articulo_name": "CLAVEL FANCY MIXTO 70CM 20U COLIBRI",
       "match_status": "ok",
       "match_confidence": 1.0,
-      "link_confidence": 1.0,
-      "_review": "CHECK — verify variety, size, origin, articulo_id"
+      "link_confidence": 1.0
     },
     {
       "raw_description": "1 H Carnation mix 598587 FAN LUCAS CO-0603129000 500 500 ST 0.190 95.000",
@@ -222,46 +165,27 @@
       "bunches": 0,
       "stems": 500,
       "line_total": 95.0,
-      "articulo_id": 12549,
-      "articulo_name": "CLAVEL COL FANCY MIXTO 70CM 20U",
+      "articulo_id": 12790,
+      "articulo_name": "CLAVEL FANCY MIXTO 70CM 20U COLIBRI",
       "match_status": "ok",
       "match_confidence": 1.0,
-      "link_confidence": 1.0,
-      "_review": "CHECK — verify variety, size, origin, articulo_id"
+      "link_confidence": 1.0
     },
     {
       "raw_description": "1 H Carnation Carn Mix Red/Pink 598588 FAN DECO CO-0603129000 500 500 ST 0.190 95.000",
       "species": "CARNATIONS",
-      "variety": "RED",
+      "variety": "MIX",
       "origin": "COL",
       "size": 0,
       "stems_per_bunch": 20,
       "bunches": 0,
-      "stems": 250,
-      "line_total": 47.5,
-      "articulo_id": 12564,
-      "articulo_name": "CLAVEL COL FANCY ROJO 70CM 20U",
+      "stems": 500,
+      "line_total": 95.0,
+      "articulo_id": 12790,
+      "articulo_name": "CLAVEL FANCY MIXTO 70CM 20U COLIBRI",
       "match_status": "ok",
       "match_confidence": 0.987,
-      "link_confidence": 0.987,
-      "_review": "CHECK — verify variety, size, origin, articulo_id"
-    },
-    {
-      "raw_description": "1 H Carnation Carn Mix Red/Pink 598588 FAN DECO CO-0603129000 500 500 ST 0.190 95.000",
-      "species": "CARNATIONS",
-      "variety": "PINK",
-      "origin": "COL",
-      "size": 0,
-      "stems_per_bunch": 20,
-      "bunches": 0,
-      "stems": 250,
-      "line_total": 47.5,
-      "articulo_id": 12566,
-      "articulo_name": "CLAVEL COL FANCY ROSA 70CM 20U",
-      "match_status": "ok",
-      "match_confidence": 0.987,
-      "link_confidence": 0.987,
-      "_review": "CHECK — verify variety, size, origin, articulo_id"
+      "link_confidence": 0.987
     },
     {
       "raw_description": "2 H Carnation mix 598591- FAN ROSAL CO-0603129000 500 1000 ST 0.190 190.000",
@@ -273,12 +197,11 @@
       "bunches": 0,
       "stems": 1000,
       "line_total": 190.0,
-      "articulo_id": 12549,
-      "articulo_name": "CLAVEL COL FANCY MIXTO 70CM 20U",
+      "articulo_id": 12790,
+      "articulo_name": "CLAVEL FANCY MIXTO 70CM 20U COLIBRI",
       "match_status": "ok",
       "match_confidence": 1.0,
-      "link_confidence": 1.0,
-      "_review": "CHECK — verify variety, size, origin, articulo_id"
+      "link_confidence": 1.0
     },
     {
       "raw_description": "2 H Carnation Golem X 20 - FAN 598618- FAN CO-0603129000 500 1000 ST 0.190 190.000",
@@ -290,12 +213,11 @@
       "bunches": 0,
       "stems": 1000,
       "line_total": 190.0,
-      "articulo_id": null,
-      "articulo_name": "",
-      "match_status": "sin_match",
+      "articulo_id": 12715,
+      "articulo_name": "CLAVEL FANCY BICOLOR 70CM 20U COLIBRI",
+      "match_status": "ok",
       "match_confidence": 0.688,
-      "link_confidence": 0.688,
-      "_review": "CHECK — verify variety, size, origin, articulo_id"
+      "link_confidence": 0.688
     },
     {
       "raw_description": "1 H Carnation Mustard X 20 - FAN 598620 FAN CO-0603129000 500 500 ST 0.190 95.000",
@@ -307,12 +229,11 @@
       "bunches": 0,
       "stems": 500,
       "line_total": 95.0,
-      "articulo_id": null,
-      "articulo_name": "",
-      "match_status": "sin_match",
+      "articulo_id": 12715,
+      "articulo_name": "CLAVEL FANCY BICOLOR 70CM 20U COLIBRI",
+      "match_status": "ok",
       "match_confidence": 0.477,
-      "link_confidence": 0.477,
-      "_review": "CHECK — verify variety, size, origin, articulo_id"
+      "link_confidence": 0.477
     },
     {
       "raw_description": "1 H Carnation Antigua X 20 - FAN 598621 FAN CO-0603129000 500 500 ST 0.190 95.000",
@@ -324,12 +245,11 @@
       "bunches": 0,
       "stems": 500,
       "line_total": 95.0,
-      "articulo_id": null,
-      "articulo_name": "",
-      "match_status": "sin_match",
+      "articulo_id": 12715,
+      "articulo_name": "CLAVEL FANCY BICOLOR 70CM 20U COLIBRI",
+      "match_status": "ok",
       "match_confidence": 0.482,
-      "link_confidence": 0.482,
-      "_review": "CHECK — verify variety, size, origin, articulo_id"
+      "link_confidence": 0.482
     },
     {
       "raw_description": "1 H Carnation Novia X 20 - FAN 598622 FAN CO-0603129000 500 500 ST 0.190 95.000",
@@ -345,8 +265,7 @@
       "articulo_name": "CLAVEL COL FANCY NOVIA 70CM 20U",
       "match_status": "ok",
       "match_confidence": 1.0,
-      "link_confidence": 1.0,
-      "_review": "CHECK — verify variety, size, origin, articulo_id"
+      "link_confidence": 1.0
     },
     {
       "raw_description": "2 H Carnation Cream X 20 - FAN 598623- FAN CO-0603129000 500 1000 ST 0.190 190.000",
@@ -362,8 +281,7 @@
       "articulo_name": "CLAVEL COL FANCY CREMA 70CM 20U",
       "match_status": "ok",
       "match_confidence": 0.987,
-      "link_confidence": 0.987,
-      "_review": "CHECK — verify variety, size, origin, articulo_id"
+      "link_confidence": 0.987
     },
     {
       "raw_description": "2 H Carnation Royal Damascus X 20 - FAN 598625- FAN CO-0603129000 500 1000 ST 0.190 190.000",
@@ -375,12 +293,11 @@
       "bunches": 0,
       "stems": 1000,
       "line_total": 190.0,
-      "articulo_id": null,
-      "articulo_name": "",
-      "match_status": "sin_match",
+      "articulo_id": 12715,
+      "articulo_name": "CLAVEL FANCY BICOLOR 70CM 20U COLIBRI",
+      "match_status": "ok",
       "match_confidence": 0.467,
-      "link_confidence": 0.467,
-      "_review": "CHECK — verify variety, size, origin, articulo_id"
+      "link_confidence": 0.467
     },
     {
       "raw_description": "1 H Carnation Spritz Sport X 20 - FAN 599129 FAN CO-0603129000 500 500 ST 0.190 95.000",
@@ -392,12 +309,11 @@
       "bunches": 0,
       "stems": 500,
       "line_total": 95.0,
-      "articulo_id": null,
-      "articulo_name": "",
-      "match_status": "sin_match",
+      "articulo_id": 12715,
+      "articulo_name": "CLAVEL FANCY BICOLOR 70CM 20U COLIBRI",
+      "match_status": "ok",
       "match_confidence": 0.47,
-      "link_confidence": 0.47,
-      "_review": "CHECK — verify variety, size, origin, articulo_id"
+      "link_confidence": 0.47
     },
     {
       "raw_description": "2 H Carnation Red X 20 - SEL 598578- SEL LILAS CO-0603129000 500 1000 ST 0.200 200.000",
@@ -409,12 +325,11 @@
       "bunches": 0,
       "stems": 1000,
       "line_total": 200.0,
-      "articulo_id": 12576,
-      "articulo_name": "CLAVEL COL SELECT ROJO 70CM 20U",
+      "articulo_id": 12958,
+      "articulo_name": "CLAVEL SELECT ROJO 70CM 20U COLIBRI",
       "match_status": "ok",
       "match_confidence": 0.987,
-      "link_confidence": 0.987,
-      "_review": "CHECK — verify variety, size, origin, articulo_id"
+      "link_confidence": 0.987
     },
     {
       "raw_description": "2 H Carnation White X 20 - SEL 598580- SEL LILAS CO-0603129000 500 1000 ST 0.200 200.000",
@@ -426,46 +341,27 @@
       "bunches": 0,
       "stems": 1000,
       "line_total": 200.0,
-      "articulo_id": 12604,
-      "articulo_name": "CLAVEL COL SELECT BLANCO 70CM 20U",
+      "articulo_id": 12891,
+      "articulo_name": "CLAVEL SELECT BLANCO 70CM 20U COLIBRI",
       "match_status": "ok",
       "match_confidence": 0.987,
-      "link_confidence": 0.987,
-      "_review": "CHECK — verify variety, size, origin, articulo_id"
+      "link_confidence": 0.987
     },
     {
       "raw_description": "1 H Carnation Carn Mix - Pink/Yellow 598582 SEL LILAS CO-0603129000 500 500 ST 0.200 100.000",
       "species": "CARNATIONS",
-      "variety": "PINK",
+      "variety": "MIX",
       "origin": "COL",
       "size": 0,
       "stems_per_bunch": 20,
       "bunches": 0,
-      "stems": 250,
-      "line_total": 50.0,
-      "articulo_id": 12579,
-      "articulo_name": "CLAVEL COL SELECT ROSA 70CM 20U",
+      "stems": 500,
+      "line_total": 100.0,
+      "articulo_id": 12935,
+      "articulo_name": "CLAVEL SELECT MIXTO 70CM 20U COLIBRI",
       "match_status": "ok",
       "match_confidence": 0.987,
-      "link_confidence": 0.987,
-      "_review": "CHECK — verify variety, size, origin, articulo_id"
-    },
-    {
-      "raw_description": "1 H Carnation Carn Mix - Pink/Yellow 598582 SEL LILAS CO-0603129000 500 500 ST 0.200 100.000",
-      "species": "CARNATIONS",
-      "variety": "YELLOW",
-      "origin": "COL",
-      "size": 0,
-      "stems_per_bunch": 20,
-      "bunches": 0,
-      "stems": 250,
-      "line_total": 50.0,
-      "articulo_id": 12577,
-      "articulo_name": "CLAVEL COL SELECT AMARILLO 70CM 20U",
-      "match_status": "ok",
-      "match_confidence": 0.987,
-      "link_confidence": 0.987,
-      "_review": "CHECK — verify variety, size, origin, articulo_id"
+      "link_confidence": 0.987
     },
     {
       "raw_description": "5 H Carnation Burgundy X 20 - SEL 598610- SEL CO-0603129000 500 2500 ST 0.200 500.000",
@@ -481,8 +377,7 @@
       "articulo_name": "CLAVEL SELECT GRANATE 70CM 20U COLIBRI",
       "match_status": "ok",
       "match_confidence": 1.0,
-      "link_confidence": 1.0,
-      "_review": "CHECK — verify variety, size, origin, articulo_id"
+      "link_confidence": 1.0
     },
     {
       "raw_description": "10 H Carnation Red X 25 - SEL 599064- SEL BEA CO-0603129000 500 5000 ST 0.100 500.000",
@@ -498,8 +393,7 @@
       "articulo_name": "CLAVEL COL SELECT ROJO 70CM 25U",
       "match_status": "ok",
       "match_confidence": 0.987,
-      "link_confidence": 0.987,
-      "_review": "CHECK — verify variety, size, origin, articulo_id"
+      "link_confidence": 0.987
     },
     {
       "raw_description": "10 H Carnation Novelty X 25 - SEL 599074- SEL BEA CO-0603129000 500 5000 ST 0.100 500.000",
@@ -515,8 +409,7 @@
       "articulo_name": "CLAVEL COL SELECT NOVEDADES 70CM 20U",
       "match_status": "ambiguous_match",
       "match_confidence": 0.888,
-      "link_confidence": 0.888,
-      "_review": "CHECK — verify variety, size, origin, articulo_id"
+      "link_confidence": 0.888
     },
     {
       "raw_description": "2 H Minicarnation mix 598566- SEL GARCIA CO-0603121000 500 1000 ST 0.200 200.000",
@@ -528,12 +421,11 @@
       "bunches": 0,
       "stems": 1000,
       "line_total": 200.0,
-      "articulo_id": 26776,
-      "articulo_name": "MINI CLAVEL COL SELECT MIXTO 70CM 10U",
+      "articulo_id": 26798,
+      "articulo_name": "MINI CLAVEL SELECT MIXTO 70CM 10U COLIBRI",
       "match_status": "ok",
       "match_confidence": 1.0,
-      "link_confidence": 1.0,
-      "_review": "CHECK — verify variety, size, origin, articulo_id"
+      "link_confidence": 1.0
     },
     {
       "raw_description": "1 H Minicarnation Novelty X 10 - SEL 598589 SEL FBE CO-0603121000 500 500 ST 0.200 100.000",
@@ -549,8 +441,7 @@
       "articulo_name": "MINI CLAVEL SELECT NOVEDADES 70CM 10U COLIBRI",
       "match_status": "ok",
       "match_confidence": 1.0,
-      "link_confidence": 1.0,
-      "_review": "CHECK — verify variety, size, origin, articulo_id"
+      "link_confidence": 1.0
     },
     {
       "raw_description": "1 Q Minicarnation mix 598590 SEL MARIÑO CO-0603121000 250 250 ST 0.200 50.000",
@@ -562,12 +453,11 @@
       "bunches": 0,
       "stems": 250,
       "line_total": 50.0,
-      "articulo_id": 26776,
-      "articulo_name": "MINI CLAVEL COL SELECT MIXTO 70CM 10U",
+      "articulo_id": 26798,
+      "articulo_name": "MINI CLAVEL SELECT MIXTO 70CM 10U COLIBRI",
       "match_status": "ok",
       "match_confidence": 1.0,
-      "link_confidence": 1.0,
-      "_review": "CHECK — verify variety, size, origin, articulo_id"
+      "link_confidence": 1.0
     }
   ]
 }
