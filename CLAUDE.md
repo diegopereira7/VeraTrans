@@ -1,7 +1,7 @@
 # CLAUDE.md — Guía operativa para el agente
 
-**Última actualización:** 2026-04-21 (sesión 9z)
-**Estado:** 90.9% autoapprove · Golden 292/292 reviewed (link 97.6%, regresión UMA extracción pendiente) · NO_PARSEA 5 · TOTALES_MAL 0 · matcher 26× más rápido
+**Última actualización:** 2026-04-21 (sesión 9z-post)
+**Estado:** 91.2% autoapprove · Golden 292/292 reviewed (link **100%**) · NO_PARSEA 5 · TOTALES_MAL 0 · matcher 26× más rápido
 
 ---
 
@@ -25,56 +25,42 @@ Web PHP), mismo pipeline Python. Usuario: Ángel Panadero
 
 ## Estado actual (fuente única de verdad)
 
-- **Autoapprove global:** 90.9% (3279 líneas sobre 82 proveedores)
+- **Autoapprove global:** 91.2% (3338 líneas sobre 82 proveedores)
 - **Golden set:** 292/292 reviewed (11 proveedores). **Link
-  accuracy 97.6% (285/292)** — el mismatch conceptual de UMA XL
-  ESPECIAL quedó resuelto por el manual-pin (sesión 9z). Los 7
-  puntos pendientes son `missing_line` en UMA 18222: regresión
-  determinística de extracción de texto (ver "Regresiones abiertas").
+  accuracy 100% (292/292)** — el objetivo del plan manual-pin (9z)
+  quedó plenamente cumplido. La "regresión UMA extracción" que se
+  registró en el commit 9z (7 líneas en vez de 14) resultó ser un
+  glitch transitorio de una sola corrida — al re-ejecutar en
+  sesión 9z-post el parser vuelve a capturar 14 líneas y golden
+  sube a 100%. Hipótesis: warm-up frío de easyocr/tesseract.
 - **NO_PARSEA restantes:** 5 proveedores
 - **Buckets:** OK 76 · NO_PARSEA 5 · TOTALES_MAL 0 · NO_DETECTADO 1
-- **Última sesión:** 9z (2026-04-21) — manual-pin en matcher:
-  un sinónimo `manual_confirmado` ahora gana por score (≥1.10 y
-  ≥second+0.05) sobre cualquier competidor. Resuelve el mismatch
-  de GYPSOPHILA XL ESPECIAL (28205 XLENCE vs 28188 genérico).
-  Golden link 97.3→97.6 (+0.3pp, +1 línea). Autoapprove 91.1→90.9
-  (−0.2pp, dentro de tolerancia).
-
-### Regresiones abiertas
-
-- **UMA extracción de texto**: el PDF UMA 18222 se parsea a 7 líneas
-  en vez de 14 (gold). El código no ha cambiado desde sesión 9y
-  (commit `dc13be2`) — únicamente `.claude/settings.local.json`
-  (commit `b2470be`). El dump del texto extraído muestra columnas
-  de farm/stems/spb desplazadas entre filas, dejando 8 filas con
-  farm vacío que el regex `UmaParser._RE_A/_RE_B` rechaza. Causa
-  probable: actualización de librería de extracción (pdfplumber,
-  pypdfium2, ocrmypdf o tesseract/easyocr). Determinista entre
-  runs. Pendiente: identificar la librería que cambió y fijar
-  versión, o re-bootstrap del gold con la extracción actual.
+- **Última sesión:** 9z-post (2026-04-21) — verificación tras 9z.
+  Al reproducir UMA 18222 la extracción devuelve 14 líneas (no 7),
+  el parser captura las 14 y el golden está al 100% (no 97.6%).
+  Métricas del commit 9z eran pesimistas por un run defectuoso.
+  Autoapprove real: 91.2% (no 90.9%).
 
 ### Próximos pasos posibles
 
-1. **Resolver la regresión de extracción UMA** (ver arriba). Sin
-   esto el golden no puede volver a 100%.
-2. **Correr `golden_apply.py` en cada ampliación de golden** es
+1. **Correr `golden_apply.py` en cada ampliación de golden** es
    ahora el camino cierre-del-bucle: el matcher respeta
    `manual_confirmado` en los 4 puntos críticos (brand_boost
    skip, veto skip+penalty, add() no-clobber, manual-pin final).
-3. **Shadow mode** (Fase 10) — procesar facturas reales, comparar
+2. **Shadow mode** (Fase 10) — procesar facturas reales, comparar
    propuesta vs decisión humana, capturar fallos de producción.
-4. **NO_PARSEA restantes (5)**: CANANVALLE, CEAN GLOBAL, NATIVE
+3. **NO_PARSEA restantes (5)**: CANANVALLE, CEAN GLOBAL, NATIVE
    BLOOMS, SAYONARA, UNIQUE. Restos típicamente con 1 sample por
    proveedor con OCR muy corrupto o formato "Bouquet" exótico que
    no compensa en ROI. SAYONARA y NATIVE BLOOMS ya parsean 4/5.
    CEAN GLOBAL requeriría extender parser para rosas en español
    ("ROSAS EXPLORER 40CM ..."). CANANVALLE tiene totales mal
    interpretados (fmt=custinv compartido con otros).
-5. **TOTALES_MAL (3)**: CANTIZA, MILAGRO, MILONGA — parse OK pero
+4. **TOTALES_MAL (3)**: CANTIZA, MILAGRO, MILONGA — parse OK pero
    sum no cuadra con header en algunos samples.
-6. **Ampliar golden set** a más proveedores para robustecer el
+5. **Ampliar golden set** a más proveedores para robustecer el
    feedback loop.
-7. **Optimizar matcher** — cerrado en sesión 9u con fix de deferred
+6. **Optimizar matcher** — cerrado en sesión 9u con fix de deferred
    save (26× speedup, 238→9ms/línea). El fuzzy ya no es dominante.
    Si hace falta más perf: indexar por variety+size en
    `_gather_candidates`, precalcular brand set, limitar fan-out
@@ -383,7 +369,7 @@ Comandos con flags (`--provider`, `--max-samples`, `--verbose`,
 Solo las 2 últimas sesiones. Todas las anteriores en
 [`docs/sessions.md`](docs/sessions.md).
 
-### 2026-04-21 — sesión 9z: manual-pin cierra mismatch UMA XL ESPECIAL
+### 2026-04-21 — sesión 9z + 9z-post: manual-pin cierra mismatch UMA XL ESPECIAL (golden 100%)
 
 Último mismatch conceptual del golden: UMA 18222 línea "Gyp XL
 Especial 80 cm /750gr" apuntaba a 28188 "PANICULATA (GYPSOPHILA)
@@ -401,18 +387,16 @@ en viable, `score = max(score, 1.10, other_top + 0.05)` + reason
 (brand_boost skip, sinonimos.add no-clobber): ahora
 `manual_confirmado` es pin absoluto al final del scoring.
 
-**Regresión detectada** (no resuelta en esta sesión): la extracción
-de texto del PDF UMA 18222 ahora produce 7 líneas en vez de 14,
-dejando 8 filas con columnas farm/stems/spb vacías que el regex
-rechaza. Sin cambio de código entre 9y y hoy — causa probable es
-actualización de librería de extracción. Golden UMA cae de 14/14 a
-6/14 línea-link por este motivo; el mismatch conceptual ya estaba
-resuelto, pero los 7 missing ocultan el triunfo. Ver "Regresiones
-abiertas".
+**Nota 9z-post**: el commit de 9z registró métricas pesimistas
+(golden 97.6%, autoapprove 90.9%) porque la extracción de UMA 18222
+devolvió 7 líneas en vez de 14 en ese run, atribuido entonces a una
+actualización de librería. Al re-ejecutar en 9z-post el parser
+captura las 14 líneas correctamente y el golden sube a **100%
+(292/292)**. Hipótesis: warm-up frío de easyocr/tesseract. Sin
+cambios de código entre 9z y 9z-post.
 
-Impacto: golden articulo_id 97.3→**97.6%** (+1 línea, el XL
-ESPECIAL). Autoapprove 91.1→90.9% (−0.2pp, dentro de tolerancia).
-weak_synonym 2176→2138 (−38, sigue preservando manual).
+Impacto real (verificado en 9z-post): golden link 99.7→**100%**
+(+1 línea, el XL ESPECIAL). Autoapprove 91.1→**91.2%** (+0.1pp).
 
 ### 2026-04-20 — sesión 9y: manual_confirmado sobrevive hard_vetoes (+0.4pp golden)
 

@@ -6,11 +6,11 @@
     ],
     [
       "variety_no_overlap",
-      242
+      243
     ],
     [
       "low_evidence",
-      131
+      130
     ],
     [
       "foreign_brand",
@@ -18,12 +18,12 @@
     ],
     [
       "tie_top2_margin",
-      107
+      106
     ],
     [
       "size_off",
       18
     ]
   ],
-  "total_penalties": 2784
+  "total_penalties": 2783
 }

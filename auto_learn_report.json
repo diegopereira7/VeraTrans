@@ -11548,13 +11548,13 @@
     "totals_ok": 3,
     "total_parsed": 198,
     "total_rescued": 0,
-    "ok_lines": 191,
-    "ambiguous_lines": 7,
+    "ok_lines": 192,
+    "ambiguous_lines": 6,
     "sin_match_lines": 0,
     "sin_parser_lines": 0,
-    "autoapprovable_lines": 191,
-    "autoapprove_rate": 0.965,
-    "needs_review_lines": 7,
+    "autoapprovable_lines": 192,
+    "autoapprove_rate": 0.97,
+    "needs_review_lines": 6,
     "validation_errors_lines": 0,
     "extraction_source_mix": {
       "ocr": 2,
@@ -11567,12 +11567,11 @@
     "penalties": {
       "weak_synonym": 26,
       "foreign_brand": 6,
-      "low_evidence": 6,
-      "tie_top2_margin": 1
+      "low_evidence": 6
     },
     "match_statuses": {
-      "ok": 191,
-      "ambiguous_match": 7
+      "ok": 192,
+      "ambiguous_match": 6
     },
     "samples_raw": [
       {
@@ -11645,8 +11644,8 @@
         "fmt": "verdesestacion",
         "parsed_lines": 92,
         "rescued_lines": 0,
-        "ok_lines": 91,
-        "ambiguous_lines": 1,
+        "ok_lines": 92,
+        "ambiguous_lines": 0,
         "sin_match_lines": 0,
         "sin_parser_lines": 0,
         "header_total": 4412.3,
@@ -11658,20 +11657,17 @@
         "extraction_confidence": 1.0,
         "extraction_degraded": false,
         "avg_link_confidence": 1.0,
-        "autoapprovable_lines": 91,
-        "needs_review_lines": 1,
+        "autoapprovable_lines": 92,
+        "needs_review_lines": 0,
         "validation_errors_lines": 0,
-        "penalties": {
-          "tie_top2_margin": 1
-        },
+        "penalties": {},
         "match_statuses": {
-          "ok": 91,
-          "ambiguous_match": 1
+          "ok": 92
         },
         "invoice": "1896",
         "error": "",
-        "lane_auto": 91,
-        "lane_quick": 1,
+        "lane_auto": 92,
+        "lane_quick": 0,
         "lane_full": 0
       },
       {
@@ -15213,7 +15209,7 @@
         "extraction_engine": "",
         "extraction_confidence": 1.0,
         "extraction_degraded": false,
-        "avg_link_confidence": 0.99,
+        "avg_link_confidence": 0.997,
         "autoapprovable_lines": 14,
         "needs_review_lines": 0,
         "validation_errors_lines": 0,
@@ -15589,13 +15585,13 @@
     "totals_ok": 4,
     "total_parsed": 95,
     "total_rescued": 0,
-    "ok_lines": 87,
-    "ambiguous_lines": 8,
+    "ok_lines": 88,
+    "ambiguous_lines": 7,
     "sin_match_lines": 0,
     "sin_parser_lines": 0,
-    "autoapprovable_lines": 86,
-    "autoapprove_rate": 0.905,
-    "needs_review_lines": 9,
+    "autoapprovable_lines": 87,
+    "autoapprove_rate": 0.916,
+    "needs_review_lines": 8,
     "validation_errors_lines": 0,
     "extraction_source_mix": {
       "mixed": 3,
@@ -15607,12 +15603,12 @@
     },
     "penalties": {
       "weak_synonym": 15,
-      "low_evidence": 8,
-      "variety_no_overlap": 1
+      "low_evidence": 7,
+      "variety_no_overlap": 2
     },
     "match_statuses": {
-      "ok": 87,
-      "ambiguous_match": 8
+      "ok": 88,
+      "ambiguous_match": 7
     },
     "samples_raw": [
       {
@@ -15621,8 +15617,8 @@
         "fmt": "uma",
         "parsed_lines": 14,
         "rescued_lines": 0,
-        "ok_lines": 13,
-        "ambiguous_lines": 1,
+        "ok_lines": 14,
+        "ambiguous_lines": 0,
         "sin_match_lines": 0,
         "sin_parser_lines": 0,
         "header_total": 3460.0,
@@ -15633,21 +15629,20 @@
         "extraction_engine": "ocrmypdf",
         "extraction_confidence": 0.92,
         "extraction_degraded": false,
-        "avg_link_confidence": 0.943,
-        "autoapprovable_lines": 13,
-        "needs_review_lines": 1,
+        "avg_link_confidence": 0.976,
+        "autoapprovable_lines": 14,
+        "needs_review_lines": 0,
         "validation_errors_lines": 0,
         "penalties": {
-          "low_evidence": 1
+          "variety_no_overlap": 1
         },
         "match_statuses": {
-          "ok": 13,
-          "ambiguous_match": 1
+          "ok": 14
         },
         "invoice": "18222",
         "error": "",
-        "lane_auto": 13,
-        "lane_quick": 1,
+        "lane_auto": 14,
+        "lane_quick": 0,
         "lane_full": 0
       },
       {

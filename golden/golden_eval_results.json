@@ -225,20 +225,13 @@
       "stems": 1.0,
       "line_total": 1.0
     },
-    "link_accuracy": 0.929,
-    "link_correct": 13,
+    "link_accuracy": 1.0,
+    "link_correct": 14,
     "link_total": 14,
-    "full_line_accuracy": 0.929,
-    "full_correct": 13,
+    "full_line_accuracy": 1.0,
+    "full_correct": 14,
     "full_total": 14,
-    "discrepancies": [
-      {
-        "type": "link_mismatch",
-        "gold_variety": "GYPSOPHILA XL ESPECIAL",
-        "gold_articulo": "28205 (PANICULATA XLENCE TEÑIDA MIXTO 750GR 1U)",
-        "sys_articulo": "28188 (PANICULATA (GYPSOPHILA) MIXTO M-14 N)"
-      }
-    ]
+    "discrepancies": []
   },
   {
     "provider_key": "valtho",

@@ -17074,7 +17074,7 @@
   "11748|ROSES|YELLOW SUMMER|40|10|": {
     "articulo_id": 33632,
     "articulo_name": "ROSA EC YELLOW SUMMER 50CM 25U",
-    "origen": "revisado",
+    "origen": "auto",
     "status": "manual_confirmado",
     "provider_id": 11748,
     "species": "ROSES",
@@ -17194,7 +17194,7 @@
     "raw": "15,00 QB HYD WHITE PREMIUM 350603199010 525 0,48 252,00",
     "invoice": "",
     "status": "ambiguo",
-    "times_corrected": 214
+    "times_corrected": 223
   },
   "440|GYPSOPHILA|GYPSOPHILA XL RAINBOW MIX|80|25|": {
     "articulo_id": 34976,
@@ -17209,7 +17209,7 @@
     "raw": "96632 1 hb 450 Gyp Xl Rainbow Mix 80 cm/750 gr Violeta Flowers 450 25 18 $ 8 ,50 $ 1 53,00",
     "invoice": "",
     "status": "ambiguo",
-    "times_corrected": 42
+    "times_corrected": 43
   },
   "6323|HYDRANGEAS|PREMIUM TENIDA YELLOW|60|1|": {
     "articulo_id": 22735,
@@ -26337,7 +26337,7 @@
     "raw": "ALSTRO (TSTEM ASSORTED SUPERSELEC 1 80 80 .240 19.20",
     "invoice": "93725",
     "status": "ambiguo",
-    "times_corrected": 714
+    "times_corrected": 748
   },
   "281|ALSTROEMERIA|MIXTO|0|10|SELECT": {
     "articulo_id": 12787,
@@ -26352,7 +26352,7 @@
     "raw": "ALSTRO (TSTEM ASSORTED SELECT 2 100 200 .180 36.00",
     "invoice": "94114",
     "status": "ambiguo",
-    "times_corrected": 294
+    "times_corrected": 308
   },
   "281|ALSTROEMERIA|WHITE|0|10|SELECT": {
     "articulo_id": 12723,
@@ -26367,7 +26367,7 @@
     "raw": "ALSTRO (TSTEM WHITE SELECT 1 100 100 .180 18.00",
     "invoice": "94114",
     "status": "ambiguo",
-    "times_corrected": 126
+    "times_corrected": 132
   },
   "281|ROSES|GARDEN MAYRA`S WHITE|40|25|": {
     "articulo_id": 34182,
@@ -26427,7 +26427,7 @@
     "raw": "1 H LIMONADA 12 25 50 300 0,320 96,000",
     "invoice": "0000254785",
     "status": "ambiguo",
-    "times_corrected": 98
+    "times_corrected": 104
   },
   "13001|ROSES|TESSA-D LIMONADA|60|4|": {
     "articulo_id": 35087,
@@ -30625,7 +30625,7 @@
     "raw": "5 H Rose Freedom X 10 - 50 47806- 50 GONZA x 10 0603.11.00.00 200 1000 ST 0.32 320.00",
     "invoice": "",
     "status": "ambiguo",
-    "times_corrected": 44
+    "times_corrected": 46
   },
   "90012|ROSES|TIFFANY|60|25|": {
     "articulo_id": 37198,
@@ -32844,7 +32844,7 @@
     "raw": "SALMA 60 25 4 100 0.400 40.000",
     "invoice": "",
     "status": "ambiguo",
-    "times_corrected": 43
+    "times_corrected": 45
   },
   "90018|ROSES|ABSOLUTE IN PINK|60|25|": {
     "articulo_id": 31605,
@@ -34556,7 +34556,7 @@
     "raw": "2 HB MONDIAL. 25 X .00   2        50.00 0.30 15.00",
     "invoice": "",
     "status": "ambiguo",
-    "times_corrected": 126
+    "times_corrected": 132
   },
   "90038|ROSES|MONDIAL.|60|25|": {
     "articulo_id": 32319,
@@ -34571,7 +34571,7 @@
     "raw": "2 HB MONDIAL. 25 X .00    7       175.00 0.35 61.25",
     "invoice": "",
     "status": "ambiguo",
-    "times_corrected": 84
+    "times_corrected": 88
   },
   "90038|ROSES|PALOMA|50|25|": {
     "articulo_id": 35877,
@@ -35019,7 +35019,7 @@
     "raw": "1 H Rose Freedom X 10 - 50 45337 50 GONZA X 10 0603.11.00.00 200 200 ST 0.30 60.00",
     "invoice": "",
     "status": "ambiguo",
-    "times_corrected": 82
+    "times_corrected": 86
   },
   "90044|ROSES|VENDELA|50|25|": {
     "articulo_id": 32426,
@@ -35590,7 +35590,7 @@
     "raw": "2 HB EXPLORER. 25 X .00   4        100 0.30 30.00",
     "invoice": "1775728457_TIERRA_VERDE2.pdf",
     "status": "ambiguo",
-    "times_corrected": 84
+    "times_corrected": 88
   },
   "90038|ROSES|EXPLORER°|50|25|": {
     "articulo_id": 32252,
@@ -35605,7 +35605,7 @@
     "raw": "2 HB EXPLORER° 25 X .00   8        200 0.30 60.00",
     "invoice": "1775728457_TIERRA_VERDE2.pdf",
     "status": "ambiguo",
-    "times_corrected": 84
+    "times_corrected": 88
   },
   "11748|ROSES|MAGIC TIMES|40|25|": {
     "articulo_id": 35187,
@@ -36459,7 +36459,7 @@
     "raw": "HB 1 0,5 EXPLORER 0603.11.00.60 25 14 14 350 0,32 112,00",
     "invoice": "1776252553_ROSABELLA.pdf",
     "status": "ambiguo",
-    "times_corrected": 84
+    "times_corrected": 88
   },
   "90010|CARNATIONS|SELECT CREAM|0|20|": {
     "articulo_id": 12908,
@@ -48455,7 +48455,7 @@
   "440|GYPSOPHILA|GYPSOPHILA XL ESPECIAL|80|25|": {
     "articulo_id": 28205,
     "articulo_name": "PANICULATA XLENCE TEÑIDA MIXTO 750GR 1U",
-    "origen": "revisado",
+    "origen": "auto",
     "status": "manual_confirmado",
     "provider_id": 440,
     "species": "GYPSOPHILA",
