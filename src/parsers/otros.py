@@ -1228,9 +1228,11 @@ class VerdesEstacionParser:
     contador de stems (no duplicado como en A).
     """
     # Variante A: "VARIETY 50CM 240 240 LABEL CO <hts> $ price $ total"
+    # Variedad admite apostrofes (MAYRA'S BRIDAL) — se normalizan los
+    # curly quotes y el byte 0x92 a ' antes de parsear.
     _RE_A = re.compile(
-        r'([A-Z][A-Z\s]+?)\s+(\d{2})CM\s+(\d+)\s+(\d+)\s+([\w\s]*?)\s*CO\s+\d+\s+'
-        r'\$\s*([\d,]+)\s+\$\s*([\d,]+)')
+        r"([A-Z][A-Z\s']+?)\s+(\d{2})CM\s+(\d+)\s+(\d+)\s+([\w\s]*?)\s*CO\s+\d+\s+"
+        r"\$\s*([\d,]+)\s+\$\s*([\d,]+)")
 
     # Variante B: "Variety <size> <stems> [LABEL] VERALEZA SLU FRESH CUT ROSES*<spb> CO <hts> $ price $ total"
     # Label puede ser "R11-Tita", "TIPO B", "MARL", etc. — multi-word posible.
@@ -1244,6 +1246,12 @@ class VerdesEstacionParser:
         r'\$\s*([\d,]+)\s+\$\s*([\d,]+)')
 
     def parse(self, text: str, pdata: dict):
+        # Normalizar apostrofes curvos y acento agudo a apostrofe
+        # ASCII para que _RE_A (que incluye ' en la char class) no
+        # rompa en variedades tipo "MAYRA'S BRIDAL" cuando el PDF
+        # usa U+00B4, U+2019/U+2018 (curly), U+0092 o U+FFFD.
+        for _bad in ('’', '‘', '´', '', '�'):
+            text = text.replace(_bad, "'")
         h = InvoiceHeader()
         h.provider_key = pdata.get('key', '')
         h.provider_id  = pdata.get('id', 0)
