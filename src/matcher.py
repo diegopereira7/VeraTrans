@@ -881,6 +881,29 @@ class Matcher:
                 if 'brand_boost' not in c.reasons:
                     c.reasons.append('brand_boost')
 
+        # Manual pin: si existe sinónimo manual_confirmado y el candidato
+        # ligado está en viable, forzarlo a ganar. El operador ya decidió;
+        # el matcher respeta esa decisión como verdad absoluta. Diferencia
+        # con brand_boost: no requiere variety_match ni size_exact; basta
+        # con que el sinónimo apunte a un articulo válido y ese candidato
+        # siga en viable (el fix de sesión 9y garantiza que los vetos
+        # duros no descarten a un manual_confirmado, solo lo penalizan).
+        if manual_syn_locked:
+            target_id = int(syn_entry['articulo_id'])
+            pinned = next(
+                (c for c in viable
+                 if int(c.articulo.get('id') or 0) == target_id),
+                None,
+            )
+            if pinned is not None:
+                other_top = max(
+                    (c.score for c in viable if c is not pinned),
+                    default=0.0,
+                )
+                pinned.score = max(pinned.score, 1.10, other_top + 0.05)
+                if 'manual_pin' not in pinned.reasons:
+                    pinned.reasons.append('manual_pin')
+
         viable.sort(key=lambda c: c.score, reverse=True)
         line.candidate_count = len(viable)
         line.top_candidates = [

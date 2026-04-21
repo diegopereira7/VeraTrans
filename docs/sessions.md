@@ -10,6 +10,40 @@ Para lecciones transversales reutilizables, ver [`lessons.md`](lessons.md).
 
 ---
 
+## 2026-04-20 — sesión 9x: respeto manual_confirmado + variety_full + "IN COLOR" strip
+
+Tras 9v (bootstrap drafts) + 9w (brand_boost spb_match), quedaban
+22 mismatches. Arreglados 20/22 con tres fixes en cadena:
+
+1. **`variety_full`** ([src/matcher.py:321-331](../src/matcher.py))
+   — nuevo reason cuando todos los tokens ≥3 chars de la variedad
+   de factura aparecen en el nombre del artículo (+0.03 bonus) y
+   como desempate en `brand_boost` (`sort(spb_match, variety_full,
+   score)`). Desambigua PINK MONDIAL PONDEROSA vs MONDIAL
+   PONDEROSA de la misma marca.
+2. **`_COLOR_SUFFIX_RE` acepta "IN "/"EN " opcional antes del
+   color** ([src/matcher.py:454-455](../src/matcher.py)) — `BELIEVE
+   IN PINK` ahora strippa `IN PINK` → `BELIEVE` (si existe en
+   catálogo). Evita match al hermano `ABSOLUT IN PINK`.
+3. **Respetar `manual_confirmado`** (el fix más impactante):
+   - [src/matcher.py:817-831](../src/matcher.py) — match_line salta
+     brand_boost si syn_entry es `manual_confirmado`.
+   - [src/sinonimos.py:293-304](../src/sinonimos.py) — `add()`
+     retorna sin modificar si prev es `manual_confirmado` y el
+     auto-learn apunta a un artículo distinto. Antes
+     `evaluate_golden` y `match_all` degradaban silenciosamente
+     las correcciones del golden a `aprendido_en_prueba` con cada
+     ejecución.
+
+Tras los 3 fixes + `golden_apply` sobre los 3 drafts (total 284
+confirmados + 8 corregidos), golden link **92.5→99.3% (+6.8pp)**
+y autoapprove **90.3→91.2% (+0.9pp)**. weak_synonym penalties
+bajan de 2742 a 2176 (−566) por la preservación del manual.
+
+Quedan solo 2 mismatches conceptuales: GYPSOPHILA XL ESPECIAL uma
+(gramaje 750GR) y YELLOW SUMMER verdesestacion (gold apunta a
+artículo EC con talla distinta — probable error del gold).
+
 ## 2026-04-20 — sesión 9w: brand_boost preferir spb_match (+3.1pp golden)
 
 Con los 3 drafts de 9v promovidos a reviewed, `evaluate_golden.py`

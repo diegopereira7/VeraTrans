@@ -1,7 +1,7 @@
 # CLAUDE.md — Guía operativa para el agente
 
-**Última actualización:** 2026-04-20 (sesión 9y)
-**Estado:** 91.1% autoapprove · Golden 292/292 reviewed (link 99.7%) · NO_PARSEA 5 · TOTALES_MAL 0 · matcher 26× más rápido
+**Última actualización:** 2026-04-21 (sesión 9z)
+**Estado:** 90.9% autoapprove · Golden 292/292 reviewed (link 97.6%, regresión UMA extracción pendiente) · NO_PARSEA 5 · TOTALES_MAL 0 · matcher 26× más rápido
 
 ---
 
@@ -25,43 +25,56 @@ Web PHP), mismo pipeline Python. Usuario: Ángel Panadero
 
 ## Estado actual (fuente única de verdad)
 
-- **Autoapprove global:** 91.1% (3338 líneas sobre 82 proveedores)
+- **Autoapprove global:** 90.9% (3279 líneas sobre 82 proveedores)
 - **Golden set:** 292/292 reviewed (11 proveedores). **Link
-  accuracy 99.7% (291/292)** — solo 1 mismatch conceptual:
-  uma GYPSOPHILA XL ESPECIAL (gramaje 750GR vs genérico).
+  accuracy 97.6% (285/292)** — el mismatch conceptual de UMA XL
+  ESPECIAL quedó resuelto por el manual-pin (sesión 9z). Los 7
+  puntos pendientes son `missing_line` en UMA 18222: regresión
+  determinística de extracción de texto (ver "Regresiones abiertas").
 - **NO_PARSEA restantes:** 5 proveedores
 - **Buckets:** OK 76 · NO_PARSEA 5 · TOTALES_MAL 0 · NO_DETECTADO 1
-- **Última sesión:** 9y (2026-04-20) — respetar `manual_confirmado`
-  en los hard_vetoes del matcher. El operador mapeó YELLOW SUMMER
-  COL 40/10 al único artículo "YELLOW SUMMER EC 50/25" del
-  catálogo; el veto de origin descartaba el candidato y degradaba
-  el sinónimo a ambiguo. Ahora el manual sobrevive el veto como
-  penalty. Golden 99.3→99.7. Autoapprove 91.2→91.1 (−0.1pp, sin
-  importancia).
+- **Última sesión:** 9z (2026-04-21) — manual-pin en matcher:
+  un sinónimo `manual_confirmado` ahora gana por score (≥1.10 y
+  ≥second+0.05) sobre cualquier competidor. Resuelve el mismatch
+  de GYPSOPHILA XL ESPECIAL (28205 XLENCE vs 28188 genérico).
+  Golden link 97.3→97.6 (+0.3pp, +1 línea). Autoapprove 91.1→90.9
+  (−0.2pp, dentro de tolerancia).
+
+### Regresiones abiertas
+
+- **UMA extracción de texto**: el PDF UMA 18222 se parsea a 7 líneas
+  en vez de 14 (gold). El código no ha cambiado desde sesión 9y
+  (commit `dc13be2`) — únicamente `.claude/settings.local.json`
+  (commit `b2470be`). El dump del texto extraído muestra columnas
+  de farm/stems/spb desplazadas entre filas, dejando 8 filas con
+  farm vacío que el regex `UmaParser._RE_A/_RE_B` rechaza. Causa
+  probable: actualización de librería de extracción (pdfplumber,
+  pypdfium2, ocrmypdf o tesseract/easyocr). Determinista entre
+  runs. Pendiente: identificar la librería que cambió y fijar
+  versión, o re-bootstrap del gold con la extracción actual.
 
 ### Próximos pasos posibles
 
-1. **Resolver el mismatch conceptual restante**:
-   - **GYPSOPHILA XL ESPECIAL → XLENCE 750GR** (1 uma):
-     diferenciación por gramaje (28205 750GR vs 28188 genérico).
+1. **Resolver la regresión de extracción UMA** (ver arriba). Sin
+   esto el golden no puede volver a 100%.
 2. **Correr `golden_apply.py` en cada ampliación de golden** es
    ahora el camino cierre-del-bucle: el matcher respeta
-   `manual_confirmado` en los 3 puntos críticos (brand_boost
-   skip, veto skip+penalty, add() no-clobber).
-2. **Shadow mode** (Fase 10) — procesar facturas reales, comparar
+   `manual_confirmado` en los 4 puntos críticos (brand_boost
+   skip, veto skip+penalty, add() no-clobber, manual-pin final).
+3. **Shadow mode** (Fase 10) — procesar facturas reales, comparar
    propuesta vs decisión humana, capturar fallos de producción.
-3. **NO_PARSEA restantes (5)**: CANANVALLE, CEAN GLOBAL, NATIVE
+4. **NO_PARSEA restantes (5)**: CANANVALLE, CEAN GLOBAL, NATIVE
    BLOOMS, SAYONARA, UNIQUE. Restos típicamente con 1 sample por
    proveedor con OCR muy corrupto o formato "Bouquet" exótico que
    no compensa en ROI. SAYONARA y NATIVE BLOOMS ya parsean 4/5.
    CEAN GLOBAL requeriría extender parser para rosas en español
    ("ROSAS EXPLORER 40CM ..."). CANANVALLE tiene totales mal
    interpretados (fmt=custinv compartido con otros).
-4. **TOTALES_MAL (3)**: CANTIZA, MILAGRO, MILONGA — parse OK pero
+5. **TOTALES_MAL (3)**: CANTIZA, MILAGRO, MILONGA — parse OK pero
    sum no cuadra con header en algunos samples.
-5. **Ampliar golden set** a más proveedores para robustecer el
+6. **Ampliar golden set** a más proveedores para robustecer el
    feedback loop.
-6. **Optimizar matcher** — cerrado en sesión 9u con fix de deferred
+7. **Optimizar matcher** — cerrado en sesión 9u con fix de deferred
    save (26× speedup, 238→9ms/línea). El fuzzy ya no es dominante.
    Si hace falta más perf: indexar por variety+size en
    `_gather_candidates`, precalcular brand set, limitar fan-out
@@ -370,6 +383,37 @@ Comandos con flags (`--provider`, `--max-samples`, `--verbose`,
 Solo las 2 últimas sesiones. Todas las anteriores en
 [`docs/sessions.md`](docs/sessions.md).
 
+### 2026-04-21 — sesión 9z: manual-pin cierra mismatch UMA XL ESPECIAL
+
+Último mismatch conceptual del golden: UMA 18222 línea "Gyp XL
+Especial 80 cm /750gr" apuntaba a 28188 "PANICULATA (GYPSOPHILA)
+MIXTO M-14 N" (genérico) cuando el gold era 28205 "PANICULATA
+XLENCE TEÑIDA MIXTO 750GR 1U". Existía sinónimo `manual_confirmado`
+con key exacta `440|GYPSOPHILA|GYPSOPHILA XL ESPECIAL|80|25|` → 28205
+(`sinonimos_universal.json`, times_confirmed=2) pero el matcher lo
+ignoraba: el syn_trust solo aporta +0.245 al score, no fuerza la
+victoria.
+
+Fix en [src/matcher.py:884-906](src/matcher.py) (bloque nuevo antes
+del sort final): si `manual_syn_locked` y el candidato ligado está
+en viable, `score = max(score, 1.10, other_top + 0.05)` + reason
+`manual_pin`. Complementa los fixes de 9y (hard_vetoes) y 9x
+(brand_boost skip, sinonimos.add no-clobber): ahora
+`manual_confirmado` es pin absoluto al final del scoring.
+
+**Regresión detectada** (no resuelta en esta sesión): la extracción
+de texto del PDF UMA 18222 ahora produce 7 líneas en vez de 14,
+dejando 8 filas con columnas farm/stems/spb vacías que el regex
+rechaza. Sin cambio de código entre 9y y hoy — causa probable es
+actualización de librería de extracción. Golden UMA cae de 14/14 a
+6/14 línea-link por este motivo; el mismatch conceptual ya estaba
+resuelto, pero los 7 missing ocultan el triunfo. Ver "Regresiones
+abiertas".
+
+Impacto: golden articulo_id 97.3→**97.6%** (+1 línea, el XL
+ESPECIAL). Autoapprove 91.1→90.9% (−0.2pp, dentro de tolerancia).
+weak_synonym 2176→2138 (−38, sigue preservando manual).
+
 ### 2026-04-20 — sesión 9y: manual_confirmado sobrevive hard_vetoes (+0.4pp golden)
 
 Con 9x el matcher ya respetaba `manual_confirmado` en `brand_boost`
@@ -389,40 +433,6 @@ es el conceptual de GYPSOPHILA XLENCE gramaje (uma).
 
 Impacto: golden 99.3→**99.7%**. Autoapprove 91.2→91.1% (sin
 importancia, dentro del ruido).
-
-### 2026-04-20 — sesión 9x: respeto manual_confirmado + variety_full + "IN COLOR" strip
-
-Tras 9v (bootstrap drafts) + 9w (brand_boost spb_match), quedaban
-22 mismatches. Arreglados 20/22 con tres fixes en cadena:
-
-1. **`variety_full`** ([src/matcher.py:321-331](src/matcher.py))
-   — nuevo reason cuando todos los tokens ≥3 chars de la variedad
-   de factura aparecen en el nombre del artículo (+0.03 bonus) y
-   como desempate en `brand_boost` (`sort(spb_match, variety_full,
-   score)`). Desambigua PINK MONDIAL PONDEROSA vs MONDIAL
-   PONDEROSA de la misma marca.
-2. **`_COLOR_SUFFIX_RE` acepta "IN "/"EN " opcional antes del
-   color** ([src/matcher.py:454-455](src/matcher.py)) — `BELIEVE
-   IN PINK` ahora strippa `IN PINK` → `BELIEVE` (si existe en
-   catálogo). Evita match al hermano `ABSOLUT IN PINK`.
-3. **Respetar `manual_confirmado`** (el fix más impactante):
-   - [src/matcher.py:817-831](src/matcher.py) — match_line salta
-     brand_boost si syn_entry es `manual_confirmado`.
-   - [src/sinonimos.py:293-304](src/sinonimos.py) — `add()` retorna
-     sin modificar si prev es `manual_confirmado` y el auto-learn
-     apunta a un artículo distinto. Antes `evaluate_golden` y
-     `match_all` degradaban silenciosamente las correcciones del
-     golden a `aprendido_en_prueba` con cada ejecución.
-
-Tras los 3 fixes + `golden_apply` sobre los 3 drafts (total 284
-confirmados + 8 corregidos), golden link **92.5→99.3% (+6.8pp)**
-y autoapprove **90.3→91.2% (+0.9pp)**. weak_synonym penalties
-bajan de 2742 a 2176 (−566) por la preservación del manual.
-
-Quedan solo 2 mismatches conceptuales: GYPSOPHILA XL ESPECIAL uma
-(gramaje 750GR) y YELLOW SUMMER verdesestacion (gold apunta a
-artículo EC con talla distinta — probable error del gold).
-
 
 ---
 
