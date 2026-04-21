@@ -49,18 +49,20 @@ class ColibriParser:
             label_m=re.search(r'\d{6}\S*\s+(?:FAN|SEL|STD|PRE|FCY)\s+([A-Za-z\u00C0-\u024F][A-Za-z0-9\u00C0-\u024F]+)\s+CO-', ln, re.I)
             label=label_m.group(1).upper() if label_m else ''
 
-            # Total de tallos: numero antes de "ST"
-            st_m=re.search(r'(\d+)\s+ST', ln)
+            # Total de tallos: numero antes de literal "ST" (word boundary
+            # para no capturar "STA" de grade STANDARD, ej. "581314 STA R17")
+            st_m=re.search(r'(\d+)\s+ST\b', ln)
             stems=int(st_m.group(1)) if st_m else 0
 
-            # Precio y total
+            # Precio y total. Formato Colibri es US: coma=miles, punto=decimal
+            # (ej. "2,565.000"). Hay que quitar la coma, no sustituirla por punto.
             prices=re.findall(r'([\d,]+\.[\d]{3})', ln)
             price=0.0; total=0.0
             if len(prices)>=2:
-                try: price=float(prices[-2].replace(',','.')); total=float(prices[-1].replace(',','.'))
+                try: price=float(prices[-2].replace(',','')); total=float(prices[-1].replace(',',''))
                 except: pass
             elif len(prices)==1:
-                try: total=float(prices[-1].replace(',','.'))
+                try: total=float(prices[-1].replace(',',''))
                 except: pass
 
             # Caja mixta: "CARN MIX RED/YELLOW" -> dos lineas, tallos y total / 2
