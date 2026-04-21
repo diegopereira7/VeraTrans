@@ -822,6 +822,36 @@ QUALISA, BELLAROSA, AGRINAG, NATUFLOR, GREENGROWERS, EL CAMPANARIO,
 FLORELOY, SAN JORGE, MILAGRO), arreglo de VerdesEstacionParser (variante
 B sin CM), CLAUDE.md inicial. Commit `5856f26`.
 
+### 2026-04-21 — sesión 9z + 9z-post: manual-pin cierra mismatch UMA XL ESPECIAL (golden 100%)
+
+Último mismatch conceptual del golden: UMA 18222 línea "Gyp XL
+Especial 80 cm /750gr" apuntaba a 28188 "PANICULATA (GYPSOPHILA)
+MIXTO M-14 N" (genérico) cuando el gold era 28205 "PANICULATA
+XLENCE TEÑIDA MIXTO 750GR 1U". Existía sinónimo `manual_confirmado`
+con key exacta `440|GYPSOPHILA|GYPSOPHILA XL ESPECIAL|80|25|` → 28205
+(`sinonimos_universal.json`, times_confirmed=2) pero el matcher lo
+ignoraba: el syn_trust solo aporta +0.245 al score, no fuerza la
+victoria.
+
+Fix en [src/matcher.py:884-906](src/matcher.py) (bloque nuevo antes
+del sort final): si `manual_syn_locked` y el candidato ligado está
+en viable, `score = max(score, 1.10, other_top + 0.05)` + reason
+`manual_pin`. Complementa los fixes de 9y (hard_vetoes) y 9x
+(brand_boost skip, sinonimos.add no-clobber): ahora
+`manual_confirmado` es pin absoluto al final del scoring.
+
+**Nota 9z-post**: el commit de 9z registró métricas pesimistas
+(golden 97.6%, autoapprove 90.9%) porque la extracción de UMA 18222
+devolvió 7 líneas en vez de 14 en ese run, atribuido entonces a una
+actualización de librería. Al re-ejecutar en 9z-post el parser
+captura las 14 líneas correctamente y el golden sube a **100%
+(292/292)**. Hipótesis: warm-up frío de easyocr/tesseract. Sin
+cambios de código entre 9z y 9z-post.
+
+Impacto real (verificado en 9z-post): golden link 99.7→**100%**
+(+1 línea, el XL ESPECIAL). Autoapprove 91.1→**91.2%** (+0.1pp).
+
+
 ### 2026-04-20 — sesión 9y: manual_confirmado sobrevive hard_vetoes (+0.4pp golden)
 
 Con 9x el matcher ya respetaba `manual_confirmado` en `brand_boost`

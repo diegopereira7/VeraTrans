@@ -1,7 +1,7 @@
 # CLAUDE.md — Guía operativa para el agente
 
-**Última actualización:** 2026-04-21 (sesión 10a)
-**Estado:** 92.2% autoapprove · Golden 444/444 reviewed (link **100%**) — BRISSAS + COLIBRI añadidos · NO_PARSEA 5 · TOTALES_MAL 0 · matcher 26× más rápido
+**Última actualización:** 2026-04-21 (sesión 10b)
+**Estado:** 92.7% autoapprove · Golden 575/575 reviewed (link **100%**) — PONDEROSA + ROSALEDA añadidos · NO_PARSEA 5 · TOTALES_MAL 0 · matcher 26× más rápido
 
 ---
 
@@ -25,21 +25,20 @@ Web PHP), mismo pipeline Python. Usuario: Ángel Panadero
 
 ## Estado actual (fuente única de verdad)
 
-- **Autoapprove global:** 92.2% (3501 líneas sobre 82 proveedores)
-- **Golden set:** 444/444 reviewed (13 proveedores). **Link
-  accuracy 100% (444/444)**. Nuevas incorporaciones en sesión 10a:
-  2 facturas BRISSAS (112 líneas) y 3 COLIBRI (73 líneas, 1 draft
-  pendiente). BRISSAS: 100% autoapprove. COLIBRI: 71.6 → 97.0%
-  (+25.4pp) tras fix parser + aprendizaje golden.
+- **Autoapprove global:** 92.7% (3501 líneas sobre 82 proveedores)
+- **Golden set:** 575/575 reviewed (14 proveedores). **Link
+  accuracy 100% (575/575)**. Nuevas incorporaciones en sesión 10b:
+  PONDEROSA 1920 (103 líneas) + cleanup legacy 1896 (8 líneas
+  reconciliadas con spb→U).
 - **NO_PARSEA restantes:** 5 proveedores
 - **Buckets:** OK 76 · NO_PARSEA 5 · TOTALES_MAL 0 · NO_DETECTADO 1
-- **Última sesión:** 10a (2026-04-21) — repaso proveedores top
-  volumen (BRISSAS, COLIBRI). Fixes parser: COLIBRI (miles en
-  totales + word boundary ST + grade STA + MIX Color/Color no
-  dividir), BRISSAS (ruido HAWB en rescue). Goldens bootstrappeados
-  y revisados + golden_apply propagó correcciones a sinónimos.
-  Reglas guardadas en memoria: BRISSAS SURTIDO MIXTO (36900-36903),
-  COLIBRI MIX grade-aware, COLIBRI Gr. column.
+- **Última sesión:** 10b (2026-04-21) — cierra BRISSAS/COLIBRI +
+  añade PONDEROSA + ROSALEDA. Fixes parser: PONDEROSA
+  (normalización de U+00B4 acento agudo en MAYRA'S BRIDAL),
+  ROSALEDA (bunches total = BX × bunches_per_box para cuadrar
+  validación stems). ROSALEDA 95.0 → 99.2% (+4.2pp). Gold legacy
+  1896 reconciliado: 8 líneas donde spb/U eran inconsistentes
+  ahora alineados al SKU correcto por tamaño.
 
 ### Próximos pasos posibles
 
@@ -369,6 +368,51 @@ Comandos con flags (`--provider`, `--max-samples`, `--verbose`,
 Solo las 2 últimas sesiones. Todas las anteriores en
 [`docs/sessions.md`](docs/sessions.md).
 
+### 2026-04-21 — sesión 10b: PONDEROSA + ROSALEDA (autoapprove 92.2→92.7%, golden 444→575)
+
+Continuación de 10a. Tres focos: cerrar FA-117549 pendiente,
+ROSALEDA val_errors, PONDEROSA fix + golden.
+
+**Fixes de parsers**:
+
+- `src/parsers/otros.py` **VerdesEstacionParser (PONDEROSA)**:
+  normalización de apóstrofes al inicio de `parse()` — U+2019/
+  U+2018 (curly), **U+00B4** (acento agudo, aparece en PDFs
+  Ponderosa como apóstrofe en `MAYRA'S BRIDAL`), U+0092 (Win-1252)
+  y U+FFFD → `'`. Char class `_RE_A` extendida a `[A-Z\s']`. Sin
+  el fix, `MAYRA'S BRIDAL WHITE` se capturaba como `S BRIDAL
+  WHITE` (parte de MAYRA se perdía) y el matcher elegía artículo
+  incorrecto.
+- `src/parsers/otros.py` **RosaledaParser**: el regex de variante
+  A capturaba `bunches` como número por caja, pero `stems` es
+  total. Para BX>1 la validación `stems == bunches × spb` fallaba
+  (5 val_errors). Fix: capturar BX, `bunches_total = BX ×
+  bunches_per_box`. Continuaciones (caja mixta) heredan `last_bx`
+  del primary anterior.
+
+**Goldens**:
+
+- COLIBRI FA-117549 auto-corregido con las reglas aprendidas
+  (COLIBRI 97.0 → 98.6%). Variedades novedad (GOLEM, MUSTARD,
+  ANTIGUA, ROYAL DAMASCUS, SPRITZ SPORT) mapeadas a BICOLOR
+  branded por grade (FAN→12715, SEL→12883).
+- PONDEROSA golden verdesestacion_1920 bootstrappeado y revisado
+  (103 líneas). 8 líneas con spb=20/10 que el review tool había
+  propagado al SKU 25U ahora apuntan al 20U/10U correcto (FREEDOM
+  50→33948, MONDIAL/BLUSH/VENDELA 40→10U branded).
+- PONDEROSA legacy 1896 **reconciliado**: 8 líneas donde spb y el
+  sufijo U del artículo eran inconsistentes (decisiones antiguas
+  cuando el catálogo no tenía 10U/20U variants) ahora alineadas
+  al SKU spb-correcto. Regla aplicada: `articulo_id` debe
+  coincidir con `stems_per_bunch` del parser.
+
+**Métricas**:
+- COLIBRI auto: 97.0 → **98.6%** (+1.6pp)
+- ROSALEDA auto: 95.0 → **99.2%** (+4.2pp, 5 val_err → 0)
+- PONDEROSA auto: 97.0 → **100%** en samples parseables
+- Global auto: 92.2 → **92.7%** (+0.5pp)
+- Golden link: 100% (444/444) → **100% (575/575)** (+131 líneas)
+
 ### 2026-04-21 — sesión 10a: repaso BRISSAS + COLIBRI (autoapprove 91.2→92.2%, golden +152 líneas)
 
 Repaso de proveedores top volumen. Dos proveedores auditados a
@@ -425,35 +469,6 @@ diccionario de sinónimos.
 - BRISSAS auto: nuevo → **100%**
 - Global auto: 91.2 → **92.2%** (+1.0pp)
 - Golden link: 100% (292/292) → **100% (444/444)** (+152 líneas)
-
-### 2026-04-21 — sesión 9z + 9z-post: manual-pin cierra mismatch UMA XL ESPECIAL (golden 100%)
-
-Último mismatch conceptual del golden: UMA 18222 línea "Gyp XL
-Especial 80 cm /750gr" apuntaba a 28188 "PANICULATA (GYPSOPHILA)
-MIXTO M-14 N" (genérico) cuando el gold era 28205 "PANICULATA
-XLENCE TEÑIDA MIXTO 750GR 1U". Existía sinónimo `manual_confirmado`
-con key exacta `440|GYPSOPHILA|GYPSOPHILA XL ESPECIAL|80|25|` → 28205
-(`sinonimos_universal.json`, times_confirmed=2) pero el matcher lo
-ignoraba: el syn_trust solo aporta +0.245 al score, no fuerza la
-victoria.
-
-Fix en [src/matcher.py:884-906](src/matcher.py) (bloque nuevo antes
-del sort final): si `manual_syn_locked` y el candidato ligado está
-en viable, `score = max(score, 1.10, other_top + 0.05)` + reason
-`manual_pin`. Complementa los fixes de 9y (hard_vetoes) y 9x
-(brand_boost skip, sinonimos.add no-clobber): ahora
-`manual_confirmado` es pin absoluto al final del scoring.
-
-**Nota 9z-post**: el commit de 9z registró métricas pesimistas
-(golden 97.6%, autoapprove 90.9%) porque la extracción de UMA 18222
-devolvió 7 líneas en vez de 14 en ese run, atribuido entonces a una
-actualización de librería. Al re-ejecutar en 9z-post el parser
-captura las 14 líneas correctamente y el golden sube a **100%
-(292/292)**. Hipótesis: warm-up frío de easyocr/tesseract. Sin
-cambios de código entre 9z y 9z-post.
-
-Impacto real (verificado en 9z-post): golden link 99.7→**100%**
-(+1 línea, el XL ESPECIAL). Autoapprove 91.1→**91.2%** (+0.1pp).
 
 ---
 
