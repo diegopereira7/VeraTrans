@@ -7601,13 +7601,14 @@
     "fecha": "2026-03-30 09:58"
   },
   "25061370": {
-    "pdf": "SEMANA_12_✈️_075-6771_4625_SAFTEC_JUEVE_CANTIZA 2.pdf",
-    "provider": "Cantiza Flores",
+    "pdf": "02 - 075-67714625 - CANTIZA CANTIZA 2.pdf",
+    "provider": "Valthomig",
     "total_usd": 2102.0,
-    "lineas": 59,
-    "ok": 57,
-    "sin_match": 1,
-    "fecha": "2026-03-30 09:58"
+    "lineas": 63,
+    "ok": 61,
+    "sin_match": 2,
+    "fecha": "2026-04-21 16:05",
+    "pdf_path": "C:\\Users\\diego.pereira\\Desktop\\DOC VERA\\FACTURAS IMPORTACION\\PROVEEDORES\\CANTIZA\\02 - 075-67714625 - CANTIZA CANTIZA 2.pdf"
   },
   "25061369": {
     "pdf": "SEMANA_12_✈️_075-6771_4625_SAFTEC_JUEVE_CANTIZA.pdf",
@@ -7727,13 +7728,14 @@
     "fecha": "2026-03-30 17:12"
   },
   "25061457": {
-    "pdf": "SEMANA_12_✈️_369-9902_2674_ALLIANZA_CANTIZA (2).pdf",
-    "provider": "Cantiza Flores",
+    "pdf": "01 - 369-99022674 - CANTIZA CANTIZA (2).pdf",
+    "provider": "Valthomig",
     "total_usd": 2046.25,
     "lineas": 27,
-    "ok": 27,
-    "sin_match": 0,
-    "fecha": "2026-03-30 17:12"
+    "ok": 26,
+    "sin_match": 1,
+    "fecha": "2026-04-21 16:05",
+    "pdf_path": "C:\\Users\\diego.pereira\\Desktop\\DOC VERA\\FACTURAS IMPORTACION\\PROVEEDORES\\CANTIZA\\01 - 369-99022674 - CANTIZA CANTIZA (2).pdf"
   },
   "25061431": {
     "pdf": "SEMANA_12_✈️_369-9902_2674_ALLIANZA_CANTIZA (3).pdf",
@@ -16133,5 +16135,15 @@
     "sin_match": 1,
     "fecha": "2026-04-20 16:17",
     "pdf_path": "C:\\verabuy-traductor\\web\\uploads\\1776694667_CANTIZA.pdf"
+  },
+  "25016077": {
+    "pdf": "01 - V. 075-6577 1440 - CANTIZA.pdf",
+    "provider": "Valthomig",
+    "total_usd": 85.0,
+    "lineas": 3,
+    "ok": 3,
+    "sin_match": 0,
+    "fecha": "2026-04-21 16:05",
+    "pdf_path": "C:\\Users\\diego.pereira\\Desktop\\DOC VERA\\FACTURAS IMPORTACION\\PROVEEDORES\\CANTIZA\\01 - V. 075-6577 1440 - CANTIZA.pdf"
   }
 }

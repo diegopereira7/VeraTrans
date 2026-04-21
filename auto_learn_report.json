@@ -2475,15 +2475,15 @@
     "samples": 5,
     "detected": 5,
     "parsed_any": 5,
-    "totals_ok": 3,
-    "total_parsed": 100,
-    "total_rescued": 1,
-    "ok_lines": 97,
+    "totals_ok": 4,
+    "total_parsed": 105,
+    "total_rescued": 0,
+    "ok_lines": 102,
     "ambiguous_lines": 1,
     "sin_match_lines": 2,
     "sin_parser_lines": 0,
-    "autoapprovable_lines": 96,
-    "autoapprove_rate": 0.98,
+    "autoapprovable_lines": 101,
+    "autoapprove_rate": 0.981,
     "needs_review_lines": 4,
     "validation_errors_lines": 1,
     "extraction_source_mix": {
@@ -2495,12 +2495,12 @@
       "ocrmypdf": 1
     },
     "penalties": {
-      "weak_synonym": 75,
+      "weak_synonym": 3,
       "variety_no_overlap": 3,
       "tie_top2_margin": 1
     },
     "match_statuses": {
-      "ok": 97,
+      "ok": 102,
       "ambiguous_match": 1,
       "sin_match": 2
     },
@@ -2528,7 +2528,6 @@
         "needs_review_lines": 1,
         "validation_errors_lines": 0,
         "penalties": {
-          "weak_synonym": 22,
           "tie_top2_margin": 1
         },
         "match_statuses": {
@@ -2579,35 +2578,34 @@
         "file": "02 - 075-67714625 - CANTIZA CANTIZA 2.pdf",
         "detected_as": "Valthomig",
         "fmt": "cantiza",
-        "parsed_lines": 58,
-        "rescued_lines": 1,
-        "ok_lines": 56,
+        "parsed_lines": 63,
+        "rescued_lines": 0,
+        "ok_lines": 61,
         "ambiguous_lines": 0,
         "sin_match_lines": 2,
         "sin_parser_lines": 0,
         "header_total": 2102.0,
-        "sum_line_total": 2005.0,
-        "header_ok": false,
-        "diff_pct": 4.61,
+        "sum_line_total": 2102.0,
+        "header_ok": true,
+        "diff_pct": 0.0,
         "extraction_source": "native",
         "extraction_engine": "",
         "extraction_confidence": 1.0,
         "extraction_degraded": false,
-        "avg_link_confidence": 0.987,
-        "autoapprovable_lines": 56,
+        "avg_link_confidence": 0.988,
+        "autoapprovable_lines": 61,
         "needs_review_lines": 2,
         "validation_errors_lines": 0,
         "penalties": {
-          "weak_synonym": 49,
           "variety_no_overlap": 3
         },
         "match_statuses": {
-          "ok": 56,
+          "ok": 61,
           "sin_match": 2
         },
         "invoice": "25061370",
         "error": "",
-        "lane_auto": 56,
+        "lane_auto": 61,
         "lane_quick": 0,
         "lane_full": 2
       },
@@ -2633,9 +2631,7 @@
         "autoapprovable_lines": 1,
         "needs_review_lines": 0,
         "validation_errors_lines": 0,
-        "penalties": {
-          "weak_synonym": 1
-        },
+        "penalties": {},
         "match_statuses": {
           "ok": 1
         },
@@ -7867,7 +7863,7 @@
         "extraction_engine": "",
         "extraction_confidence": 1.0,
         "extraction_degraded": false,
-        "avg_link_confidence": 0.999,
+        "avg_link_confidence": 1.0,
         "autoapprovable_lines": 51,
         "needs_review_lines": 0,
         "validation_errors_lines": 0,
@@ -7933,7 +7929,7 @@
         "extraction_engine": "",
         "extraction_confidence": 1.0,
         "extraction_degraded": false,
-        "avg_link_confidence": 0.998,
+        "avg_link_confidence": 0.999,
         "autoapprovable_lines": 55,
         "needs_review_lines": 0,
         "validation_errors_lines": 0,
@@ -16575,7 +16571,7 @@
       "-": 5
     },
     "penalties": {
-      "weak_synonym": 37,
+      "weak_synonym": 24,
       "variety_no_overlap": 4
     },
     "match_statuses": {
@@ -16640,7 +16636,7 @@
         "needs_review_lines": 0,
         "validation_errors_lines": 0,
         "penalties": {
-          "weak_synonym": 3
+          "weak_synonym": 1
         },
         "match_statuses": {
           "ok": 9
@@ -16675,7 +16671,7 @@
         "validation_errors_lines": 0,
         "penalties": {
           "variety_no_overlap": 1,
-          "weak_synonym": 13
+          "weak_synonym": 7
         },
         "match_statuses": {
           "sin_match": 1,
@@ -16710,7 +16706,7 @@
         "needs_review_lines": 0,
         "validation_errors_lines": 0,
         "penalties": {
-          "weak_synonym": 14
+          "weak_synonym": 11
         },
         "match_statuses": {
           "ok": 26
@@ -16745,7 +16741,7 @@
         "validation_errors_lines": 0,
         "penalties": {
           "variety_no_overlap": 2,
-          "weak_synonym": 7
+          "weak_synonym": 5
         },
         "match_statuses": {
           "sin_match": 2,

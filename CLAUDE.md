@@ -1,7 +1,7 @@
 # CLAUDE.md — Guía operativa para el agente
 
-**Última actualización:** 2026-04-21 (sesión 10c)
-**Estado:** 92.7% autoapprove · Golden 907/907 reviewed (link **100%**) — FLORAROMA + LA ESTACION añadidos · fix parser VerdesEstacion (farm bleed) · NO_PARSEA 5 · TOTALES_MAL 0
+**Última actualización:** 2026-04-21 (sesión 10d)
+**Estado:** 92.7% autoapprove · Golden 997/997 reviewed (link **100%**) — VALTHO (CANTIZA) añadido · fix parser Cantiza (categoría `N/C` + puntos OCR) · NO_PARSEA 5 · TOTALES_MAL 1
 
 ---
 
@@ -25,22 +25,22 @@ Web PHP), mismo pipeline Python. Usuario: Ángel Panadero
 
 ## Estado actual (fuente única de verdad)
 
-- **Autoapprove global:** 92.7% (3501 líneas sobre 82 proveedores)
-- **Golden set:** 907/907 reviewed (17 proveedores). **Link
-  accuracy 100% (907/907)**. Nuevas incorporaciones en sesión 10c:
-  FLORAROMA 001068330 + 001097157 (175 líneas), LA ESTACION 608 +
-  609 + 678 (157 líneas). Los 6 top-volumen (BRISSAS, COLIBRI,
-  FLORAROMA, LA ESTACION, PONDEROSA, ROSALEDA) al 98.6-100%.
+- **Autoapprove global:** 92.7% (3506 líneas sobre 82 proveedores)
+- **Golden set:** 997/997 reviewed (24 facturas, 13 proveedores).
+  **Link accuracy 100% (997/997)**. Nuevas incorporaciones en
+  sesión 10d: VALTHO 25061370 + 25061457 (90 líneas) — ambos son
+  facturas "CANTIZA CANTIZA" emitidas por Valthomig (provider 435,
+  usa fmt `cantiza`).
 - **NO_PARSEA restantes:** 5 proveedores
-- **Buckets:** OK 76 · NO_PARSEA 5 · TOTALES_MAL 0 · NO_DETECTADO 1
-- **Última sesión:** 10c (2026-04-21) — ampliación golden
-  FLORAROMA + LA ESTACION + fix parser VerdesEstacionParser. El
-  regex `_RE_B` admitía `[A-Za-z\s\-]` en la variedad y cazaba el
-  farm inline como "Atomic - KENTIA" (el farm bleed hacía que el
-  matcher eligiera LUXUS/CANTIZA/COL en vez de PONDEROSA
-  branded). Fix aditivo post-regex: split `"Variety - FARM"` y
-  farm pasa a label. LA ESTACION 99.0 → **100%**, PONDEROSA
-  regenerado 97.0 → **100%**. Golden 575 → 907 (+57.7%).
+- **Buckets:** OK 76 · NO_PARSEA 5 · TOTALES_MAL 1 (BRISSAS) ·
+  NO_DETECTADO 1 (PONDEROSA)
+- **Última sesión:** 10d (2026-04-21) — fix `CantizaParser` para
+  nuevas variantes OCR: (a) categoría cooler `C` junto a `N`
+  (algunas facturas usan "CHERRY O 40CM **C** 25ST CZ"), (b)
+  punto opcional tras `N/C` y tras `ST` ("N. 25ST.", "N 25ST.").
+  Regex extendido de `[A-Z]{1,4}\b` a `[NC]\.?\s*(\d+)ST\.?` —
+  capturó 5 líneas extra en muestras CANTIZA (98.0 → 98.1%). Los
+  2 goldens VALTHO nuevos dan link 100% al branded CANTIZA.
 
 ### Próximos pasos posibles
 
@@ -370,6 +370,44 @@ Comandos con flags (`--provider`, `--max-samples`, `--verbose`,
 Solo las 2 últimas sesiones. Todas las anteriores en
 [`docs/sessions.md`](docs/sessions.md).
 
+### 2026-04-21 — sesión 10d: VALTHO + fix parser Cantiza (autoapprove 92.7% estable, golden 907→997)
+
+Continuación de 10c. Foco único: incorporar VALTHOMIG (provider
+435) al golden. VALTHO usa `fmt='cantiza'` — mismas plantillas
+que CANTIZA, pero muestras recientes tienen dos variantes OCR
+que el regex de `CantizaParser` no contemplaba.
+
+**Fix de parser**:
+
+- [src/parsers/cantiza.py:44](src/parsers/cantiza.py#L44)
+  **CantizaParser — categoría cooler `C` + puntos OCR**: el regex
+  era `([\w][\w\s.\']*?)\s+(\d+)CM\s+N\s*(\d+)ST\s+[A-Z]{1,4}\b`,
+  con `N` hardcodeado como categoría (`N` = normal). (a) Algunas
+  facturas marcan `C` (cooler) — ej. `CHERRY O 40CM C 25ST CZ`.
+  (b) El OCR de estas muestras deja punto pegado tras `N` y tras
+  `ST`: `N. 25ST.`, `N 25ST.`. Fix aditivo: `[NC]\.?\s*(\d+)ST\.?`
+  — admite ambos caracteres + puntos opcionales, sin romper el
+  matcheo legacy. Impacto medido en CANTIZA: 100 → 105 líneas
+  parseadas (+5 ok).
+
+**Goldens**:
+
+- VALTHO 25061370 (63 líneas) y 25061457 (27 líneas)
+  bootstrappeados y revisados. Las 90 líneas mapean 100% al
+  branded CANTIZA (los PDFs se titulan "CANTIZA CANTIZA 2" pero
+  el provider_id en cabecera es 435 = Valthomig, distribuidor
+  oficial). link 100%.
+- `golden_apply.py` propagó: 3 sinónimos nuevos, 43 promociones
+  `aprendido_en_prueba → aprendido_confirmado`, 329 increments
+  de `times_confirmed` sobre sinónimos CANTIZA/VALTHO existentes.
+
+**Métricas**:
+- CANTIZA auto: 98.0 → **98.1%** (+0.1pp, +5 líneas parseadas)
+- VALTHOMIG auto: **100%** (98 líneas, sin regresión)
+- Global auto: **92.7% estable** (3018 auto / 3254 linkable)
+- Golden link: 100% (907/907) → **100% (997/997)** (+90 líneas,
+  24 facturas, 13 proveedores)
+
 ### 2026-04-21 — sesión 10c: FLORAROMA + LA ESTACION (autoapprove 92.7%, golden 575→907)
 
 Continuación de 10b. Dos focos: (a) ampliar golden a
@@ -418,51 +456,6 @@ con PONDEROSA pero variante de plantilla distinta no soportada.
 - Golden link: 100% (575/575) → **100% (907/907)** (+332 líneas)
 - Top-6 por volumen (BRISSAS, COLIBRI, FLORAROMA, LA ESTACION,
   PONDEROSA, ROSALEDA) todos al ≥98.6%
-
-### 2026-04-21 — sesión 10b: PONDEROSA + ROSALEDA (autoapprove 92.2→92.7%, golden 444→575)
-
-Continuación de 10a. Tres focos: cerrar FA-117549 pendiente,
-ROSALEDA val_errors, PONDEROSA fix + golden.
-
-**Fixes de parsers**:
-
-- `src/parsers/otros.py` **VerdesEstacionParser (PONDEROSA)**:
-  normalización de apóstrofes al inicio de `parse()` — U+2019/
-  U+2018 (curly), **U+00B4** (acento agudo, aparece en PDFs
-  Ponderosa como apóstrofe en `MAYRA'S BRIDAL`), U+0092 (Win-1252)
-  y U+FFFD → `'`. Char class `_RE_A` extendida a `[A-Z\s']`. Sin
-  el fix, `MAYRA'S BRIDAL WHITE` se capturaba como `S BRIDAL
-  WHITE` (parte de MAYRA se perdía) y el matcher elegía artículo
-  incorrecto.
-- `src/parsers/otros.py` **RosaledaParser**: el regex de variante
-  A capturaba `bunches` como número por caja, pero `stems` es
-  total. Para BX>1 la validación `stems == bunches × spb` fallaba
-  (5 val_errors). Fix: capturar BX, `bunches_total = BX ×
-  bunches_per_box`. Continuaciones (caja mixta) heredan `last_bx`
-  del primary anterior.
-
-**Goldens**:
-
-- COLIBRI FA-117549 auto-corregido con las reglas aprendidas
-  (COLIBRI 97.0 → 98.6%). Variedades novedad (GOLEM, MUSTARD,
-  ANTIGUA, ROYAL DAMASCUS, SPRITZ SPORT) mapeadas a BICOLOR
-  branded por grade (FAN→12715, SEL→12883).
-- PONDEROSA golden verdesestacion_1920 bootstrappeado y revisado
-  (103 líneas). 8 líneas con spb=20/10 que el review tool había
-  propagado al SKU 25U ahora apuntan al 20U/10U correcto (FREEDOM
-  50→33948, MONDIAL/BLUSH/VENDELA 40→10U branded).
-- PONDEROSA legacy 1896 **reconciliado**: 8 líneas donde spb y el
-  sufijo U del artículo eran inconsistentes (decisiones antiguas
-  cuando el catálogo no tenía 10U/20U variants) ahora alineadas
-  al SKU spb-correcto. Regla aplicada: `articulo_id` debe
-  coincidir con `stems_per_bunch` del parser.
-
-**Métricas**:
-- COLIBRI auto: 97.0 → **98.6%** (+1.6pp)
-- ROSALEDA auto: 95.0 → **99.2%** (+4.2pp, 5 val_err → 0)
-- PONDEROSA auto: 97.0 → **100%** en samples parseables
-- Global auto: 92.2 → **92.7%** (+0.5pp)
-- Golden link: 100% (444/444) → **100% (575/575)** (+131 líneas)
 
 ---
 

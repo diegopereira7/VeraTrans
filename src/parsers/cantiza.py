@@ -41,7 +41,9 @@ class CantizaParser:
                 continue
             # Sub-líneas: "VARIETY SIZECM N SPBST FARMCODE" — CZ (Cantiza), RN (Rosa Nova), etc.
             # `\s*` tras N para aceptar "N255T" pegado (ya normalizado arriba).
-            pm=re.search(r'([\w][\w\s.\']*?)\s+(\d+)CM\s+N\s*(\d+)ST\s+[A-Z]{1,4}\b',ln)
+            # `[NC]\.?` admite categoría N/C (cooler) y opcional punto (OCR: "N." "N.").
+            # `ST\.?` admite punto pegado al ST ("25ST.").
+            pm=re.search(r'([\w][\w\s.\']*?)\s+(\d+)CM\s+[NC]\.?\s*(\d+)ST\.?\s+[A-Z]{1,4}\b',ln)
             if not pm: continue
             var=re.sub(r'^[\d*X.]+\s+','',pm.group(1).strip()).strip()
             var=re.sub(r'\([\d*X.]+\)','',var).strip()

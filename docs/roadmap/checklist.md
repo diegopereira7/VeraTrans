@@ -72,6 +72,15 @@ _Cifras tomadas del historial de sesiones de `CLAUDE.md` (sesión 6, abril 2026)
   - `mark_confirmed`/`mark_corrected` ya existen en `SynonymStore`;
     falta engancharlos a UI/API.
 
+### KPIs actuales (sesión 10d, `tools/evaluate_all.py`)
+- Líneas totales procesadas: **3506**
+- Líneas `ok`: **3083** · `ambiguous_match`: **171** · `autoapprovable`: **3018**
+- **autoapprove_rate: 92.7%** de las líneas linkables (3018/3254)
+- **Golden set: 100%** parse + link accuracy (997/997 líneas
+  reviewed, 24 facturas, 13 proveedores)
+- Buckets: OK 76 · NO_PARSEA 5 · TOTALES_MAL 1 (BRISSAS) ·
+  NO_DETECTADO 1 (PONDEROSA)
+
 ### KPIs baseline (sesión 9q, `tools/evaluate_all.py`)
 - Líneas totales procesadas: **3309** (+12 vs 9p)
 - Líneas `ok`: **2795** · `ambiguous_match`: **228** · `autoapprovable`: **2654**

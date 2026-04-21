@@ -8,6 +8,51 @@ aquí y se quita de CLAUDE.md.
 Para el estado actual del proyecto, ver [`CLAUDE.md`](../CLAUDE.md) (raíz).
 Para lecciones transversales reutilizables, ver [`lessons.md`](lessons.md).
 
+### 2026-04-21 — sesión 10b: PONDEROSA + ROSALEDA (autoapprove 92.2→92.7%, golden 444→575)
+
+Continuación de 10a. Tres focos: cerrar FA-117549 pendiente,
+ROSALEDA val_errors, PONDEROSA fix + golden.
+
+**Fixes de parsers**:
+
+- `src/parsers/otros.py` **VerdesEstacionParser (PONDEROSA)**:
+  normalización de apóstrofes al inicio de `parse()` — U+2019/
+  U+2018 (curly), **U+00B4** (acento agudo, aparece en PDFs
+  Ponderosa como apóstrofe en `MAYRA'S BRIDAL`), U+0092 (Win-1252)
+  y U+FFFD → `'`. Char class `_RE_A` extendida a `[A-Z\s']`. Sin
+  el fix, `MAYRA'S BRIDAL WHITE` se capturaba como `S BRIDAL
+  WHITE` (parte de MAYRA se perdía) y el matcher elegía artículo
+  incorrecto.
+- `src/parsers/otros.py` **RosaledaParser**: el regex de variante
+  A capturaba `bunches` como número por caja, pero `stems` es
+  total. Para BX>1 la validación `stems == bunches × spb` fallaba
+  (5 val_errors). Fix: capturar BX, `bunches_total = BX ×
+  bunches_per_box`. Continuaciones (caja mixta) heredan `last_bx`
+  del primary anterior.
+
+**Goldens**:
+
+- COLIBRI FA-117549 auto-corregido con las reglas aprendidas
+  (COLIBRI 97.0 → 98.6%). Variedades novedad (GOLEM, MUSTARD,
+  ANTIGUA, ROYAL DAMASCUS, SPRITZ SPORT) mapeadas a BICOLOR
+  branded por grade (FAN→12715, SEL→12883).
+- PONDEROSA golden verdesestacion_1920 bootstrappeado y revisado
+  (103 líneas). 8 líneas con spb=20/10 que el review tool había
+  propagado al SKU 25U ahora apuntan al 20U/10U correcto (FREEDOM
+  50→33948, MONDIAL/BLUSH/VENDELA 40→10U branded).
+- PONDEROSA legacy 1896 **reconciliado**: 8 líneas donde spb y el
+  sufijo U del artículo eran inconsistentes (decisiones antiguas
+  cuando el catálogo no tenía 10U/20U variants) ahora alineadas
+  al SKU spb-correcto. Regla aplicada: `articulo_id` debe
+  coincidir con `stems_per_bunch` del parser.
+
+**Métricas**:
+- COLIBRI auto: 97.0 → **98.6%** (+1.6pp)
+- ROSALEDA auto: 95.0 → **99.2%** (+4.2pp, 5 val_err → 0)
+- PONDEROSA auto: 97.0 → **100%** en samples parseables
+- Global auto: 92.2 → **92.7%** (+0.5pp)
+- Golden link: 100% (444/444) → **100% (575/575)** (+131 líneas)
+
 ### 2026-04-21 — sesión 10a: repaso BRISSAS + COLIBRI (autoapprove 91.2→92.2%, golden +152 líneas)
 
 Repaso de proveedores top volumen. Dos proveedores auditados a
