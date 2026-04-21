@@ -1061,6 +1061,7 @@ _NOISE_LINE_RE = re.compile(
     r'|\bMIXED\s+BOX\b|\bTOTALS\b|\bFOB\b|\b\d+\s+TOTALS\b'
     r'|\bFlowers\s+Detail\b|\bBox\s+Detail\b|\bStems\s+Half\b|\bGross\s*$'
     r'|^(?:HB|QB|TB|FB)\s+[\d.]+\s+[\d.]+\s+[\d.]+\s*$'  # box summary: "HB 19.000 28.50 418.00"
+    r'|\bHAWB\b'  # resumen BRISSAS: "HB 21.000 HAWB: SN"
     r'|^Carnation\s+[\d,]+\s+\d+\s+\d|^Minicarnation\s+[\d,]+\s+\d+\s+\d'
     r')',
     re.I
