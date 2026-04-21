@@ -1916,6 +1916,9 @@ class RosaledaParser:
 
         lines = []
         box_type = 'HB'; label = ''
+        last_bx = 1  # BX de la última línea primaria (variante A); las
+                     # continuaciones de caja mixta heredan este BX para
+                     # calcular bunches_total = BX × bunches_per_box.
 
         # Detectar variante por presencia de pipes con $ en el texto
         use_pipe = bool(re.search(r'I\s+\$[\d.]+I', text))
@@ -1948,28 +1951,37 @@ class RosaledaParser:
                 continue
 
             # Variante A: "1 - 1 MARL 1 QB ROSALEDA UNFORGIVEN 50 25 4 100 0.30 30.00"
+            # Formato columnar: ORDER LABEL BX BOXTYPE [ROSALEDA] VARIETY CM SPB BUNCHES_PER_BOX STEMS_TOTAL PRICE TOTAL
+            # Captura BX para calcular bunches_total = BX × bunches_per_box
+            # (si no, validate reporta stems_mismatch cuando BX>1).
             pm = re.search(
-                r'\d+\s*-\s*\d+\s+(?:([A-Z][A-Z\d]+)\s+)?\d+\s+(QB|HB|FB|EB)\s+(?:ROSALEDA\s+)?([A-Za-z][A-Za-z\s.\-/&]+?)\s+(\d{2,3})\s+(\d+)\s+(\d+)\s+(\d+)\s+([\d.]+)\s+([\d.]+)',
+                r'\d+\s*-\s*\d+\s+(?:([A-Z][A-Z\d]+)\s+)?(\d+)\s+(QB|HB|FB|EB)\s+(?:ROSALEDA\s+)?([A-Za-z][A-Za-z\s.\-/&]+?)\s+(\d{2,3})\s+(\d+)\s+(\d+)\s+(\d+)\s+([\d.]+)\s+([\d.]+)',
                 ln)
             if pm:
                 if pm.group(1): label = pm.group(1)
-                box_type = pm.group(2)
-                var = pm.group(3).strip().upper(); sz = int(pm.group(4))
-                spb = int(pm.group(5)); bunches = int(pm.group(6))
-                stems = int(pm.group(7)); price = float(pm.group(8)); total = float(pm.group(9))
+                bx = int(pm.group(2))
+                last_bx = bx
+                box_type = pm.group(3)
+                var = pm.group(4).strip().upper(); sz = int(pm.group(5))
+                spb = int(pm.group(6)); bunches_per_box = int(pm.group(7))
+                stems = int(pm.group(8)); price = float(pm.group(9)); total = float(pm.group(10))
+                bunches = bx * bunches_per_box
                 il = InvoiceLine(raw_description=ln, species='ROSES', variety=var,
                                  size=sz, stems_per_bunch=spb, bunches=bunches, stems=stems,
                                  price_per_stem=price, line_total=total, box_type=box_type, label=label)
                 lines.append(il)
                 continue
             # Continuación (sin prefijo order): "QUEENS CROWN 50 25 2 50 0.350 17.500"
+            # Hereda el BX de la última línea primaria para que bunches_total
+            # cuadre con stems cuando la caja mixta tiene múltiples variedades.
             pm2 = re.search(
                 r'^([A-Z][A-Z\s.\-/&]+?)\s+(\d{2,3})\s+(\d+)\s+(\d+)\s+(\d+)\s+([\d.]+)\s+([\d.]+)$',
                 ln)
             if pm2 and lines:
                 var = pm2.group(1).strip(); sz = int(pm2.group(2))
-                spb = int(pm2.group(3)); bunches = int(pm2.group(4))
+                spb = int(pm2.group(3)); bunches_per_box = int(pm2.group(4))
                 stems = int(pm2.group(5)); price = float(pm2.group(6)); total = float(pm2.group(7))
+                bunches = last_bx * bunches_per_box
                 il = InvoiceLine(raw_description=ln, species='ROSES', variety=var,
                                  size=sz, stems_per_bunch=spb, bunches=bunches, stems=stems,
                                  price_per_stem=price, line_total=total, box_type=box_type, label=label)

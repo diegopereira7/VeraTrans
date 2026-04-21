@@ -7983,10 +7983,10 @@
     "ambiguous_lines": 1,
     "sin_match_lines": 1,
     "sin_parser_lines": 0,
-    "autoapprovable_lines": 27,
-    "autoapprove_rate": 0.844,
-    "needs_review_lines": 6,
-    "validation_errors_lines": 2,
+    "autoapprovable_lines": 29,
+    "autoapprove_rate": 0.906,
+    "needs_review_lines": 4,
+    "validation_errors_lines": 0,
     "extraction_source_mix": {
       "native": 5
     },
@@ -8058,10 +8058,10 @@
         "extraction_engine": "",
         "extraction_confidence": 1.0,
         "extraction_degraded": false,
-        "avg_link_confidence": 0.879,
-        "autoapprovable_lines": 3,
-        "needs_review_lines": 1,
-        "validation_errors_lines": 1,
+        "avg_link_confidence": 0.955,
+        "autoapprovable_lines": 4,
+        "needs_review_lines": 0,
+        "validation_errors_lines": 0,
         "penalties": {
           "foreign_brand": 1,
           "weak_synonym": 4
@@ -8071,8 +8071,8 @@
         },
         "invoice": "0000069753",
         "error": "",
-        "lane_auto": 3,
-        "lane_quick": 1,
+        "lane_auto": 4,
+        "lane_quick": 0,
         "lane_full": 0
       },
       {
@@ -8167,10 +8167,10 @@
         "extraction_engine": "",
         "extraction_confidence": 1.0,
         "extraction_degraded": false,
-        "avg_link_confidence": 0.9,
-        "autoapprovable_lines": 2,
-        "needs_review_lines": 1,
-        "validation_errors_lines": 1,
+        "avg_link_confidence": 1.0,
+        "autoapprovable_lines": 3,
+        "needs_review_lines": 0,
+        "validation_errors_lines": 0,
         "penalties": {
           "weak_synonym": 3
         },
@@ -8179,8 +8179,8 @@
         },
         "invoice": "0000065044",
         "error": "",
-        "lane_auto": 2,
-        "lane_quick": 1,
+        "lane_auto": 3,
+        "lane_quick": 0,
         "lane_full": 0
       }
     ]
@@ -11737,13 +11737,13 @@
     "totals_ok": 3,
     "total_parsed": 198,
     "total_rescued": 0,
-    "ok_lines": 192,
-    "ambiguous_lines": 6,
+    "ok_lines": 198,
+    "ambiguous_lines": 0,
     "sin_match_lines": 0,
     "sin_parser_lines": 0,
-    "autoapprovable_lines": 192,
-    "autoapprove_rate": 0.97,
-    "needs_review_lines": 6,
+    "autoapprovable_lines": 198,
+    "autoapprove_rate": 1.0,
+    "needs_review_lines": 0,
     "validation_errors_lines": 0,
     "extraction_source_mix": {
       "ocr": 2,
@@ -11754,13 +11754,10 @@
       "-": 3
     },
     "penalties": {
-      "weak_synonym": 26,
-      "foreign_brand": 6,
-      "low_evidence": 6
+      "weak_synonym": 32
     },
     "match_statuses": {
-      "ok": 192,
-      "ambiguous_match": 6
+      "ok": 198
     },
     "samples_raw": [
       {
@@ -11796,8 +11793,8 @@
         "fmt": "verdesestacion",
         "parsed_lines": 103,
         "rescued_lines": 0,
-        "ok_lines": 97,
-        "ambiguous_lines": 6,
+        "ok_lines": 103,
+        "ambiguous_lines": 0,
         "sin_match_lines": 0,
         "sin_parser_lines": 0,
         "header_total": 4138.45,
@@ -11808,23 +11805,20 @@
         "extraction_engine": "",
         "extraction_confidence": 1.0,
         "extraction_degraded": false,
-        "avg_link_confidence": 0.978,
-        "autoapprovable_lines": 97,
-        "needs_review_lines": 6,
+        "avg_link_confidence": 1.0,
+        "autoapprovable_lines": 103,
+        "needs_review_lines": 0,
         "validation_errors_lines": 0,
         "penalties": {
-          "weak_synonym": 26,
-          "foreign_brand": 6,
-          "low_evidence": 6
+          "weak_synonym": 32
         },
         "match_statuses": {
-          "ok": 97,
-          "ambiguous_match": 6
+          "ok": 103
         },
         "invoice": "1920",
         "error": "",
-        "lane_auto": 97,
-        "lane_quick": 6,
+        "lane_auto": 103,
+        "lane_quick": 0,
         "lane_full": 0
       },
       {
@@ -12877,10 +12871,10 @@
     "ambiguous_lines": 0,
     "sin_match_lines": 0,
     "sin_parser_lines": 0,
-    "autoapprovable_lines": 115,
-    "autoapprove_rate": 0.95,
-    "needs_review_lines": 5,
-    "validation_errors_lines": 5,
+    "autoapprovable_lines": 120,
+    "autoapprove_rate": 0.992,
+    "needs_review_lines": 0,
+    "validation_errors_lines": 0,
     "extraction_source_mix": {
       "native": 5
     },
@@ -12947,10 +12941,10 @@
         "extraction_engine": "",
         "extraction_confidence": 1.0,
         "extraction_degraded": false,
-        "avg_link_confidence": 0.94,
-        "autoapprovable_lines": 12,
-        "needs_review_lines": 3,
-        "validation_errors_lines": 3,
+        "avg_link_confidence": 1.0,
+        "autoapprovable_lines": 15,
+        "needs_review_lines": 0,
+        "validation_errors_lines": 0,
         "penalties": {
           "weak_synonym": 15
         },
@@ -12959,8 +12953,8 @@
         },
         "invoice": "000008912",
         "error": "",
-        "lane_auto": 12,
-        "lane_quick": 3,
+        "lane_auto": 15,
+        "lane_quick": 0,
         "lane_full": 0
       },
       {
@@ -12981,10 +12975,10 @@
         "extraction_engine": "",
         "extraction_confidence": 1.0,
         "extraction_degraded": false,
-        "avg_link_confidence": 0.957,
-        "autoapprovable_lines": 11,
-        "needs_review_lines": 2,
-        "validation_errors_lines": 2,
+        "avg_link_confidence": 1.0,
+        "autoapprovable_lines": 13,
+        "needs_review_lines": 0,
+        "validation_errors_lines": 0,
         "penalties": {
           "weak_synonym": 14
         },
@@ -12993,8 +12987,8 @@
         },
         "invoice": "000009010",
         "error": "",
-        "lane_auto": 11,
-        "lane_quick": 3,
+        "lane_auto": 13,
+        "lane_quick": 1,
         "lane_full": 0
       },
       {
