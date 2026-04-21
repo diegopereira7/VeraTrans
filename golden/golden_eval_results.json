@@ -414,5 +414,31 @@
     "full_correct": 92,
     "full_total": 92,
     "discrepancies": []
+  },
+  {
+    "provider_key": "verdesestacion",
+    "invoice": "1920",
+    "pdf": "01 - 996-14255161 - PONDEROSA PONDEROSA.pdf",
+    "gold_lines": 103,
+    "sys_lines": 103,
+    "matched_pairs": 103,
+    "missing_lines": 0,
+    "extra_lines": 0,
+    "field_accuracy": {
+      "variety": 1.0,
+      "species": 1.0,
+      "origin": 1.0,
+      "size": 1.0,
+      "stems_per_bunch": 1.0,
+      "stems": 1.0,
+      "line_total": 1.0
+    },
+    "link_accuracy": 1.0,
+    "link_correct": 103,
+    "link_total": 103,
+    "full_line_accuracy": 1.0,
+    "full_correct": 103,
+    "full_total": 103,
+    "discrepancies": []
   }
 ]

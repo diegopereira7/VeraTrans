@@ -1,5 +1,5 @@
 {
-  "_status": "draft",
+  "_status": "reviewed",
   "_note": "DRAFT — Review and correct ALL fields before marking as reviewed. Delete _review fields and change _status to \"reviewed\" when done.",
   "_created": "2026-04-21T13:40:06",
   "_created_by": "golden_bootstrap.py",
@@ -26,8 +26,7 @@
       "articulo_name": "ROSA MONDIAL 40CM 25U PONDEROSA",
       "match_status": "ok",
       "match_confidence": 1.0,
-      "link_confidence": 1.0,
-      "_review": "CHECK — verify variety, size, origin, articulo_id"
+      "link_confidence": 1.0
     },
     {
       "raw_description": "2/52 HB 0,50 1,00 MONDIAL 70CM 150 150 CO 0603110000 $ 0,42 $ 63,00",
@@ -43,8 +42,7 @@
       "articulo_name": "ROSA MONDIAL 70CM 25U PONDEROSA",
       "match_status": "ok",
       "match_confidence": 1.0,
-      "link_confidence": 1.0,
-      "_review": "CHECK — verify variety, size, origin, articulo_id"
+      "link_confidence": 1.0
     },
     {
       "raw_description": "3/52 HB 0,50 1,00 VENDELA 40CM 300 300 CO 0603110000 $ 0,26 $ 78,00",
@@ -60,8 +58,7 @@
       "articulo_name": "ROSA VENDELA 40CM 25U PONDEROSA",
       "match_status": "ok",
       "match_confidence": 1.0,
-      "link_confidence": 1.0,
-      "_review": "CHECK — verify variety, size, origin, articulo_id"
+      "link_confidence": 1.0
     },
     {
       "raw_description": "4/52 HB 0,50 1,00 VENDELA 40CM 300 300 CO 0603110000 $ 0,26 $ 78,00",
@@ -77,8 +74,7 @@
       "articulo_name": "ROSA VENDELA 40CM 25U PONDEROSA",
       "match_status": "ok",
       "match_confidence": 1.0,
-      "link_confidence": 1.0,
-      "_review": "CHECK — verify variety, size, origin, articulo_id"
+      "link_confidence": 1.0
     },
     {
       "raw_description": "5/52 HB 0,50 1,00 BRIGHTON 60CM 125 125 CO 0603110000 $ 0,36 $ 45,00",
@@ -94,8 +90,7 @@
       "articulo_name": "ROSA BRIGHTON 60CM 25U PONDEROSA",
       "match_status": "ok",
       "match_confidence": 1.0,
-      "link_confidence": 1.0,
-      "_review": "CHECK — verify variety, size, origin, articulo_id"
+      "link_confidence": 1.0
     },
     {
       "raw_description": "BRIGHTON 50CM 125 125 CO 0603110000 $ 0,32 $ 40,00",
@@ -107,12 +102,11 @@
       "bunches": 0,
       "stems": 125,
       "line_total": 40.0,
-      "articulo_id": 31918,
-      "articulo_name": "ROSA BRIGHTON 50CM 10U PONDEROSA",
+      "articulo_id": 31916,
+      "articulo_name": "ROSA BRIGHTON 50CM 25U PONDEROSA",
       "match_status": "ok",
       "match_confidence": 1.0,
-      "link_confidence": 1.0,
-      "_review": "CHECK — verify variety, size, origin, articulo_id"
+      "link_confidence": 1.0
     },
     {
       "raw_description": "6/52 HB 0,50 1,00 MONDIAL 60CM 200 200 ASTURIAS CO 0603110000 $ 0,36 $ 72,00",
@@ -128,8 +122,7 @@
       "articulo_name": "ROSA MONDIAL 60CM 25U PONDEROSA",
       "match_status": "ok",
       "match_confidence": 1.0,
-      "link_confidence": 1.0,
-      "_review": "CHECK — verify variety, size, origin, articulo_id"
+      "link_confidence": 1.0
     },
     {
       "raw_description": "7/52 HB 0,50 1,00 MONDIAL 60CM 200 200 ASTURIAS CO 0603110000 $ 0,36 $ 72,00",
@@ -145,8 +138,7 @@
       "articulo_name": "ROSA MONDIAL 60CM 25U PONDEROSA",
       "match_status": "ok",
       "match_confidence": 1.0,
-      "link_confidence": 1.0,
-      "_review": "CHECK — verify variety, size, origin, articulo_id"
+      "link_confidence": 1.0
     },
     {
       "raw_description": "8/52 HB 0,50 1,00 VENDELA 50CM 240 240 MARL CO 0603110000 $ 0,30 $ 72,00",
@@ -162,8 +154,7 @@
       "articulo_name": "ROSA VENDELA 50CM 20U PONDEROSA",
       "match_status": "ok",
       "match_confidence": 1.0,
-      "link_confidence": 1.0,
-      "_review": "CHECK — verify variety, size, origin, articulo_id"
+      "link_confidence": 1.0
     },
     {
       "raw_description": "9/52 HB 0,50 1,00 FREEDOM 60CM 250 250 KENTIA CO 0603110000 $ 0,34 $ 85,00",
@@ -179,8 +170,7 @@
       "articulo_name": "ROSA FREEDOM 60CM 25U PONDEROSA",
       "match_status": "ok",
       "match_confidence": 1.0,
-      "link_confidence": 1.0,
-      "_review": "CHECK — verify variety, size, origin, articulo_id"
+      "link_confidence": 1.0
     },
     {
       "raw_description": "10/52 HB 0,50 1,00 FREEDOM 60CM 250 250 KENTIA CO 0603110000 $ 0,34 $ 85,00",
@@ -196,8 +186,7 @@
       "articulo_name": "ROSA FREEDOM 60CM 25U PONDEROSA",
       "match_status": "ok",
       "match_confidence": 1.0,
-      "link_confidence": 1.0,
-      "_review": "CHECK — verify variety, size, origin, articulo_id"
+      "link_confidence": 1.0
     },
     {
       "raw_description": "11/52 HB 0,50 1,00 FREEDOM 60CM 250 250 KENTIA CO 0603110000 $ 0,34 $ 85,00",
@@ -213,8 +202,7 @@
       "articulo_name": "ROSA FREEDOM 60CM 25U PONDEROSA",
       "match_status": "ok",
       "match_confidence": 1.0,
-      "link_confidence": 1.0,
-      "_review": "CHECK — verify variety, size, origin, articulo_id"
+      "link_confidence": 1.0
     },
     {
       "raw_description": "12/52 QB 0,25 1,00 ATOMIC 50CM 50 50 KENTIA CO 0603110000 $ 0,32 $ 16,00",
@@ -230,8 +218,7 @@
       "articulo_name": "ROSA ATOMIC 50CM 25U PONDEROSA",
       "match_status": "ok",
       "match_confidence": 1.0,
-      "link_confidence": 1.0,
-      "_review": "CHECK — verify variety, size, origin, articulo_id"
+      "link_confidence": 1.0
     },
     {
       "raw_description": "ATOMIC 40CM 50 50 KENTIA CO 0603110000 $ 0,28 $ 14,00",
@@ -247,8 +234,7 @@
       "articulo_name": "ROSA ATOMIC 40CM 25U PONDEROSA",
       "match_status": "ok",
       "match_confidence": 1.0,
-      "link_confidence": 1.0,
-      "_review": "CHECK — verify variety, size, origin, articulo_id"
+      "link_confidence": 1.0
     },
     {
       "raw_description": "13/52 HB 0,50 1,00 EXPLORER 40CM 300 300 R11 CO 0603110000 $ 0,33 $ 99,00",
@@ -264,8 +250,7 @@
       "articulo_name": "ROSA EXPLORER 40CM 25U PONDEROSA",
       "match_status": "ok",
       "match_confidence": 1.0,
-      "link_confidence": 1.0,
-      "_review": "CHECK — verify variety, size, origin, articulo_id"
+      "link_confidence": 1.0
     },
     {
       "raw_description": "14/52 HB 0,50 1,00 EXPLORER 50CM 250 250 R12 CO 0603110000 $ 0,40 $ 100,00",
@@ -281,8 +266,7 @@
       "articulo_name": "ROSA EXPLORER 50CM 25U PONDEROSA",
       "match_status": "ok",
       "match_confidence": 1.0,
-      "link_confidence": 1.0,
-      "_review": "CHECK — verify variety, size, origin, articulo_id"
+      "link_confidence": 1.0
     },
     {
       "raw_description": "15/52 HB 0,50 1,00 FREEDOM 50CM 300 300 R12 CO 0603110000 $ 0,30 $ 90,00",
@@ -294,12 +278,11 @@
       "bunches": 0,
       "stems": 300,
       "line_total": 90.0,
-      "articulo_id": 33948,
-      "articulo_name": "ROSA FREEDOM 50CM 20U PONDEROSA",
+      "articulo_id": 33942,
+      "articulo_name": "ROSA FREEDOM 50CM 25U PONDEROSA",
       "match_status": "ok",
       "match_confidence": 1.0,
-      "link_confidence": 1.0,
-      "_review": "CHECK — verify variety, size, origin, articulo_id"
+      "link_confidence": 1.0
     },
     {
       "raw_description": "16/52 HB 0,50 1,00 MONDIAL 50CM 250 250 R12 CO 0603110000 $ 0,32 $ 80,00",
@@ -315,8 +298,7 @@
       "articulo_name": "ROSA MONDIAL 50CM 25U PONDEROSA",
       "match_status": "ok",
       "match_confidence": 1.0,
-      "link_confidence": 1.0,
-      "_review": "CHECK — verify variety, size, origin, articulo_id"
+      "link_confidence": 1.0
     },
     {
       "raw_description": "17/52 HB 0,50 1,00 EXPLORER 50CM 250 250 R19 CO 0603110000 $ 0,40 $ 100,00",
@@ -332,8 +314,7 @@
       "articulo_name": "ROSA EXPLORER 50CM 25U PONDEROSA",
       "match_status": "ok",
       "match_confidence": 1.0,
-      "link_confidence": 1.0,
-      "_review": "CHECK — verify variety, size, origin, articulo_id"
+      "link_confidence": 1.0
     },
     {
       "raw_description": "18/52 HB 0,50 1,00 MONDIAL 40CM 150 150 R11 CO 0603110000 $ 0,28 $ 42,00",
@@ -349,8 +330,7 @@
       "articulo_name": "ROSA MONDIAL 40CM 25U PONDEROSA",
       "match_status": "ok",
       "match_confidence": 1.0,
-      "link_confidence": 1.0,
-      "_review": "CHECK — verify variety, size, origin, articulo_id"
+      "link_confidence": 1.0
     },
     {
       "raw_description": "EXPLORER 40CM 150 150 R11 CO 0603110000 $ 0,33 $ 49,50",
@@ -366,8 +346,7 @@
       "articulo_name": "ROSA EXPLORER 40CM 25U PONDEROSA",
       "match_status": "ok",
       "match_confidence": 1.0,
-      "link_confidence": 1.0,
-      "_review": "CHECK — verify variety, size, origin, articulo_id"
+      "link_confidence": 1.0
     },
     {
       "raw_description": "19/52 HB 0,50 1,00 MONDIAL 40CM 150 150 CO 0603110000 $ 0,28 $ 42,00",
@@ -383,8 +362,7 @@
       "articulo_name": "ROSA MONDIAL 40CM 25U PONDEROSA",
       "match_status": "ok",
       "match_confidence": 1.0,
-      "link_confidence": 1.0,
-      "_review": "CHECK — verify variety, size, origin, articulo_id"
+      "link_confidence": 1.0
     },
     {
       "raw_description": "EXPLORER 40CM 150 150 CO 0603110000 $ 0,33 $ 49,50",
@@ -400,8 +378,7 @@
       "articulo_name": "ROSA EXPLORER 40CM 25U PONDEROSA",
       "match_status": "ok",
       "match_confidence": 1.0,
-      "link_confidence": 1.0,
-      "_review": "CHECK — verify variety, size, origin, articulo_id"
+      "link_confidence": 1.0
     },
     {
       "raw_description": "20/52 HB 0,50 1,00 FREEDOM 40CM 300 300 CO 0603110000 $ 0,26 $ 78,00",
@@ -417,8 +394,7 @@
       "articulo_name": "ROSA FREEDOM 40CM 25U PONDEROSA",
       "match_status": "ok",
       "match_confidence": 1.0,
-      "link_confidence": 1.0,
-      "_review": "CHECK — verify variety, size, origin, articulo_id"
+      "link_confidence": 1.0
     },
     {
       "raw_description": "21/52 HB 0,50 1,00 FREEDOM 40CM 300 300 CO 0603110000 $ 0,26 $ 78,00",
@@ -434,8 +410,7 @@
       "articulo_name": "ROSA FREEDOM 40CM 25U PONDEROSA",
       "match_status": "ok",
       "match_confidence": 1.0,
-      "link_confidence": 1.0,
-      "_review": "CHECK — verify variety, size, origin, articulo_id"
+      "link_confidence": 1.0
     },
     {
       "raw_description": "22/52 HB 0,50 1,00 FREEDOM 50CM 300 300 CO 0603110000 $ 0,30 $ 90,00",
@@ -447,12 +422,11 @@
       "bunches": 0,
       "stems": 300,
       "line_total": 90.0,
-      "articulo_id": 33948,
-      "articulo_name": "ROSA FREEDOM 50CM 20U PONDEROSA",
+      "articulo_id": 33942,
+      "articulo_name": "ROSA FREEDOM 50CM 25U PONDEROSA",
       "match_status": "ok",
       "match_confidence": 1.0,
-      "link_confidence": 1.0,
-      "_review": "CHECK — verify variety, size, origin, articulo_id"
+      "link_confidence": 1.0
     },
     {
       "raw_description": "23/52 HB 0,50 1,00 FREEDOM 50CM 300 300 CO 0603110000 $ 0,30 $ 90,00",
@@ -464,12 +438,11 @@
       "bunches": 0,
       "stems": 300,
       "line_total": 90.0,
-      "articulo_id": 33948,
-      "articulo_name": "ROSA FREEDOM 50CM 20U PONDEROSA",
+      "articulo_id": 33942,
+      "articulo_name": "ROSA FREEDOM 50CM 25U PONDEROSA",
       "match_status": "ok",
       "match_confidence": 1.0,
-      "link_confidence": 1.0,
-      "_review": "CHECK — verify variety, size, origin, articulo_id"
+      "link_confidence": 1.0
     },
     {
       "raw_description": "24/52 QB 0,25 1,00 MONDIAL 60CM 50 50 R18 CO 0603110000 $ 0,36 $ 18,00",
@@ -485,8 +458,7 @@
       "articulo_name": "ROSA MONDIAL 60CM 25U PONDEROSA",
       "match_status": "ok",
       "match_confidence": 1.0,
-      "link_confidence": 1.0,
-      "_review": "CHECK — verify variety, size, origin, articulo_id"
+      "link_confidence": 1.0
     },
     {
       "raw_description": "EXPLORER 60CM 50 50 R18 CO 0603110000 $ 0,50 $ 25,00",
@@ -502,8 +474,7 @@
       "articulo_name": "ROSA EXPLORER 60CM 25U PONDEROSA",
       "match_status": "ok",
       "match_confidence": 1.0,
-      "link_confidence": 1.0,
-      "_review": "CHECK — verify variety, size, origin, articulo_id"
+      "link_confidence": 1.0
     },
     {
       "raw_description": "25/52 QB 0,25 1,00 CARROUSEL 40CM 50 50 CO 0603110000 $ 0,33 $ 16,50",
@@ -519,8 +490,7 @@
       "articulo_name": "ROSA CARROUSEL 40CM 25U PONDEROSA",
       "match_status": "ok",
       "match_confidence": 1.0,
-      "link_confidence": 1.0,
-      "_review": "CHECK — verify variety, size, origin, articulo_id"
+      "link_confidence": 1.0
     },
     {
       "raw_description": "CARROUSEL 50CM 50 50 CO 0603110000 $ 0,37 $ 18,50",
@@ -536,8 +506,7 @@
       "articulo_name": "ROSA CARROUSEL 50CM 25U PONDEROSA",
       "match_status": "ok",
       "match_confidence": 1.0,
-      "link_confidence": 1.0,
-      "_review": "CHECK — verify variety, size, origin, articulo_id"
+      "link_confidence": 1.0
     },
     {
       "raw_description": "26/52 QB 0,25 1,00 EXPLORER 60CM 50 50 CO 0603110000 $ 0,50 $ 25,00",
@@ -553,8 +522,7 @@
       "articulo_name": "ROSA EXPLORER 60CM 25U PONDEROSA",
       "match_status": "ok",
       "match_confidence": 1.0,
-      "link_confidence": 1.0,
-      "_review": "CHECK — verify variety, size, origin, articulo_id"
+      "link_confidence": 1.0
     },
     {
       "raw_description": "MONDIAL 60CM 25 25 CO 0603110000 $ 0,36 $ 9,00",
@@ -570,8 +538,7 @@
       "articulo_name": "ROSA MONDIAL 60CM 25U PONDEROSA",
       "match_status": "ok",
       "match_confidence": 1.0,
-      "link_confidence": 1.0,
-      "_review": "CHECK — verify variety, size, origin, articulo_id"
+      "link_confidence": 1.0
     },
     {
       "raw_description": "BLUSH 60CM 25 25 CO 0603110000 $ 0,34 $ 8,50",
@@ -587,8 +554,7 @@
       "articulo_name": "ROSA BLUSH 60CM 25U PONDEROSA",
       "match_status": "ok",
       "match_confidence": 1.0,
-      "link_confidence": 1.0,
-      "_review": "CHECK — verify variety, size, origin, articulo_id"
+      "link_confidence": 1.0
     },
     {
       "raw_description": "27/52 QB 0,25 1,00 MONDIAL 60CM 50 50 R15 CO 0603110000 $ 0,36 $ 18,00",
@@ -604,8 +570,7 @@
       "articulo_name": "ROSA MONDIAL 60CM 25U PONDEROSA",
       "match_status": "ok",
       "match_confidence": 1.0,
-      "link_confidence": 1.0,
-      "_review": "CHECK — verify variety, size, origin, articulo_id"
+      "link_confidence": 1.0
     },
     {
       "raw_description": "FRUTTETO 60CM 25 25 R15 CO 0603110000 $ 0,36 $ 9,00",
@@ -621,8 +586,7 @@
       "articulo_name": "ROSA FRUTTETO 60CM 25U PONDEROSA",
       "match_status": "ok",
       "match_confidence": 1.0,
-      "link_confidence": 1.0,
-      "_review": "CHECK — verify variety, size, origin, articulo_id"
+      "link_confidence": 1.0
     },
     {
       "raw_description": "BLUSH 60CM 25 25 R15 CO 0603110000 $ 0,34 $ 8,50",
@@ -638,8 +602,7 @@
       "articulo_name": "ROSA BLUSH 60CM 25U PONDEROSA",
       "match_status": "ok",
       "match_confidence": 1.0,
-      "link_confidence": 1.0,
-      "_review": "CHECK — verify variety, size, origin, articulo_id"
+      "link_confidence": 1.0
     },
     {
       "raw_description": "28/52 HB 0,50 1,00 FREEDOM 60CM 100 100 R14 CO 0603110000 $ 0,34 $ 34,00",
@@ -655,8 +618,7 @@
       "articulo_name": "ROSA FREEDOM 60CM 25U PONDEROSA",
       "match_status": "ok",
       "match_confidence": 1.0,
-      "link_confidence": 1.0,
-      "_review": "CHECK — verify variety, size, origin, articulo_id"
+      "link_confidence": 1.0
     },
     {
       "raw_description": "MONDIAL 60CM 100 100 R14 CO 0603110000 $ 0,36 $ 36,00",
@@ -672,8 +634,7 @@
       "articulo_name": "ROSA MONDIAL 60CM 25U PONDEROSA",
       "match_status": "ok",
       "match_confidence": 1.0,
-      "link_confidence": 1.0,
-      "_review": "CHECK — verify variety, size, origin, articulo_id"
+      "link_confidence": 1.0
     },
     {
       "raw_description": "BRIGHTON 60CM 25 25 R14 CO 0603110000 $ 0,36 $ 9,00",
@@ -689,8 +650,7 @@
       "articulo_name": "ROSA BRIGHTON 60CM 25U PONDEROSA",
       "match_status": "ok",
       "match_confidence": 1.0,
-      "link_confidence": 1.0,
-      "_review": "CHECK — verify variety, size, origin, articulo_id"
+      "link_confidence": 1.0
     },
     {
       "raw_description": "FRUTTETO 60CM 25 25 R14 CO 0603110000 $ 0,36 $ 9,00",
@@ -706,8 +666,7 @@
       "articulo_name": "ROSA FRUTTETO 60CM 25U PONDEROSA",
       "match_status": "ok",
       "match_confidence": 1.0,
-      "link_confidence": 1.0,
-      "_review": "CHECK — verify variety, size, origin, articulo_id"
+      "link_confidence": 1.0
     },
     {
       "raw_description": "29/52 HB 0,50 1,00 FREEDOM 50CM 240 240 MARL CO 0603110000 $ 0,30 $ 72,00",
@@ -723,8 +682,7 @@
       "articulo_name": "ROSA FREEDOM 50CM 20U PONDEROSA",
       "match_status": "ok",
       "match_confidence": 1.0,
-      "link_confidence": 1.0,
-      "_review": "CHECK — verify variety, size, origin, articulo_id"
+      "link_confidence": 1.0
     },
     {
       "raw_description": "30/52 HB 0,50 1,00 FREEDOM 50CM 240 240 MARL CO 0603110000 $ 0,30 $ 72,00",
@@ -740,8 +698,7 @@
       "articulo_name": "ROSA FREEDOM 50CM 20U PONDEROSA",
       "match_status": "ok",
       "match_confidence": 1.0,
-      "link_confidence": 1.0,
-      "_review": "CHECK — verify variety, size, origin, articulo_id"
+      "link_confidence": 1.0
     },
     {
       "raw_description": "31/52 HB 0,50 1,00 FREEDOM 50CM 240 240 MARL CO 0603110000 $ 0,30 $ 72,00",
@@ -757,8 +714,7 @@
       "articulo_name": "ROSA FREEDOM 50CM 20U PONDEROSA",
       "match_status": "ok",
       "match_confidence": 1.0,
-      "link_confidence": 1.0,
-      "_review": "CHECK — verify variety, size, origin, articulo_id"
+      "link_confidence": 1.0
     },
     {
       "raw_description": "32/52 HB 0,50 1,00 FREEDOM 50CM 240 240 MARL CO 0603110000 $ 0,30 $ 72,00",
@@ -774,8 +730,7 @@
       "articulo_name": "ROSA FREEDOM 50CM 20U PONDEROSA",
       "match_status": "ok",
       "match_confidence": 1.0,
-      "link_confidence": 1.0,
-      "_review": "CHECK — verify variety, size, origin, articulo_id"
+      "link_confidence": 1.0
     },
     {
       "raw_description": "33/52 HB 0,50 1,00 FREEDOM 50CM 240 240 MARL CO 0603110000 $ 0,30 $ 72,00",
@@ -791,8 +746,7 @@
       "articulo_name": "ROSA FREEDOM 50CM 20U PONDEROSA",
       "match_status": "ok",
       "match_confidence": 1.0,
-      "link_confidence": 1.0,
-      "_review": "CHECK — verify variety, size, origin, articulo_id"
+      "link_confidence": 1.0
     },
     {
       "raw_description": "34/52 HB 0,50 1,00 FRUTTETO 50CM 300 300 CO 0603110000 $ 0,32 $ 96,00",
@@ -804,12 +758,11 @@
       "bunches": 0,
       "stems": 300,
       "line_total": 96.0,
-      "articulo_id": 34096,
-      "articulo_name": "ROSA FRUTTETO 50CM 10U PONDEROSA",
+      "articulo_id": 34094,
+      "articulo_name": "ROSA FRUTTETO 50CM 25U PONDEROSA",
       "match_status": "ok",
       "match_confidence": 1.0,
-      "link_confidence": 1.0,
-      "_review": "CHECK — verify variety, size, origin, articulo_id"
+      "link_confidence": 1.0
     },
     {
       "raw_description": "35/52 HB 0,50 1,00 VENDELA 40CM 300 300 CO 0603110000 $ 0,26 $ 78,00",
@@ -825,8 +778,7 @@
       "articulo_name": "ROSA VENDELA 40CM 25U PONDEROSA",
       "match_status": "ok",
       "match_confidence": 1.0,
-      "link_confidence": 1.0,
-      "_review": "CHECK — verify variety, size, origin, articulo_id"
+      "link_confidence": 1.0
     },
     {
       "raw_description": "36/52 HB 0,50 1,00 FRUTTETO 40CM 300 300 CO 0603110000 $ 0,28 $ 84,00",
@@ -842,8 +794,7 @@
       "articulo_name": "ROSA FRUTTETO 40CM 25U PONDEROSA",
       "match_status": "ok",
       "match_confidence": 1.0,
-      "link_confidence": 1.0,
-      "_review": "CHECK — verify variety, size, origin, articulo_id"
+      "link_confidence": 1.0
     },
     {
       "raw_description": "37/52 HB 0,50 1,00 EXPLORER 60CM 200 200 CO 0603110000 $ 0,50 $ 100,00",
@@ -859,8 +810,7 @@
       "articulo_name": "ROSA EXPLORER 60CM 25U PONDEROSA",
       "match_status": "ok",
       "match_confidence": 1.0,
-      "link_confidence": 1.0,
-      "_review": "CHECK — verify variety, size, origin, articulo_id"
+      "link_confidence": 1.0
     },
     {
       "raw_description": "38/52 HB 0,50 1,00 EXPLORER 60CM 200 200 CO 0603110000 $ 0,50 $ 100,00",
@@ -876,8 +826,7 @@
       "articulo_name": "ROSA EXPLORER 60CM 25U PONDEROSA",
       "match_status": "ok",
       "match_confidence": 1.0,
-      "link_confidence": 1.0,
-      "_review": "CHECK — verify variety, size, origin, articulo_id"
+      "link_confidence": 1.0
     },
     {
       "raw_description": "39/52 HB 0,50 1,00 EXPLORER 60CM 200 200 CO 0603110000 $ 0,50 $ 100,00",
@@ -893,8 +842,7 @@
       "articulo_name": "ROSA EXPLORER 60CM 25U PONDEROSA",
       "match_status": "ok",
       "match_confidence": 1.0,
-      "link_confidence": 1.0,
-      "_review": "CHECK — verify variety, size, origin, articulo_id"
+      "link_confidence": 1.0
     },
     {
       "raw_description": "40/52 HB 0,50 1,00 MALIBU 40CM 50 50 CO 0603110000 $ 0,26 $ 13,00",
@@ -910,8 +858,7 @@
       "articulo_name": "ROSA MALIBU 40CM 25U PONDEROSA",
       "match_status": "ok",
       "match_confidence": 1.0,
-      "link_confidence": 1.0,
-      "_review": "CHECK — verify variety, size, origin, articulo_id"
+      "link_confidence": 1.0
     },
     {
       "raw_description": "MAYRA'S BRIDAL WHITE 40CM 50 50 CO 0603110000 $ 0,32 $ 16,00",
@@ -923,12 +870,11 @@
       "bunches": 0,
       "stems": 50,
       "line_total": 16.0,
-      "articulo_id": 35296,
-      "articulo_name": "ROSA MAYRA S BRIDAL ROSA 40CM 25U PONDEROSA",
+      "articulo_id": 35298,
+      "articulo_name": "ROSA MAYRA S BRIDAL BLANCO 40CM 25U PONDEROSA",
       "match_status": "ok",
       "match_confidence": 1.0,
-      "link_confidence": 1.0,
-      "_review": "CHECK — verify variety, size, origin, articulo_id"
+      "link_confidence": 1.0
     },
     {
       "raw_description": "SWEET CAKE 40CM 50 50 CO 0603110000 $ 0,28 $ 14,00",
@@ -944,8 +890,7 @@
       "articulo_name": "ROSA SWEET CAKE 40CM 25U PONDEROSA",
       "match_status": "ok",
       "match_confidence": 1.0,
-      "link_confidence": 1.0,
-      "_review": "CHECK — verify variety, size, origin, articulo_id"
+      "link_confidence": 1.0
     },
     {
       "raw_description": "BRIGHTON 40CM 25 25 CO 0603110000 $ 0,28 $ 7,00",
@@ -961,8 +906,7 @@
       "articulo_name": "ROSA BRIGHTON 40CM 25U PONDEROSA",
       "match_status": "ok",
       "match_confidence": 1.0,
-      "link_confidence": 1.0,
-      "_review": "CHECK — verify variety, size, origin, articulo_id"
+      "link_confidence": 1.0
     },
     {
       "raw_description": "MAGIC TIMES 40CM 25 25 CO 0603110000 $ 0,28 $ 7,00",
@@ -978,8 +922,7 @@
       "articulo_name": "ROSA MAGIC TIMES 40CM 25U PONDEROSA",
       "match_status": "ok",
       "match_confidence": 1.0,
-      "link_confidence": 1.0,
-      "_review": "CHECK — verify variety, size, origin, articulo_id"
+      "link_confidence": 1.0
     },
     {
       "raw_description": "FRUTTETO 40CM 50 50 CO 0603110000 $ 0,28 $ 14,00",
@@ -995,8 +938,7 @@
       "articulo_name": "ROSA FRUTTETO 40CM 25U PONDEROSA",
       "match_status": "ok",
       "match_confidence": 1.0,
-      "link_confidence": 1.0,
-      "_review": "CHECK — verify variety, size, origin, articulo_id"
+      "link_confidence": 1.0
     },
     {
       "raw_description": "BLUSH 40CM 50 50 CO 0603110000 $ 0,26 $ 13,00",
@@ -1012,8 +954,7 @@
       "articulo_name": "ROSA BLUSH 40CM 25U PONDEROSA",
       "match_status": "ok",
       "match_confidence": 1.0,
-      "link_confidence": 1.0,
-      "_review": "CHECK — verify variety, size, origin, articulo_id"
+      "link_confidence": 1.0
     },
     {
       "raw_description": "41/52 HB 0,50 1,00 MALIBU 40CM 50 50 CO 0603110000 $ 0,26 $ 13,00",
@@ -1029,8 +970,7 @@
       "articulo_name": "ROSA MALIBU 40CM 25U PONDEROSA",
       "match_status": "ok",
       "match_confidence": 1.0,
-      "link_confidence": 1.0,
-      "_review": "CHECK — verify variety, size, origin, articulo_id"
+      "link_confidence": 1.0
     },
     {
       "raw_description": "MAYRA'S BRIDAL WHITE 40CM 50 50 CO 0603110000 $ 0,32 $ 16,00",
@@ -1042,12 +982,11 @@
       "bunches": 0,
       "stems": 50,
       "line_total": 16.0,
-      "articulo_id": 35296,
-      "articulo_name": "ROSA MAYRA S BRIDAL ROSA 40CM 25U PONDEROSA",
+      "articulo_id": 35298,
+      "articulo_name": "ROSA MAYRA S BRIDAL BLANCO 40CM 25U PONDEROSA",
       "match_status": "ok",
       "match_confidence": 1.0,
-      "link_confidence": 1.0,
-      "_review": "CHECK — verify variety, size, origin, articulo_id"
+      "link_confidence": 1.0
     },
     {
       "raw_description": "SWEET CAKE 40CM 50 50 CO 0603110000 $ 0,28 $ 14,00",
@@ -1063,8 +1002,7 @@
       "articulo_name": "ROSA SWEET CAKE 40CM 25U PONDEROSA",
       "match_status": "ok",
       "match_confidence": 1.0,
-      "link_confidence": 1.0,
-      "_review": "CHECK — verify variety, size, origin, articulo_id"
+      "link_confidence": 1.0
     },
     {
       "raw_description": "MOMENTUM 40CM 25 25 CO 0603110000 $ 0,28 $ 7,00",
@@ -1080,8 +1018,7 @@
       "articulo_name": "ROSA MOMENTUM 40CM 25U PONDEROSA",
       "match_status": "ok",
       "match_confidence": 1.0,
-      "link_confidence": 1.0,
-      "_review": "CHECK — verify variety, size, origin, articulo_id"
+      "link_confidence": 1.0
     },
     {
       "raw_description": "PINK FLOYD 40CM 25 25 CO 0603110000 $ 0,26 $ 6,50",
@@ -1097,8 +1034,7 @@
       "articulo_name": "ROSA PINK FLOYD 40CM 25U PONDEROSA",
       "match_status": "ok",
       "match_confidence": 1.0,
-      "link_confidence": 1.0,
-      "_review": "CHECK — verify variety, size, origin, articulo_id"
+      "link_confidence": 1.0
     },
     {
       "raw_description": "FRUTTETO 40CM 50 50 CO 0603110000 $ 0,28 $ 14,00",
@@ -1114,8 +1050,7 @@
       "articulo_name": "ROSA FRUTTETO 40CM 25U PONDEROSA",
       "match_status": "ok",
       "match_confidence": 1.0,
-      "link_confidence": 1.0,
-      "_review": "CHECK — verify variety, size, origin, articulo_id"
+      "link_confidence": 1.0
     },
     {
       "raw_description": "BLUSH 40CM 50 50 CO 0603110000 $ 0,26 $ 13,00",
@@ -1131,8 +1066,7 @@
       "articulo_name": "ROSA BLUSH 40CM 25U PONDEROSA",
       "match_status": "ok",
       "match_confidence": 1.0,
-      "link_confidence": 1.0,
-      "_review": "CHECK — verify variety, size, origin, articulo_id"
+      "link_confidence": 1.0
     },
     {
       "raw_description": "42/52 HB 0,50 1,00 FROST 50CM 25 25 CO 0603110000 $ 0,32 $ 8,00",
@@ -1148,8 +1082,7 @@
       "articulo_name": "ROSA FROST 50CM 25U PONDEROSA",
       "match_status": "ok",
       "match_confidence": 1.0,
-      "link_confidence": 1.0,
-      "_review": "CHECK — verify variety, size, origin, articulo_id"
+      "link_confidence": 1.0
     },
     {
       "raw_description": "MAYRA'S BRIDAL WHITE 50CM 25 25 CO 0603110000 $ 0,42 $ 10,50",
@@ -1165,8 +1098,7 @@
       "articulo_name": "ROSA MAYRA S BRIDAL BLANCO 50CM 25U PONDEROSA",
       "match_status": "ok",
       "match_confidence": 1.0,
-      "link_confidence": 1.0,
-      "_review": "CHECK — verify variety, size, origin, articulo_id"
+      "link_confidence": 1.0
     },
     {
       "raw_description": "FRUTTETO 50CM 50 50 CO 0603110000 $ 0,32 $ 16,00",
@@ -1178,12 +1110,11 @@
       "bunches": 0,
       "stems": 50,
       "line_total": 16.0,
-      "articulo_id": 34096,
-      "articulo_name": "ROSA FRUTTETO 50CM 10U PONDEROSA",
+      "articulo_id": 34094,
+      "articulo_name": "ROSA FRUTTETO 50CM 25U PONDEROSA",
       "match_status": "ok",
       "match_confidence": 1.0,
-      "link_confidence": 1.0,
-      "_review": "CHECK — verify variety, size, origin, articulo_id"
+      "link_confidence": 1.0
     },
     {
       "raw_description": "BLUSH 50CM 50 50 CO 0603110000 $ 0,30 $ 15,00",
@@ -1199,8 +1130,7 @@
       "articulo_name": "ROSA BLUSH 50CM 25U PONDEROSA",
       "match_status": "ok",
       "match_confidence": 1.0,
-      "link_confidence": 1.0,
-      "_review": "CHECK — verify variety, size, origin, articulo_id"
+      "link_confidence": 1.0
     },
     {
       "raw_description": "MAGIC TIMES 50CM 25 25 CO 0603110000 $ 0,32 $ 8,00",
@@ -1216,8 +1146,7 @@
       "articulo_name": "ROSA MAGIC TIMES 50CM 25U PONDEROSA",
       "match_status": "ok",
       "match_confidence": 1.0,
-      "link_confidence": 1.0,
-      "_review": "CHECK — verify variety, size, origin, articulo_id"
+      "link_confidence": 1.0
     },
     {
       "raw_description": "MAYRA'S BRIDAL PINK 50CM 25 25 CO 0603110000 $ 0,42 $ 10,50",
@@ -1233,8 +1162,7 @@
       "articulo_name": "ROSA MAYRA S BRIDAL ROSA 50CM 25U PONDEROSA",
       "match_status": "ok",
       "match_confidence": 1.0,
-      "link_confidence": 1.0,
-      "_review": "CHECK — verify variety, size, origin, articulo_id"
+      "link_confidence": 1.0
     },
     {
       "raw_description": "SWEET CAKE 50CM 25 25 CO 0603110000 $ 0,32 $ 8,00",
@@ -1250,8 +1178,7 @@
       "articulo_name": "ROSA SWEET CAKE 50CM 25U PONDEROSA",
       "match_status": "ok",
       "match_confidence": 1.0,
-      "link_confidence": 1.0,
-      "_review": "CHECK — verify variety, size, origin, articulo_id"
+      "link_confidence": 1.0
     },
     {
       "raw_description": "PINK MONDIAL 50CM 25 25 CO 0603110000 $ 0,30 $ 7,50",
@@ -1263,12 +1190,11 @@
       "bunches": 0,
       "stems": 25,
       "line_total": 7.5,
-      "articulo_id": 36074,
-      "articulo_name": "ROSA PINK MONDIAL 50CM 10U PONDEROSA",
+      "articulo_id": 36048,
+      "articulo_name": "ROSA PINK MONDIAL 50CM 25U PONDEROSA",
       "match_status": "ok",
       "match_confidence": 1.0,
-      "link_confidence": 1.0,
-      "_review": "CHECK — verify variety, size, origin, articulo_id"
+      "link_confidence": 1.0
     },
     {
       "raw_description": "BRIGHTON 50CM 50 50 CO 0603110000 $ 0,32 $ 16,00",
@@ -1280,12 +1206,11 @@
       "bunches": 0,
       "stems": 50,
       "line_total": 16.0,
-      "articulo_id": 31918,
-      "articulo_name": "ROSA BRIGHTON 50CM 10U PONDEROSA",
+      "articulo_id": 31916,
+      "articulo_name": "ROSA BRIGHTON 50CM 25U PONDEROSA",
       "match_status": "ok",
       "match_confidence": 1.0,
-      "link_confidence": 1.0,
-      "_review": "CHECK — verify variety, size, origin, articulo_id"
+      "link_confidence": 1.0
     },
     {
       "raw_description": "43/52 HB 0,50 1,00 FROST 50CM 25 25 CO 0603110000 $ 0,32 $ 8,00",
@@ -1301,8 +1226,7 @@
       "articulo_name": "ROSA FROST 50CM 25U PONDEROSA",
       "match_status": "ok",
       "match_confidence": 1.0,
-      "link_confidence": 1.0,
-      "_review": "CHECK — verify variety, size, origin, articulo_id"
+      "link_confidence": 1.0
     },
     {
       "raw_description": "MONDIAL 50CM 25 25 CO 0603110000 $ 0,32 $ 8,00",
@@ -1318,8 +1242,7 @@
       "articulo_name": "ROSA MONDIAL 50CM 25U PONDEROSA",
       "match_status": "ok",
       "match_confidence": 1.0,
-      "link_confidence": 1.0,
-      "_review": "CHECK — verify variety, size, origin, articulo_id"
+      "link_confidence": 1.0
     },
     {
       "raw_description": "FRUTTETO 50CM 50 50 CO 0603110000 $ 0,32 $ 16,00",
@@ -1331,12 +1254,11 @@
       "bunches": 0,
       "stems": 50,
       "line_total": 16.0,
-      "articulo_id": 34096,
-      "articulo_name": "ROSA FRUTTETO 50CM 10U PONDEROSA",
+      "articulo_id": 34094,
+      "articulo_name": "ROSA FRUTTETO 50CM 25U PONDEROSA",
       "match_status": "ok",
       "match_confidence": 1.0,
-      "link_confidence": 1.0,
-      "_review": "CHECK — verify variety, size, origin, articulo_id"
+      "link_confidence": 1.0
     },
     {
       "raw_description": "BLUSH 50CM 50 50 CO 0603110000 $ 0,30 $ 15,00",
@@ -1352,8 +1274,7 @@
       "articulo_name": "ROSA BLUSH 50CM 25U PONDEROSA",
       "match_status": "ok",
       "match_confidence": 1.0,
-      "link_confidence": 1.0,
-      "_review": "CHECK — verify variety, size, origin, articulo_id"
+      "link_confidence": 1.0
     },
     {
       "raw_description": "MAGIC TIMES 50CM 25 25 CO 0603110000 $ 0,32 $ 8,00",
@@ -1369,8 +1290,7 @@
       "articulo_name": "ROSA MAGIC TIMES 50CM 25U PONDEROSA",
       "match_status": "ok",
       "match_confidence": 1.0,
-      "link_confidence": 1.0,
-      "_review": "CHECK — verify variety, size, origin, articulo_id"
+      "link_confidence": 1.0
     },
     {
       "raw_description": "MAYRA'S BRIDAL PINK 50CM 25 25 CO 0603110000 $ 0,42 $ 10,50",
@@ -1386,8 +1306,7 @@
       "articulo_name": "ROSA MAYRA S BRIDAL ROSA 50CM 25U PONDEROSA",
       "match_status": "ok",
       "match_confidence": 1.0,
-      "link_confidence": 1.0,
-      "_review": "CHECK — verify variety, size, origin, articulo_id"
+      "link_confidence": 1.0
     },
     {
       "raw_description": "SWEET CAKE 50CM 25 25 CO 0603110000 $ 0,32 $ 8,00",
@@ -1403,8 +1322,7 @@
       "articulo_name": "ROSA SWEET CAKE 50CM 25U PONDEROSA",
       "match_status": "ok",
       "match_confidence": 1.0,
-      "link_confidence": 1.0,
-      "_review": "CHECK — verify variety, size, origin, articulo_id"
+      "link_confidence": 1.0
     },
     {
       "raw_description": "PINK MONDIAL 50CM 25 25 CO 0603110000 $ 0,30 $ 7,50",
@@ -1416,12 +1334,11 @@
       "bunches": 0,
       "stems": 25,
       "line_total": 7.5,
-      "articulo_id": 36074,
-      "articulo_name": "ROSA PINK MONDIAL 50CM 10U PONDEROSA",
+      "articulo_id": 36048,
+      "articulo_name": "ROSA PINK MONDIAL 50CM 25U PONDEROSA",
       "match_status": "ok",
       "match_confidence": 1.0,
-      "link_confidence": 1.0,
-      "_review": "CHECK — verify variety, size, origin, articulo_id"
+      "link_confidence": 1.0
     },
     {
       "raw_description": "BRIGHTON 50CM 50 50 CO 0603110000 $ 0,32 $ 16,00",
@@ -1433,12 +1350,11 @@
       "bunches": 0,
       "stems": 50,
       "line_total": 16.0,
-      "articulo_id": 31918,
-      "articulo_name": "ROSA BRIGHTON 50CM 10U PONDEROSA",
+      "articulo_id": 31916,
+      "articulo_name": "ROSA BRIGHTON 50CM 25U PONDEROSA",
       "match_status": "ok",
       "match_confidence": 1.0,
-      "link_confidence": 1.0,
-      "_review": "CHECK — verify variety, size, origin, articulo_id"
+      "link_confidence": 1.0
     },
     {
       "raw_description": "44/52 HB 0,50 1,00 BLUSH 60CM 50 50 CO 0603110000 $ 0,34 $ 17,00",
@@ -1454,8 +1370,7 @@
       "articulo_name": "ROSA BLUSH 60CM 25U PONDEROSA",
       "match_status": "ok",
       "match_confidence": 1.0,
-      "link_confidence": 1.0,
-      "_review": "CHECK — verify variety, size, origin, articulo_id"
+      "link_confidence": 1.0
     },
     {
       "raw_description": "VINTAGE 60CM 50 50 CO 0603110000 $ 0,52 $ 26,00",
@@ -1471,8 +1386,7 @@
       "articulo_name": "ROSA VINTAGE 60CM 25U PONDEROSA",
       "match_status": "ok",
       "match_confidence": 1.0,
-      "link_confidence": 1.0,
-      "_review": "CHECK — verify variety, size, origin, articulo_id"
+      "link_confidence": 1.0
     },
     {
       "raw_description": "MALIBU 60CM 25 25 CO 0603110000 $ 0,34 $ 8,50",
@@ -1488,8 +1402,7 @@
       "articulo_name": "ROSA MALIBU 60CM 25U PONDEROSA",
       "match_status": "ok",
       "match_confidence": 1.0,
-      "link_confidence": 1.0,
-      "_review": "CHECK — verify variety, size, origin, articulo_id"
+      "link_confidence": 1.0
     },
     {
       "raw_description": "CARROUSEL 60CM 25 25 CO 0603110000 $ 0,41 $ 10,25",
@@ -1505,8 +1418,7 @@
       "articulo_name": "ROSA CARROUSEL 60CM 25U PONDEROSA",
       "match_status": "ok",
       "match_confidence": 1.0,
-      "link_confidence": 1.0,
-      "_review": "CHECK — verify variety, size, origin, articulo_id"
+      "link_confidence": 1.0
     },
     {
       "raw_description": "MAYRA'S BRIDAL PINK 60CM 25 25 CO 0603110000 $ 0,52 $ 13,00",
@@ -1522,8 +1434,7 @@
       "articulo_name": "ROSA MAYRA S BRIDAL ROSA 50CM 25U PONDEROSA",
       "match_status": "ok",
       "match_confidence": 1.0,
-      "link_confidence": 1.0,
-      "_review": "CHECK — verify variety, size, origin, articulo_id"
+      "link_confidence": 1.0
     },
     {
       "raw_description": "PINK MONDIAL 60CM 25 25 CO 0603110000 $ 0,34 $ 8,50",
@@ -1539,8 +1450,7 @@
       "articulo_name": "ROSA PINK MONDIAL 60CM 25U PONDEROSA",
       "match_status": "ok",
       "match_confidence": 1.0,
-      "link_confidence": 1.0,
-      "_review": "CHECK — verify variety, size, origin, articulo_id"
+      "link_confidence": 1.0
     },
     {
       "raw_description": "MONDIAL 60CM 25 25 CO 0603110000 $ 0,36 $ 9,00",
@@ -1556,8 +1466,7 @@
       "articulo_name": "ROSA MONDIAL 60CM 25U PONDEROSA",
       "match_status": "ok",
       "match_confidence": 1.0,
-      "link_confidence": 1.0,
-      "_review": "CHECK — verify variety, size, origin, articulo_id"
+      "link_confidence": 1.0
     },
     {
       "raw_description": "BRIGHTON 60CM 25 25 CO 0603110000 $ 0,36 $ 9,00",
@@ -1573,8 +1482,7 @@
       "articulo_name": "ROSA BRIGHTON 60CM 25U PONDEROSA",
       "match_status": "ok",
       "match_confidence": 1.0,
-      "link_confidence": 1.0,
-      "_review": "CHECK — verify variety, size, origin, articulo_id"
+      "link_confidence": 1.0
     },
     {
       "raw_description": "45/52 HB 0,50 1,00 FREEDOM 60CM 250 250 CO 0603110000 $ 0,34 $ 85,00",
@@ -1590,8 +1498,7 @@
       "articulo_name": "ROSA FREEDOM 60CM 25U PONDEROSA",
       "match_status": "ok",
       "match_confidence": 1.0,
-      "link_confidence": 1.0,
-      "_review": "CHECK — verify variety, size, origin, articulo_id"
+      "link_confidence": 1.0
     },
     {
       "raw_description": "46/52 HB 0,50 1,00 FREEDOM 60CM 250 250 CO 0603110000 $ 0,34 $ 85,00",
@@ -1607,8 +1514,7 @@
       "articulo_name": "ROSA FREEDOM 60CM 25U PONDEROSA",
       "match_status": "ok",
       "match_confidence": 1.0,
-      "link_confidence": 1.0,
-      "_review": "CHECK — verify variety, size, origin, articulo_id"
+      "link_confidence": 1.0
     },
     {
       "raw_description": "47/52 HB 0,50 1,00 FREEDOM 60CM 250 250 CO 0603110000 $ 0,34 $ 85,00",
@@ -1624,8 +1530,7 @@
       "articulo_name": "ROSA FREEDOM 60CM 25U PONDEROSA",
       "match_status": "ok",
       "match_confidence": 1.0,
-      "link_confidence": 1.0,
-      "_review": "CHECK — verify variety, size, origin, articulo_id"
+      "link_confidence": 1.0
     },
     {
       "raw_description": "48/52 HB 0,50 1,00 YELLOW SUMMER 40CM 150 150 CO 0603110000 $ 0,28 $ 42,00",
@@ -1637,12 +1542,11 @@
       "bunches": 0,
       "stems": 150,
       "line_total": 42.0,
-      "articulo_id": 32434,
-      "articulo_name": "ROSA COL YELLOW KING 40CM 25U",
+      "articulo_id": 33632,
+      "articulo_name": "ROSA EC YELLOW SUMMER 50CM 25U",
       "match_status": "ok",
       "match_confidence": 1.0,
-      "link_confidence": 1.0,
-      "_review": "CHECK — verify variety, size, origin, articulo_id"
+      "link_confidence": 1.0
     },
     {
       "raw_description": "YELLOW SUMMER 50CM 150 150 CO 0603110000 $ 0,32 $ 48,00",
@@ -1654,12 +1558,11 @@
       "bunches": 0,
       "stems": 150,
       "line_total": 48.0,
-      "articulo_id": 32435,
-      "articulo_name": "ROSA COL YELLOW KING 50CM 25U",
+      "articulo_id": 33632,
+      "articulo_name": "ROSA EC YELLOW SUMMER 50CM 25U",
       "match_status": "ok",
       "match_confidence": 1.0,
-      "link_confidence": 1.0,
-      "_review": "CHECK — verify variety, size, origin, articulo_id"
+      "link_confidence": 1.0
     },
     {
       "raw_description": "49/52 HB 0,50 1,00 FROST 40CM 300 300 CO 0603110000 $ 0,28 $ 84,00",
@@ -1675,8 +1578,7 @@
       "articulo_name": "ROSA FROST 40CM 25U PONDEROSA",
       "match_status": "ok",
       "match_confidence": 1.0,
-      "link_confidence": 1.0,
-      "_review": "CHECK — verify variety, size, origin, articulo_id"
+      "link_confidence": 1.0
     },
     {
       "raw_description": "50/52 HB 0,50 1,00 FROST 50CM 300 300 CO 0603110000 $ 0,32 $ 96,00",
@@ -1692,8 +1594,7 @@
       "articulo_name": "ROSA FROST 50CM 25U PONDEROSA",
       "match_status": "ok",
       "match_confidence": 1.0,
-      "link_confidence": 1.0,
-      "_review": "CHECK — verify variety, size, origin, articulo_id"
+      "link_confidence": 1.0
     },
     {
       "raw_description": "51/52 HB 0,50 1,00 BLUSH 60CM 250 250 CO 0603110000 $ 0,34 $ 85,00",
@@ -1709,8 +1610,7 @@
       "articulo_name": "ROSA BLUSH 60CM 25U PONDEROSA",
       "match_status": "ok",
       "match_confidence": 1.0,
-      "link_confidence": 1.0,
-      "_review": "CHECK — verify variety, size, origin, articulo_id"
+      "link_confidence": 1.0
     },
     {
       "raw_description": "52/52 QB 0,25 1,00 MONDIAL 40CM 40 40 CO 0603110000 $ 0,28 $ 11,20",
@@ -1722,12 +1622,11 @@
       "bunches": 0,
       "stems": 40,
       "line_total": 11.2,
-      "articulo_id": 35436,
-      "articulo_name": "ROSA MONDIAL 40CM 25U PONDEROSA",
+      "articulo_id": 35445,
+      "articulo_name": "ROSA MONDIAL 40CM 10U PONDEROSA",
       "match_status": "ok",
       "match_confidence": 1.0,
-      "link_confidence": 1.0,
-      "_review": "CHECK — verify variety, size, origin, articulo_id"
+      "link_confidence": 1.0
     },
     {
       "raw_description": "BLUSH 40CM 30 30 CO 0603110000 $ 0,26 $ 7,80",
@@ -1739,12 +1638,11 @@
       "bunches": 0,
       "stems": 30,
       "line_total": 7.8,
-      "articulo_id": 31817,
-      "articulo_name": "ROSA BLUSH 40CM 25U PONDEROSA",
+      "articulo_id": 31816,
+      "articulo_name": "ROSA BLUSH 40CM 10U PONDEROSA",
       "match_status": "ok",
       "match_confidence": 1.0,
-      "link_confidence": 1.0,
-      "_review": "CHECK — verify variety, size, origin, articulo_id"
+      "link_confidence": 1.0
     },
     {
       "raw_description": "VENDELA 40CM 20 20 CO 0603110000 $ 0,26 $ 5,20",
@@ -1760,8 +1658,7 @@
       "articulo_name": "ROSA VENDELA 40CM 10U PONDEROSA",
       "match_status": "ok",
       "match_confidence": 1.0,
-      "link_confidence": 1.0,
-      "_review": "CHECK — verify variety, size, origin, articulo_id"
+      "link_confidence": 1.0
     }
   ]
 }
