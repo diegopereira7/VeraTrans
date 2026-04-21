@@ -208,6 +208,58 @@
     "discrepancies": []
   },
   {
+    "provider_key": "floraroma",
+    "invoice": "001068330",
+    "pdf": "01 - 729-4932 4111 (126) - FLORAROMA 001068330.pdf",
+    "gold_lines": 103,
+    "sys_lines": 103,
+    "matched_pairs": 103,
+    "missing_lines": 0,
+    "extra_lines": 0,
+    "field_accuracy": {
+      "variety": 1.0,
+      "species": 1.0,
+      "origin": 1.0,
+      "size": 1.0,
+      "stems_per_bunch": 1.0,
+      "stems": 1.0,
+      "line_total": 1.0
+    },
+    "link_accuracy": 1.0,
+    "link_correct": 103,
+    "link_total": 103,
+    "full_line_accuracy": 1.0,
+    "full_correct": 103,
+    "full_total": 103,
+    "discrepancies": []
+  },
+  {
+    "provider_key": "floraroma",
+    "invoice": "001097157",
+    "pdf": "01 - 075-67641663 - FLORAROMA FLORAROMA 001097157.pdf",
+    "gold_lines": 72,
+    "sys_lines": 72,
+    "matched_pairs": 72,
+    "missing_lines": 0,
+    "extra_lines": 0,
+    "field_accuracy": {
+      "variety": 1.0,
+      "species": 1.0,
+      "origin": 1.0,
+      "size": 1.0,
+      "stems_per_bunch": 1.0,
+      "stems": 1.0,
+      "line_total": 1.0
+    },
+    "link_accuracy": 1.0,
+    "link_correct": 72,
+    "link_total": 72,
+    "full_line_accuracy": 1.0,
+    "full_correct": 72,
+    "full_total": 72,
+    "discrepancies": []
+  },
+  {
     "provider_key": "florifrut",
     "invoice": "0001093134",
     "pdf": "01 - 075-67714625 - ART ROSES ART ROSES (2).pdf",
@@ -439,6 +491,58 @@
     "full_line_accuracy": 1.0,
     "full_correct": 103,
     "full_total": 103,
+    "discrepancies": []
+  },
+  {
+    "provider_key": "verdesestacion",
+    "invoice": "608",
+    "pdf": "01 - 729-4509 5470 (217) - LA ESTACION 608.pdf",
+    "gold_lines": 51,
+    "sys_lines": 51,
+    "matched_pairs": 51,
+    "missing_lines": 0,
+    "extra_lines": 0,
+    "field_accuracy": {
+      "variety": 1.0,
+      "species": 1.0,
+      "origin": 1.0,
+      "size": 1.0,
+      "stems_per_bunch": 1.0,
+      "stems": 1.0,
+      "line_total": 1.0
+    },
+    "link_accuracy": 1.0,
+    "link_correct": 51,
+    "link_total": 51,
+    "full_line_accuracy": 1.0,
+    "full_correct": 51,
+    "full_total": 51,
+    "discrepancies": []
+  },
+  {
+    "provider_key": "verdesestacion",
+    "invoice": "678",
+    "pdf": "03 - 729-45096284 - LA ESTACION LA ESTACION 678.pdf",
+    "gold_lines": 55,
+    "sys_lines": 55,
+    "matched_pairs": 55,
+    "missing_lines": 0,
+    "extra_lines": 0,
+    "field_accuracy": {
+      "variety": 1.0,
+      "species": 1.0,
+      "origin": 1.0,
+      "size": 1.0,
+      "stems_per_bunch": 1.0,
+      "stems": 1.0,
+      "line_total": 1.0
+    },
+    "link_accuracy": 1.0,
+    "link_correct": 55,
+    "link_total": 55,
+    "full_line_accuracy": 1.0,
+    "full_correct": 55,
+    "full_total": 55,
     "discrepancies": []
   }
 ]

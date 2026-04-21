@@ -1290,9 +1290,18 @@ class VerdesEstacionParser:
                 # Descartar matches "falsos" donde la "variedad" es texto de cabecera
                 if variety.startswith(('VARIEDAD', 'VARIETY', 'CAJAS', 'DESCRIPCION')):
                     continue
+                # En facturas LA ESTACION a veces aparece "Variety - FARM" en
+                # la columna de variedad (ej. "Atomic - KENTIA", "Mondial -ALHOJA").
+                # El regex captura el bloque entero; aquí separamos para que la
+                # variedad quede limpia y el farm pase a label.
+                farm_from_variety = ''
+                m_split = re.match(r'^([A-Z][A-Z\s\']*?)\s*-\s*([A-Z0-9].*)$', variety)
+                if m_split:
+                    variety = m_split.group(1).strip()
+                    farm_from_variety = m_split.group(2).strip()
                 size = int(vm.group(2))
                 stems = int(vm.group(3))
-                cur_label = vm.group(4).strip() or label
+                cur_label = vm.group(4).strip() or farm_from_variety or label
                 if cur_label:
                     label = cur_label
                 spb = int(vm.group(5))

@@ -1,7 +1,7 @@
 # CLAUDE.md — Guía operativa para el agente
 
-**Última actualización:** 2026-04-21 (sesión 10b)
-**Estado:** 92.7% autoapprove · Golden 575/575 reviewed (link **100%**) — PONDEROSA + ROSALEDA añadidos · NO_PARSEA 5 · TOTALES_MAL 0 · matcher 26× más rápido
+**Última actualización:** 2026-04-21 (sesión 10c)
+**Estado:** 92.7% autoapprove · Golden 907/907 reviewed (link **100%**) — FLORAROMA + LA ESTACION añadidos · fix parser VerdesEstacion (farm bleed) · NO_PARSEA 5 · TOTALES_MAL 0
 
 ---
 
@@ -26,19 +26,21 @@ Web PHP), mismo pipeline Python. Usuario: Ángel Panadero
 ## Estado actual (fuente única de verdad)
 
 - **Autoapprove global:** 92.7% (3501 líneas sobre 82 proveedores)
-- **Golden set:** 575/575 reviewed (14 proveedores). **Link
-  accuracy 100% (575/575)**. Nuevas incorporaciones en sesión 10b:
-  PONDEROSA 1920 (103 líneas) + cleanup legacy 1896 (8 líneas
-  reconciliadas con spb→U).
+- **Golden set:** 907/907 reviewed (17 proveedores). **Link
+  accuracy 100% (907/907)**. Nuevas incorporaciones en sesión 10c:
+  FLORAROMA 001068330 + 001097157 (175 líneas), LA ESTACION 608 +
+  609 + 678 (157 líneas). Los 6 top-volumen (BRISSAS, COLIBRI,
+  FLORAROMA, LA ESTACION, PONDEROSA, ROSALEDA) al 98.6-100%.
 - **NO_PARSEA restantes:** 5 proveedores
 - **Buckets:** OK 76 · NO_PARSEA 5 · TOTALES_MAL 0 · NO_DETECTADO 1
-- **Última sesión:** 10b (2026-04-21) — cierra BRISSAS/COLIBRI +
-  añade PONDEROSA + ROSALEDA. Fixes parser: PONDEROSA
-  (normalización de U+00B4 acento agudo en MAYRA'S BRIDAL),
-  ROSALEDA (bunches total = BX × bunches_per_box para cuadrar
-  validación stems). ROSALEDA 95.0 → 99.2% (+4.2pp). Gold legacy
-  1896 reconciliado: 8 líneas donde spb/U eran inconsistentes
-  ahora alineados al SKU correcto por tamaño.
+- **Última sesión:** 10c (2026-04-21) — ampliación golden
+  FLORAROMA + LA ESTACION + fix parser VerdesEstacionParser. El
+  regex `_RE_B` admitía `[A-Za-z\s\-]` en la variedad y cazaba el
+  farm inline como "Atomic - KENTIA" (el farm bleed hacía que el
+  matcher eligiera LUXUS/CANTIZA/COL en vez de PONDEROSA
+  branded). Fix aditivo post-regex: split `"Variety - FARM"` y
+  farm pasa a label. LA ESTACION 99.0 → **100%**, PONDEROSA
+  regenerado 97.0 → **100%**. Golden 575 → 907 (+57.7%).
 
 ### Próximos pasos posibles
 
@@ -368,6 +370,55 @@ Comandos con flags (`--provider`, `--max-samples`, `--verbose`,
 Solo las 2 últimas sesiones. Todas las anteriores en
 [`docs/sessions.md`](docs/sessions.md).
 
+### 2026-04-21 — sesión 10c: FLORAROMA + LA ESTACION (autoapprove 92.7%, golden 575→907)
+
+Continuación de 10b. Dos focos: (a) ampliar golden a
+proveedores top-volumen con muchos `weak_synonym` pendientes de
+confirmar; (b) auditoría de LA ESTACION, que compartía parser
+con PONDEROSA pero variante de plantilla distinta no soportada.
+
+**Fixes de parsers**:
+
+- [src/parsers/otros.py](src/parsers/otros.py) **VerdesEstacion
+  variante B — farm bleed**: el regex `_RE_B` admitía
+  `[A-Za-z\s\-]` en la captura de variedad. En LA ESTACION la
+  columna de variedad a veces lleva el farm inline (ej.
+  `Atomic - KENTIA`, `Mondial -ALHOJA`, `Vendela - MARL`), así
+  el regex capturaba la cadena entera como variedad. Resultado:
+  matcher no encontraba PONDEROSA branded y caía a genérico COL
+  o foreign-brand (LUXUS, CANTIZA). Fix **aditivo post-regex**:
+  si la variedad contiene ` - `, split en `variety` + `farm` y
+  el farm pasa a `label`. `R11-Tita` como label no se ve
+  afectado (el regex lo captura en `group(4)`).
+
+**Goldens**:
+
+- FLORAROMA 001068330 (103 líneas) + 001097157 (72 líneas)
+  bootstrappeado y revisado — 100% link al branded FLORAROMA.
+  Matcher maneja bien las variedades OCR-corruptas
+  (AWDOAS SAB.OI→WASABI, AB SRI.GOHTON→BRIGHTON,
+  ESX.OPLORER→EXPLORER) por fuzzy hint.
+- LA ESTACION 608 (51), 609 (51), 678 (55) bootstrappeado post-
+  fix: 157 líneas, 157 al PONDEROSA branded (mismo provider_id
+  11748 que PONDEROSA). Única corrección manual: `ORANGE 40` →
+  `35810 ROSA ORANGE CRUSH 40CM 25U PONDEROSA` (matcher elegía
+  genérico COL por defecto porque la variedad `ORANGE` no
+  coincide textualmente con `ORANGE CRUSH`).
+- `golden_apply.py` propagó 463 confirmaciones nuevas +
+  1 corrección → sinónimos manual_confirmado = 907.
+
+**Métricas**:
+- LA ESTACION auto: 99.0 → **100%** (+1pp, 0 ambiguous)
+- PONDEROSA auto: 97.0 → **100%** (regeneración con sinónimos)
+- FLORAROMA auto: 99.5% (sin cambio; weak_synonym pen
+  190→6 al confirmar)
+- Global auto: 92.7% (estable, los picos top ya estaban
+  marcados; ganancia en trust durable y parser correcto en
+  muestras futuras de LA ESTACION)
+- Golden link: 100% (575/575) → **100% (907/907)** (+332 líneas)
+- Top-6 por volumen (BRISSAS, COLIBRI, FLORAROMA, LA ESTACION,
+  PONDEROSA, ROSALEDA) todos al ≥98.6%
+
 ### 2026-04-21 — sesión 10b: PONDEROSA + ROSALEDA (autoapprove 92.2→92.7%, golden 444→575)
 
 Continuación de 10a. Tres focos: cerrar FA-117549 pendiente,
@@ -412,63 +463,6 @@ ROSALEDA val_errors, PONDEROSA fix + golden.
 - PONDEROSA auto: 97.0 → **100%** en samples parseables
 - Global auto: 92.2 → **92.7%** (+0.5pp)
 - Golden link: 100% (444/444) → **100% (575/575)** (+131 líneas)
-
-### 2026-04-21 — sesión 10a: repaso BRISSAS + COLIBRI (autoapprove 91.2→92.2%, golden +152 líneas)
-
-Repaso de proveedores top volumen. Dos proveedores auditados a
-fondo: COLIBRI (80 líneas, rate 71.6% baseline) y BRISSAS (504
-líneas, sin samples hasta esta sesión).
-
-**Fixes de parsers**:
-
-- [src/parsers/colibri.py](src/parsers/colibri.py): tres bugs
-  aditivos. (1) `prices[-1].replace(',','.')` convertía
-  "2,565.000" en "2.565.000" → `float()` fallaba silenciosamente
-  → 12 líneas con `line_total=0` y val_errors (formato Colibri
-  es US: coma=miles, punto=decimal). Fix: `replace(',','')`.
-  (2) Regex `(\d+)\s+ST` sin word boundary capturaba "581314" de
-  "581314 STA" → `total_mismatch` en 3 líneas. Fix:
-  `(\d+)\s+ST\b`. (3) `GRADE_MAP` no incluía `STA` (literal de
-  Colibri para Standard) → default a FANCY → sinónimos con grade
-  incorrecto. Fix: añadir `'STA':'STANDARD'`.
-- [src/parsers/colibri.py](src/parsers/colibri.py): nueva regla
-  "MIX Color/Color → una sola línea". Líneas tipo `Carn Mix
-  Red/Yellow` o `Mini Mix Red/White` ya no se dividen en dos
-  medio-tallos; mantienen stems/total íntegros con `variety=MIX`.
-  El grade+spb deciden el SKU MIXTO concreto
-  (FAN+20→12790, SEL+10→26798, STD+20→12659, etc).
-- [src/matcher.py](src/matcher.py): añadido `\bHAWB\b` al regex
-  de ruido de `rescue_unparsed_lines`. Líneas `HB XX.XXX HAWB:
-  SN` de BRISSAS (resumen de cajas) se capturaban como producto
-  → 11 sin_match fantasma (1 por sample). Ahora 0.
-
-**Golden set ampliado**:
-
-2 facturas BRISSAS (000003919 + 000003952 = 112 líneas) y 3
-COLIBRI (FA-117295 + FA-117449 + FA-117549 = 73 líneas; la
-última queda draft para revisar en próxima sesión).
-`golden_apply.py` propagó 443 confirmaciones + 1 corrección al
-diccionario de sinónimos.
-
-**Reglas aprendidas** (guardadas en memory):
-
-- **BRISSAS MIX COLORS**: mapear a 36900-36903 (ROSA SURTIDO
-  MIXTO XcmCM 25U BRISSAS) por tamaño (40/50/60/70), no al
-  `32437 ROSA COLOR MIXTO "BRISAS"` antiguo.
-- **COLIBRI MIX Color/Color**: una sola línea MIX grade-aware
-  (FAN/SEL/STD) + spb-aware (20 normal / 10 mini). SKUs branded
-  preferidos (…COLIBRI).
-- **COLIBRI columna Gr.**: `FAN`=Fancy, `SEL`=Select, `STA`/`STD`
-  =Standard. `golden_review.py` auto-propaga sólo por
-  (variety, size, origin) — no considera grade+spb → en review
-  manual hay que verificar SIEMPRE la columna Gr.
-
-**Métricas**:
-- COLIBRI auto: 71.6 → 81.25% (fixes parser) → **97.0%**
-  (golden apply) = +25.4pp
-- BRISSAS auto: nuevo → **100%**
-- Global auto: 91.2 → **92.2%** (+1.0pp)
-- Golden link: 100% (292/292) → **100% (444/444)** (+152 líneas)
 
 ---
 
