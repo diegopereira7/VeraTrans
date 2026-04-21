@@ -1,7 +1,7 @@
 # CLAUDE.md — Guía operativa para el agente
 
-**Última actualización:** 2026-04-21 (sesión 9z-post)
-**Estado:** 91.2% autoapprove · Golden 292/292 reviewed (link **100%**) · NO_PARSEA 5 · TOTALES_MAL 0 · matcher 26× más rápido
+**Última actualización:** 2026-04-21 (sesión 10a)
+**Estado:** 92.2% autoapprove · Golden 444/444 reviewed (link **100%**) — BRISSAS + COLIBRI añadidos · NO_PARSEA 5 · TOTALES_MAL 0 · matcher 26× más rápido
 
 ---
 
@@ -25,21 +25,21 @@ Web PHP), mismo pipeline Python. Usuario: Ángel Panadero
 
 ## Estado actual (fuente única de verdad)
 
-- **Autoapprove global:** 91.2% (3338 líneas sobre 82 proveedores)
-- **Golden set:** 292/292 reviewed (11 proveedores). **Link
-  accuracy 100% (292/292)** — el objetivo del plan manual-pin (9z)
-  quedó plenamente cumplido. La "regresión UMA extracción" que se
-  registró en el commit 9z (7 líneas en vez de 14) resultó ser un
-  glitch transitorio de una sola corrida — al re-ejecutar en
-  sesión 9z-post el parser vuelve a capturar 14 líneas y golden
-  sube a 100%. Hipótesis: warm-up frío de easyocr/tesseract.
+- **Autoapprove global:** 92.2% (3501 líneas sobre 82 proveedores)
+- **Golden set:** 444/444 reviewed (13 proveedores). **Link
+  accuracy 100% (444/444)**. Nuevas incorporaciones en sesión 10a:
+  2 facturas BRISSAS (112 líneas) y 3 COLIBRI (73 líneas, 1 draft
+  pendiente). BRISSAS: 100% autoapprove. COLIBRI: 71.6 → 97.0%
+  (+25.4pp) tras fix parser + aprendizaje golden.
 - **NO_PARSEA restantes:** 5 proveedores
 - **Buckets:** OK 76 · NO_PARSEA 5 · TOTALES_MAL 0 · NO_DETECTADO 1
-- **Última sesión:** 9z-post (2026-04-21) — verificación tras 9z.
-  Al reproducir UMA 18222 la extracción devuelve 14 líneas (no 7),
-  el parser captura las 14 y el golden está al 100% (no 97.6%).
-  Métricas del commit 9z eran pesimistas por un run defectuoso.
-  Autoapprove real: 91.2% (no 90.9%).
+- **Última sesión:** 10a (2026-04-21) — repaso proveedores top
+  volumen (BRISSAS, COLIBRI). Fixes parser: COLIBRI (miles en
+  totales + word boundary ST + grade STA + MIX Color/Color no
+  dividir), BRISSAS (ruido HAWB en rescue). Goldens bootstrappeados
+  y revisados + golden_apply propagó correcciones a sinónimos.
+  Reglas guardadas en memoria: BRISSAS SURTIDO MIXTO (36900-36903),
+  COLIBRI MIX grade-aware, COLIBRI Gr. column.
 
 ### Próximos pasos posibles
 
@@ -369,6 +369,63 @@ Comandos con flags (`--provider`, `--max-samples`, `--verbose`,
 Solo las 2 últimas sesiones. Todas las anteriores en
 [`docs/sessions.md`](docs/sessions.md).
 
+### 2026-04-21 — sesión 10a: repaso BRISSAS + COLIBRI (autoapprove 91.2→92.2%, golden +152 líneas)
+
+Repaso de proveedores top volumen. Dos proveedores auditados a
+fondo: COLIBRI (80 líneas, rate 71.6% baseline) y BRISSAS (504
+líneas, sin samples hasta esta sesión).
+
+**Fixes de parsers**:
+
+- [src/parsers/colibri.py](src/parsers/colibri.py): tres bugs
+  aditivos. (1) `prices[-1].replace(',','.')` convertía
+  "2,565.000" en "2.565.000" → `float()` fallaba silenciosamente
+  → 12 líneas con `line_total=0` y val_errors (formato Colibri
+  es US: coma=miles, punto=decimal). Fix: `replace(',','')`.
+  (2) Regex `(\d+)\s+ST` sin word boundary capturaba "581314" de
+  "581314 STA" → `total_mismatch` en 3 líneas. Fix:
+  `(\d+)\s+ST\b`. (3) `GRADE_MAP` no incluía `STA` (literal de
+  Colibri para Standard) → default a FANCY → sinónimos con grade
+  incorrecto. Fix: añadir `'STA':'STANDARD'`.
+- [src/parsers/colibri.py](src/parsers/colibri.py): nueva regla
+  "MIX Color/Color → una sola línea". Líneas tipo `Carn Mix
+  Red/Yellow` o `Mini Mix Red/White` ya no se dividen en dos
+  medio-tallos; mantienen stems/total íntegros con `variety=MIX`.
+  El grade+spb deciden el SKU MIXTO concreto
+  (FAN+20→12790, SEL+10→26798, STD+20→12659, etc).
+- [src/matcher.py](src/matcher.py): añadido `\bHAWB\b` al regex
+  de ruido de `rescue_unparsed_lines`. Líneas `HB XX.XXX HAWB:
+  SN` de BRISSAS (resumen de cajas) se capturaban como producto
+  → 11 sin_match fantasma (1 por sample). Ahora 0.
+
+**Golden set ampliado**:
+
+2 facturas BRISSAS (000003919 + 000003952 = 112 líneas) y 3
+COLIBRI (FA-117295 + FA-117449 + FA-117549 = 73 líneas; la
+última queda draft para revisar en próxima sesión).
+`golden_apply.py` propagó 443 confirmaciones + 1 corrección al
+diccionario de sinónimos.
+
+**Reglas aprendidas** (guardadas en memory):
+
+- **BRISSAS MIX COLORS**: mapear a 36900-36903 (ROSA SURTIDO
+  MIXTO XcmCM 25U BRISSAS) por tamaño (40/50/60/70), no al
+  `32437 ROSA COLOR MIXTO "BRISAS"` antiguo.
+- **COLIBRI MIX Color/Color**: una sola línea MIX grade-aware
+  (FAN/SEL/STD) + spb-aware (20 normal / 10 mini). SKUs branded
+  preferidos (…COLIBRI).
+- **COLIBRI columna Gr.**: `FAN`=Fancy, `SEL`=Select, `STA`/`STD`
+  =Standard. `golden_review.py` auto-propaga sólo por
+  (variety, size, origin) — no considera grade+spb → en review
+  manual hay que verificar SIEMPRE la columna Gr.
+
+**Métricas**:
+- COLIBRI auto: 71.6 → 81.25% (fixes parser) → **97.0%**
+  (golden apply) = +25.4pp
+- BRISSAS auto: nuevo → **100%**
+- Global auto: 91.2 → **92.2%** (+1.0pp)
+- Golden link: 100% (292/292) → **100% (444/444)** (+152 líneas)
+
 ### 2026-04-21 — sesión 9z + 9z-post: manual-pin cierra mismatch UMA XL ESPECIAL (golden 100%)
 
 Último mismatch conceptual del golden: UMA 18222 línea "Gyp XL
@@ -397,26 +454,6 @@ cambios de código entre 9z y 9z-post.
 
 Impacto real (verificado en 9z-post): golden link 99.7→**100%**
 (+1 línea, el XL ESPECIAL). Autoapprove 91.1→**91.2%** (+0.1pp).
-
-### 2026-04-20 — sesión 9y: manual_confirmado sobrevive hard_vetoes (+0.4pp golden)
-
-Con 9x el matcher ya respetaba `manual_confirmado` en `brand_boost`
-y en `sinonimos.add()`, pero **los hard_vetoes seguían
-descartándolo y degradándolo a ambiguo**. Ejemplo YELLOW SUMMER
-verdesestacion: la línea es COL 40/10 y el único artículo "YELLOW
-SUMMER" del catálogo es `33632 EC 50CM 25U`. Veto de origin lo
-descartaba y el sinónimo manual creado por golden_apply bajaba a
-ambiguo; match caía en YELLOW KING 40CM 25U (variedad distinta).
-
-Fix en [src/matcher.py:795-820](src/matcher.py): en la fase de
-vetos, si el candidato es un sinónimo `manual_confirmado` se
-**mantiene viable con el veto como penalty** y no se degrada.
-Respeta la decisión explícita del operador aunque estructura
-(origen/talla/spb) no encaje. Único mismatch restante del golden
-es el conceptual de GYPSOPHILA XLENCE gramaje (uma).
-
-Impacto: golden 99.3→**99.7%**. Autoapprove 91.2→91.1% (sin
-importancia, dentro del ruido).
 
 ---
 

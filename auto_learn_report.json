@@ -2060,6 +2060,212 @@
     ]
   },
   {
+    "folder": "BRISSAS",
+    "verdict": "TOTALES_MAL",
+    "samples": 5,
+    "detected": 5,
+    "parsed_any": 5,
+    "totals_ok": 0,
+    "total_parsed": 171,
+    "total_rescued": 0,
+    "ok_lines": 170,
+    "ambiguous_lines": 0,
+    "sin_match_lines": 1,
+    "sin_parser_lines": 0,
+    "autoapprovable_lines": 170,
+    "autoapprove_rate": 1.0,
+    "needs_review_lines": 1,
+    "validation_errors_lines": 0,
+    "extraction_source_mix": {
+      "native": 5
+    },
+    "extraction_engine_mix": {
+      "-": 5
+    },
+    "penalties": {
+      "weak_synonym": 18,
+      "variety_no_overlap": 5
+    },
+    "match_statuses": {
+      "ok": 170,
+      "sin_match": 1
+    },
+    "samples_raw": [
+      {
+        "file": "BRISSAS 000003893.pdf",
+        "detected_as": "Brissas",
+        "fmt": "brissas",
+        "parsed_lines": 20,
+        "rescued_lines": 0,
+        "ok_lines": 20,
+        "ambiguous_lines": 0,
+        "sin_match_lines": 0,
+        "sin_parser_lines": 0,
+        "header_total": 6700.0,
+        "sum_line_total": 1918.0,
+        "header_ok": false,
+        "diff_pct": 71.37,
+        "extraction_source": "native",
+        "extraction_engine": "",
+        "extraction_confidence": 1.0,
+        "extraction_degraded": false,
+        "avg_link_confidence": 1.0,
+        "autoapprovable_lines": 20,
+        "needs_review_lines": 0,
+        "validation_errors_lines": 0,
+        "penalties": {
+          "weak_synonym": 2
+        },
+        "match_statuses": {
+          "ok": 20
+        },
+        "invoice": "000003893",
+        "error": "",
+        "lane_auto": 20,
+        "lane_quick": 0,
+        "lane_full": 0
+      },
+      {
+        "file": "BRISSAS 000003903.pdf",
+        "detected_as": "Brissas",
+        "fmt": "brissas",
+        "parsed_lines": 2,
+        "rescued_lines": 0,
+        "ok_lines": 2,
+        "ambiguous_lines": 0,
+        "sin_match_lines": 0,
+        "sin_parser_lines": 0,
+        "header_total": 600.0,
+        "sum_line_total": 168.0,
+        "header_ok": false,
+        "diff_pct": 72.0,
+        "extraction_source": "native",
+        "extraction_engine": "",
+        "extraction_confidence": 1.0,
+        "extraction_degraded": false,
+        "avg_link_confidence": 1.0,
+        "autoapprovable_lines": 2,
+        "needs_review_lines": 0,
+        "validation_errors_lines": 0,
+        "penalties": {
+          "weak_synonym": 1
+        },
+        "match_statuses": {
+          "ok": 2
+        },
+        "invoice": "000003903",
+        "error": "",
+        "lane_auto": 2,
+        "lane_quick": 0,
+        "lane_full": 0
+      },
+      {
+        "file": "BRISSAS 000003906.pdf",
+        "detected_as": "Brissas",
+        "fmt": "brissas",
+        "parsed_lines": 43,
+        "rescued_lines": 0,
+        "ok_lines": 43,
+        "ambiguous_lines": 0,
+        "sin_match_lines": 0,
+        "sin_parser_lines": 0,
+        "header_total": 17050.0,
+        "sum_line_total": 4778.5,
+        "header_ok": false,
+        "diff_pct": 71.97,
+        "extraction_source": "native",
+        "extraction_engine": "",
+        "extraction_confidence": 1.0,
+        "extraction_degraded": false,
+        "avg_link_confidence": 1.0,
+        "autoapprovable_lines": 43,
+        "needs_review_lines": 0,
+        "validation_errors_lines": 0,
+        "penalties": {
+          "weak_synonym": 7
+        },
+        "match_statuses": {
+          "ok": 43
+        },
+        "invoice": "000003906",
+        "error": "",
+        "lane_auto": 43,
+        "lane_quick": 0,
+        "lane_full": 0
+      },
+      {
+        "file": "BRISSAS 000003919.pdf",
+        "detected_as": "Brissas",
+        "fmt": "brissas",
+        "parsed_lines": 60,
+        "rescued_lines": 0,
+        "ok_lines": 60,
+        "ambiguous_lines": 0,
+        "sin_match_lines": 0,
+        "sin_parser_lines": 0,
+        "header_total": 16200.0,
+        "sum_line_total": 4632.75,
+        "header_ok": false,
+        "diff_pct": 71.4,
+        "extraction_source": "native",
+        "extraction_engine": "",
+        "extraction_confidence": 1.0,
+        "extraction_degraded": false,
+        "avg_link_confidence": 0.998,
+        "autoapprovable_lines": 60,
+        "needs_review_lines": 0,
+        "validation_errors_lines": 0,
+        "penalties": {
+          "variety_no_overlap": 3
+        },
+        "match_statuses": {
+          "ok": 60
+        },
+        "invoice": "000003919",
+        "error": "",
+        "lane_auto": 60,
+        "lane_quick": 0,
+        "lane_full": 0
+      },
+      {
+        "file": "BRISSAS 000003927.pdf",
+        "detected_as": "Brissas",
+        "fmt": "brissas",
+        "parsed_lines": 46,
+        "rescued_lines": 0,
+        "ok_lines": 45,
+        "ambiguous_lines": 0,
+        "sin_match_lines": 1,
+        "sin_parser_lines": 0,
+        "header_total": 15750.0,
+        "sum_line_total": 4435.0,
+        "header_ok": false,
+        "diff_pct": 71.84,
+        "extraction_source": "native",
+        "extraction_engine": "",
+        "extraction_confidence": 1.0,
+        "extraction_degraded": false,
+        "avg_link_confidence": 0.989,
+        "autoapprovable_lines": 45,
+        "needs_review_lines": 1,
+        "validation_errors_lines": 0,
+        "penalties": {
+          "variety_no_overlap": 2,
+          "weak_synonym": 8
+        },
+        "match_statuses": {
+          "ok": 45,
+          "sin_match": 1
+        },
+        "invoice": "000003927",
+        "error": "",
+        "lane_auto": 45,
+        "lane_quick": 0,
+        "lane_full": 1
+      }
+    ]
+  },
+  {
     "folder": "CANANVALLE",
     "verdict": "NO_PARSEA",
     "samples": 5,
@@ -3108,15 +3314,15 @@
     "detected": 5,
     "parsed_any": 5,
     "totals_ok": 5,
-    "total_parsed": 80,
+    "total_parsed": 72,
     "total_rescued": 0,
     "ok_lines": 65,
-    "ambiguous_lines": 9,
-    "sin_match_lines": 6,
+    "ambiguous_lines": 2,
+    "sin_match_lines": 5,
     "sin_parser_lines": 0,
     "autoapprovable_lines": 65,
-    "autoapprove_rate": 0.878,
-    "needs_review_lines": 15,
+    "autoapprove_rate": 0.97,
+    "needs_review_lines": 7,
     "validation_errors_lines": 0,
     "extraction_source_mix": {
       "native": 5
@@ -3125,24 +3331,24 @@
       "-": 5
     },
     "penalties": {
-      "weak_synonym": 72,
-      "tie_top2_margin": 9,
-      "variety_no_overlap": 6
+      "weak_synonym": 6,
+      "variety_no_overlap": 6,
+      "tie_top2_margin": 2
     },
     "match_statuses": {
       "ok": 65,
-      "ambiguous_match": 9,
-      "sin_match": 6
+      "ambiguous_match": 2,
+      "sin_match": 5
     },
     "samples_raw": [
       {
         "file": "01 - 075-6537 6964 (334) - COLIBRI FA-094378.pdf",
         "detected_as": "Colibri Flowers",
         "fmt": "colibri",
-        "parsed_lines": 8,
+        "parsed_lines": 7,
         "rescued_lines": 0,
-        "ok_lines": 6,
-        "ambiguous_lines": 2,
+        "ok_lines": 7,
+        "ambiguous_lines": 0,
         "sin_match_lines": 0,
         "sin_parser_lines": 0,
         "header_total": 2825.0,
@@ -3153,32 +3359,28 @@
         "extraction_engine": "",
         "extraction_confidence": 1.0,
         "extraction_degraded": false,
-        "avg_link_confidence": 0.985,
-        "autoapprovable_lines": 6,
-        "needs_review_lines": 2,
+        "avg_link_confidence": 1.0,
+        "autoapprovable_lines": 7,
+        "needs_review_lines": 0,
         "validation_errors_lines": 0,
-        "penalties": {
-          "weak_synonym": 7,
-          "tie_top2_margin": 2
-        },
+        "penalties": {},
         "match_statuses": {
-          "ok": 6,
-          "ambiguous_match": 2
+          "ok": 7
         },
         "invoice": "FA-094378",
         "error": "",
-        "lane_auto": 6,
-        "lane_quick": 2,
+        "lane_auto": 7,
+        "lane_quick": 0,
         "lane_full": 0
       },
       {
         "file": "01 - 075-67682355 - COLIBRI COLIBRI.pdf",
         "detected_as": "Colibri Flowers",
         "fmt": "colibri",
-        "parsed_lines": 16,
+        "parsed_lines": 15,
         "rescued_lines": 0,
-        "ok_lines": 14,
-        "ambiguous_lines": 2,
+        "ok_lines": 15,
+        "ambiguous_lines": 0,
         "sin_match_lines": 0,
         "sin_parser_lines": 0,
         "header_total": 9380.0,
@@ -3189,22 +3391,18 @@
         "extraction_engine": "",
         "extraction_confidence": 1.0,
         "extraction_degraded": false,
-        "avg_link_confidence": 0.989,
-        "autoapprovable_lines": 14,
-        "needs_review_lines": 2,
+        "avg_link_confidence": 1.0,
+        "autoapprovable_lines": 15,
+        "needs_review_lines": 0,
         "validation_errors_lines": 0,
-        "penalties": {
-          "weak_synonym": 15,
-          "tie_top2_margin": 2
-        },
+        "penalties": {},
         "match_statuses": {
-          "ok": 14,
-          "ambiguous_match": 2
+          "ok": 15
         },
         "invoice": "FA-117644",
         "error": "",
-        "lane_auto": 14,
-        "lane_quick": 2,
+        "lane_auto": 15,
+        "lane_quick": 0,
         "lane_full": 0
       },
       {
@@ -3213,8 +3411,8 @@
         "fmt": "colibri",
         "parsed_lines": 8,
         "rescued_lines": 0,
-        "ok_lines": 6,
-        "ambiguous_lines": 2,
+        "ok_lines": 7,
+        "ambiguous_lines": 1,
         "sin_match_lines": 0,
         "sin_parser_lines": 0,
         "header_total": 4350.0,
@@ -3225,31 +3423,31 @@
         "extraction_engine": "",
         "extraction_confidence": 1.0,
         "extraction_degraded": false,
-        "avg_link_confidence": 0.99,
-        "autoapprovable_lines": 6,
-        "needs_review_lines": 2,
+        "avg_link_confidence": 0.998,
+        "autoapprovable_lines": 7,
+        "needs_review_lines": 1,
         "validation_errors_lines": 0,
         "penalties": {
-          "weak_synonym": 8,
-          "tie_top2_margin": 2
+          "weak_synonym": 1,
+          "tie_top2_margin": 1
         },
         "match_statuses": {
-          "ok": 6,
-          "ambiguous_match": 2
+          "ok": 7,
+          "ambiguous_match": 1
         },
         "invoice": "FA-094531",
         "error": "",
-        "lane_auto": 6,
-        "lane_quick": 2,
+        "lane_auto": 7,
+        "lane_quick": 1,
         "lane_full": 0
       },
       {
         "file": "02 - 729-45937522 - COLIBRI COLIBRI.pdf",
         "detected_as": "Colibri Flowers",
         "fmt": "colibri",
-        "parsed_lines": 33,
+        "parsed_lines": 28,
         "rescued_lines": 0,
-        "ok_lines": 27,
+        "ok_lines": 22,
         "ambiguous_lines": 1,
         "sin_match_lines": 5,
         "sin_parser_lines": 0,
@@ -3261,23 +3459,23 @@
         "extraction_engine": "",
         "extraction_confidence": 1.0,
         "extraction_degraded": false,
-        "avg_link_confidence": 0.917,
-        "autoapprovable_lines": 27,
+        "avg_link_confidence": 0.907,
+        "autoapprovable_lines": 22,
         "needs_review_lines": 6,
         "validation_errors_lines": 0,
         "penalties": {
-          "weak_synonym": 29,
           "variety_no_overlap": 5,
+          "weak_synonym": 5,
           "tie_top2_margin": 1
         },
         "match_statuses": {
-          "ok": 27,
+          "ok": 22,
           "sin_match": 5,
           "ambiguous_match": 1
         },
         "invoice": "FA-117549",
         "error": "",
-        "lane_auto": 27,
+        "lane_auto": 22,
         "lane_quick": 1,
         "lane_full": 5
       },
@@ -3285,11 +3483,11 @@
         "file": "03 - 729-45937360 - COLIBRI COLIBRI.pdf",
         "detected_as": "Colibri Flowers",
         "fmt": "colibri",
-        "parsed_lines": 15,
+        "parsed_lines": 14,
         "rescued_lines": 0,
-        "ok_lines": 12,
-        "ambiguous_lines": 2,
-        "sin_match_lines": 1,
+        "ok_lines": 14,
+        "ambiguous_lines": 0,
+        "sin_match_lines": 0,
         "sin_parser_lines": 0,
         "header_total": 12035.0,
         "sum_line_total": 12035.0,
@@ -3299,25 +3497,21 @@
         "extraction_engine": "",
         "extraction_confidence": 1.0,
         "extraction_degraded": false,
-        "avg_link_confidence": 0.956,
-        "autoapprovable_lines": 12,
-        "needs_review_lines": 3,
+        "avg_link_confidence": 1.0,
+        "autoapprovable_lines": 14,
+        "needs_review_lines": 0,
         "validation_errors_lines": 0,
         "penalties": {
-          "weak_synonym": 13,
-          "tie_top2_margin": 2,
           "variety_no_overlap": 1
         },
         "match_statuses": {
-          "ok": 12,
-          "ambiguous_match": 2,
-          "sin_match": 1
+          "ok": 14
         },
         "invoice": "FA-117449",
         "error": "",
-        "lane_auto": 12,
-        "lane_quick": 2,
-        "lane_full": 1
+        "lane_auto": 14,
+        "lane_quick": 0,
+        "lane_full": 0
       }
     ]
   },
@@ -3988,7 +4182,7 @@
       "-": 5
     },
     "penalties": {
-      "weak_synonym": 53,
+      "weak_synonym": 54,
       "foreign_brand": 3,
       "low_evidence": 3,
       "variety_no_overlap": 1
@@ -4022,7 +4216,7 @@
         "needs_review_lines": 1,
         "validation_errors_lines": 0,
         "penalties": {
-          "weak_synonym": 8,
+          "weak_synonym": 9,
           "foreign_brand": 1,
           "low_evidence": 1
         },
@@ -15209,7 +15403,7 @@
         "extraction_engine": "",
         "extraction_confidence": 1.0,
         "extraction_degraded": false,
-        "avg_link_confidence": 0.997,
+        "avg_link_confidence": 0.999,
         "autoapprovable_lines": 14,
         "needs_review_lines": 0,
         "validation_errors_lines": 0,
@@ -15629,7 +15823,7 @@
         "extraction_engine": "ocrmypdf",
         "extraction_confidence": 0.92,
         "extraction_degraded": false,
-        "avg_link_confidence": 0.976,
+        "avg_link_confidence": 0.978,
         "autoapprovable_lines": 14,
         "needs_review_lines": 0,
         "validation_errors_lines": 0,
@@ -16441,7 +16635,7 @@
         "extraction_engine": "",
         "extraction_confidence": 1.0,
         "extraction_degraded": false,
-        "avg_link_confidence": 0.999,
+        "avg_link_confidence": 1.0,
         "autoapprovable_lines": 38,
         "needs_review_lines": 0,
         "validation_errors_lines": 0,

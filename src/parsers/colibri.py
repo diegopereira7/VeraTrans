@@ -13,7 +13,7 @@ class ColibriParser:
     - El numero antes de ST ya es el total de tallos de esa linea.
     - X 20 indica tallos por ramo; si no aparece se asume 20.
     """
-    GRADE_MAP={'FAN':'FANCY','SEL':'SELECT','STD':'STANDARD','PRE':'PREMIUM','FCY':'FANCY'}
+    GRADE_MAP={'FAN':'FANCY','SEL':'SELECT','STD':'STANDARD','STA':'STANDARD','PRE':'PREMIUM','FCY':'FANCY'}
 
     def parse(self, text:str, pdata:dict):
         h=InvoiceHeader(); h.provider_key=pdata['key']; h.provider_id=pdata['id']; h.provider_name=pdata['name']
@@ -41,7 +41,7 @@ class ColibriParser:
             spb=int(spb_m.group(1)) if spb_m else default_spb
 
             # Extraer grado (FAN / SEL / etc.) de la linea
-            grade_m=re.search(r'\b(FAN|SEL|STD|PRE|FCY)\b', ln, re.I)
+            grade_m=re.search(r'\b(FAN|SEL|STD|STA|PRE|FCY)\b', ln, re.I)
             grade_raw=grade_m.group(1).upper() if grade_m else 'FAN'
             grade=self.GRADE_MAP.get(grade_raw[:3], 'FANCY')
 
@@ -65,11 +65,18 @@ class ColibriParser:
                 try: total=float(prices[-1].replace(',',''))
                 except: pass
 
-            # Caja mixta: "CARN MIX RED/YELLOW" -> dos lineas, tallos y total / 2
-            # BICOLOR es una variedad en si misma (flor bicolor), no se parte
+            # Caja mixta y BICOLOR:
+            # - "CARN MIX RED/WHITE" / "MINI MIX RED/WHITE" (keyword MIX o MX
+            #   junto con Color/Color) -> UNA linea variety='MIX'. El grade
+            #   (FAN/SEL/STD) + spb (20/10) deciden el SKU MIXTO que matchea
+            #   (CLAVEL FANCY MIXTO, MINI CLAVEL SELECT MIXTO, etc).
+            # - Bicolor sin keyword MIX (ej. "RED/YELLOW") -> dos lineas con
+            #   mitad de stems y total.
+            # - BICOLOR es una variedad en si misma (flor bicolor), no se parte.
             sp='CARNATIONS'  # Miniclaveles usan la misma especie; el SPB=10 los distingue
             mix_m=re.search(r'([A-Za-z]+)\s*/\s*([A-Za-z]+)', color)
-            if mix_m:
+            has_mix_kw=bool(re.search(r'\b(?:MIX|MX)\b', color, re.I))
+            if mix_m and not has_mix_kw:
                 c1=mix_m.group(1).strip().upper()
                 c2=mix_m.group(2).strip().upper()
                 half=stems//2; half_t=round(total/2,3)
@@ -80,7 +87,8 @@ class ColibriParser:
                                              price_per_stem=price,line_total=half_t,
                                              label=label,box_type='MIX'))
             else:
-                lines.append(InvoiceLine(raw_description=ln,species=sp,variety=color,
+                var_out='MIX' if (mix_m and has_mix_kw) else color
+                lines.append(InvoiceLine(raw_description=ln,species=sp,variety=var_out,
                                          grade=grade,origin='COL',size=0,
                                          stems_per_bunch=spb,stems=stems,
                                          price_per_stem=price,line_total=total,

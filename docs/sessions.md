@@ -821,3 +821,24 @@ fallback), UI de revisión con badges/dots, 10 parsers nuevos (FARIN,
 QUALISA, BELLAROSA, AGRINAG, NATUFLOR, GREENGROWERS, EL CAMPANARIO,
 FLORELOY, SAN JORGE, MILAGRO), arreglo de VerdesEstacionParser (variante
 B sin CM), CLAUDE.md inicial. Commit `5856f26`.
+
+### 2026-04-20 — sesión 9y: manual_confirmado sobrevive hard_vetoes (+0.4pp golden)
+
+Con 9x el matcher ya respetaba `manual_confirmado` en `brand_boost`
+y en `sinonimos.add()`, pero **los hard_vetoes seguían
+descartándolo y degradándolo a ambiguo**. Ejemplo YELLOW SUMMER
+verdesestacion: la línea es COL 40/10 y el único artículo "YELLOW
+SUMMER" del catálogo es `33632 EC 50CM 25U`. Veto de origin lo
+descartaba y el sinónimo manual creado por golden_apply bajaba a
+ambiguo; match caía en YELLOW KING 40CM 25U (variedad distinta).
+
+Fix en [src/matcher.py:795-820](src/matcher.py): en la fase de
+vetos, si el candidato es un sinónimo `manual_confirmado` se
+**mantiene viable con el veto como penalty** y no se degrada.
+Respeta la decisión explícita del operador aunque estructura
+(origen/talla/spb) no encaje. Único mismatch restante del golden
+es el conceptual de GYPSOPHILA XLENCE gramaje (uma).
+
+Impacto: golden 99.3→**99.7%**. Autoapprove 91.2→91.1% (sin
+importancia, dentro del ruido).
+
