@@ -1,7 +1,7 @@
 # CLAUDE.md — Guía operativa para el agente
 
-**Última actualización:** 2026-04-21 (sesión 10d)
-**Estado:** 92.7% autoapprove · Golden 997/997 reviewed (link **100%**) — VALTHO (CANTIZA) añadido · fix parser Cantiza (categoría `N/C` + puntos OCR) · NO_PARSEA 5 · TOTALES_MAL 1
+**Última actualización:** 2026-04-21 (sesión 10e)
+**Estado:** 92.9% autoapprove · Golden 997/997 reviewed (link **100%**) — fix matcher: penalty `generic_vs_own_brand` (−0.15 al genérico cuando hay branded propio en pool) · NO_PARSEA 5 · TOTALES_MAL 1
 
 ---
 
@@ -25,22 +25,26 @@ Web PHP), mismo pipeline Python. Usuario: Ángel Panadero
 
 ## Estado actual (fuente única de verdad)
 
-- **Autoapprove global:** 92.7% (3506 líneas sobre 82 proveedores)
+- **Autoapprove global:** 92.9% (3506 líneas sobre 82 proveedores)
 - **Golden set:** 997/997 reviewed (24 facturas, 13 proveedores).
-  **Link accuracy 100% (997/997)**. Nuevas incorporaciones en
-  sesión 10d: VALTHO 25061370 + 25061457 (90 líneas) — ambos son
-  facturas "CANTIZA CANTIZA" emitidas por Valthomig (provider 435,
-  usa fmt `cantiza`).
+  **Link accuracy 100% (997/997)**.
 - **NO_PARSEA restantes:** 5 proveedores
 - **Buckets:** OK 76 · NO_PARSEA 5 · TOTALES_MAL 1 (BRISSAS) ·
   NO_DETECTADO 1 (PONDEROSA)
-- **Última sesión:** 10d (2026-04-21) — fix `CantizaParser` para
-  nuevas variantes OCR: (a) categoría cooler `C` junto a `N`
-  (algunas facturas usan "CHERRY O 40CM **C** 25ST CZ"), (b)
-  punto opcional tras `N/C` y tras `ST` ("N. 25ST.", "N 25ST.").
-  Regex extendido de `[A-Z]{1,4}\b` a `[NC]\.?\s*(\d+)ST\.?` —
-  capturó 5 líneas extra en muestras CANTIZA (98.0 → 98.1%). Los
-  2 goldens VALTHO nuevos dan link 100% al branded CANTIZA.
+- **Última sesión:** 10e (2026-04-21) — **fix estructural del
+  matcher**: nueva penalty `generic_vs_own_brand` (−0.15) sobre
+  candidatos genéricos (`ROSA EC X` / `ROSA COL X` sin marca)
+  cuando en el pool existe otro candidato con marca propia del
+  proveedor (p.ej. OLIMPO → SCARLET). Ataca la deuda de
+  sinónimos `aprendido_en_prueba` que apuntaban al genérico con
+  trust 0.55 + method_prior 0.10 (= +0.24 boost) derrotando al
+  branded propio con `brand_in_name(+0.25)`. La nueva penalty
+  cierra el gap: diff propio↔genérico pasa de 0.25 a 0.40. Ganas
+  netas en CEAN GLOBAL (+8.3pp), DAFLOR (+5.9pp), OLIMPO (+2.5pp),
+  ROSALEDA (+0.8pp). Única "regresión" COLIBRI −1.4pp (2 líneas
+  ok→ambiguous) es cualitativamente correcta: frontera
+  branded/genérico donde antes el matcher elegía con falsa
+  confianza. Global 92.7 → **92.9%**.
 
 ### Próximos pasos posibles
 
@@ -269,6 +273,7 @@ Tablas compactas — detalle y notas históricas en
 |---|---|
 | `variety_no_overlap` | −0.10 |
 | `foreign_brand(X)` | −0.25 |
+| `generic_vs_own_brand` (genérico cuando hay branded propio en pool) | −0.15 |
 | `weak_synonym` (trust < 0.60) | mark-only |
 | `tie_top2_margin(X)` | mark-only (dispara ambiguous) |
 | `low_evidence(X)` (ganador < 0.70) | mark-only (dispara ambiguous) |
@@ -370,6 +375,51 @@ Comandos con flags (`--provider`, `--max-samples`, `--verbose`,
 Solo las 2 últimas sesiones. Todas las anteriores en
 [`docs/sessions.md`](docs/sessions.md).
 
+### 2026-04-21 — sesión 10e: fix matcher generic_vs_own_brand (autoapprove 92.7→92.9%)
+
+Investigación de qué drives el gap de 236 líneas linkables pero
+no-auto. Diagnóstico: el 75% de penalties globales (1784/2373)
+son `weak_synonym`. Intento inicial golden-bootstrap en OLIMPO
+reveló algo más profundo: existen sinónimos
+`aprendido_en_prueba` heredados que apuntan a artículos
+**genéricos** (`ROSA EC LEMONADE 70CM 25U`) cuando existe el
+branded propio del proveedor (`ROSA LEMONADE 70CM 25U SCARLET`,
+OLIMPO brand). Estos sinónimos daban +0.24 al genérico
+(synonym_trust 0.55 × 0.25 = 0.14 + method_prior 0.10) que
+derrotaba al `brand_in_name(+0.25)` del branded propio. Regla
+de negocio: "marca propia > genérico > marca ajena" no se
+respetaba.
+
+**Fix estructural — `src/matcher.py`**:
+
+- Nuevo parámetro `has_own_branded_peer: bool` en
+  [`_score_candidate`](src/matcher.py#L270). Calculado una vez
+  antes del loop (línea ~822) como "¿hay al menos un candidato
+  viable con brand_in_name del proveedor propio?".
+- Nueva penalty `generic_vs_own_brand` (−0.15) cuando (a) el
+  candidato no tiene marca propia, (b) no tiene marca ajena
+  (tampoco foreign_brand), (c) `has_own_branded_peer` es True.
+  Simetriza: propio +0.25, genérico −0.15 cuando existe propio,
+  foreign −0.25. Diff propio↔genérico sube de 0.25 a 0.40 —
+  suficiente para derrotar synonym_trust débil.
+- La penalty NO se aplica cuando no existe branded propio en el
+  pool → compat con proveedores sin marca propia (mayoría).
+
+**Métricas**:
+- Global auto: 92.7 → **92.9%** (+0.2pp, 3018 → 3020 auto,
+  171 → 168 ambiguous)
+- Ganancias: CEAN GLOBAL +8.3pp (75 → 83.3%), DAFLOR +5.9pp
+  (41.2 → 47.1%), OLIMPO +2.5pp (59.2 → 61.7%), ROSALEDA +0.8pp
+  (99.2 → 100%).
+- Regresión única: COLIBRI −1.4pp (98.6 → 97.2%, 2 líneas
+  ok→ambiguous). Análisis: líneas que antes matcheaban a
+  genérico EC con confianza 0.70+, ahora `generic_vs_own_brand`
+  las hace ambiguas porque el branded COLIBRI compite. Es
+  cualitativamente correcto — golden COLIBRI sigue 100%.
+- 9 penalties `generic_vs_own_brand` aplicadas globalmente.
+- **Golden link 100% (997/997) intacto** — ninguna línea
+  confirmada cambió de articulo_id.
+
 ### 2026-04-21 — sesión 10d: VALTHO + fix parser Cantiza (autoapprove 92.7% estable, golden 907→997)
 
 Continuación de 10c. Foco único: incorporar VALTHOMIG (provider
@@ -407,55 +457,6 @@ que el regex de `CantizaParser` no contemplaba.
 - Global auto: **92.7% estable** (3018 auto / 3254 linkable)
 - Golden link: 100% (907/907) → **100% (997/997)** (+90 líneas,
   24 facturas, 13 proveedores)
-
-### 2026-04-21 — sesión 10c: FLORAROMA + LA ESTACION (autoapprove 92.7%, golden 575→907)
-
-Continuación de 10b. Dos focos: (a) ampliar golden a
-proveedores top-volumen con muchos `weak_synonym` pendientes de
-confirmar; (b) auditoría de LA ESTACION, que compartía parser
-con PONDEROSA pero variante de plantilla distinta no soportada.
-
-**Fixes de parsers**:
-
-- [src/parsers/otros.py](src/parsers/otros.py) **VerdesEstacion
-  variante B — farm bleed**: el regex `_RE_B` admitía
-  `[A-Za-z\s\-]` en la captura de variedad. En LA ESTACION la
-  columna de variedad a veces lleva el farm inline (ej.
-  `Atomic - KENTIA`, `Mondial -ALHOJA`, `Vendela - MARL`), así
-  el regex capturaba la cadena entera como variedad. Resultado:
-  matcher no encontraba PONDEROSA branded y caía a genérico COL
-  o foreign-brand (LUXUS, CANTIZA). Fix **aditivo post-regex**:
-  si la variedad contiene ` - `, split en `variety` + `farm` y
-  el farm pasa a `label`. `R11-Tita` como label no se ve
-  afectado (el regex lo captura en `group(4)`).
-
-**Goldens**:
-
-- FLORAROMA 001068330 (103 líneas) + 001097157 (72 líneas)
-  bootstrappeado y revisado — 100% link al branded FLORAROMA.
-  Matcher maneja bien las variedades OCR-corruptas
-  (AWDOAS SAB.OI→WASABI, AB SRI.GOHTON→BRIGHTON,
-  ESX.OPLORER→EXPLORER) por fuzzy hint.
-- LA ESTACION 608 (51), 609 (51), 678 (55) bootstrappeado post-
-  fix: 157 líneas, 157 al PONDEROSA branded (mismo provider_id
-  11748 que PONDEROSA). Única corrección manual: `ORANGE 40` →
-  `35810 ROSA ORANGE CRUSH 40CM 25U PONDEROSA` (matcher elegía
-  genérico COL por defecto porque la variedad `ORANGE` no
-  coincide textualmente con `ORANGE CRUSH`).
-- `golden_apply.py` propagó 463 confirmaciones nuevas +
-  1 corrección → sinónimos manual_confirmado = 907.
-
-**Métricas**:
-- LA ESTACION auto: 99.0 → **100%** (+1pp, 0 ambiguous)
-- PONDEROSA auto: 97.0 → **100%** (regeneración con sinónimos)
-- FLORAROMA auto: 99.5% (sin cambio; weak_synonym pen
-  190→6 al confirmar)
-- Global auto: 92.7% (estable, los picos top ya estaban
-  marcados; ganancia en trust durable y parser correcto en
-  muestras futuras de LA ESTACION)
-- Golden link: 100% (575/575) → **100% (907/907)** (+332 líneas)
-- Top-6 por volumen (BRISSAS, COLIBRI, FLORAROMA, LA ESTACION,
-  PONDEROSA, ROSALEDA) todos al ≥98.6%
 
 ---
 

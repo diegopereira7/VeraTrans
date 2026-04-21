@@ -7249,9 +7249,9 @@
     "last_confirmed_at": "2026-04-21T16:09:19"
   },
   "313|CARNATIONS|ORANGE|0|20|FANCY": {
-    "articulo_id": 12558,
-    "articulo_name": "CLAVEL COL FANCY NARANJA 70CM 20U",
-    "origen": "auto",
+    "articulo_id": 12804,
+    "articulo_name": "CLAVEL FANCY NARANJA 70CM 20U COLIBRI",
+    "origen": "auto-matching",
     "status": "aprendido_en_prueba",
     "provider_id": 313,
     "species": "CARNATIONS",
@@ -7264,7 +7264,7 @@
     "times_used": 0,
     "times_confirmed": 0,
     "times_corrected": 0,
-    "first_seen_at": "2026-04-21T09:56:28",
+    "first_seen_at": "2026-04-21T17:10:34",
     "last_confirmed_at": ""
   },
   "313|CARNATIONS|MINUETTO|0|10|SELECT": {
@@ -16162,7 +16162,7 @@
     "size": 70,
     "stems_per_bunch": 25,
     "grade": "",
-    "raw": "9 HB LIMONADE 25 X .00     9       225.00 0.30 67.50",
+    "raw": "9 HB LIMONADE 25X .00 9 225.00 0.30 67.50",
     "invoice": "",
     "times_used": 0,
     "times_confirmed": 0,
@@ -16203,9 +16203,9 @@
     "last_confirmed_at": ""
   },
   "2226|ROSES|CANDY X-PRESSION|60|25|": {
-    "articulo_id": 32809,
-    "articulo_name": "ROSA EC CANDY X-PRESSION 50CM 25U",
-    "origen": "auto",
+    "articulo_id": 32109,
+    "articulo_name": "ROSA CANDY X-PRESSION 50CM 25U LA ROSALEDA",
+    "origen": "auto-matching",
     "status": "aprendido_en_prueba",
     "provider_id": 2226,
     "species": "ROSES",
@@ -16218,7 +16218,7 @@
     "times_used": 0,
     "times_confirmed": 0,
     "times_corrected": 0,
-    "first_seen_at": "2026-04-16T16:05:54",
+    "first_seen_at": "2026-04-21T17:13:41",
     "last_confirmed_at": ""
   },
   "2226|ROSES|PINK FLOYD|50|25|": {
@@ -17205,7 +17205,7 @@
     "raw": "15,00 QB HYD WHITE PREMIUM 350603199010 525 0,48 252,00",
     "invoice": "",
     "status": "ambiguo",
-    "times_corrected": 283
+    "times_corrected": 288
   },
   "440|GYPSOPHILA|GYPSOPHILA XL RAINBOW MIX|80|25|": {
     "articulo_id": 34976,
@@ -17220,7 +17220,7 @@
     "raw": "96632 1 hb 450 Gyp Xl Rainbow Mix 80 cm/750 gr Violeta Flowers 450 25 18 $ 8 ,50 $ 1 53,00",
     "invoice": "",
     "status": "ambiguo",
-    "times_corrected": 54
+    "times_corrected": 55
   },
   "6323|HYDRANGEAS|PREMIUM TENIDA YELLOW|60|1|": {
     "articulo_id": 22735,
@@ -26348,7 +26348,7 @@
     "raw": "ALSTRO (TSTEM ASSORTED SUPERSELEC 1 80 80 .240 19.20",
     "invoice": "93725",
     "status": "ambiguo",
-    "times_corrected": 952
+    "times_corrected": 969
   },
   "281|ALSTROEMERIA|MIXTO|0|10|SELECT": {
     "articulo_id": 12787,
@@ -26363,7 +26363,7 @@
     "raw": "ALSTRO (TSTEM ASSORTED SELECT 2 100 200 .180 36.00",
     "invoice": "94114",
     "status": "ambiguo",
-    "times_corrected": 392
+    "times_corrected": 399
   },
   "281|ALSTROEMERIA|WHITE|0|10|SELECT": {
     "articulo_id": 12723,
@@ -26378,7 +26378,7 @@
     "raw": "ALSTRO (TSTEM WHITE SELECT 1 100 100 .180 18.00",
     "invoice": "94114",
     "status": "ambiguo",
-    "times_corrected": 168
+    "times_corrected": 171
   },
   "281|ROSES|GARDEN MAYRA`S WHITE|40|25|": {
     "articulo_id": 34182,
@@ -26438,7 +26438,7 @@
     "raw": "1 H LIMONADA 12 25 50 300 0,320 96,000",
     "invoice": "0000254785",
     "status": "ambiguo",
-    "times_corrected": 141
+    "times_corrected": 143
   },
   "13001|ROSES|TESSA-D LIMONADA|60|4|": {
     "articulo_id": 35087,
@@ -26992,15 +26992,21 @@
   "9750|ROSES|PINK O´HARA|50|100|50": {
     "articulo_id": 35789,
     "articulo_name": "ROSA OHARA ROSA 50CM 25U DAFLOR",
-    "origen": "manual-web",
-    "provider_id": 0,
-    "species": "",
-    "variety": "",
-    "size": 0,
-    "stems_per_bunch": 0,
-    "grade": "",
-    "raw": "1 QB Roses Pink O´hara - 50 - CO-0603110060 - - 100 100 Stems $0.320 $32.00",
-    "invoice": ""
+    "origen": "auto",
+    "status": "aprendido_en_prueba",
+    "provider_id": 9750,
+    "species": "ROSES",
+    "variety": "PINK O´HARA",
+    "size": 50,
+    "stems_per_bunch": 100,
+    "grade": "50",
+    "raw": "1 QB Roses Pink O´hara - 50 - - 100 100 Stems $0.320 $32.00",
+    "invoice": "",
+    "times_used": 0,
+    "times_confirmed": 0,
+    "times_corrected": 0,
+    "first_seen_at": "2026-04-21T17:10:54",
+    "last_confirmed_at": ""
   },
   "2229|ROSES|PINK FRUTTETO|50|25|": {
     "articulo_id": 34109,
@@ -30960,7 +30966,7 @@
     "raw": "5 H Rose Freedom X 10 - 50 47806- 50 GONZA x 10 0603.11.00.00 200 1000 ST 0.32 320.00",
     "invoice": "",
     "status": "ambiguo",
-    "times_corrected": 58
+    "times_corrected": 59
   },
   "90012|ROSES|TIFFANY|60|25|": {
     "articulo_id": 37198,
@@ -33179,7 +33185,7 @@
     "raw": "SALMA 60 25 4 100 0.400 40.000",
     "invoice": "",
     "status": "ambiguo",
-    "times_corrected": 57
+    "times_corrected": 58
   },
   "90018|ROSES|ABSOLUTE IN PINK|60|25|": {
     "articulo_id": 31605,
@@ -34891,7 +34897,7 @@
     "raw": "2 HB MONDIAL. 25 X .00   2        50.00 0.30 15.00",
     "invoice": "",
     "status": "ambiguo",
-    "times_corrected": 165
+    "times_corrected": 168
   },
   "90038|ROSES|MONDIAL.|60|25|": {
     "articulo_id": 32319,
@@ -34906,7 +34912,7 @@
     "raw": "2 HB MONDIAL. 25 X .00    7       175.00 0.35 61.25",
     "invoice": "",
     "status": "ambiguo",
-    "times_corrected": 110
+    "times_corrected": 112
   },
   "90038|ROSES|PALOMA|50|25|": {
     "articulo_id": 35877,
@@ -35354,7 +35360,7 @@
     "raw": "1 H Rose Freedom X 10 - 50 45337 50 GONZA X 10 0603.11.00.00 200 200 ST 0.30 60.00",
     "invoice": "",
     "status": "ambiguo",
-    "times_corrected": 108
+    "times_corrected": 110
   },
   "90044|ROSES|VENDELA|50|25|": {
     "articulo_id": 32426,
@@ -35925,7 +35931,7 @@
     "raw": "2 HB EXPLORER. 25 X .00   4        100 0.30 30.00",
     "invoice": "1775728457_TIERRA_VERDE2.pdf",
     "status": "ambiguo",
-    "times_corrected": 110
+    "times_corrected": 112
   },
   "90038|ROSES|EXPLORER°|50|25|": {
     "articulo_id": 32252,
@@ -35940,7 +35946,7 @@
     "raw": "2 HB EXPLORER° 25 X .00   8        200 0.30 60.00",
     "invoice": "1775728457_TIERRA_VERDE2.pdf",
     "status": "ambiguo",
-    "times_corrected": 110
+    "times_corrected": 112
   },
   "11748|ROSES|MAGIC TIMES|40|25|": {
     "articulo_id": 35187,
@@ -36794,7 +36800,7 @@
     "raw": "HB 1 0,5 EXPLORER 0603.11.00.60 25 14 14 350 0,32 112,00",
     "invoice": "1776252553_ROSABELLA.pdf",
     "status": "ambiguo",
-    "times_corrected": 110
+    "times_corrected": 112
   },
   "90010|CARNATIONS|SELECT CREAM|0|20|": {
     "articulo_id": 12908,
@@ -49242,5 +49248,43 @@
     "times_corrected": 0,
     "first_seen_at": "2026-04-21T16:05:04",
     "last_confirmed_at": "2026-04-21T16:08:46"
+  },
+  "311|CARNATIONS|BLANCO|0|20|SELECT": {
+    "articulo_id": 12730,
+    "articulo_name": "CLAVEL FANCY BLANCO 70CM 20U CEAN",
+    "origen": "auto-matching",
+    "status": "aprendido_en_prueba",
+    "provider_id": 311,
+    "species": "CARNATIONS",
+    "variety": "BLANCO",
+    "size": 0,
+    "stems_per_bunch": 20,
+    "grade": "SELECT",
+    "raw": "7 Carnation White Select *400 Tallos UE 800,00 Und. 2 QB 0,16 124,00",
+    "invoice": "",
+    "times_used": 0,
+    "times_confirmed": 0,
+    "times_corrected": 0,
+    "first_seen_at": "2026-04-21T17:10:18",
+    "last_confirmed_at": ""
+  },
+  "311|CARNATIONS|BLANCO|0|20|FANCY": {
+    "articulo_id": 12730,
+    "articulo_name": "CLAVEL FANCY BLANCO 70CM 20U CEAN",
+    "origen": "auto-matching",
+    "status": "aprendido_en_prueba",
+    "provider_id": 311,
+    "species": "CARNATIONS",
+    "variety": "BLANCO",
+    "size": 0,
+    "stems_per_bunch": 20,
+    "grade": "FANCY",
+    "raw": "8 CARNATION WHITE FANCY 800,00 Und. 2 QB 0,14 112,00",
+    "invoice": "",
+    "times_used": 0,
+    "times_confirmed": 0,
+    "times_corrected": 0,
+    "first_seen_at": "2026-04-21T17:10:19",
+    "last_confirmed_at": ""
   }
 }

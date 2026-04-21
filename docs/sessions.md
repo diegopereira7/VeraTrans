@@ -8,6 +8,55 @@ aquí y se quita de CLAUDE.md.
 Para el estado actual del proyecto, ver [`CLAUDE.md`](../CLAUDE.md) (raíz).
 Para lecciones transversales reutilizables, ver [`lessons.md`](lessons.md).
 
+### 2026-04-21 — sesión 10c: FLORAROMA + LA ESTACION (autoapprove 92.7%, golden 575→907)
+
+Continuación de 10b. Dos focos: (a) ampliar golden a
+proveedores top-volumen con muchos `weak_synonym` pendientes de
+confirmar; (b) auditoría de LA ESTACION, que compartía parser
+con PONDEROSA pero variante de plantilla distinta no soportada.
+
+**Fixes de parsers**:
+
+- [src/parsers/otros.py](../src/parsers/otros.py) **VerdesEstacion
+  variante B — farm bleed**: el regex `_RE_B` admitía
+  `[A-Za-z\s\-]` en la captura de variedad. En LA ESTACION la
+  columna de variedad a veces lleva el farm inline (ej.
+  `Atomic - KENTIA`, `Mondial -ALHOJA`, `Vendela - MARL`), así
+  el regex capturaba la cadena entera como variedad. Resultado:
+  matcher no encontraba PONDEROSA branded y caía a genérico COL
+  o foreign-brand (LUXUS, CANTIZA). Fix **aditivo post-regex**:
+  si la variedad contiene ` - `, split en `variety` + `farm` y
+  el farm pasa a `label`. `R11-Tita` como label no se ve
+  afectado (el regex lo captura en `group(4)`).
+
+**Goldens**:
+
+- FLORAROMA 001068330 (103 líneas) + 001097157 (72 líneas)
+  bootstrappeado y revisado — 100% link al branded FLORAROMA.
+  Matcher maneja bien las variedades OCR-corruptas
+  (AWDOAS SAB.OI→WASABI, AB SRI.GOHTON→BRIGHTON,
+  ESX.OPLORER→EXPLORER) por fuzzy hint.
+- LA ESTACION 608 (51), 609 (51), 678 (55) bootstrappeado post-
+  fix: 157 líneas, 157 al PONDEROSA branded (mismo provider_id
+  11748 que PONDEROSA). Única corrección manual: `ORANGE 40` →
+  `35810 ROSA ORANGE CRUSH 40CM 25U PONDEROSA` (matcher elegía
+  genérico COL por defecto porque la variedad `ORANGE` no
+  coincide textualmente con `ORANGE CRUSH`).
+- `golden_apply.py` propagó 463 confirmaciones nuevas +
+  1 corrección → sinónimos manual_confirmado = 907.
+
+**Métricas**:
+- LA ESTACION auto: 99.0 → **100%** (+1pp, 0 ambiguous)
+- PONDEROSA auto: 97.0 → **100%** (regeneración con sinónimos)
+- FLORAROMA auto: 99.5% (sin cambio; weak_synonym pen
+  190→6 al confirmar)
+- Global auto: 92.7% (estable, los picos top ya estaban
+  marcados; ganancia en trust durable y parser correcto en
+  muestras futuras de LA ESTACION)
+- Golden link: 100% (575/575) → **100% (907/907)** (+332 líneas)
+- Top-6 por volumen (BRISSAS, COLIBRI, FLORAROMA, LA ESTACION,
+  PONDEROSA, ROSALEDA) todos al ≥98.6%
+
 ### 2026-04-21 — sesión 10b: PONDEROSA + ROSALEDA (autoapprove 92.2→92.7%, golden 444→575)
 
 Continuación de 10a. Tres focos: cerrar FA-117549 pendiente,

@@ -187,3 +187,15 @@ transversales:
 - **`brand_by_provider` cubre casos donde la key ≠ marca**: p. ej.
   `verdesestacion` vende como PONDEROSA. Añadir `brand_by_provider`
   al `own_brands` evita que PONDEROSA se penalice como foreign_brand.
+- **Los sinónimos `aprendido_en_prueba` son deuda que crece hacia el
+  artículo equivocado**: un sinónimo heredado con trust 0.55 +
+  method_prior 0.10 aporta +0.24 al candidato al que apunta. Si ese
+  sinónimo apunta a un genérico (`ROSA EC LEMONADE 70CM`) y existe un
+  branded propio del proveedor (`... SCARLET`), el +0.24 derrota al
+  `brand_in_name(+0.25)`. La regla "marca propia > genérico > marca
+  ajena" exige cerrar ese gap: penalty `generic_vs_own_brand` (−0.15)
+  cuando el candidato es genérico Y en el pool existe un candidato
+  branded propio. Lección transferible: **cualquier bonus por evidencia
+  externa (sinónimo, histórico, prior) debe tener un contrapeso
+  contextual cuando compite con una señal estructural fuerte** como la
+  marca propia.

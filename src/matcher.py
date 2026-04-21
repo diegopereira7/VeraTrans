@@ -271,7 +271,8 @@ def _score_candidate(line: InvoiceLine, cand: Candidate,
                      syn_entry: Optional[dict] = None,
                      provider_id: int = 0,
                      syn_store: Optional[SynonymStore] = None,
-                     art_loader: Optional[ArticulosLoader] = None) -> None:
+                     art_loader: Optional[ArticulosLoader] = None,
+                     has_own_branded_peer: bool = False) -> None:
     """Rellena cand.score / cand.reasons / cand.penalties con evidencia real.
 
     Features:
@@ -381,6 +382,17 @@ def _score_candidate(line: InvoiceLine, cand: Candidate,
         if foreign_brand and _normalize(foreign_brand) not in own_brands_norm:
             score -= 0.25
             penalties.append(f'foreign_brand({foreign_brand})')
+        elif has_own_branded_peer and own_brands_norm:
+            # Genérico (ROSA EC / ROSA COL sin marca ni foreign) cuando
+            # en el pool existe otro candidato con marca propia del
+            # proveedor. Sin esta penalty, un sinónimo `aprendido_en_prueba`
+            # heredado que apuntaba al genérico (trust 0.55 + method_prior
+            # 0.10 = +0.24) derrotaba al branded propio (+0.25 brand). La
+            # regla de negocio es "marca propia > genérico > marca ajena";
+            # simetrizamos con -0.15 (menor que foreign -0.25, pero
+            # suficiente para cerrar el gap de 0.24).
+            score -= 0.15
+            penalties.append('generic_vs_own_brand')
 
     # — Histórico del proveedor con este artículo
     if syn_store and provider_id and art.get('id'):
@@ -819,11 +831,22 @@ class Matcher:
             viable.append(c)
 
         # Scoring por evidencia.
+        # Precalcular si algún candidato viable tiene la marca propia del
+        # proveedor en el nombre — flag que usa `_score_candidate` para
+        # penalizar a los genéricos competidores y que el branded propio
+        # pueda ganar a sinónimos débiles que apuntan al genérico.
+        _own_brands_pool = _own_brands_norm(pkey, provider_id, self.art)
+        has_own_branded_peer = bool(_own_brands_pool) and any(
+            any(b in _normalize(c.articulo.get('nombre') or '')
+                for b in _own_brands_pool)
+            for c in viable
+        )
         for c in viable:
             s = syn_entry if c.source == 'synonym' else None
             _score_candidate(line, c, syn_entry=s,
                              provider_id=provider_id, syn_store=self.syn,
-                             art_loader=self.art)
+                             art_loader=self.art,
+                             has_own_branded_peer=has_own_branded_peer)
 
         # Brand boost: si existe un candidato con la marca propia del
         # proveedor en el nombre Y tiene variety+size EXACTO, promoverlo.
