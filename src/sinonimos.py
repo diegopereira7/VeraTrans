@@ -177,6 +177,39 @@ class SynonymStore:
             entry['status'] = 'aprendido_confirmado'
         self.save()
 
+    def register_match_hit(self, provider_id: int, line: InvoiceLine,
+                           articulo_id: int) -> bool:
+        """Auto-confirmación: el matcher ganó un ``ok`` con evidencia
+        independiente y el sinónimo preexistente ya apuntaba al mismo
+        artículo. Cuenta como señal (no tan fuerte como un ✓ humano,
+        pero no es cero).
+
+        Reglas:
+        - Solo incrementa si el sinónimo preexiste y apunta al mismo
+          artículo (el caller debe pasar ``articulo_id`` ganador).
+        - No toca ``manual_confirmado`` ni ``rechazado`` ni
+          ``aprendido_confirmado`` ya consolidado (no infla contadores
+          más allá de la promoción).
+        - Tras ≥ 2 hits registrados, promueve
+          ``aprendido_en_prueba`` (o status vacío) →
+          ``aprendido_confirmado``. Umbral 2 porque es señal coherente
+          a lo largo de ≥ 2 facturas distintas.
+
+        Devuelve True si hubo cambio (para telemetría).
+        """
+        k = self._key(provider_id, line)
+        entry = self.syns.get(k)
+        if not entry or entry.get('articulo_id') != articulo_id:
+            return False
+        status = entry.get('status') or 'aprendido_en_prueba'
+        if status in ('manual_confirmado', 'rechazado', 'aprendido_confirmado'):
+            return False
+        entry['times_confirmed'] = int(entry.get('times_confirmed', 0) or 0) + 1
+        entry['last_confirmed_at'] = datetime.now().isoformat(timespec='seconds')
+        if status in (None, '', 'aprendido_en_prueba') and entry['times_confirmed'] >= 2:
+            entry['status'] = 'aprendido_confirmado'
+        return True
+
     def mark_corrected(self, provider_id: int, line: InvoiceLine,
                        old_articulo_id: int) -> None:
         """El operador corrigió el sinónimo a otro artículo. Lo degrada."""
@@ -270,7 +303,8 @@ class SynonymStore:
             return exact
         # Fallback: intentar con stems_per_bunch=0
         if line.stems_per_bunch != 0:
-            fallback_key = (f"{provider_id}|{line.species}|{line.variety.upper()}"
+            from src.models import normalize_variety_key
+            fallback_key = (f"{provider_id}|{line.species}|{normalize_variety_key(line.variety)}"
                             f"|{line.size}|0|{line.grade.upper()}")
             return self.syns.get(fallback_key)
         return None

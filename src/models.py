@@ -1,6 +1,7 @@
 """Modelos de datos: InvoiceHeader, InvoiceLine y excepciones custom."""
 from __future__ import annotations
 
+import re
 from dataclasses import dataclass, field
 from typing import Optional
 
@@ -10,6 +11,25 @@ from src.config import (
     DEFAULT_SIZE_HYDRANGEAS,
     DEFAULT_SPB_HYDRANGEAS,
 )
+
+
+_NON_ALNUM_RE = re.compile(r'[^A-Z0-9 ]+')
+
+
+def normalize_variety_key(variety: str) -> str:
+    """Canonicaliza la variedad para construir la synonym_key.
+
+    Motivación: el parser a veces emite una variedad con puntuación
+    (`MANDARIN. X-PRESSION`, `O'HARA`, `EXPLORER°`) y a veces sin, según
+    cómo haya extraído pdfplumber la celda o según pase por OCR. Si dos
+    variantes de la misma variedad producen claves distintas, el
+    sinónimo guardado por el operador no se reutiliza y aparece como
+    línea a corregir de nuevo. La clave canónica colapsa todos esos
+    caracteres a espacios y compacta.
+    """
+    v = (variety or '').upper()
+    v = _NON_ALNUM_RE.sub(' ', v)
+    return ' '.join(v.split())
 
 
 # --- Excepciones ---
@@ -168,5 +188,11 @@ class InvoiceLine:
         return v
 
     def match_key(self) -> str:
-        """Clave única para buscar/guardar sinónimos."""
-        return f"{self.species}|{self.variety.upper()}|{self.size}|{self.stems_per_bunch}|{self.grade.upper()}"
+        """Clave única para buscar/guardar sinónimos.
+
+        La variedad se canonicaliza con `normalize_variety_key` para que
+        `MANDARIN. X-PRESSION`, `MANDARIN X-PRESSION` y `MANDARIN X PRESSION`
+        produzcan la misma clave y no se creen sinónimos duplicados
+        fantasmas al variar la puntuación entre extracciones.
+        """
+        return f"{self.species}|{normalize_variety_key(self.variety)}|{self.size}|{self.stems_per_bunch}|{self.grade.upper()}"

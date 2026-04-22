@@ -72,14 +72,20 @@ _Cifras tomadas del historial de sesiones de `CLAUDE.md` (sesión 6, abril 2026)
   - `mark_confirmed`/`mark_corrected` ya existen en `SynonymStore`;
     falta engancharlos a UI/API.
 
-### KPIs actuales (sesión 10e, `tools/evaluate_all.py`)
-- Líneas totales procesadas: **3506**
-- Líneas `ok`: **3084** · `ambiguous_match`: **168** · `autoapprovable`: **3020**
-- **autoapprove_rate: 92.9%** de las líneas linkables (3020/3252)
+### KPIs actuales (sesión 10m, `tools/evaluate_all.py`)
+- Líneas totales procesadas: ~**3700** (+200 líneas nuevas
+  recuperadas por parsers fixeados — FLORSANI2, GARDA, LIFE,
+  AROMA, MYSTIC1, MALIMA)
+- Líneas `autoapprovable`: **3054**
+- **autoapprove_rate: 92.6%** (baja por dilución; las nuevas
+  líneas aún sin sinónimo manual, se recuperarán por shadow loop)
 - **Golden set: 100%** parse + link accuracy (997/997 líneas
   reviewed, 24 facturas, 13 proveedores)
-- Buckets: OK 76 · NO_PARSEA 5 · TOTALES_MAL 1 (BRISSAS) ·
-  NO_DETECTADO 1 (PONDEROSA)
+- Buckets: OK 79 · NO_PARSEA 3 (SAYONARA, CEAN GLOBAL,
+  NATIVE BLOOMS) · TOTALES_MAL 0 · NO_DETECTADO 1 (PONDEROSA)
+- Top penalties globales: `variety_no_overlap` 232 ·
+  `weak_synonym` 190 · `low_evidence` 114 · `foreign_brand`
+  105 · `tie_top2_margin` **79** (antes 96, −18%)
 
 ### KPIs baseline (sesión 9q, `tools/evaluate_all.py`)
 - Líneas totales procesadas: **3309** (+12 vs 9p)
@@ -321,10 +327,22 @@ reales de revisión, que solo se puede hacer en producción real.
 ---
 
 ## FASE 10 — Shadow mode con producción real
-- [ ] Procesar facturas reales en modo sombra
-- [ ] Comparar propuesta del sistema vs decisión humana
-- [ ] Capturar nuevos formatos y fallos reales
-- [ ] Convertir correcciones en dataset útil
+- [x] **Infraestructura de captura** (sesión 10k):
+  - `shadow_log.jsonl` en raíz, formato JSONL con entries
+    `propuesta` (una por línea de factura en `handleProcess`) y
+    `decision` (confirm/correct desde UI).
+  - `_shadowLogProposals` + `_shadowLogDecision` en
+    [`web/api.php`](../../web/api.php). Silenciosos en error.
+  - [`tools/shadow_report.py`](../../tools/shadow_report.py):
+    cruza ambos por `synonym_key` y produce accuracy real,
+    accuracy por proveedor, top correcciones, backlog pendiente.
+- [-] Procesar facturas reales en modo sombra (operación diaria)
+- [-] Comparar propuesta del sistema vs decisión humana
+      (automático vía shadow_report)
+- [ ] Capturar nuevos formatos y fallos reales (ver backlog
+      pendiente en shadow_report)
+- [ ] Convertir correcciones en dataset útil (top patterns →
+      fixes concretos)
 - [ ] Reinyectar aprendizaje al sistema
 
 ### Criterio de cierre de fase
@@ -398,20 +416,271 @@ tras la sesión 8 (baseline ya capturada).
 - [x] 16. IWA mixed_box + CANTIZA/MILAGRO/MILONGA + fuzzy cache +
       golden drafts (sesión 9q) — 86.7%→87.8%, NO_PARSEA 10→7,
       ambig 268→228 (reclassify), matcher ~6.5s→~5.0s para 42 líneas
-- [ ] 17. **Shadow mode** (Fase 10) — cuando se empiece a implantar
-- [ ] 18. Revisar golden drafts (timana, benchmark, florifrut) y
-      marcarlos reviewed
-- [ ] 19. NO_PARSEA restantes (7): CANANVALLE, CEAN GLOBAL, DAFLOR,
-      ELITE, NATIVE BLOOMS, SAYONARA, UNIQUE — mayoría son issues de
-      match, no de parse
-- [ ] 20. TOTALES_MAL (3): CANTIZA/MILAGRO/MILONGA — mejorar header
-      extraction para samples con OCR corrupto
+- [x] 17. Fix parser BRISSAS header `Sub Total` (sesión 10f) —
+      BRISSAS TOTALES_MAL → OK, TOTALES_MAL 1→0, auto 92.8% estable
+- [x] 18. Auto-confirmación de sinónimos (sesión 10g) —
+      `register_match_hit` + promoción ≥2 hits, weak_synonym
+      1787→677 (−62%), 774 sinónimos promovidos, auto 92.8→92.9%
+- [x] 19. Fixes parsers UNIQUE + CANANVALLE (sesión 10h) —
+      nuevos regex proforma/sample-table, NO_PARSEA **5→3**,
+      auto 92.9→93.0%, weak_synonym 677→200 (−89% total vs 10f)
+- [x] 20. Normalización puntuación en variety tokens (sesión
+      10i) — pre-normalize `[^A-Z0-9 ]+` en `_score_candidate`,
+      variety_no_overlap 250→232, auto 93.0→93.4% (+15 líneas)
+- [x] 21. Desempate cualitativo tie_top2 (sesión 10j) —
+      si top1 tiene `size_exact` y top2 solo `size_close`, o
+      top1 tiene `variety_full` y top2 no, marcar ok con reason
+      `tiebreak_*`. ambig 161→144 (−11%), auto 93.4→93.6% (+9)
+- [x] 22. **Shadow mode — infraestructura** (Fase 10, sesión 10k)
+      — `shadow_log.jsonl` + hooks en api.php (process/confirm/
+      correct) + `tools/shadow_report.py`.
+- [x] 23. **Primer fix shadow-driven** (sesión 10l): error en
+      AROMA.pdf durante lote real → fix FLORAROMA variante 2026.
+- [x] 24. **Batch de 7 fixes shadow-driven** (sesión 10m): Ángel
+      procesó lote real de 27 facturas y señaló errores en UI.
+      Fixes: FLORAROMA, EQR, FLORSANI, GARDA, MALIMA, MYSTIC,
+      LIFE. Patrón común: **box_code/label contaminando
+      variety** — ahora separado a campo `label`. ~200 líneas
+      nuevas recuperadas. Golden 997/997 intacto.
+- [-] 25. Ciclo continuo de uso real + shadow_report semanal +
+      conversión de top-N patrones en fixes. Pendiente: revisar
+      parsers aún con patrón box-code-en-variety (ROSALEDA EURO,
+      SAYONARA SP, APOSENTOS ILIAS, MONTEROSA EUGENIA,
+      EL CAMPANARIO ZAIRA).
+- [ ] 21. NO_PARSEA restantes (3): SAYONARA (OCR corrupto
+      irrecuperable), CEAN GLOBAL (rosas en español, reescritura
+      parser auto_cean), NATIVE BLOOMS (tropicales cortesía
+      $0.0001). ROI bajo para el esfuerzo requerido.
+- [ ] 22. Samples con totals_ok parcial (4-5 samples): CANTIZA,
+      MILAGRO, MILONGA, ROSALEDA, TESSA, UMA FLOWERS — bucket OK
+      pero ruido en validación
 
 ---
 
 ## Registro rápido de avances
 
 ### Último bloque cerrado
+- Fecha: 2026-04-22
+- Paso: sesión 10m — batch 7 fixes shadow-driven
+- Qué se hizo:
+  * Ángel procesó lote real de 27 facturas y señaló errores en
+    UI (AROMA no parsea, GARDA box code en variety, FLORSANI
+    solo 2 de 4 líneas y TALLA/TALLOS mal, MALIMA totales por
+    coma de miles, MYSTIC CORUÑA+TNT en variety, LIFE MARL en
+    variety, EQR Carpe Diem con stems 150 en vez de 450).
+  * **7 fixes parsers aplicados** (detalle en CLAUDE.md Estado):
+    FLORAROMA 2026 (MARK + coma decimal), EQR (stems total),
+    FLORSANI (box types + sub-líneas + tints + OCR normalize),
+    GARDA (box_code→label + sub-líneas heredadas), MALIMA
+    (coma miles US), MYSTIC (Ñ + TNT block name), LIFE (MARL
+    label).
+  * **Patrón común detectado**: box codes (ELOY/MARL/R16/CORUÑA/
+    ASTURIAS) metidos como parte de variety. Fix común: grupo
+    opcional `[A-Z]{3,}` antes de variety → campo `label`.
+  * Audit global detectó 5 parsers más pendientes (ROSALEDA
+    EURO, SAYONARA SP, APOSENTOS ILIAS, MONTEROSA EUGENIA,
+    EL CAMPANARIO ZAIRA) — se atenderán en siguiente batch
+    shadow.
+- Resultado:
+  * ~200 líneas nuevas recuperadas (FLORSANI2 0→54, GARDA
+    11→28, AROMA 0→4, etc.).
+  * Golden **997/997 (100%) intacto** en todo el batch.
+  * Autoapprove 93.9% → 92.6% por dilución (nuevas líneas sin
+    sinónimo). El `register_match_hit` (10g) las recuperará.
+  * **Ciclo Fase 10 operando**: errores de producción →
+    diagnóstico → fix aditivo → verificación golden.
+
+### Penúltimo bloque cerrado
+- Fecha: 2026-04-22
+- Paso: sesión 10l — fix parser FLORAROMA variante 2026
+  (primer fix shadow-driven)
+- Qué se hizo:
+  * Ángel procesó lote real de 27 facturas; AROMA.pdf falló con
+    "parser floraroma no extrajo líneas". Diagnóstico: formato
+    FLORAROMA 2026 tiene columna nueva `MARK` (`S.O.`) y
+    **coma decimal** (`0,350` en lugar de `0.350`).
+  * **`src/parsers/otros.py → FloraromaParser`**:
+    - Regex main y continuation: `[\d.]+` → `[\d.,]+` en price/total.
+    - Nuevo helper `_num(s)` con heurística "último separador =
+      decimal": maneja `0,350`, `0.350`, `1,597.00` (EN),
+      `1.597,00` (ES), `1.597.000` (OCR). Defensivo con fallback
+      0.0.
+  * Efecto secundario: el `_num` reemplaza `float()` directo que
+    tenía bug silencioso con totales >$1000 en FLORAROMA legacy
+    (header daba 1.60 en lugar de 1597.00). 5/5 muestras legacy
+    ahora con totals_ok.
+- Resultado:
+  * AROMA: 0 → **4** líneas parseadas, totals OK.
+  * Auto: 3061 → **3068** (+7), **autoapprove 93.6 → 93.9%**.
+  * Golden **997/997 (100%) intacto**.
+  * **Primer fix derivado del shadow flow** — valida Fase 10.
+
+### Penúltimo bloque cerrado
+- Fecha: 2026-04-22
+- Paso: sesión 10k — shadow mode arrancado (Fase 10)
+- Qué se hizo:
+  * **`web/api.php`**: nuevos helpers `_shadowLogProposals` y
+    `_shadowLogDecision` + helper `_shadowSynKey` replicando la
+    key de `SynonymStore._key` en Python. Integración silenciosa
+    en `handleProcess` (intercepta JSON de Python, loguea
+    propuesta por línea + children de mixed_box),
+    `handleConfirmMatch` (decision=confirm) y
+    `handleCorrectMatch` (decision=correct).
+  * **`tools/shadow_report.py`** (nuevo ~200 líneas):
+    agregador. Carga `shadow_log.jsonl`, cruza decisiones con
+    propuestas por `synonym_key` (eligiendo la propuesta más
+    reciente anterior a la decisión). Reporta: accuracy global,
+    accuracy por proveedor, top correcciones con par propuso/
+    correcto, backlog pendiente (ambiguous/sin_match sin
+    decisión humana). Flags `--since`, `--provider`,
+    `--top-errors`.
+  * Smoke test con 4 entries sintéticas validó pipeline
+    completo: escritura, cruce, métricas, identificación del
+    patrón de corrección. Log reseteado tras el test.
+- Resultado:
+  * Infraestructura lista. Shadow log vacío esperando uso real.
+  * Métricas técnicas (autoapprove 93.6%, golden 100%) sin
+    cambios vs 10j — el valor de esta sesión es operativo.
+- Pendiente:
+  * Acumular 1-2 semanas de uso real.
+  * Correr `shadow_report.py` semanalmente.
+  * Convertir top-N patrones de corrección en fixes concretos.
+
+### Penúltimo bloque cerrado
+- Fecha: 2026-04-22
+- Paso: sesión 10j — desempate cualitativo en tie_top2_margin
+- Qué se hizo:
+  * Diagnóstico de los 161 `ambiguous_match` residuales.
+    Categorías: 96 tie_top2_margin sólo (empates de margen),
+    118 low_evidence sólo (score < 0.70, mucho foreign_brand).
+  * Inspección por nombre de artículo reveló que muchos tie
+    eran entre artículos con **misma variedad y tallas
+    distintas** donde top1 tenía `size_exact` y top2 solo
+    `size_close`, o variedades multi-palabra con
+    `variety_full` en top1 y match parcial en top2.
+  * **`src/matcher.py`** (línea ~981, rama tie): antes de
+    marcar ambiguous, chequear dominio cualitativo — si
+    top1.reasons tiene `size_exact` AND top2.reasons tiene
+    solo `size_close`, o top1 tiene `variety_full` y top2 no,
+    marcar `ok` con reason `tiebreak_size_exact` /
+    `tiebreak_variety_full`. También integrado
+    `register_match_hit` del 10g.
+- Resultado:
+  * Ambiguous: 161 → **144** (−17, −11%).
+  * `tie_top2_margin`: 96 → **79** (−18%).
+  * Auto: 3052 → **3061** (+9), **autoapprove 93.4 → 93.6%**.
+  * Golden **997/997 (100%) intacto**.
+- Residuo (79 tie_top2): empates genuinos FANCY/SELECT,
+  branded propio vs genérico mismo size, SPB faltante cuando
+  parser no extrae spb (EL CAMPANARIO). Requieren revisión
+  humana u otro tipo de fix (enriquecer parsers con SPB
+  default).
+
+### Penúltimo bloque cerrado
+- Fecha: 2026-04-22
+- Paso: sesión 10i — normalización puntuación en variety tokens
+- Qué se hizo:
+  * Diagnóstico profundo de las 250 penalties
+    `variety_no_overlap`: 37 fixeables por puntuación
+    (TIERRA VERDE `MONDIAL.`, DAFLOR `O´HARA`, AGRIVALDANI
+    `M. DARK BLUE`), 35 ASSORTED/MIX genuinos, 52 multi-word
+    heterogéneos, 126 single-token sin catálogo equivalente.
+  * **`src/matcher.py → _score_candidate`** línea ~298. Añadido
+    `re.sub(r'[^A-Z0-9 ]+', ' ', variety.upper())` antes del
+    tokenizer. Convierte `MONDIAL.` → `MONDIAL`, `O´HARA` →
+    `O HARA` (HARA aparece como substring de OHARA en el nombre
+    del artículo, `any(t in nombre)` sigue funcionando). Fix
+    aditivo, ~5 líneas.
+- Resultado:
+  * `variety_no_overlap`: 250 → **232** (−7%).
+  * Auto: 3037 → **3052** (+15), **autoapprove 93.0 → 93.4%**.
+  * Ambiguous: 171 → 161 (−10, los casos fix salieron del
+    bucket porque ahora tienen variety_match +0.30 y no
+    penalty −0.10, sube 0.40 neto).
+  * Golden **997/997 (100%) intacto**.
+- Residuo (232): productos genuinamente no existentes en
+  catálogo (ELITE alstros), OCR corrupto irrecuperable
+  (FLORAROMA `ESX.OPLORER`), variedades multi-word con
+  concatenación OCR. Fuera de alcance de normalización simple.
+
+### Penúltimo bloque cerrado
+- Fecha: 2026-04-22
+- Paso: sesión 10h — fixes parsers UNIQUE + CANANVALLE
+- Qué se hizo:
+  * Diagnóstico de los 9 samples que impedían a los 5 NO_PARSEA
+    salir del bucket. 3 clasificados como no-recuperables
+    (SAYONARA 64811 OCR corrupto total, CEAN cean 57 español
+    con rosas → reescritura amplia, NATIVE BLOOMS samples con
+    tropicales gratis).
+  * **`src/parsers/otros.py → UniqueParser._PROFORMA_RE`**
+    (nuevo). 2 samples fallidos eran facturas PROFORMA con
+    layout `HITS No. DESCRIPTION BRAND BOX BOX TYPE PCS FULL
+    PACKING T.STEMS UNIT UNIT PRICE TOTAL VALUE`. Nuevo regex
+    captura `0603.11.00.50 ROSES BLUSH 50 HB 1 0.5 300 300
+    STEMS $ 0.32 $ 96.00`, tolera OCR split en total.
+  * **`src/parsers/otros.py → CustomerInvoiceParser._SAMPLE_RE`**
+    (nuevo). 2 samples duplicados de CANANVALLE eran facturas
+    SAMPLE con layout-tabla sin `$` (`COMMERCIAL INVOICE`).
+    Nuevo regex captura `1 1 - 1 HB Brighton 50 1 1 25 25
+    0.010 0.250SAMPLE`.
+  * Ambos fixes aditivos — nuevo regex primero, legacy intacto.
+- Resultado:
+  * **Buckets: NO_PARSEA 5 → 3, OK 77 → 79** (UNIQUE y
+    CANANVALLE promovidos).
+  * Líneas totales: 3506 → **3521** (+15 nuevas parseadas).
+  * Auto: 3019 → **3037** (+18), **autoapprove 92.9 → 93.0%**.
+  * weak_synonym: 677 → **200** (efecto secundario 10g +
+    nuevas líneas parseadas que reforzaron sinónimos).
+  * Golden **997/997 (100%) intacto**.
+
+### Penúltimo bloque cerrado
+- Fecha: 2026-04-22
+- Paso: sesión 10g — auto-confirmación de sinónimos
+- Qué se hizo:
+  * **`src/sinonimos.py → register_match_hit`** (nuevo método).
+    Incrementa `times_confirmed` del sinónimo preexistente si
+    apunta al mismo artículo que el ganador. Tras ≥ 2 hits,
+    promueve `aprendido_en_prueba | status vacío → aprendido_confirmado`
+    (trust 0.55 → 0.85). Skip explícito para `manual_confirmado`,
+    `rechazado`, `aprendido_confirmado` ya consolidado.
+  * **`src/matcher.py`** (línea ~991). Llama a
+    `register_match_hit` tras cerrar un `ok` solo si el match tiene
+    **evidencia independiente del sinónimo**:
+    `variety_match AND (size_exact OR brand_in_name)`. Evita
+    bootstrapping circular.
+- Resultado (dos pasadas de evaluate_all):
+  * weak_synonym penalties 1787 → 1259 → **677 (−62%)**.
+  * **774 sinónimos promovidos** `aprendido_en_prueba → aprendido_confirmado`.
+  * auto 3019 → 3021 (+2), **autoapprove 92.8 → 92.9%** (+0.1pp).
+  * Golden **997/997 (100%) intacto** (manual_confirmado skip).
+- Valor: cada tooltip de revisión muestra menos ruido
+  `weak_synonym` (−62%). Los 774 sinónimos promocionados dejan
+  de bloquear carriles auto en futuras facturas.
+
+### Penúltimo bloque cerrado
+- Fecha: 2026-04-22
+- Paso: sesión 10f — fix parser BRISSAS (header `Sub Total` vs
+  primera fila `TOTAL`)
+- Qué se hizo:
+  * **`src/parsers/otros.py → BrissasParser`**: el regex de
+    `header.total` era `(?:Sub\s+)?Total\s+([\d,.]+)` y capturaba
+    la fila-resumen de stems (`TOTAL 6700 0.286 1918.00`, donde
+    6700 son stems y 1918 el grand total). Fix aditivo: preferir
+    `Sub\s+Total\s+([\d,.]+)` (grand total real, aparece más
+    abajo), fallback a `Total\s+([\d,.]+)` si no existe. Uniforme
+    en los 11 samples disponibles.
+  * **Goldens**: corregido `header_total` en
+    `brissas_000003919.json` (16200→4632.75) y
+    `brissas_000003952.json` (14925→4315.5). `evaluate_golden.py`
+    no chequea este campo, cambios cosméticos.
+- Resultado: BRISSAS `tot_ok=0/5` → **5/5**, verdict
+  TOTALES_MAL → OK. 11/11 samples con `header_ok=True`. Buckets:
+  OK 76→**77**, TOTALES_MAL 1→**0**. Global auto **92.8% estable**
+  (3019/3252 linkables). Golden **100% (997/997) intacto**.
+  Matchmaking de BRISSAS mantiene 170/171 auto (100% de
+  linkables), sin cambios en link accuracy.
+
+### Penúltimo bloque cerrado
 - Fecha: 2026-04-17
 - Paso: sesión 9q — IWA mixed_box + CANTIZA/MILAGRO/MILONGA + fuzzy
   cache + golden drafts

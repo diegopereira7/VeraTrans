@@ -2,6 +2,27 @@
  * VeraBuy Traductor Web - Frontend
  */
 
+// Canonicaliza la variedad para construir la synonym_key. DEBE coincidir
+// con `normalize_variety_key` en `src/models.py` y `_normalizeVarietyKey`
+// en `web/api.php` — si divergen se crean sinónimos duplicados fantasmas
+// (MANDARIN. X-PRESSION vs MANDARIN X-PRESSION como claves distintas).
+function _normalizeVariety(v) {
+    return ((v || '').toUpperCase()
+        .replace(/[^A-Z0-9 ]+/g, ' ')
+        .replace(/\s+/g, ' ')
+        .trim());
+}
+
+// Evita que la rueda del ratón cambie el valor de inputs type=number cuando
+// están enfocados. En la vista batch el usuario teclea el ID del artículo y
+// al hacer scroll para bajar por la lista, si el input aún tenía foco el
+// número se incrementaba/decrementaba accidentalmente.
+document.addEventListener('wheel', (e) => {
+    if (e.target && e.target.type === 'number' && document.activeElement === e.target) {
+        e.target.blur();
+    }
+}, { passive: true });
+
 document.addEventListener('DOMContentLoaded', () => {
     // --- Navigation ---
     const navBtns = document.querySelectorAll('.nav-btn');
@@ -298,7 +319,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const tbody = document.querySelector('#linesTable tbody');
         tbody.innerHTML = flatLines.map((l, i) => {
-            const synKey = `${window._currentProviderId}|${l.species||''}|${l.variety||''}|${l.size||0}|${l.stems_per_bunch||0}|${l.grade||''}`;
+            const synKey = `${window._currentProviderId}|${l.species||''}|${_normalizeVariety(l.variety)}|${l.size||0}|${l.stems_per_bunch||0}|${(l.grade||'').toUpperCase()}`;
             // Clase de fila: sin_parser > rescue > ambiguous > sin_match > validation errors > low confidence
             const hasErrors = l.validation_errors && l.validation_errors.length > 0;
             const needsRev = l.needs_review === true;
@@ -625,7 +646,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         </tr></thead>
                         <tbody>${lines.filter(l => !l.row_type).map(l => {
                             const isBad = l.match_status !== 'ok';
-                            const key = `${providerId}|${l.species || ''}|${l.variety || ''}|${l.size || 0}|${l.stems_per_bunch || 0}|${l.grade || ''}`;
+                            const key = `${providerId}|${l.species || ''}|${_normalizeVariety(l.variety)}|${l.size || 0}|${l.stems_per_bunch || 0}|${(l.grade || '').toUpperCase()}`;
                             return `<tr class="${isBad ? 'row-sin-match' : ''}" data-syn-key="${esc(key)}" data-pdf="${esc(pdf)}">
                                 <td title="${esc(l.raw || '')}">${esc((l.raw || '').substring(0, 50))}${(l.raw||'').length > 50 ? '...' : ''}</td>
                                 <td><strong>${esc(l.variety || '')}</strong></td>
@@ -1329,7 +1350,7 @@ document.addEventListener('DOMContentLoaded', () => {
         else if (l.match_status !== 'ok') cls = 'row-sin-match';
         else if (hasErrors) cls = 'row-has-error';
         else if (needsRev) cls = 'row-low-conf';
-        const key = `${invoiceResult.provider_id || 0}|${l.species || ''}|${l.variety || ''}|${l.size || 0}|${l.stems_per_bunch || 0}|${l.grade || ''}`;
+        const key = `${invoiceResult.provider_id || 0}|${l.species || ''}|${_normalizeVariety(l.variety)}|${l.size || 0}|${l.stems_per_bunch || 0}|${(l.grade || '').toUpperCase()}`;
         const currentId = l.articulo_id ? l.articulo_id : '';
         // Dot de error si hay errores de validación en la línea
         const errDot = hasErrors
@@ -1406,40 +1427,101 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
 
-        // Guardar match desde línea de batch
+        // Guardar match desde línea de batch.
+        // Enruta según si hay propuesta previa del matcher:
+        //   - oldArtId == newArtId → confirm_match (shadow: decision=confirm)
+        //   - oldArtId && != newArtId → correct_match (shadow: decision=correct)
+        //   - sin oldArtId          → save_synonym (sin decision, gap histórico)
         const saveBtn = e.target.closest('.batch-line-save');
         if (saveBtn) {
             const tr = saveBtn.closest('tr');
             const input = tr.querySelector('.batch-art-id');
-            const artId = parseInt(input.value) || 0;
-            if (!artId) { alert('Introduce un ID de artículo'); return; }
+            const newArtId = parseInt(input.value) || 0;
+            if (!newArtId) { alert('Introduce un ID de artículo'); return; }
             const synKey = tr.dataset.synKey;
             const pdf = tr.dataset.pdf;
+            const invoiceIdx = parseInt(tr.dataset.invoiceIdx);
+            const lineIdx = parseInt(tr.dataset.lineIdx);
+            const line = batchAllResults[invoiceIdx] && batchAllResults[invoiceIdx].lines && batchAllResults[invoiceIdx].lines[lineIdx];
+            const oldArtId = line ? (parseInt(line.articulo_id) || 0) : 0;
+            const providerId = batchAllResults[invoiceIdx] && batchAllResults[invoiceIdx].provider_id || 0;
 
-            // Lookup nombre del artículo y guardar sinónimo
-            fetch(`api.php?action=lookup_article&id=${artId}`)
+            // Caso rápido: confirmación sin cambio de ID → confirm_match
+            // (no requiere lookup del nombre: el sinónimo ya existe).
+            if (oldArtId && oldArtId === newArtId) {
+                fetch('api.php?action=confirm_match', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ key: synKey, articulo_id: newArtId }),
+                })
+                .then(r => r.json())
+                .then(data => {
+                    if (data && data.ok) {
+                        const orig = saveBtn.innerHTML;
+                        saveBtn.innerHTML = '<span style="color:green">&#10003;&#10003;</span>';
+                        saveBtn.disabled = true;
+                        saveBtn.title = `Confirmado (${data.times_confirmed}x)`;
+                        setTimeout(() => {
+                            saveBtn.innerHTML = orig;
+                            saveBtn.disabled = false;
+                            saveBtn.title = 'Guardar';
+                        }, 1200);
+                    } else if (data) {
+                        alert('Error: ' + data.error);
+                    }
+                })
+                .catch(() => alert('Error de conexión'));
+                return;
+            }
+
+            // Casos con cambio (correct_match) o sin propuesta previa (save_synonym):
+            // necesitamos el nombre del artículo antes de guardar.
+            fetch(`api.php?action=lookup_article&id=${newArtId}`)
                 .then(r => r.json())
                 .then(data => {
                     if (!data.ok) { alert(data.error); return; }
-                    return fetch('api.php?action=save_synonym', {
+                    const name = data.nombre;
+                    const baseBody = {
+                        key: synKey, provider_id: providerId,
+                        species: line && line.species || '',
+                        variety: line && line.variety || '',
+                        size: line && line.size || 0,
+                        stems_per_bunch: line && line.stems_per_bunch || 0,
+                        grade: line && line.grade || '',
+                    };
+                    let action, body;
+                    if (oldArtId && oldArtId !== newArtId) {
+                        action = 'correct_match';
+                        body = { ...baseBody,
+                            old_articulo_id: oldArtId,
+                            new_articulo_id: newArtId,
+                            new_articulo_name: name };
+                    } else {
+                        action = 'save_synonym';
+                        body = { ...baseBody, articulo_id: newArtId, articulo_name: name };
+                    }
+                    return fetch(`api.php?action=${action}`, {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({ key: synKey, articulo_id: artId, articulo_name: data.nombre }),
-                    });
+                        body: JSON.stringify(body),
+                    }).then(r => r.json()).then(resp => ({ resp, name }));
                 })
-                .then(r => r ? r.json() : null)
-                .then(data => {
+                .then(result => {
+                    if (!result) return;
+                    const { resp: data, name } = result;
                     if (data && data.ok) {
-                        // Actualizar visualmente sin destruir el input
-                        // (así se puede volver a corregir si hace falta).
+                        // Actualizar la fila sin destruir el input (puede
+                        // volverse a corregir si hace falta).
                         const cells = tr.querySelectorAll('td');
-                        cells[5].textContent = artId;
-                        cells[6].textContent = '';
-                        fetch(`api.php?action=lookup_article&id=${artId}`)
-                            .then(r => r.json())
-                            .then(d => { if (d.ok) cells[6].textContent = d.nombre; });
+                        cells[5].textContent = newArtId;
+                        cells[6].textContent = name;
                         cells[7].innerHTML = '<span class="badge badge-manual">manual-web</span>';
                         tr.classList.remove('row-sin-match');
+                        if (line) {
+                            line.articulo_id = newArtId;
+                            line.articulo_name = name;
+                            line.match_status = 'ok';
+                        }
                         // Flash visual breve del botón guardar
                         const orig = saveBtn.innerHTML;
                         saveBtn.innerHTML = '<span style="color:green">&#10003;</span>';

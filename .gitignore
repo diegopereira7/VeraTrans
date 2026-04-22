@@ -13,3 +13,6 @@ web/uploads/*.pdf
 batch_status/*.json
 batch_uploads/*/
 batch_results/*.xlsx
+shadow_log.jsonl
+sinonimos_universal.json.backup_*
+FACTURAS BRISSAS/

@@ -296,7 +296,13 @@ def _score_candidate(line: InvoiceLine, cand: Candidate,
     """
     art = cand.articulo
     nombre = (art.get('nombre') or '').upper()
-    line_var_tokens = {t for t in (line.variety or '').upper().split() if len(t) >= 3}
+    # Normalizar puntuación en la variedad antes de tokenizar: OCR y
+    # parsers dejan ruido (`MONDIAL.`, `EXPLORER°`, `O´HARA`, `ASSORTED PM -`)
+    # que antes impedía el `variety_match` aunque la variedad real
+    # apareciera en el nombre del artículo. Mantener solo A-Z/0-9/espacios.
+    _var_clean = re.sub(r'[^A-Z0-9 ]+', ' ',
+                        (line.variety or '').upper())
+    line_var_tokens = {t for t in _var_clean.split() if len(t) >= 3}
 
     # Para claveles el catálogo suele indexar por color en español
     # (CLAVEL COL FANCY NARANJA), pero la factura llega con variedad
@@ -973,6 +979,49 @@ class Matcher:
             else:
                 required_margin = _MARGIN_MIN
             if margin < required_margin and top2_score >= _LINK_OK_THRESHOLD:
+                # Desempate cualitativo: el margen numérico es ajustado,
+                # pero top1 puede dominar objetivamente si tiene una
+                # feature crítica que top2 NO tiene. Dos son
+                # determinantes:
+                #   - `size_exact` vs `size_close`: top1 coincide en
+                #     talla exacta (ej. sz 40 == 40CM) y top2 solo
+                #     coincide aproximada (sz 40 vs 50CM). Típico en
+                #     tallas cercanas del mismo branded.
+                #   - `variety_full` vs `variety_match` parcial: todos
+                #     los tokens de la variedad aparecen en el nombre,
+                #     frente a uno solo. Típico en variedades
+                #     multi-palabra ("VIOLET HILL", "STAR PLATINUM").
+                # Si top1 gana cualitativamente, no es realmente un
+                # empate: marcar ok y guardar cómo lo resolvimos.
+                top2_reasons = set(viable[1].reasons or [])
+                top1_reasons_set = set(top1.reasons)
+                decisive_size = ('size_exact' in top1_reasons_set
+                                 and 'size_exact' not in top2_reasons
+                                 and 'size_close' in top2_reasons)
+                decisive_variety = ('variety_full' in top1_reasons_set
+                                    and 'variety_full' not in top2_reasons)
+                if decisive_size or decisive_variety:
+                    tag = ('tiebreak_size_exact' if decisive_size
+                           else 'tiebreak_variety_full')
+                    line.match_reasons.append(tag)
+                    # Ganador claro por desempate cualitativo.
+                    line.match_status = 'ok'
+                    line.match_method = top1.method_hint or 'evidencia'
+                    line.articulo_id = top1.articulo.get('id')
+                    line.articulo_name = top1.articulo.get('nombre', '')
+                    self.syn.add(provider_id, line, line.articulo_id,
+                                 line.articulo_name,
+                                 _origin_from_source(top1.source),
+                                 invoice=invoice)
+                    has_independent_evidence = (
+                        'variety_match' in top1.reasons
+                        and ('size_exact' in top1.reasons
+                             or 'brand_in_name' in top1.reasons)
+                    )
+                    if has_independent_evidence:
+                        self.syn.register_match_hit(provider_id, line,
+                                                    line.articulo_id)
+                    return line
                 # Dos candidatos buenos y realmente empatados → ambigüedad.
                 line.match_status = 'ambiguous_match'
                 line.match_method = top1.method_hint or 'evidencia'
@@ -988,6 +1037,20 @@ class Matcher:
             # Guardar sinónimo (en prueba) para refuerzo si no lo había.
             self.syn.add(provider_id, line, line.articulo_id, line.articulo_name,
                          _origin_from_source(top1.source), invoice=invoice)
+            # Auto-confirmación del sinónimo: si el ok ganó con evidencia
+            # independiente (variety+size_exact o variety+brand_in_name),
+            # cuenta como hit. Tras ≥ 2 hits el sinónimo promueve de
+            # aprendido_en_prueba → aprendido_confirmado. Esto ataca el
+            # bloqueo ok → auto causado por synonym_trust 0.55 y reduce
+            # el penalty mark-only `weak_synonym` sin riesgo: requiere
+            # que la evidencia del match no dependa del sinónimo.
+            has_independent_evidence = (
+                'variety_match' in top1.reasons
+                and ('size_exact' in top1.reasons
+                     or 'brand_in_name' in top1.reasons)
+            )
+            if has_independent_evidence:
+                self.syn.register_match_hit(provider_id, line, line.articulo_id)
             return line
 
         # Ningún candidato supera el umbral de auto-vinculación.

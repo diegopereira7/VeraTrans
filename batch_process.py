@@ -36,6 +36,67 @@ from src.llm_fallback import enrich_unparsed_lines
 STATUS_DIR  = BASE_DIR / 'batch_status'
 RESULTS_DIR = BASE_DIR / 'batch_results'
 UPLOADS_DIR = BASE_DIR / 'batch_uploads'
+SHADOW_LOG  = BASE_DIR / 'shadow_log.jsonl'
+
+
+def _shadow_syn_key(provider_id: int, line: dict) -> str:
+    """Replica `SynonymStore._key` para cruzar con decisiones del operador."""
+    from src.models import normalize_variety_key
+    species = line.get('species', '') or ''
+    variety = normalize_variety_key(line.get('variety', '') or '')
+    size    = int(line.get('size') or 0)
+    spb     = int(line.get('stems_per_bunch') or 0)
+    grade   = (line.get('grade', '') or '').upper()
+    return f'{provider_id}|{species}|{variety}|{size}|{spb}|{grade}'
+
+
+def _shadow_log_proposals(result: dict) -> None:
+    """Escribe una entry 'propuesta' por línea en shadow_log.jsonl.
+
+    Silencioso en error — nunca debe romper el batch. Equivalente al
+    `_shadowLogProposals` de `web/api.php` para que las facturas
+    procesadas por batch también queden registradas.
+    """
+    try:
+        if not result.get('ok'):
+            return
+        header = result.get('header') or {}
+        provider_id   = int(header.get('provider_id') or 0)
+        provider_name = header.get('provider_name') or ''
+        invoice       = header.get('invoice_number') or ''
+        pdf_name      = result.get('pdf', '')
+        lines = result.get('lines') or []
+        ts = datetime.now().isoformat(timespec='seconds')
+        with SHADOW_LOG.open('a', encoding='utf-8') as f:
+            for idx, l in enumerate(lines):
+                entry = {
+                    'ts': ts,
+                    'evento': 'propuesta',
+                    'pdf': pdf_name,
+                    'invoice': invoice,
+                    'provider_id': provider_id,
+                    'provider_name': provider_name,
+                    'line_idx': idx,
+                    'synonym_key': _shadow_syn_key(provider_id, l),
+                    'species': l.get('species', ''),
+                    'variety': l.get('variety', ''),
+                    'size': int(l.get('size') or 0),
+                    'stems_per_bunch': int(l.get('stems_per_bunch') or 0),
+                    'grade': l.get('grade', ''),
+                    'proposed_articulo_id': int(l.get('articulo_id') or 0),
+                    'proposed_articulo_name': l.get('articulo_name', '') or '',
+                    'match_status': l.get('match_status', ''),
+                    'match_method': l.get('match_method', ''),
+                    'link_confidence': float(l.get('link_confidence') or 0),
+                    'match_confidence': float(l.get('match_confidence') or 0),
+                    'candidate_margin': float(l.get('candidate_margin') or 0),
+                    'review_lane': l.get('review_lane', ''),
+                    'reasons': list(l.get('match_reasons') or []),
+                    'penalties': list(l.get('match_penalties') or []),
+                }
+                f.write(json.dumps(entry, ensure_ascii=False) + '\n')
+    except Exception:
+        pass
 
 
 def _write_status(path: Path, data: dict):
@@ -417,6 +478,9 @@ def run_batch(folder: Path, batch_id: str | None = None, output: Path | None = N
                 ok_count += 1
                 h = result['header']
                 s = result['stats']
+                # Shadow log: propuestas del matcher para cruzar luego con
+                # las decisiones confirm/correct del operador.
+                _shadow_log_proposals(result)
                 # Registrar en historial
                 hist.add(
                     h['invoice_number'], pdf.name, h['provider_name'],

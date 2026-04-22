@@ -57,21 +57,57 @@ class AlegriaParser:
         try:
             with pdfplumber.open(pdf_path) as pdf:
                 for page in pdf.pages:
-                    for table in (page.extract_tables() or []):
-                        lines.extend(self._process_table(table, pdata))
+                    page_tables = page.extract_tables() or []
+                    # El header con la secuencia de tallas suele estar en una
+                    # tabla distinta a la de datos (OLIMPO: TABLE 5 header,
+                    # TABLE 6 datos). Buscamos en toda la página.
+                    sizes_ordered = self._detect_sizes_from_tables(page_tables)
+                    for table in page_tables:
+                        lines.extend(self._process_table(table, pdata, sizes_ordered))
         except Exception:
             return []
 
         return lines
 
-    def _process_table(self, table: list[list], pdata: dict) -> list[InvoiceLine]:
-        """Procesa una tabla extraída buscando filas con QB/HB + variedad."""
+    def _detect_sizes_from_tables(self, tables: list) -> list[int]:
+        """Busca la fila de cabecera con tallas (30, 40, 50...) en cualquiera
+        de las tablas de la página y devuelve la lista ordenada."""
+        for table in tables or []:
+            for row in table or []:
+                if not row:
+                    continue
+                if any('VARIEDAD' in (c or '').upper() or 'VARIETY' in (c or '').upper() for c in row):
+                    sz = [
+                        int((c or '').strip())
+                        for c in row
+                        if (c or '').strip() and re.fullmatch(r'\d{2,3}', (c or '').strip())
+                    ]
+                    if sz:
+                        return sz
+        # Fallback al layout legacy (ALEGRIA/CERES/etc.)
+        return [30, 40, 50, 60, 70, 80, 90, 100, 110, 120]
+
+    def _process_table(self, table: list[list], pdata: dict,
+                       sizes_ordered: list[int] | None = None) -> list[InvoiceLine]:
+        """Procesa una tabla extraída buscando filas con QB/HB + variedad.
+
+        Variantes conocidas:
+          - ALEGRIA/CERES/TIERRA_VERDE: 10 tallas (30,40,50,60,70,80,90,100,110,120)
+          - OLIMPO: 11 tallas (incluye 35) → desplaza stems/price/total un col
+        """
         lines = []
-        # Buscar fila header para confirmar posiciones de columnas de tamaño
-        size_cols = dict(_SIZE_COLS)
+        if sizes_ordered is None:
+            sizes_ordered = self._detect_sizes_from_tables([table])
+
+        # En datos: [#box, boxtype, variedad, spb, X, OTR., <sizes...>, stems, price, total]
+        size_base = 6
+        n_sz = len(sizes_ordered)
+        stems_idx = size_base + n_sz
+        price_idx = stems_idx + 1
+        total_idx = stems_idx + 2
 
         for row in table:
-            if not row or len(row) < 17:
+            if not row or len(row) < total_idx + 1:
                 continue
 
             box_type = (row[1] or '').strip().upper()
@@ -84,26 +120,25 @@ class AlegriaParser:
 
             # SPB
             try:
-                spb = int(row[3] or 0)
+                spb = int((row[3] or '').strip() or 0)
             except (ValueError, TypeError):
                 spb = 25
 
-            # Encontrar tamaño: buscar en qué columna de tamaño hay un número > 0
+            # Tamaño: primera columna de size con número > 0
             size = 0
             bunches = 0
-            for col_idx, col_size in size_cols.items():
-                if col_idx >= len(row):
-                    continue
-                val = (row[col_idx] or '').strip()
-                if val and re.match(r'^\d+$', val) and int(val) > 0:
-                    size = col_size
+            for i, sz in enumerate(sizes_ordered):
+                col = size_base + i
+                val = (row[col] or '').strip() if col < len(row) else ''
+                if val and re.fullmatch(r'\d+', val) and int(val) > 0:
+                    size = sz
                     bunches = int(val)
                     break
 
-            # Stems, price, total (columnas 16, 17, 18)
-            stems = _safe_int(row[16]) if len(row) > 16 else bunches * spb
-            price = _safe_float(row[17]) if len(row) > 17 else 0.0
-            total = _safe_float(row[18]) if len(row) > 18 else 0.0
+            # Stems/price/total van a continuación de las size cols
+            stems = _safe_int(row[stems_idx])
+            price = _safe_float(row[price_idx])
+            total = _safe_float(row[total_idx])
 
             if stems == 0 and bunches > 0:
                 stems = bunches * spb

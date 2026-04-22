@@ -25,45 +25,57 @@ class LifeParser:
             raw = ln.strip()
             if not raw:
                 continue
-            # Type 1: Box line — capture everything between box prefix and NNcm
+            # Type 1: Box line. Captura opcionalmente el box_code (palabra
+            # en MAYÚSCULAS, 3+ letras — MARL, CRISTIAN, MERCO) como
+            # label separado del variety. Un token `[A-Z]{3,}` no casa
+            # con nombres Capitalize (Explorer, Mondial) ni con
+            # multi-palabra como "Pink Floyd", así que el code queda
+            # claramente distinto del variety.
             # "HB 1 0.50 MARL Explorer 50CM 20 16 320 0.28 89.60"
-            # → full_desc = "MARL Explorer"
+            #                  ^^^^ code         ^^^^^^^^ variety
             pm = re.search(
-                r'(?:HB|QB)\s+\d+\s+[\d.]+\s+'   # box_type + count + FBE
-                r'(.+?)\s+'                         # full description (delegation + variety)
-                r'(\d{2,3})CM\s+'                   # size
-                r'(\d+)\s+(\d+)\s+(\d+)\s+'         # SPB, bunches, stems
+                r'(?:HB|QB)\s+\d+\s+[\d.]+\s+'       # box_type + count + FBE
+                r'(?:([A-Z]{3,})\s+)?'                # box_code opcional
+                r'([A-Z][a-zA-Z\s.\-/&]+?)\s+'        # variety (Capitalize)
+                r'(\d{2,3})CM\s+'                     # size
+                r'(\d+)\s+(\d+)\s+(\d+)\s+'           # SPB, bunches, stems
                 r'([\d.]+)',                          # price
                 raw)
             if pm:
-                var = pm.group(1).strip().upper()
-                sz = int(pm.group(2)); spb = int(pm.group(3))
-                bunches = int(pm.group(4)); stems = int(pm.group(5))
-                price = float(pm.group(6))
+                label = (pm.group(1) or '').upper()
+                var = pm.group(2).strip().upper()
+                sz = int(pm.group(3)); spb = int(pm.group(4))
+                bunches = int(pm.group(5)); stems = int(pm.group(6))
+                price = float(pm.group(7))
                 il = InvoiceLine(raw_description=raw, species='ROSES', variety=var,
                                  size=sz, stems_per_bunch=spb, bunches=bunches,
                                  stems=stems, price_per_stem=price,
-                                 line_total=round(price * stems, 2))
+                                 line_total=round(price * stems, 2),
+                                 label=label)
                 lines.append(il)
                 continue
 
-            # Type 2: Continuation line — everything before NNcm is the variety
-            # "Pink Floyd 50CM 20 8 160 0.28 44.80"
+            # Type 2: Continuation line — code opcional al inicio si
+            # aparece: "MARL Pink Floyd 50CM 20 8 160 0.28 44.80"
+            # o sin code: "Pink Floyd 50CM 20 8 160 0.28 44.80"
             pm2 = re.search(
-                r'^([A-Z][a-zA-Z\s.\-/&]+?)\s+'    # variety
+                r'^(?:([A-Z]{3,})\s+)?'              # box_code opcional
+                r'([A-Z][a-zA-Z\s.\-/&]+?)\s+'       # variety
                 r'(\d{2,3})CM\s+'                    # size
                 r'(\d+)\s+(\d+)\s+(\d+)\s+'          # SPB, bunches, stems
-                r'([\d.]+)',                           # price
+                r'([\d.]+)',                         # price
                 raw)
             if pm2:
-                var = pm2.group(1).strip().upper()
-                sz = int(pm2.group(2)); spb = int(pm2.group(3))
-                bunches = int(pm2.group(4)); stems = int(pm2.group(5))
-                price = float(pm2.group(6))
+                label = (pm2.group(1) or '').upper()
+                var = pm2.group(2).strip().upper()
+                sz = int(pm2.group(3)); spb = int(pm2.group(4))
+                bunches = int(pm2.group(5)); stems = int(pm2.group(6))
+                price = float(pm2.group(7))
                 il = InvoiceLine(raw_description=raw, species='ROSES', variety=var,
                                  size=sz, stems_per_bunch=spb, bunches=bunches,
                                  stems=stems, price_per_stem=price,
-                                 line_total=round(price * stems, 2))
+                                 line_total=round(price * stems, 2),
+                                 label=label)
                 lines.append(il)
 
         # Fallback: si el formato A no parseó nada, intentar con AgrivaldaniParser

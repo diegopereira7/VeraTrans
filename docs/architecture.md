@@ -48,6 +48,7 @@ tools/
 ├── golden_review.py          Revisión interactiva de anotaciones gold
 ├── golden_apply.py           Aplica correcciones gold como sinónimos
 ├── evaluate_golden.py        Compara sistema vs anotaciones gold revisadas
+├── shadow_report.py          Agrega shadow_log.jsonl (Fase 10)
 └── auto_learn_report.json    Último informe de aprendizaje
 
 golden/                       Anotaciones de verdad-terreno (JSON)
@@ -161,6 +162,23 @@ Margen requerido adaptativo:
 - `top1.score ≥ 0.90` → margen 0.05
 - `top1.score ∈ [0.70, 0.90)` → margen 0.10
 
+**Desempate cualitativo** (sesión 10j): cuando el margen numérico
+no basta pero top1 domina a top2 en una feature crítica, se marca
+`ok` con una razón `tiebreak_*` trazable. Solo dispara si top2
+tiene score ≥ umbral (`_LINK_OK_THRESHOLD`) — el empate existe.
+
+- `tiebreak_size_exact`: top1 tiene `size_exact` y top2 tiene
+  solo `size_close` (ambos casan variedad, pero top1 coincide
+  en talla exacta). Ej.: `NECTARINE sz=40` con top1 `ROSA EC
+  NECTARINE 40CM 25U` vs top2 `ROSA EC NECTARINE 50CM 25U`.
+- `tiebreak_variety_full`: top1 tiene `variety_full` (todos los
+  tokens ≥3 chars en el nombre) y top2 solo `variety_match`
+  parcial. Ej.: variedades multi-palabra como `STAR PLATINUM`
+  donde top2 casa solo `STAR`.
+
+No aplica cuando ambos tienen la misma feature (SPB distinto,
+grade FANCY vs SELECT) — esos empates siguen siendo genuinos.
+
 ### Vetos duros (descartan el candidato, no solo penalizan)
 
 - `species_mismatch` (ROSES ↔ CARNATIONS etc.)
@@ -184,6 +202,17 @@ Feature `synonym_trust`:
 
 Cada `times_corrected` resta 0.15 del trust; cada `times_confirmed`
 ≥ 2 añade 0.05 hasta el tope del status.
+
+**Auto-confirmación** (sesión 10g, [`SynonymStore.register_match_hit`](../src/sinonimos.py#L181)):
+cuando el matcher cierra un `ok` con evidencia independiente del
+sinónimo (`variety_match` + (`size_exact` o `brand_in_name`)), se
+incrementa `times_confirmed` del sinónimo preexistente si apunta al
+mismo artículo. Tras ≥ 2 hits, el status `aprendido_en_prueba` (o
+vacío) se promueve a `aprendido_confirmado` automáticamente. No toca
+`manual_confirmado`, `rechazado` ni `aprendido_confirmado` ya
+consolidado, así que el golden no se altera. La regla de evidencia
+independiente previene bootstrapping circular (el sinónimo
+confirmándose a sí mismo sin otras señales).
 
 ### Brand boost y scores >1.0
 

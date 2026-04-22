@@ -1,7 +1,7 @@
 # CLAUDE.md — Guía operativa para el agente
 
-**Última actualización:** 2026-04-21 (sesión 10e)
-**Estado:** 92.9% autoapprove · Golden 997/997 reviewed (link **100%**) — fix matcher: penalty `generic_vs_own_brand` (−0.15 al genérico cuando hay branded propio en pool) · NO_PARSEA 5 · TOTALES_MAL 1
+**Última actualización:** 2026-04-22 (sesión 10m)
+**Estado:** 92.6% autoapprove · Golden 997/997 reviewed (link **100%**) — **4 fixes parsers shadow-driven** detectados por el primer lote real de Ángel (27 facturas): EQR (stems = total_stems no stems_per_box), FLORSANI (box types ampliados + sub-líneas heredan parent + tints multi-palabra), GARDA (box_code separado de variety + sub-líneas), MALIMA (coma de miles US en totales). +200 líneas nuevas parseadas en benchmark; rate global baja porque muchas no tienen artículo en ERP todavía (normal).
 
 ---
 
@@ -25,51 +25,321 @@ Web PHP), mismo pipeline Python. Usuario: Ángel Panadero
 
 ## Estado actual (fuente única de verdad)
 
-- **Autoapprove global:** 92.9% (3506 líneas sobre 82 proveedores)
+- **Autoapprove global:** 92.6% (>3700 líneas sobre 82 proveedores,
+  +200 vs 10l por parsers recuperando líneas que antes ignoraban).
+  El rate cayó de 93.9% → 92.6% porque las nuevas líneas
+  recuperadas (FLORSANI2 con 54 variantes tinted, GARDA con 17
+  sub-líneas heredadas) aún no tienen sinónimo manual en el ERP,
+  pero son líneas REALES que antes se perdían silenciosamente.
+  Cuando Ángel confirme/corrija desde la UI, `register_match_hit`
+  (10g) + golden las recuperará gradualmente.
 - **Golden set:** 997/997 reviewed (24 facturas, 13 proveedores).
-  **Link accuracy 100% (997/997)**.
-- **NO_PARSEA restantes:** 5 proveedores
-- **Buckets:** OK 76 · NO_PARSEA 5 · TOTALES_MAL 1 (BRISSAS) ·
+  **Link accuracy 100% (997/997)** intacto tras los 4 fixes.
+- **NO_PARSEA restantes:** 3 proveedores
+- **Buckets:** OK 79 · NO_PARSEA 3 · TOTALES_MAL 0 ·
   NO_DETECTADO 1 (PONDEROSA)
-- **Última sesión:** 10e (2026-04-21) — **fix estructural del
-  matcher**: nueva penalty `generic_vs_own_brand` (−0.15) sobre
-  candidatos genéricos (`ROSA EC X` / `ROSA COL X` sin marca)
-  cuando en el pool existe otro candidato con marca propia del
-  proveedor (p.ej. OLIMPO → SCARLET). Ataca la deuda de
-  sinónimos `aprendido_en_prueba` que apuntaban al genérico con
-  trust 0.55 + method_prior 0.10 (= +0.24 boost) derrotando al
-  branded propio con `brand_in_name(+0.25)`. La nueva penalty
-  cierra el gap: diff propio↔genérico pasa de 0.25 a 0.40. Ganas
-  netas en CEAN GLOBAL (+8.3pp), DAFLOR (+5.9pp), OLIMPO (+2.5pp),
-  ROSALEDA (+0.8pp). Única "regresión" COLIBRI −1.4pp (2 líneas
-  ok→ambiguous) es cualitativamente correcta: frontera
-  branded/genérico donde antes el matcher elegía con falsa
-  confianza. Global 92.7 → **92.9%**.
+- **Última sesión:** 10m (2026-04-22) — **7 fixes parsers
+  shadow-driven** del primer lote real de Ángel (27 facturas).
+  Ciclo completo de Fase 10 operando por primera vez — cada fix
+  fue detectado por un error o inconsistencia que Ángel señaló
+  en la UI, no por el benchmark:
+  (a) **FLORAROMA** (AROMA.pdf): variante 2026 con columna
+  `MARK` (S.O.) + coma decimal. Fix regex + helper `_num`
+  robusto con heurística último separador para todos los
+  formatos (EN/ES/múltiples puntos OCR).
+  (b) **EQR**: el parser tomaba stems_per_box (`x 150 Stem` del
+  desc) como stems totales. Fix regex captura
+  `boxes BT total_stems $unit $total`, stems=450=3×150.
+  (c) **FLORSANI**: box types ampliados (`HJ` faltaba),
+  reescritura con tail de 7 columnas numéricas, soporte
+  **sub-líneas que heredan pcs+box_type** (FLORSANI2: 0→54
+  líneas parseadas), variedades multi-palabra con tints,
+  normalización OCR `Rainbow750` → `Rainbow 750`.
+  (d) **GARDA**: **box_code** (ELOY/ASTURIAS/MARL/R16/R19)
+  ahora va al campo `label` separado en lugar de contaminar
+  variety. Soporte sub-líneas sin box N° heredando parent
+  (GARDA: 11→28 líneas).
+  (e) **MALIMA**: coma de miles US (`$2,450.00`) rompía
+  regex `[\d.]+`, total quedaba en 2.00. Fix `[\d.,]+` con
+  `_num_us()`.
+  (f) **MYSTIC**: regex del box_code no aceptaba `Ñ` (letra
+  española), `CORUÑA` no matcheaba como code y contaminaba
+  variety con `CORUÑA TNT Gyp ...`. Fix `[A-ZÑÁÉÍÓÚ]` en el
+  regex + `TNT/VDAY/MDAY` añadidos a `_BLOCK_NAMES`.
+  (g) **LIFE**: `MARL Explorer` → `Explorer` con label=MARL.
+  Regex con grupo opcional `[A-Z]{3,}` antes de variety.
+  (h) **OLIMPO (fmt=alegria) tallas desplazadas**: el parser
+  `alegria` usaba `_SIZE_COLS` fijo (6..15 → 30,40,50,...120,
+  10 tallas). OLIMPO añade **35** en la cabecera (11 tallas) y
+  eso desplaza toda la matriz + stems/price/total un col a la
+  derecha. Efecto: `EXPLORER 4 bunches @ 50cm` leía size=60,
+  stems=100, price=100.00, total=0.30 (en vez de 0.30 / 30.00,
+  todo invertido). Fix en
+  [src/parsers/alegria.py](src/parsers/alegria.py): nuevo
+  `_detect_sizes_from_tables()` busca la cabecera en **todas**
+  las tablas de la página (pdfplumber a veces la separa de la
+  tabla de datos), y `_process_table()` deriva stems/price/total
+  como `6 + n_tallas + {0,1,2}`. ALEGRIA / CERES /
+  TIERRA_VERDE (10 tallas) sin cambios; OLIMPO pasa de datos
+  corruptos a 23/23 líneas con matemática consistente
+  (sum=570 = header.total=570).
+  (i) **ROSALEDA variety contaminada + líneas perdidas**: el
+  regex primario aceptaba `[A-Z][A-Z\d]+` para el BOX_CODE (1
+  token sin dashes) y no saltaba el calificador `USA|EURO`
+  opcional entre BOX_TYPE y `ROSALEDA`. Efecto: (1) líneas con
+  codes compuestos (ASTURIAS-ALBU, GIJON R-48, GIJON -R43,
+  GIJON R45, IRUÑA) fallaban el match y se perdían 8+ filas
+  primarias; las continuations heredaban label del match
+  anterior (todas `PUERTO` incorrectamente); (2) la variedad
+  absorbía el calificador (`EURO ROSALEDA FRUTTETO` en vez de
+  `FRUTTETO`). Fix: regex box_code ampliado a 1-2 tokens con
+  dashes/dígitos + placeholder OCR `�` + acentos ES, y
+  `(?:(?:USA|EURO)\s+)?` opcional antes de la etiqueta
+  `ROSALEDA`. Resultado: 68 → **88 líneas**, sum = header
+  $3256.25 exacto, 25 labels únicos capturados correctamente
+  (ASTURIAS-ALBU, GIJON R-48, GIJON -R43, IRUÑA, LILAS, etc.).
+  Afecta también a `hacienda` y `rosadex` (mismo fmt). Golden
+  997/997 intacto.
+  (j) **TURFLOR spray carnation + box_id en variedad**: el
+  parser antiguo incluía `SPRAY CARNATION` como prefijo de la
+  variedad (no matcheaba con `MINI CLAVEL` del catálogo) y no
+  manejaba el layout wrapped donde descripción + datos van en
+  líneas distintas (el box_id GIJON/FVIDA/R19/GONZA terminaba
+  en el campo descripción). Fix en `TurflorParser`:
+  (1) detecta la línea wrap "SPRAY CARNATION X GRADE -" y la
+  guarda en `pending_desc` para consumirla con la siguiente
+  línea de datos; (2) la variedad se reduce al color
+  traducido (`MIXTO/RAINBOW/BLANCO/...` vía
+  `translate_carnation_color` — añadido `ASSORTED→MIXTO` en el
+  mapa); (3) `spb=10` para spray, `20` para regular → el
+  matcher diferencia MINI CLAVEL vs CLAVEL del catálogo vía
+  spb_match; (4) `size` por grade (ESTANDAR=60, FANCY/SELECT=70);
+  (5) `label` en campo separado (GIJON/FVIDA/R19/GONZA).
+  Resultado: 6/6 líneas TURFLOR con matching `ok` link=1.00
+  (antes 0 spray matchaban por el prefijo erróneo). Golden
+  997/997 intacto.
+  (l) **Sinónimos fantasmas por puntuación en synonym_key**: el
+  operador corregía un match (`MANDARIN. X-PRESSION`→art) pero
+  al reprocesar, si el parser emitía la misma variedad **sin**
+  punto (`MANDARIN X-PRESSION`), la clave no casaba y había que
+  volver a corregirlo. 176 sinónimos tenían claves no
+  canónicas y 7 grupos duplicados apuntaban al mismo artículo
+  (`BARISTA` / `BARISTA.`, `EXPLORER` / `EXPLORER.` / `EXPLORER°`,
+  `PINK O HARA` / `PINK O°HARA` / `PINK O'HARA`, ...). Fix:
+  (1) Nuevo helper `normalize_variety_key()` en
+  [src/models.py](src/models.py) que colapsa no-alfanuméricos a
+  espacios y compacta. (2) `InvoiceLine.match_key()` usa la
+  normalización. (3) `SynonymStore.find()` fallback idem. (4)
+  `_shadow_syn_key` en [batch_process.py](batch_process.py).
+  (5) PHP `_shadowSynKey` en [web/api.php](web/api.php). (6) JS
+  `_normalizeVariety` en [web/assets/app.js](web/assets/app.js) —
+  aplicado en los 3 puntos donde se compone la synKey (single-PDF,
+  batch collapsed, batch expanded).
+  **Migración one-shot**: 176 claves re-normalizadas, 13 duplicados
+  mergeados (3321→3308 entries). Backup:
+  `sinonimos_universal.json.backup_normalize_*`. Golden 997/997
+  intacto.
+  (m) **MYSTIC precio paniculata**: el precio unitario de la
+  paniculata en MYSTIC viene por ramo (paquete), no por tallo.
+  Antes `price_per_stem = $8.00` y `stems × $8 = $200` no cuadraba
+  con `line_total = $16` (2 ramos × $8). Fix en
+  [src/parsers/mystic.py](src/parsers/mystic.py): autodetectar
+  comparando `|price*stems - total|` vs `|price*bunches - total|`;
+  si gana el lado bunches, asignar `price_per_bunch=price` y
+  derivar `price_per_stem = price/spb`. Heurística también sirve
+  para cualquier otra especie donde el precio venga por ramo.
+  Golden 997/997 intacto tras el fix.
+
+  **Métricas del batch**:
+  - Golden **997/997 (100%) intacto** en todo momento.
+  - ~200 líneas NUEVAS recuperadas en el benchmark (antes no
+    parseaban o tenían datos corruptos).
+  - Autoapprove global baja de 93.9% → 92.6% porque las nuevas
+    líneas recuperadas (tints FLORSANI2, sub-líneas GARDA/LIFE,
+    rosa AROMA, etc.) aún no tienen sinónimo manual. Bajada
+    esperada: el denominador crece con líneas reales que antes
+    se perdían silenciosamente. Cuando Ángel las confirme desde
+    la UI, `register_match_hit` (10g) las promoverá.
+  - **Primer ciclo completo benchmark↔shadow↔fix operativo**
+    de la Fase 10: errores detectados en producción real, fixes
+    aplicados, verificados contra golden sin regresión.
+
+  **Nota sobre el patrón box-code-en-variety**: aparece en
+  varios parsers (GARDA ELOY/MARL/R16, MYSTIC CORUÑA/TNT, LIFE
+  MARL). Audit global detectó candidatos restantes en otros
+  parsers (ROSALEDA EURO, SAYONARA SP, APOSENTOS ILIAS,
+  MONTEROSA EUGENIA, EL CAMPANARIO ZAIRA) pendientes de fix —
+  se atenderán cuando aparezcan en errores de shadow reales
+  o en la siguiente revisión.
+- **Sesión 10k** (2026-04-22) — **Shadow mode arrancado
+  (Fase 10)**. Infraestructura para capturar la telemetría real de
+  producción: qué propone el matcher y qué decide el operador.
+  Complementa el golden (997 líneas curadas) con la realidad
+  operativa diaria. Implementación:
+  - `web/api.php`: nuevos helpers `_shadowLogProposals` (interceptor
+    en `handleProcess` tras recibir el JSON del Python, itera
+    líneas + mixed_box children y escribe una entry `propuesta`
+    por línea con synonym_key, articulo_id, reasons, penalties,
+    lane) y `_shadowLogDecision` (invocado por
+    `handleConfirmMatch` → action=confirm, y
+    `handleCorrectMatch` → action=correct con old vs new
+    articulo_id). Ambos escriben a `shadow_log.jsonl` en la raíz,
+    formato JSONL, silenciosos en error (nunca rompen la
+    respuesta al cliente).
+  - `tools/shadow_report.py`: agregador. Cruza propuestas con
+    decisiones por `synonym_key` (tomando la propuesta más
+    reciente anterior a la decisión). Produce: accuracy global
+    real, accuracy por proveedor, top-N patrones de corrección
+    (qué propuso mal el matcher y qué era correcto), y backlog
+    pendiente (líneas ambiguous/sin_match sin decisión humana
+    aún). Flags `--since`, `--provider`, `--top-errors`.
+  - Smoke test con entradas sintéticas confirmó pipeline de
+    escritura/lectura/agregación correcto. Log vacío ahora —
+    se acumula con el uso real.
+
+  **Siguiente paso natural**: usar el sistema con facturas reales
+  durante N días, correr `shadow_report.py` semanalmente, y
+  convertir los patrones de corrección top en fixes concretos
+  (parser, sinónimo, regla de matcher) — cerrando el loop
+  aprendizaje-desde-producción de la Fase 10.
+- **Sesión 10j** (2026-04-22) — **desempate cualitativo
+  en `tie_top2_margin`**. Diagnóstico de los 161 `ambiguous_match`:
+  96 `tie_top2_margin` (empates por margen insuficiente) y 118
+  `low_evidence` (score < 0.70 pero plausible). Los tie
+  inspeccionados por nombre: muchos eran empates entre artículos
+  con **misma variedad pero tallas distintas** donde top1 tenía
+  `size_exact` y top2 solo `size_close` (ej. AGROSANALFONSO
+  NECTARINE 40CM vs 50CM, EL CAMPANARIO VIOLET HILL 60CM vs 50CM,
+  CANTIZA STAR PLATINUM 50 vs 40). Otros eran variedades
+  multi-palabra donde top1 tenía `variety_full` y top2 solo match
+  parcial. **Fix en `src/matcher.py`** (línea ~981): antes de
+  marcar `ambiguous_match`, chequear dominio cualitativo — si
+  top1 tiene `size_exact` y top2 solo `size_close`, o top1 tiene
+  `variety_full` y top2 no, marcar `ok` con reason
+  `tiebreak_size_exact` / `tiebreak_variety_full`. Resultado:
+  ambiguous 161 → **144** (−17), `tie_top2_margin` 96 → **79**
+  (−18%), auto **3052 → 3061** (+9), autoapprove **93.4 → 93.6%**.
+  Casos residuales en tie: empates genuinos entre FANCY/SELECT
+  (grade), genérico/branded propio mismo size, o size+size
+  idénticos con distinto SPB (parser no extrae SPB). **Golden
+  997/997 intacto**.
+- **Sesión 10i** (2026-04-22) — **normalización de
+  puntuación en tokens de variety**. Diagnóstico: de 250
+  `variety_no_overlap` penalties globales, 37 eran casos con
+  puntuación fixeable (`MONDIAL.`, `EXPLORER°`, `O´HARA`,
+  `BLUE-MO`, etc); los demás eran productos sin equivalente en
+  catálogo (ELITE alstros), OCR corrupto irrecuperable
+  (FLORAROMA `ESX.OPLORER`) o variedades multi-word con
+  concatenación OCR (`EUGENIA BRANDAOEXPLORER`). **Fix en
+  `src/matcher.py`** (`_score_candidate`, línea ~298):
+  pre-normalizar `line.variety` eliminando todo carácter que
+  no sea `[A-Z0-9 ]+` antes del tokenizer. Resultado:
+  variety_no_overlap 250 → 232, auto **3037 → 3052** (+15),
+  autoapprove **93.0 → 93.4%** (+0.4pp), ambiguous 171 → 161
+  (−10). **Golden 997/997 intacto**. Casos residuales (232)
+  son genuinos: producto inexistente o OCR irrecuperable.
+- **Sesión 10h** (2026-04-22) — **fixes parsers UNIQUE +
+  CANANVALLE (NO_PARSEA 5→3)**. Diagnosticados los 9 samples
+  que fallaban en los 5 NO_PARSEA. (a) UNIQUE: los 2 samples
+  fallidos eran facturas PROFORMA con layout distinto
+  (`HITS No. DESCRIPTION BRAND BOX BOX TYPE PCS FULL PACKING
+  T.STEMS UNIT UNIT PRICE TOTAL VALUE`). Añadido regex
+  `_PROFORMA_RE` que captura `0603.11.00.50 ROSES BLUSH 50 HB 1
+  0.5 300 300 STEMS $ 0.32 $ 96.00`, tolera OCR split en total
+  (`$ 1 92.00` → 192). (b) CANANVALLE: los 2 samples fallidos
+  (duplicados literales con typo en nombre) eran facturas
+  SAMPLE con layout-tabla sin signos `$`. Añadido regex
+  `_SAMPLE_RE` en `CustomerInvoiceParser` que captura
+  `1 1 - 1 HB Brighton 50 1 1 25 25 0.010 0.250SAMPLE`. Ambos
+  fixes son aditivos (nuevo regex primero, legacy intacto).
+  Resto de NO_PARSEA **no justificados**: SAYONARA 64811 (OCR
+  totalmente corrupto), CEAN GLOBAL cean 57 (factura en
+  español con rosas que requeriría reescribir `auto_cean`),
+  NATIVE BLOOMS 2 samples con productos tropicales de cortesía
+  ($0.0001/stem).
+- **Sesión 10g** (2026-04-22) — **auto-confirmación de
+  sinónimos**: nuevo método
+  [`SynonymStore.register_match_hit`](src/sinonimos.py#L181) y
+  llamada desde el matcher tras `ok` con evidencia independiente
+  (variety_match + size_exact o variety_match + brand_in_name).
+  Incrementa `times_confirmed` y, tras ≥ 2 hits, promueve
+  `aprendido_en_prueba → aprendido_confirmado` (trust 0.55 →
+  0.85). Medición dos pasadas: 1ª pasada promueve 774 sinónimos;
+  2ª pasada aprovecha scoring ya con trust alto. Resultado:
+  **weak_synonym 1787 → 677 (−62%)**, auto 3019 → 3021 (+2),
+  autoapprove 92.8 → 92.9% (+0.1pp). Golden 997/997 **intacto**
+  (manual_confirmado protegido; auto-promoción nunca lo toca).
+  Gate de seguridad: el sinónimo solo promociona si el match
+  ganó por evidencia *no-sinónimo* (variety+size o variety+brand)
+  → no hay bootstrapping circular.
+- **Sesión 10f** (2026-04-22) — **fix parser BRISSAS**:
+  el regex de `header.total` era `(?:Sub\s+)?Total\s+([\d,.]+)` y
+  matcheaba la PRIMERA ocurrencia de `TOTAL` en el PDF, que en
+  BRISSAS es la fila-resumen de stems (`TOTAL 6700 0.286 1918.00`
+  → capturaba 6700 stems en lugar de $1918 grand total). Fix
+  aditivo: preferir `Sub\s+Total\s+([\d,.]+)` (que aparece más
+  abajo con el grand total real) y fallback al `Total` genérico
+  si no existe. Resultado: 11/11 samples BRISSAS con
+  `header_ok=True` (antes 0/5). BRISSAS pasa de TOTALES_MAL → OK
+  (verdict OK, tot_ok=5/5). Global auto 92.8% estable (el fix no
+  impacta link accuracy, solo consistencia validación). También
+  se corrigió `header_total` en los 2 goldens BRISSAS existentes
+  (16200 → 4632.75 y 14925 → 4315.5, que heredaban el stems count
+  como grand total).
 
 ### Próximos pasos posibles
 
-1. **Correr `golden_apply.py` en cada ampliación de golden** es
-   ahora el camino cierre-del-bucle: el matcher respeta
-   `manual_confirmado` en los 4 puntos críticos (brand_boost
-   skip, veto skip+penalty, add() no-clobber, manual-pin final).
-2. **Shadow mode** (Fase 10) — procesar facturas reales, comparar
-   propuesta vs decisión humana, capturar fallos de producción.
-3. **NO_PARSEA restantes (5)**: CANANVALLE, CEAN GLOBAL, NATIVE
-   BLOOMS, SAYONARA, UNIQUE. Restos típicamente con 1 sample por
-   proveedor con OCR muy corrupto o formato "Bouquet" exótico que
-   no compensa en ROI. SAYONARA y NATIVE BLOOMS ya parsean 4/5.
-   CEAN GLOBAL requeriría extender parser para rosas en español
-   ("ROSAS EXPLORER 40CM ..."). CANANVALLE tiene totales mal
-   interpretados (fmt=custinv compartido con otros).
-4. **TOTALES_MAL (3)**: CANTIZA, MILAGRO, MILONGA — parse OK pero
-   sum no cuadra con header en algunos samples.
-5. **Ampliar golden set** a más proveedores para robustecer el
-   feedback loop.
-6. **Optimizar matcher** — cerrado en sesión 9u con fix de deferred
-   save (26× speedup, 238→9ms/línea). El fuzzy ya no es dominante.
-   Si hace falta más perf: indexar por variety+size en
-   `_gather_candidates`, precalcular brand set, limitar fan-out
-   fuzzy (top-5 actual).
+**Orden sugerido para la próxima sesión** (post-10m):
+
+1. **Verificar shadow loop end-to-end con un batch nuevo**.
+   Ángel tiene pendiente procesar el siguiente lote de facturas
+   reales. Con los fixes 10m(a)-(l) ya aplicados, el flujo ahora
+   captura propuestas en `batch_process.py` y decisiones via el
+   tick ✓ del batch (routing confirm/correct/save_synonym). Tras
+   1-2 facturas procesadas y corregidas, correr
+   `shadow_report.py` y comprobar que: (a) las propuestas se
+   loguean, (b) las decisiones se loguean, (c) el cruce por
+   `synonym_key` produce accuracy real. Si algo no cruza,
+   investigar mismatch key frontend ↔ backend (la normalización
+   ya está en los 3 sitios).
+
+2. **Auditoría box-code-in-variety en parsers pendientes**.
+   El patrón "código de ruta/destino metido en la variedad"
+   apareció en MYSTIC (CORUÑA/TNT), GARDA (ELOY/ASTURIAS/MARL),
+   LIFE (MARL), ROSALEDA (ASTURIAS-ALBU, GIJON R-48, IRUÑA) y
+   TURFLOR (GIJON/FVIDA/R19/GONZA) — todos arreglados. Pendiente
+   auditar: **SAYONARA** (SP), **APOSENTOS** (ILIAS),
+   **MONTEROSA** (EUGENIA), **EL CAMPANARIO** (ZAIRA). Grep
+   sobre propuestas de shadow_log con varieties que contengan
+   estos tokens UPPERCASE cortos al inicio.
+
+3. **Uma Flowers — 7 `ambiguous_match` sin tocar**. En el batch
+   retrospectivo salieron 7 líneas ambiguas en Uma Flowers. No
+   las tocó ninguno de los 12 fixes de 10m. Extraer de
+   `shadow_log.jsonl` las líneas con `provider_name=Uma Flowers
+   match_status=ambiguous_match`, ver `reasons`/`penalties`,
+   decidir si es bug del parser o gap de catálogo.
+
+4. **Cerrar gap `save_synonym` en shadow**. Cuando el operador
+   corrige un `sin_match` (no había propuesta), el endpoint
+   `save_synonym` NO escribe al shadow_log. Hacer que también
+   emita una entry `decision: correct` con `proposed_articulo_id=0`
+   para medir cobertura matcher real (qué % de sin_match rescata
+   el operador vs qué % son genuinamente sin catálogo).
+
+5. **sin_match del backlog = artículos a dar de alta en ERP**.
+   Ángel confirmó que varios `sin_match` de MYSTIC/VALTHOMIG son
+   productos que él no tiene en catálogo. Montar
+   `shadow_report.py --top-missing-articles` que liste variedades
+   que aparecen como `sin_match` ordenadas por frecuencia — da
+   la lista priorizada de artículos para alta en ERP.
+
+6. **Histórico aún útil — otros pasos arrastrados**:
+   - Ampliar golden set a más proveedores (feedback loop).
+   - NO_PARSEA restantes (CEAN GLOBAL, NATIVE BLOOMS, SAYONARA
+     64811): ROI no compensa — diagnóstico cerrado en 10h.
+   - Optimizar matcher (indexar variety+size, precalc brand set)
+     — solo si hace falta perf.
 
 ## Documentación de seguimiento
 
@@ -356,6 +626,10 @@ python tools/golden_bootstrap.py path/to/invoice.pdf
 python tools/golden_review.py golden/<prov>_<id>.json
 python tools/evaluate_golden.py
 
+# Shadow mode (Fase 10) — agrega shadow_log.jsonl
+python tools/shadow_report.py
+python tools/shadow_report.py --since 2026-04-01 --provider BRISSAS
+
 # Aprender parser nuevo
 python tools/auto_learn_parsers.py validate <key> <carpeta>
 python tools/auto_learn_parsers.py register <key> auto_<key>
@@ -375,88 +649,105 @@ Comandos con flags (`--provider`, `--max-samples`, `--verbose`,
 Solo las 2 últimas sesiones. Todas las anteriores en
 [`docs/sessions.md`](docs/sessions.md).
 
-### 2026-04-21 — sesión 10e: fix matcher generic_vs_own_brand (autoapprove 92.7→92.9%)
+### 2026-04-22 — sesión 10m: batch de 7 fixes parsers shadow-driven
 
-Investigación de qué drives el gap de 236 líneas linkables pero
-no-auto. Diagnóstico: el 75% de penalties globales (1784/2373)
-son `weak_synonym`. Intento inicial golden-bootstrap en OLIMPO
-reveló algo más profundo: existen sinónimos
-`aprendido_en_prueba` heredados que apuntan a artículos
-**genéricos** (`ROSA EC LEMONADE 70CM 25U`) cuando existe el
-branded propio del proveedor (`ROSA LEMONADE 70CM 25U SCARLET`,
-OLIMPO brand). Estos sinónimos daban +0.24 al genérico
-(synonym_trust 0.55 × 0.25 = 0.14 + method_prior 0.10) que
-derrotaba al `brand_in_name(+0.25)` del branded propio. Regla
-de negocio: "marca propia > genérico > marca ajena" no se
-respetaba.
+Primer ciclo completo de Fase 10 operando. Ángel procesó un lote
+real de 27 facturas de la semana y señaló desde la UI una lista
+creciente de errores. Cada uno convertido en fix concreto
+(detalle en "Estado actual" arriba): FLORAROMA 2026 (AROMA),
+EQR (stems=total_stems), FLORSANI (box types + sub-líneas +
+tints), GARDA (box_code en label, sub-líneas heredadas), MALIMA
+(coma miles US), MYSTIC (Ñ en code + TNT block name), LIFE
+(MARL label).
 
-**Fix estructural — `src/matcher.py`**:
-
-- Nuevo parámetro `has_own_branded_peer: bool` en
-  [`_score_candidate`](src/matcher.py#L270). Calculado una vez
-  antes del loop (línea ~822) como "¿hay al menos un candidato
-  viable con brand_in_name del proveedor propio?".
-- Nueva penalty `generic_vs_own_brand` (−0.15) cuando (a) el
-  candidato no tiene marca propia, (b) no tiene marca ajena
-  (tampoco foreign_brand), (c) `has_own_branded_peer` es True.
-  Simetriza: propio +0.25, genérico −0.15 cuando existe propio,
-  foreign −0.25. Diff propio↔genérico sube de 0.25 a 0.40 —
-  suficiente para derrotar synonym_trust débil.
-- La penalty NO se aplica cuando no existe branded propio en el
-  pool → compat con proveedores sin marca propia (mayoría).
+Pattern recurrente detectado: **box codes/labels metidos en
+variety**. Los parsers capturaban como parte del nombre de la
+variedad tokens UPPERCASE que en realidad son destinos/rutas/
+códigos internos (ELOY, MARL, R16, CORUÑA, TNT, ZAIRA). Fix
+común: grupo opcional `[A-Z]{3,}` o `[A-ZÑÁÉÍÓÚ]{3,}` antes de
+variety que se guarda en `label`. Audit global detectó 5
+parsers más con el patrón (ROSALEDA EURO, SAYONARA SP, APOSENTOS
+ILIAS, MONTEROSA EUGENIA, EL CAMPANARIO ZAIRA) — se atenderán
+cuando aparezcan en shadow real.
 
 **Métricas**:
-- Global auto: 92.7 → **92.9%** (+0.2pp, 3018 → 3020 auto,
-  171 → 168 ambiguous)
-- Ganancias: CEAN GLOBAL +8.3pp (75 → 83.3%), DAFLOR +5.9pp
-  (41.2 → 47.1%), OLIMPO +2.5pp (59.2 → 61.7%), ROSALEDA +0.8pp
-  (99.2 → 100%).
-- Regresión única: COLIBRI −1.4pp (98.6 → 97.2%, 2 líneas
-  ok→ambiguous). Análisis: líneas que antes matcheaban a
-  genérico EC con confianza 0.70+, ahora `generic_vs_own_brand`
-  las hace ambiguas porque el branded COLIBRI compite. Es
-  cualitativamente correcto — golden COLIBRI sigue 100%.
-- 9 penalties `generic_vs_own_brand` aplicadas globalmente.
-- **Golden link 100% (997/997) intacto** — ninguna línea
-  confirmada cambió de articulo_id.
+- ~200 líneas nuevas recuperadas en benchmark (antes no
+  parseaban o tenían datos corruptos silenciosamente).
+- Golden **997/997 (100%) intacto** en todo momento.
+- Autoapprove 93.9% → **92.6%** (dilución por denominador
+  creciente; las nuevas líneas todavía no tienen sinónimo manual
+  — se recuperarán cuando Ángel las confirme en UI).
+- FLORSANI2.pdf: 0 → **54** líneas. GARDA: 11 → **28** líneas.
+  AROMA: 0 → 4. LIFE: variety limpia sin MARL. MYSTIC1: variety
+  limpia sin CORUÑA/TNT. MALIMA: total correcto (2.00 → 2450.00).
 
-### 2026-04-21 — sesión 10d: VALTHO + fix parser Cantiza (autoapprove 92.7% estable, golden 907→997)
+### 2026-04-22 — sesión 10k: shadow mode arrancado (Fase 10) — infraestructura propuesta↔decisión
 
-Continuación de 10c. Foco único: incorporar VALTHOMIG (provider
-435) al golden. VALTHO usa `fmt='cantiza'` — mismas plantillas
-que CANTIZA, pero muestras recientes tienen dos variantes OCR
-que el regex de `CantizaParser` no contemplaba.
+Fin del ciclo técnico de quick wins (10f-10j llevaron de 92.7% a
+93.6% autoapprove) y arranque de la Fase 10 del roadmap. El
+objetivo ya no es extraer más del benchmark sino **medir la
+calidad real en producción**: de las propuestas del matcher, ¿qué
+porcentaje confirma el operador y qué porcentaje corrige? ¿Qué
+patrones de corrección se repiten?
 
-**Fix de parser**:
+**Arquitectura**:
 
-- [src/parsers/cantiza.py:44](src/parsers/cantiza.py#L44)
-  **CantizaParser — categoría cooler `C` + puntos OCR**: el regex
-  era `([\w][\w\s.\']*?)\s+(\d+)CM\s+N\s*(\d+)ST\s+[A-Z]{1,4}\b`,
-  con `N` hardcodeado como categoría (`N` = normal). (a) Algunas
-  facturas marcan `C` (cooler) — ej. `CHERRY O 40CM C 25ST CZ`.
-  (b) El OCR de estas muestras deja punto pegado tras `N` y tras
-  `ST`: `N. 25ST.`, `N 25ST.`. Fix aditivo: `[NC]\.?\s*(\d+)ST\.?`
-  — admite ambos caracteres + puntos opcionales, sin romper el
-  matcheo legacy. Impacto medido en CANTIZA: 100 → 105 líneas
-  parseadas (+5 ok).
+Dos tipos de entry en `shadow_log.jsonl` (JSONL en raíz):
 
-**Goldens**:
+- `propuesta`: una por línea de factura al procesarse en la web.
+  Incluye `synonym_key` (clave de cruce), variety/size/spb/grade,
+  proposed_articulo_id+name, match_status, link_confidence,
+  review_lane, reasons, penalties.
+- `decision`: una por acción confirm/correct del operador. Lleva
+  `synonym_key` + `proposed_articulo_id` + `decided_articulo_id`
+  + action ∈ {confirm, correct}.
 
-- VALTHO 25061370 (63 líneas) y 25061457 (27 líneas)
-  bootstrappeados y revisados. Las 90 líneas mapean 100% al
-  branded CANTIZA (los PDFs se titulan "CANTIZA CANTIZA 2" pero
-  el provider_id en cabecera es 435 = Valthomig, distribuidor
-  oficial). link 100%.
-- `golden_apply.py` propagó: 3 sinónimos nuevos, 43 promociones
-  `aprendido_en_prueba → aprendido_confirmado`, 329 increments
-  de `times_confirmed` sobre sinónimos CANTIZA/VALTHO existentes.
+**Cambios en código**:
 
-**Métricas**:
-- CANTIZA auto: 98.0 → **98.1%** (+0.1pp, +5 líneas parseadas)
-- VALTHOMIG auto: **100%** (98 líneas, sin regresión)
-- Global auto: **92.7% estable** (3018 auto / 3254 linkable)
-- Golden link: 100% (907/907) → **100% (997/997)** (+90 líneas,
-  24 facturas, 13 proveedores)
+- [`web/api.php`](web/api.php): dos nuevos helpers
+  `_shadowLogProposals($result, $pdfPath)` y
+  `_shadowLogDecision($action, $input, $proposedId, $decidedId,
+  $decidedName)`. Llamadas integradas en `handleProcess` (tras
+  parsear el JSON de `procesar_pdf.py`), `handleConfirmMatch` y
+  `handleCorrectMatch`. Helper `_shadowSynKey(providerId, line)`
+  replica la estructura de `SynonymStore._key` en Python:
+  `<provider_id>|<species>|<variety.upper>|<size>|<spb>|<grade.upper>`.
+- [`tools/shadow_report.py`](tools/shadow_report.py) (nuevo):
+  - Cruza propuestas con decisiones por `synonym_key`, eligiendo
+    la propuesta más reciente anterior a la decisión.
+  - Reporta: accuracy global real (% confirmaciones /
+    decisiones), accuracy por proveedor, top-N correcciones con
+    par "propuso X / correcto Y", backlog pendiente (líneas
+    ambiguous/sin_match sin decisión humana).
+  - Flags: `--since YYYY-MM-DD`, `--provider <substr>`,
+    `--top-errors N`.
+
+**Diseño**:
+
+- Logueo silencioso (nunca rompe la respuesta al cliente aunque
+  falle el file_put_contents).
+- Propuestas se loguean ANTES de que el operador toque nada —
+  evita contaminación por las acciones posteriores.
+- Cruce por `synonym_key` + timestamp permite atribución correcta
+  incluso si varias propuestas comparten key (fractura de
+  líneas, varias facturas del mismo proveedor).
+- El log también captura propuestas sin articulo_id (sin_match,
+  sin_parser) — útil para medir cobertura del matcher.
+
+**Smoke test** con 4 entries sintéticas (2 propuestas + 2
+decisiones: 1 confirm + 1 correct) confirmó pipeline correcto:
+accuracy 50%, top error correctamente identificado como "ROSA EC
+FREEDOM genérico propuesto cuando el correcto era el branded
+BRISSAS". Log limpiado tras el test.
+
+**Métricas técnicas (sin cambios vs 10j)**:
+- Autoapprove 93.6% · Golden 997/997 100%.
+
+**Siguiente natural**: 1-2 semanas de uso operativo real →
+correr `shadow_report.py` → convertir top-N patrones de
+corrección en fixes concretos (nuevos sinónimos manual_confirmado,
+parsers con bugs, reglas de matcher). Cierra el ciclo
+benchmark-shadow-fix que es la Fase 10.
 
 ---
 

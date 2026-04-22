@@ -15,6 +15,7 @@ define('MAX_ZIP_SIZE',      100 * 1024 * 1024); // 100 MB
 define('LEARNED_RULES_FILE', PROJECT_ROOT . '/learned_rules.json');
 define('PENDING_REVIEW_FILE', PROJECT_ROOT . '/pending_review.json');
 define('AUDIT_LOG_FILE', PROJECT_ROOT . '/audit_log.jsonl');
+define('SHADOW_LOG_FILE', PROJECT_ROOT . '/shadow_log.jsonl');
 
 header('Content-Type: application/json; charset=utf-8');
 
@@ -200,6 +201,14 @@ function handleProcess(): void
     if ($output === null) {
         echo json_encode(['ok' => false, 'error' => 'Error al ejecutar el procesador Python']);
         return;
+    }
+
+    // Shadow mode: interceptar el resultado para loguear propuestas del
+    // matcher antes de devolverlo al cliente. No modificamos el output —
+    // el frontend sigue recibiendo el mismo JSON.
+    $parsed = json_decode($output, true);
+    if (is_array($parsed)) {
+        _shadowLogProposals($parsed, $dest);
     }
 
     // El procesador devuelve JSON directamente
@@ -420,6 +429,10 @@ function handleConfirmMatch(): void
     file_put_contents($tmp, $json);
     rename($tmp, SYNONYMS_FILE);
 
+    // Shadow mode: el operador confirmó la propuesta. Decided = proposed.
+    _shadowLogDecision('confirm', $input, $artId, $artId,
+                       $entry['articulo_name'] ?? '');
+
     echo json_encode([
         'ok' => true,
         'message' => 'Match confirmado',
@@ -506,6 +519,18 @@ function handleCorrectMatch(): void
     $tmp = SYNONYMS_FILE . '.tmp';
     file_put_contents($tmp, $json);
     rename($tmp, SYNONYMS_FILE);
+
+    // Shadow mode: el operador corrigió. Decided ≠ proposed. Necesitamos
+    // los campos de la línea para reconstruir contexto en el report.
+    $shadowInput = array_merge($input, [
+        'provider_id'     => $provId,
+        'species'         => $especie,
+        'variety'         => $variety,
+        'size'            => $talla,
+        'stems_per_bunch' => $spb,
+        'grade'           => $grado,
+    ]);
+    _shadowLogDecision('correct', $shadowInput, $oldArtId, $newArtId, $newArtName);
 
     echo json_encode([
         'ok' => true,
@@ -1174,5 +1199,145 @@ function handleGenerarOrden(): void
         'hoja_id' => $hojaId,
         'ordenes_count' => $ordenesCount,
         'message' => "Hoja de orden #$hojaId creada con $ordenesCount líneas",
+    ]);
+}
+
+/* ==========================================================================
+ * Shadow mode: captura de propuestas y decisiones para análisis offline.
+ *
+ * El formato es una línea JSON por entry en `shadow_log.jsonl`. Dos tipos:
+ *   - "propuesta": una por línea de factura, con lo que el matcher sugirió
+ *     ANTES de que el operador tocara nada. Clave `synonym_key` para cruzar
+ *     con futuras decisiones.
+ *   - "decision": confirm/correct del operador. Lleva `proposed_articulo_id`
+ *     y `decided_articulo_id` para medir accuracy real en producción.
+ *
+ * `tools/shadow_report.py` agrega ambos tipos y produce KPIs de shadow mode.
+ * ========================================================================== */
+
+/**
+ * Canonicaliza la variedad para construir la synonym_key: colapsa
+ * puntuación y caracteres no alfanuméricos a espacios y compacta.
+ * DEBE coincidir con `normalize_variety_key` en `src/models.py` y
+ * `_normalizeVariety` en `web/assets/app.js`.
+ */
+function _normalizeVarietyKey(string $variety): string
+{
+    $v = mb_strtoupper($variety);
+    $v = preg_replace('/[^A-Z0-9 ]+/u', ' ', $v);
+    $v = preg_replace('/\s+/u', ' ', $v);
+    return trim($v);
+}
+
+/**
+ * Construye la synonym_key igual que `SynonymStore._key` en Python:
+ *   <provider_id>|<species>|<normalize(variety)>|<size>|<spb>|<grade.upper>
+ */
+function _shadowSynKey(int $providerId, array $line): string
+{
+    $species = $line['species'] ?? '';
+    $variety = _normalizeVarietyKey($line['variety'] ?? '');
+    $size    = (int)($line['size'] ?? 0);
+    $spb     = (int)($line['stems_per_bunch'] ?? 0);
+    $grade   = strtoupper($line['grade'] ?? '');
+    return "{$providerId}|{$species}|{$variety}|{$size}|{$spb}|{$grade}";
+}
+
+/**
+ * Añade una entry al shadow log. Silencioso en error — nunca debe romper
+ * la respuesta al cliente.
+ */
+function _shadowLogAppend(array $entry): void
+{
+    $entry['ts'] = date('c');
+    $line = json_encode($entry, JSON_UNESCAPED_UNICODE);
+    if ($line === false) {
+        return;
+    }
+    @file_put_contents(SHADOW_LOG_FILE, $line . "\n", FILE_APPEND | LOCK_EX);
+}
+
+/**
+ * Escribe una entry "propuesta" por cada línea con articulo_id en el
+ * resultado del procesador. Ignora padres de mixed_box (sin articulo_id
+ * propio) y líneas sin match.
+ */
+function _shadowLogProposals(array $result, string $pdfName): void
+{
+    if (empty($result['ok'])) {
+        return;
+    }
+    $header = $result['header'] ?? [];
+    $providerId = (int)($header['provider_id'] ?? 0);
+    $invoice    = $header['invoice_number'] ?? '';
+    $lines      = $result['lines'] ?? [];
+
+    // Aplanar: si hay mixed_parent, logueamos sus hijas (cada una es una
+    // propuesta independiente). El padre es solo agregado de la UI.
+    $flat = [];
+    foreach ($lines as $l) {
+        if (($l['row_type'] ?? '') === 'mixed_parent' && !empty($l['children'])) {
+            foreach ($l['children'] as $child) {
+                $flat[] = $child;
+            }
+        } else {
+            $flat[] = $l;
+        }
+    }
+
+    foreach ($flat as $idx => $l) {
+        $artId = (int)($l['articulo_id'] ?? 0);
+        if (!$artId) {
+            // Sin propuesta del matcher: no hay nada que shadowear. Igual
+            // logueamos un entry para saber que hubo un sin_match/sin_parser
+            // y poder analizar el pipeline completo.
+        }
+        _shadowLogAppend([
+            'evento'                => 'propuesta',
+            'pdf'                   => basename($pdfName),
+            'invoice'               => $invoice,
+            'provider_id'           => $providerId,
+            'provider_name'         => $header['provider_name'] ?? '',
+            'line_idx'              => $idx,
+            'synonym_key'           => _shadowSynKey($providerId, $l),
+            'species'               => $l['species'] ?? '',
+            'variety'               => $l['variety'] ?? '',
+            'size'                  => (int)($l['size'] ?? 0),
+            'stems_per_bunch'       => (int)($l['stems_per_bunch'] ?? 0),
+            'grade'                 => $l['grade'] ?? '',
+            'proposed_articulo_id'  => $artId,
+            'proposed_articulo_name'=> $l['articulo_name'] ?? '',
+            'match_status'          => $l['match_status'] ?? '',
+            'match_method'          => $l['match_method'] ?? '',
+            'link_confidence'       => (float)($l['link_confidence'] ?? 0),
+            'match_confidence'      => (float)($l['match_confidence'] ?? 0),
+            'candidate_margin'      => (float)($l['candidate_margin'] ?? 0),
+            'review_lane'           => $l['review_lane'] ?? '',
+            'reasons'               => $l['match_reasons'] ?? [],
+            'penalties'             => $l['match_penalties'] ?? [],
+        ]);
+    }
+}
+
+/**
+ * Escribe una entry "decision" cuando el operador confirma o corrige.
+ */
+function _shadowLogDecision(string $action, array $input,
+                            int $proposedArtId, int $decidedArtId,
+                            string $decidedArtName = ''): void
+{
+    _shadowLogAppend([
+        'evento'                => 'decision',
+        'action'                => $action,
+        'synonym_key'           => $input['key'] ?? '',
+        'proposed_articulo_id'  => $proposedArtId,
+        'decided_articulo_id'   => $decidedArtId,
+        'decided_articulo_name' => $decidedArtName,
+        'provider_id'           => (int)($input['provider_id'] ?? 0),
+        'species'               => $input['species'] ?? '',
+        'variety'               => $input['variety'] ?? '',
+        'size'                  => (int)($input['size'] ?? 0),
+        'stems_per_bunch'       => (int)($input['stems_per_bunch'] ?? 0),
+        'grade'                 => $input['grade'] ?? '',
     ]);
 }

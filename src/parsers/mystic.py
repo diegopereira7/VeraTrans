@@ -6,15 +6,17 @@ from src.models import InvoiceHeader, InvoiceLine
 
 
 # Block/farm names que aparecen entre box_code y variety en MYSTIC
-# (R19 SORIALES BRIGHTON, R19 IGLESIAS EXPLORER, etc.)
-_BLOCK_NAMES = {'SORIALES', 'IGLESIAS', 'NAVARRETE'}
+# (R19 SORIALES BRIGHTON, R19 IGLESIAS EXPLORER, CORUÑA TNT Gyp..., etc.)
+# TNT = "Tinted", etiqueta corta de secundaria (sesión 10m).
+_BLOCK_NAMES = {'SORIALES', 'IGLESIAS', 'NAVARRETE', 'TNT', 'VDAY', 'MDAY'}
 
 # Línea con los 6 campos finales fijos: peso cantidad length stems price total.
 # Soporta box_code con dígitos (R14, R19, VNG, FR), variedad mixed-case y
-# bloque opcional antes de variety.
+# bloque opcional antes de variety. Acepta acentos/Ñ en el code (CORUÑA es
+# un destino común en facturas ecuatorianas-españolas).
 _LINE_RE = re.compile(
     r'^(?:\s*\d+\s+)?(?P<btype>[HQ])\s+'
-    r'(?P<code>[A-Z][A-Z0-9]{1,14})\s+'
+    r'(?P<code>[A-ZÑÁÉÍÓÚ][A-ZÑÁÉÍÓÚ0-9]{1,14})\s+'
     r'(?P<variety>.+?)\s+'
     r'(?P<peso>\d+)\s+(?P<cantidad>\d+)\s+(?P<length>\d+)\s+(?P<stems>\d+)\s+'
     r'(?P<price>[\d,.]+)\s+(?P<total>[\d,.]+)\s*$',
@@ -110,6 +112,17 @@ class MysticParser:
             species = _species_from_variety(variety)
             spb = cantidad if cantidad > 0 else (25 if species == 'ROSES' else 1)
             bunches = peso if peso > 0 else (stems // spb if spb else 0)
+            # En MYSTIC la paniculata (gypsophila) cotiza precio por ramo, no
+            # por tallo. Autodetectamos comparando price*stems vs price*bunches
+            # con el total de la línea para robustecer frente a excepciones.
+            per_stem_math = round(price * stems, 2)
+            per_bunch_math = round(price * bunches, 2) if bunches else 0.0
+            if bunches and spb > 0 and abs(per_bunch_math - total) < abs(per_stem_math - total):
+                price_per_bunch = price
+                price_per_stem = round(price / spb, 4)
+            else:
+                price_per_stem = price
+                price_per_bunch = round(price * spb, 4) if spb else 0.0
             lines.append(InvoiceLine(
                 raw_description=raw,
                 species=species,
@@ -119,7 +132,8 @@ class MysticParser:
                 stems_per_bunch=spb,
                 bunches=bunches,
                 stems=stems,
-                price_per_stem=price,
+                price_per_stem=price_per_stem,
+                price_per_bunch=price_per_bunch,
                 line_total=total,
                 box_type=pm.group('btype'),
                 provider_key=pdata.get('key', ''),
