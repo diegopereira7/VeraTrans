@@ -62,6 +62,17 @@ def _search_catalog(art: ArticulosLoader, query: str, limit: int = 10) -> list[d
     return results
 
 
+def _resolve_article(art: ArticulosLoader, q: str) -> dict | None:
+    """Delega en ArticulosLoader.find_by_erp_or_ref (sesión 10r).
+
+    **El id autoincrement NO es aceptado como input** — se renumera al
+    reimportar el catálogo y causa asignaciones equivocadas (observado
+    en 10r: usuario tecleó 3037 pensando en id_erp y le asignó un
+    artículo al azar con id local 3037). Solo `id_erp` o `referencia`.
+    """
+    return art.find_by_erp_or_ref(q)
+
+
 def _find_alternatives(art: ArticulosLoader, line: dict, limit: int = 5) -> list[dict]:
     """Busca artículos alternativos para una línea basándose en variedad+tamaño."""
     variety = line.get('variety', '').upper()
@@ -125,8 +136,8 @@ def review_file(filepath: Path, art: ArticulosLoader, start_line: int = 0):
     print(f'  Factura:   {data.get("invoice_number", "")}')
     print(f'  Líneas:    {total} ({reviewed_count} ya revisadas)')
     print()
-    print(f'  Enter=aceptar  1-5=alternativa  ID=asignar por ID  s=skip  q=guardar+salir')
-    print(f'  r N  =re-revisar línea N (ej: r 3)')
+    print(f'  Enter=aceptar  1-5=alternativa  id_erp|ref=asignar  s=skip  q=guardar+salir')
+    print(f'  r N  =re-revisar línea N (ej: r 3). NO se acepta id autoincrement.')
     print()
     # Correcciones ya hechas: (variety, size, origin) → (articulo_id, articulo_name)
     # Se aplican automáticamente a líneas idénticas
@@ -156,8 +167,9 @@ def review_file(filepath: Path, art: ArticulosLoader, start_line: int = 0):
         # Auto-corrección: si ya corregimos una línea idéntica, aplicar
         key = (var.upper(), sz, origin.upper())
         if key in corrections:
-            corr_id, corr_name = corrections[key]
+            corr_id, corr_erp, corr_name = corrections[key]
             line['articulo_id'] = corr_id
+            line['articulo_id_erp'] = corr_erp
             line['articulo_name'] = corr_name
             line.pop('_review', None)
             modified = True
@@ -195,10 +207,18 @@ def review_file(filepath: Path, art: ArticulosLoader, start_line: int = 0):
                 resp = 'q'
 
             if resp == '' or resp == '0':
-                # Accept current
+                # Accept current — hidratamos id_erp desde el catálogo si la
+                # entry del draft aún no lo tenía (goldens viejos).
+                cur_id = int(line.get('articulo_id') or 0)
+                cur_erp = line.get('articulo_id_erp') or ''
+                if cur_id and not cur_erp:
+                    a = art.articulos.get(cur_id)
+                    if a:
+                        cur_erp = a.get('id_erp') or ''
+                        line['articulo_id_erp'] = cur_erp
                 line.pop('_review', None)
                 modified = True
-                corrections[key] = (line.get('articulo_id', 0), line.get('articulo_name', ''))
+                corrections[key] = (cur_id, cur_erp, line.get('articulo_name', ''))
                 print(f'  {_green("✓ Aceptado")}')
                 break
             elif resp == 'q':
@@ -228,31 +248,43 @@ def review_file(filepath: Path, art: ArticulosLoader, start_line: int = 0):
                 else:
                     print(f'  Uso: r N (ej: r 3 para re-revisar la línea 3)')
                 continue
-            elif resp.isdigit():
-                num = int(resp)
-                if 1 <= num <= len(alts):
-                    # Elegir alternativa
-                    chosen = alts[num - 1]
-                    new_id = chosen.get('id', 0)
-                    new_name = chosen.get('nombre', '')
-                else:
-                    # ID de artículo directo
-                    found = art.articulos.get(num)
-                    if not found:
-                        print(f'  {_red(f"ID {num} no existe en el catálogo")}')
-                        continue
-                    new_id = num
-                    new_name = found.get('nombre', '')
+            elif resp.isdigit() and 1 <= int(resp) <= len(alts):
+                # Elegir alternativa del listado (1-5)
+                chosen = alts[int(resp) - 1]
+                new_id = chosen.get('id', 0)
+                new_name = chosen.get('nombre', '')
+                new_erp = chosen.get('id_erp', '') or ''
                 line['articulo_id'] = new_id
+                line['articulo_id_erp'] = new_erp
                 line['articulo_name'] = new_name
                 line.pop('_review', None)
                 modified = True
-                # Guardar corrección para auto-aplicar a líneas iguales
-                corrections[key] = (new_id, new_name)
-                print(f'  {_green("✓ Asignado:")} {new_name} (id={new_id})')
+                corrections[key] = (new_id, new_erp, new_name)
+                print(f'  {_green("✓ Asignado:")} {new_name} (id={new_id}, id_erp={new_erp or "—"})')
+                break
+            elif resp:
+                # Identificador libre: id_erp o referencia (F...). El id
+                # autoincrement NO se acepta (sesión 10r) — se renumera
+                # al reimportar y genera asignaciones erróneas.
+                found = _resolve_article(art, resp)
+                if not found:
+                    print(f'  {_red(f"«{resp}» no existe como id_erp ni referencia")}')
+                    continue
+                new_id = found.get('id', 0)
+                new_name = found.get('nombre', '')
+                new_erp = found.get('id_erp', '') or ''
+                new_ref = found.get('referencia', '') or ''
+                line['articulo_id'] = new_id
+                line['articulo_id_erp'] = new_erp
+                line['articulo_name'] = new_name
+                line.pop('_review', None)
+                modified = True
+                corrections[key] = (new_id, new_erp, new_name)
+                print(f'  {_green("✓ Asignado:")} {new_name}')
+                print(f'    id={new_id}  id_erp={new_erp or "—"}  ref={new_ref or "—"}')
                 break
             else:
-                print(f'  Enter=aceptar, 1-5=alt, ID=artículo, r N=re-revisar, s=skip, q=salir')
+                print(f'  Enter=aceptar, 1-5=alt, ID/id_erp/ref=asignar, r N=re-revisar, s=skip, q=salir')
 
         print()
 

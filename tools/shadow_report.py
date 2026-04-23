@@ -115,20 +115,32 @@ def _print_global(propuestas: list[dict], decisiones: list[dict],
     n_dec = len(decisiones)
     confirms = [m for m in matched if m['decision'].get('action') == 'confirm']
     corrects = [m for m in matched if m['decision'].get('action') == 'correct']
+    # Un "rescate" es una corrección sobre sin_match: el matcher no propuso
+    # nada (proposed_articulo_id=0 en la decision = save_synonym). No es un
+    # error del matcher, es cobertura humana extra.
+    rescues = [m for m in corrects
+               if int(m['decision'].get('proposed_articulo_id') or 0) == 0]
+    wrong = [m for m in corrects if m not in rescues]
     with_ctx = sum(1 for m in matched if m['proposal'])
 
     print(f'Propuestas logueadas:       {n_prop}')
     print(f'Decisiones logueadas:       {n_dec}')
     print(f'  - confirmaciones:         {len(confirms)}')
-    print(f'  - correcciones:           {len(corrects)}')
+    print(f'  - correcciones matcher:   {len(wrong)}    (propuso artículo != correcto)')
+    print(f'  - rescates sin_match:     {len(rescues)}    (matcher no propuso, operador asignó)')
     print(f'Con contexto de propuesta:  {with_ctx}/{n_dec}')
     print()
 
-    if n_dec:
-        accuracy = len(confirms) / n_dec * 100
-        print(f'Accuracy real en producción: {accuracy:.1f}%  '
-              f'({len(confirms)}/{n_dec} confirmadas)')
-    else:
+    # Accuracy "honesta" del matcher: excluir los rescates (el matcher no
+    # tuvo oportunidad). Denominador = solo las veces que el matcher habló.
+    n_spoke = len(confirms) + len(wrong)
+    if n_spoke:
+        accuracy = len(confirms) / n_spoke * 100
+        print(f'Accuracy del matcher cuando propuso: {accuracy:.1f}%  '
+              f'({len(confirms)}/{n_spoke})')
+    if n_dec and not n_spoke:
+        print('(solo hay rescates — matcher nunca tuvo propuesta para estas claves)')
+    elif not n_dec:
         print('(aún no hay decisiones del operador — usa la UI confirm/correct)')
 
 
@@ -160,17 +172,29 @@ def _print_top_errors(matched: list[dict], top: int) -> None:
     print('='*70)
     print(f'Top {top} correcciones — qué artículos propone mal el matcher')
     print('='*70)
-    corrects = [m for m in matched if m['decision'].get('action') == 'correct']
+    # Solo correcciones donde el matcher SÍ propuso algo distinto — los
+    # rescates (proposed=0) no son errores del matcher y se listan aparte
+    # en el backlog / sección de rescates.
+    corrects = [m for m in matched
+                if m['decision'].get('action') == 'correct'
+                and int(m['decision'].get('proposed_articulo_id') or 0) != 0]
     errors = Counter()
     for m in corrects:
         p = m['proposal'] or m['decision']
+        proposed_name = ''
+        if m['proposal']:
+            proposed_name = m['proposal'].get('proposed_articulo_name', '')
         key = (
             p.get('provider_name', ''),
             p.get('variety', ''),
-            p.get('proposed_articulo_name', '') or p.get('decided_articulo_name', ''),
+            proposed_name,
             m['decision'].get('decided_articulo_name', ''),
         )
         errors[key] += 1
+
+    if not corrects:
+        print('(sin correcciones con propuesta — 0 errores de matcher)')
+        return
 
     for (prov, var, proposed_name, decided_name), n in errors.most_common(top):
         print(f'[x{n}] [{prov[:20]:20s}] var={var!r}')

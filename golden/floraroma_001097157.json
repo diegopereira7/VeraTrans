@@ -22,11 +22,12 @@
       "bunches": 4,
       "stems": 100,
       "line_total": 30.0,
-      "articulo_id": 35476,
+      "articulo_id": 35940,
       "articulo_name": "ROSA MONDIAL 50CM 25U FLORAROMA",
       "match_status": "ok",
       "match_confidence": 1.0,
-      "link_confidence": 1.0
+      "link_confidence": 1.0,
+      "articulo_id_erp": "25581"
     },
     {
       "raw_description": "1 2 - 2 QB CLAUDIA NETO S.O. E 1 Explorer 50 25 25 0.300 7.500",
@@ -38,11 +39,12 @@
       "bunches": 1,
       "stems": 25,
       "line_total": 7.5,
-      "articulo_id": 33758,
+      "articulo_id": 34119,
       "articulo_name": "ROSA EXPLORER 50CM 25U FLORAROMA",
       "match_status": "ok",
       "match_confidence": 1.0,
-      "link_confidence": 1.0
+      "link_confidence": 1.0,
+      "articulo_id_erp": "25657"
     },
     {
       "raw_description": "E 1 Momentum 50 25 25 0.280 7.000",
@@ -54,11 +56,12 @@
       "bunches": 1,
       "stems": 25,
       "line_total": 7.0,
-      "articulo_id": 35379,
+      "articulo_id": 35843,
       "articulo_name": "ROSA MOMENTUM 50CM 25U FLORAROMA",
       "match_status": "ok",
       "match_confidence": 1.0,
-      "link_confidence": 1.0
+      "link_confidence": 1.0,
+      "articulo_id_erp": "28482"
     },
     {
       "raw_description": "E 2 Mondial 50 25 50 0.300 15.000",
@@ -70,11 +73,12 @@
       "bunches": 2,
       "stems": 50,
       "line_total": 15.0,
-      "articulo_id": 35476,
+      "articulo_id": 35940,
       "articulo_name": "ROSA MONDIAL 50CM 25U FLORAROMA",
       "match_status": "ok",
       "match_confidence": 1.0,
-      "link_confidence": 1.0
+      "link_confidence": 1.0,
+      "articulo_id_erp": "25581"
     },
     {
       "raw_description": "1 3 - 3 QB ESPLENDOR S.O. E 2 Explorer 50 25 50 0.300 15.000",
@@ -86,11 +90,12 @@
       "bunches": 2,
       "stems": 50,
       "line_total": 15.0,
-      "articulo_id": 33758,
+      "articulo_id": 34119,
       "articulo_name": "ROSA EXPLORER 50CM 25U FLORAROMA",
       "match_status": "ok",
       "match_confidence": 1.0,
-      "link_confidence": 1.0
+      "link_confidence": 1.0,
+      "articulo_id_erp": "25657"
     },
     {
       "raw_description": "E 1 Frutteto 50 25 25 0.280 7.000",
@@ -102,11 +107,12 @@
       "bunches": 1,
       "stems": 25,
       "line_total": 7.0,
-      "articulo_id": 34082,
+      "articulo_id": 34500,
       "articulo_name": "ROSA FRUTTETO 50CM 25U FLORAROMA",
       "match_status": "ok",
       "match_confidence": 1.0,
-      "link_confidence": 1.0
+      "link_confidence": 1.0,
+      "articulo_id_erp": "28475"
     },
     {
       "raw_description": "E 2 Mondial 50 25 50 0.300 15.000",
@@ -118,11 +124,12 @@
       "bunches": 2,
       "stems": 50,
       "line_total": 15.0,
-      "articulo_id": 35476,
+      "articulo_id": 35940,
       "articulo_name": "ROSA MONDIAL 50CM 25U FLORAROMA",
       "match_status": "ok",
       "match_confidence": 1.0,
-      "link_confidence": 1.0
+      "link_confidence": 1.0,
+      "articulo_id_erp": "25581"
     },
     {
       "raw_description": "1 4 - 4 QB EVA SUSANA S.O. E 1 Explorer 50 25 25 0.300 7.500",
@@ -134,11 +141,12 @@
       "bunches": 1,
       "stems": 25,
       "line_total": 7.5,
-      "articulo_id": 33758,
+      "articulo_id": 34119,
       "articulo_name": "ROSA EXPLORER 50CM 25U FLORAROMA",
       "match_status": "ok",
       "match_confidence": 1.0,
-      "link_confidence": 1.0
+      "link_confidence": 1.0,
+      "articulo_id_erp": "25657"
     },
     {
       "raw_description": "E 1 Momentum 50 25 25 0.280 7.000",
@@ -150,11 +158,12 @@
       "bunches": 1,
       "stems": 25,
       "line_total": 7.0,
-      "articulo_id": 35379,
+      "articulo_id": 35843,
       "articulo_name": "ROSA MOMENTUM 50CM 25U FLORAROMA",
       "match_status": "ok",
       "match_confidence": 1.0,
-      "link_confidence": 1.0
+      "link_confidence": 1.0,
+      "articulo_id_erp": "28482"
     },
     {
       "raw_description": "E 2 Mondial 50 25 50 0.300 15.000",
@@ -166,11 +175,12 @@
       "bunches": 2,
       "stems": 50,
       "line_total": 15.0,
-      "articulo_id": 35476,
+      "articulo_id": 35940,
       "articulo_name": "ROSA MONDIAL 50CM 25U FLORAROMA",
       "match_status": "ok",
       "match_confidence": 1.0,
-      "link_confidence": 1.0
+      "link_confidence": 1.0,
+      "articulo_id_erp": "25581"
     },
     {
       "raw_description": "1 5 - 5 QB T.MONTES S.O. E 3 Explorer 50 25 75 0.300 22.500",
@@ -182,11 +192,12 @@
       "bunches": 3,
       "stems": 75,
       "line_total": 22.5,
-      "articulo_id": 33758,
+      "articulo_id": 34119,
       "articulo_name": "ROSA EXPLORER 50CM 25U FLORAROMA",
       "match_status": "ok",
       "match_confidence": 1.0,
-      "link_confidence": 1.0
+      "link_confidence": 1.0,
+      "articulo_id_erp": "25657"
     },
     {
       "raw_description": "E 3 Mondial 50 25 75 0.300 22.500",
@@ -198,11 +209,12 @@
       "bunches": 3,
       "stems": 75,
       "line_total": 22.5,
-      "articulo_id": 35476,
+      "articulo_id": 35940,
       "articulo_name": "ROSA MONDIAL 50CM 25U FLORAROMA",
       "match_status": "ok",
       "match_confidence": 1.0,
-      "link_confidence": 1.0
+      "link_confidence": 1.0,
+      "articulo_id_erp": "25581"
     },
     {
       "raw_description": "1 6 - 6 QB GUILHERMINO S.O. E 2 Explorer 50 25 50 0.300 15.000",
@@ -214,11 +226,12 @@
       "bunches": 2,
       "stems": 50,
       "line_total": 15.0,
-      "articulo_id": 33758,
+      "articulo_id": 34119,
       "articulo_name": "ROSA EXPLORER 50CM 25U FLORAROMA",
       "match_status": "ok",
       "match_confidence": 1.0,
-      "link_confidence": 1.0
+      "link_confidence": 1.0,
+      "articulo_id_erp": "25657"
     },
     {
       "raw_description": "E 2 Frutteto 50 25 50 0.280 14.000",
@@ -230,11 +243,12 @@
       "bunches": 2,
       "stems": 50,
       "line_total": 14.0,
-      "articulo_id": 34082,
+      "articulo_id": 34500,
       "articulo_name": "ROSA FRUTTETO 50CM 25U FLORAROMA",
       "match_status": "ok",
       "match_confidence": 1.0,
-      "link_confidence": 1.0
+      "link_confidence": 1.0,
+      "articulo_id_erp": "28475"
     },
     {
       "raw_description": "E 2 Mondial 50 25 50 0.300 15.000",
@@ -246,11 +260,12 @@
       "bunches": 2,
       "stems": 50,
       "line_total": 15.0,
-      "articulo_id": 35476,
+      "articulo_id": 35940,
       "articulo_name": "ROSA MONDIAL 50CM 25U FLORAROMA",
       "match_status": "ok",
       "match_confidence": 1.0,
-      "link_confidence": 1.0
+      "link_confidence": 1.0,
+      "articulo_id_erp": "25581"
     },
     {
       "raw_description": "1 7 - 7 HB H CORTESIA S.O. E 1 Deep Purple 50 25 25 0.280 7.000",
@@ -262,11 +277,12 @@
       "bunches": 1,
       "stems": 25,
       "line_total": 7.0,
-      "articulo_id": 32617,
+      "articulo_id": 32971,
       "articulo_name": "ROSA DEEP PURPLE 50CM 25U FLORAROMA",
       "match_status": "ok",
       "match_confidence": 1.0,
-      "link_confidence": 1.0
+      "link_confidence": 1.0,
+      "articulo_id_erp": "28565"
     },
     {
       "raw_description": "E 3 Explorer 50 25 75 0.300 22.500",
@@ -278,11 +294,12 @@
       "bunches": 3,
       "stems": 75,
       "line_total": 22.5,
-      "articulo_id": 33758,
+      "articulo_id": 34119,
       "articulo_name": "ROSA EXPLORER 50CM 25U FLORAROMA",
       "match_status": "ok",
       "match_confidence": 1.0,
-      "link_confidence": 1.0
+      "link_confidence": 1.0,
+      "articulo_id_erp": "25657"
     },
     {
       "raw_description": "E 1 Momentum 50 25 25 0.280 7.000",
@@ -294,11 +311,12 @@
       "bunches": 1,
       "stems": 25,
       "line_total": 7.0,
-      "articulo_id": 35379,
+      "articulo_id": 35843,
       "articulo_name": "ROSA MOMENTUM 50CM 25U FLORAROMA",
       "match_status": "ok",
       "match_confidence": 1.0,
-      "link_confidence": 1.0
+      "link_confidence": 1.0,
+      "articulo_id_erp": "28482"
     },
     {
       "raw_description": "E 2 Mondial 50 25 50 0.300 15.000",
@@ -310,11 +328,12 @@
       "bunches": 2,
       "stems": 50,
       "line_total": 15.0,
-      "articulo_id": 35476,
+      "articulo_id": 35940,
       "articulo_name": "ROSA MONDIAL 50CM 25U FLORAROMA",
       "match_status": "ok",
       "match_confidence": 1.0,
-      "link_confidence": 1.0
+      "link_confidence": 1.0,
+      "articulo_id_erp": "25581"
     },
     {
       "raw_description": "E 1 Novia 50 25 25 0.280 7.000",
@@ -326,11 +345,12 @@
       "bunches": 1,
       "stems": 25,
       "line_total": 7.0,
-      "articulo_id": 35739,
+      "articulo_id": 36208,
       "articulo_name": "ROSA NOVIA 50CM 25U FLORAROMA",
       "match_status": "ok",
       "match_confidence": 1.0,
-      "link_confidence": 1.0
+      "link_confidence": 1.0,
+      "articulo_id_erp": "37589"
     },
     {
       "raw_description": "1 8 - 8 HB J.SANTOS S.O. E 12 Explorer 50 25 300 0.300 90.000",
@@ -342,11 +362,12 @@
       "bunches": 12,
       "stems": 300,
       "line_total": 90.0,
-      "articulo_id": 33758,
+      "articulo_id": 34119,
       "articulo_name": "ROSA EXPLORER 50CM 25U FLORAROMA",
       "match_status": "ok",
       "match_confidence": 1.0,
-      "link_confidence": 1.0
+      "link_confidence": 1.0,
+      "articulo_id_erp": "25657"
     },
     {
       "raw_description": "1 9 - 9 HB J.SANTOS S.O. E 8 Explorer 50 25 200 0.300 60.000",
@@ -358,11 +379,12 @@
       "bunches": 8,
       "stems": 200,
       "line_total": 60.0,
-      "articulo_id": 33758,
+      "articulo_id": 34119,
       "articulo_name": "ROSA EXPLORER 50CM 25U FLORAROMA",
       "match_status": "ok",
       "match_confidence": 1.0,
-      "link_confidence": 1.0
+      "link_confidence": 1.0,
+      "articulo_id_erp": "25657"
     },
     {
       "raw_description": "E 1 Frutteto 50 25 25 0.280 7.000",
@@ -374,11 +396,12 @@
       "bunches": 1,
       "stems": 25,
       "line_total": 7.0,
-      "articulo_id": 34082,
+      "articulo_id": 34500,
       "articulo_name": "ROSA FRUTTETO 50CM 25U FLORAROMA",
       "match_status": "ok",
       "match_confidence": 1.0,
-      "link_confidence": 1.0
+      "link_confidence": 1.0,
+      "articulo_id_erp": "28475"
     },
     {
       "raw_description": "E 3 Momentum 50 25 75 0.280 21.000",
@@ -390,11 +413,12 @@
       "bunches": 3,
       "stems": 75,
       "line_total": 21.0,
-      "articulo_id": 35379,
+      "articulo_id": 35843,
       "articulo_name": "ROSA MOMENTUM 50CM 25U FLORAROMA",
       "match_status": "ok",
       "match_confidence": 1.0,
-      "link_confidence": 1.0
+      "link_confidence": 1.0,
+      "articulo_id_erp": "28482"
     },
     {
       "raw_description": "1 10 - 10 HB J.SANTOS S.O. E 2 Frutteto 50 25 50 0.280 14.000",
@@ -406,11 +430,12 @@
       "bunches": 2,
       "stems": 50,
       "line_total": 14.0,
-      "articulo_id": 34082,
+      "articulo_id": 34500,
       "articulo_name": "ROSA FRUTTETO 50CM 25U FLORAROMA",
       "match_status": "ok",
       "match_confidence": 1.0,
-      "link_confidence": 1.0
+      "link_confidence": 1.0,
+      "articulo_id_erp": "28475"
     },
     {
       "raw_description": "E 10 Mondial 50 25 250 0.300 75.000",
@@ -422,11 +447,12 @@
       "bunches": 10,
       "stems": 250,
       "line_total": 75.0,
-      "articulo_id": 35476,
+      "articulo_id": 35940,
       "articulo_name": "ROSA MONDIAL 50CM 25U FLORAROMA",
       "match_status": "ok",
       "match_confidence": 1.0,
-      "link_confidence": 1.0
+      "link_confidence": 1.0,
+      "articulo_id_erp": "25581"
     },
     {
       "raw_description": "1 11 - 11 HB J.SANTOS S.O. E 4 Mondial 50 25 100 0.300 30.000",
@@ -438,11 +464,12 @@
       "bunches": 4,
       "stems": 100,
       "line_total": 30.0,
-      "articulo_id": 35476,
+      "articulo_id": 35940,
       "articulo_name": "ROSA MONDIAL 50CM 25U FLORAROMA",
       "match_status": "ok",
       "match_confidence": 1.0,
-      "link_confidence": 1.0
+      "link_confidence": 1.0,
+      "articulo_id_erp": "25581"
     },
     {
       "raw_description": "E 4 Pink Floyd 50 25 100 0.280 28.000",
@@ -454,11 +481,12 @@
       "bunches": 4,
       "stems": 100,
       "line_total": 28.0,
-      "articulo_id": 35989,
+      "articulo_id": 36478,
       "articulo_name": "ROSA PINK FLOYD 50CM 25U FLORAROMA",
       "match_status": "ok",
       "match_confidence": 1.0,
-      "link_confidence": 1.0
+      "link_confidence": 1.0,
+      "articulo_id_erp": "28485"
     },
     {
       "raw_description": "E 3 Silantoi 50 25 75 0.280 21.000",
@@ -470,11 +498,12 @@
       "bunches": 3,
       "stems": 75,
       "line_total": 21.0,
-      "articulo_id": 36529,
+      "articulo_id": 37061,
       "articulo_name": "ROSA SILANTOI 50CM 25U FLORAROMA",
       "match_status": "ok",
       "match_confidence": 1.0,
-      "link_confidence": 1.0
+      "link_confidence": 1.0,
+      "articulo_id_erp": "30196"
     },
     {
       "raw_description": "E 1 Tibet 50 25 25 0.280 7.000",
@@ -486,11 +515,12 @@
       "bunches": 1,
       "stems": 25,
       "line_total": 7.0,
-      "articulo_id": 37136,
+      "articulo_id": 37698,
       "articulo_name": "ROSA TIBET 50CM 25U FLORAROMA",
       "match_status": "ok",
       "match_confidence": 1.0,
-      "link_confidence": 1.0
+      "link_confidence": 1.0,
+      "articulo_id_erp": "35265"
     },
     {
       "raw_description": "1 12 - 12 HB LILIANA MARLENE S.O. E 3 Explorer 50 25 75 0.300 22.500",
@@ -502,11 +532,12 @@
       "bunches": 3,
       "stems": 75,
       "line_total": 22.5,
-      "articulo_id": 33758,
+      "articulo_id": 34119,
       "articulo_name": "ROSA EXPLORER 50CM 25U FLORAROMA",
       "match_status": "ok",
       "match_confidence": 1.0,
-      "link_confidence": 1.0
+      "link_confidence": 1.0,
+      "articulo_id_erp": "25657"
     },
     {
       "raw_description": "E 3 Mondial 50 25 75 0.300 22.500",
@@ -518,11 +549,12 @@
       "bunches": 3,
       "stems": 75,
       "line_total": 22.5,
-      "articulo_id": 35476,
+      "articulo_id": 35940,
       "articulo_name": "ROSA MONDIAL 50CM 25U FLORAROMA",
       "match_status": "ok",
       "match_confidence": 1.0,
-      "link_confidence": 1.0
+      "link_confidence": 1.0,
+      "articulo_id_erp": "25581"
     },
     {
       "raw_description": "E 2 Silantoi 50 25 50 0.280 14.000",
@@ -534,11 +566,12 @@
       "bunches": 2,
       "stems": 50,
       "line_total": 14.0,
-      "articulo_id": 36529,
+      "articulo_id": 37061,
       "articulo_name": "ROSA SILANTOI 50CM 25U FLORAROMA",
       "match_status": "ok",
       "match_confidence": 1.0,
-      "link_confidence": 1.0
+      "link_confidence": 1.0,
+      "articulo_id_erp": "30196"
     },
     {
       "raw_description": "E 2 Wasabi 50 25 50 0.280 14.000",
@@ -550,11 +583,12 @@
       "bunches": 2,
       "stems": 50,
       "line_total": 14.0,
-      "articulo_id": 37716,
+      "articulo_id": 38280,
       "articulo_name": "ROSA WASABI 50CM 25U FLORAROMA",
       "match_status": "ok",
       "match_confidence": 1.0,
-      "link_confidence": 1.0
+      "link_confidence": 1.0,
+      "articulo_id_erp": "28478"
     },
     {
       "raw_description": "1 13 - 13 HB DURO S.O. E 7 Explorer 50 25 175 0.300 52.500",
@@ -566,11 +600,12 @@
       "bunches": 7,
       "stems": 175,
       "line_total": 52.5,
-      "articulo_id": 33758,
+      "articulo_id": 34119,
       "articulo_name": "ROSA EXPLORER 50CM 25U FLORAROMA",
       "match_status": "ok",
       "match_confidence": 1.0,
-      "link_confidence": 1.0
+      "link_confidence": 1.0,
+      "articulo_id_erp": "25657"
     },
     {
       "raw_description": "E 1 Momentum 50 25 25 0.280 7.000",
@@ -582,11 +617,12 @@
       "bunches": 1,
       "stems": 25,
       "line_total": 7.0,
-      "articulo_id": 35379,
+      "articulo_id": 35843,
       "articulo_name": "ROSA MOMENTUM 50CM 25U FLORAROMA",
       "match_status": "ok",
       "match_confidence": 1.0,
-      "link_confidence": 1.0
+      "link_confidence": 1.0,
+      "articulo_id_erp": "28482"
     },
     {
       "raw_description": "E 4 Mondial 50 25 100 0.300 30.000",
@@ -598,11 +634,12 @@
       "bunches": 4,
       "stems": 100,
       "line_total": 30.0,
-      "articulo_id": 35476,
+      "articulo_id": 35940,
       "articulo_name": "ROSA MONDIAL 50CM 25U FLORAROMA",
       "match_status": "ok",
       "match_confidence": 1.0,
-      "link_confidence": 1.0
+      "link_confidence": 1.0,
+      "articulo_id_erp": "25581"
     },
     {
       "raw_description": "1 14 - 14 QB FATIMA PENAFIEL S.O. E 2 Explorer 50 25 50 0.300 15.000",
@@ -614,11 +651,12 @@
       "bunches": 2,
       "stems": 50,
       "line_total": 15.0,
-      "articulo_id": 33758,
+      "articulo_id": 34119,
       "articulo_name": "ROSA EXPLORER 50CM 25U FLORAROMA",
       "match_status": "ok",
       "match_confidence": 1.0,
-      "link_confidence": 1.0
+      "link_confidence": 1.0,
+      "articulo_id_erp": "25657"
     },
     {
       "raw_description": "E 2 Mondial 50 25 50 0.300 15.000",
@@ -630,11 +668,12 @@
       "bunches": 2,
       "stems": 50,
       "line_total": 15.0,
-      "articulo_id": 35476,
+      "articulo_id": 35940,
       "articulo_name": "ROSA MONDIAL 50CM 25U FLORAROMA",
       "match_status": "ok",
       "match_confidence": 1.0,
-      "link_confidence": 1.0
+      "link_confidence": 1.0,
+      "articulo_id_erp": "25581"
     },
     {
       "raw_description": "1 15 - 15 HB MARISA APARICIO S.O. E 4 Explorer 50 25 100 0.300 30.000",
@@ -646,11 +685,12 @@
       "bunches": 4,
       "stems": 100,
       "line_total": 30.0,
-      "articulo_id": 33758,
+      "articulo_id": 34119,
       "articulo_name": "ROSA EXPLORER 50CM 25U FLORAROMA",
       "match_status": "ok",
       "match_confidence": 1.0,
-      "link_confidence": 1.0
+      "link_confidence": 1.0,
+      "articulo_id_erp": "25657"
     },
     {
       "raw_description": "E 2 Frutteto 50 25 50 0.280 14.000",
@@ -662,11 +702,12 @@
       "bunches": 2,
       "stems": 50,
       "line_total": 14.0,
-      "articulo_id": 34082,
+      "articulo_id": 34500,
       "articulo_name": "ROSA FRUTTETO 50CM 25U FLORAROMA",
       "match_status": "ok",
       "match_confidence": 1.0,
-      "link_confidence": 1.0
+      "link_confidence": 1.0,
+      "articulo_id_erp": "28475"
     },
     {
       "raw_description": "E 2 Momentum 50 25 50 0.280 14.000",
@@ -678,11 +719,12 @@
       "bunches": 2,
       "stems": 50,
       "line_total": 14.0,
-      "articulo_id": 35379,
+      "articulo_id": 35843,
       "articulo_name": "ROSA MOMENTUM 50CM 25U FLORAROMA",
       "match_status": "ok",
       "match_confidence": 1.0,
-      "link_confidence": 1.0
+      "link_confidence": 1.0,
+      "articulo_id_erp": "28482"
     },
     {
       "raw_description": "E 4 Mondial 50 25 100 0.300 30.000",
@@ -694,11 +736,12 @@
       "bunches": 4,
       "stems": 100,
       "line_total": 30.0,
-      "articulo_id": 35476,
+      "articulo_id": 35940,
       "articulo_name": "ROSA MONDIAL 50CM 25U FLORAROMA",
       "match_status": "ok",
       "match_confidence": 1.0,
-      "link_confidence": 1.0
+      "link_confidence": 1.0,
+      "articulo_id_erp": "25581"
     },
     {
       "raw_description": "1 16 - 16 HB MARISA APARICIO S.O. E 4 Brigthon 40 25 100 0.240 24.000",
@@ -710,11 +753,12 @@
       "bunches": 4,
       "stems": 100,
       "line_total": 24.0,
-      "articulo_id": 31878,
+      "articulo_id": 32204,
       "articulo_name": "ROSA BRIGHTON 40CM 25U FLORAROMA",
       "match_status": "ok",
       "match_confidence": 0.888,
-      "link_confidence": 0.888
+      "link_confidence": 0.888,
+      "articulo_id_erp": "28489"
     },
     {
       "raw_description": "1 16 - 16 HB MARISA APARICIO S.O. E 6 Explorer 40 25 150 0.240 36.000",
@@ -726,11 +770,12 @@
       "bunches": 6,
       "stems": 150,
       "line_total": 36.0,
-      "articulo_id": 33732,
+      "articulo_id": 34089,
       "articulo_name": "ROSA EXPLORER 40CM 25U FLORAROMA",
       "match_status": "ok",
       "match_confidence": 1.0,
-      "link_confidence": 1.0
+      "link_confidence": 1.0,
+      "articulo_id_erp": "25656"
     },
     {
       "raw_description": "E 2 Silantoi 50 25 50 0.280 14.000",
@@ -742,11 +787,12 @@
       "bunches": 2,
       "stems": 50,
       "line_total": 14.0,
-      "articulo_id": 36529,
+      "articulo_id": 37061,
       "articulo_name": "ROSA SILANTOI 50CM 25U FLORAROMA",
       "match_status": "ok",
       "match_confidence": 1.0,
-      "link_confidence": 1.0
+      "link_confidence": 1.0,
+      "articulo_id_erp": "30196"
     },
     {
       "raw_description": "1 17 - 17 HB MARISA APARICIO S.O. E 2 Explorer 40 25 50 0.240 12.000",
@@ -758,11 +804,12 @@
       "bunches": 2,
       "stems": 50,
       "line_total": 12.0,
-      "articulo_id": 33732,
+      "articulo_id": 34089,
       "articulo_name": "ROSA EXPLORER 40CM 25U FLORAROMA",
       "match_status": "ok",
       "match_confidence": 1.0,
-      "link_confidence": 1.0
+      "link_confidence": 1.0,
+      "articulo_id_erp": "25656"
     },
     {
       "raw_description": "E 4 Frutteto 40 25 100 0.240 24.000",
@@ -774,11 +821,12 @@
       "bunches": 4,
       "stems": 100,
       "line_total": 24.0,
-      "articulo_id": 34059,
+      "articulo_id": 34477,
       "articulo_name": "ROSA FRUTTETO 40CM 25U FLORAROMA",
       "match_status": "ok",
       "match_confidence": 1.0,
-      "link_confidence": 1.0
+      "link_confidence": 1.0,
+      "articulo_id_erp": "28490"
     },
     {
       "raw_description": "E 6 Mondial 40 25 150 0.240 36.000",
@@ -790,11 +838,12 @@
       "bunches": 6,
       "stems": 150,
       "line_total": 36.0,
-      "articulo_id": 35437,
+      "articulo_id": 35901,
       "articulo_name": "ROSA MONDIAL 40CM 25U FLORAROMA",
       "match_status": "ok",
       "match_confidence": 1.0,
-      "link_confidence": 1.0
+      "link_confidence": 1.0,
+      "articulo_id_erp": "25580"
     },
     {
       "raw_description": "1 18 - 18 QB MARISA APARICIO S.O. E 2 Mondial 40 25 50 0.240 12.000",
@@ -806,11 +855,12 @@
       "bunches": 2,
       "stems": 50,
       "line_total": 12.0,
-      "articulo_id": 35437,
+      "articulo_id": 35901,
       "articulo_name": "ROSA MONDIAL 40CM 25U FLORAROMA",
       "match_status": "ok",
       "match_confidence": 1.0,
-      "link_confidence": 1.0
+      "link_confidence": 1.0,
+      "articulo_id_erp": "25580"
     },
     {
       "raw_description": "E 4 Silantoi 40 25 100 0.240 24.000",
@@ -822,11 +872,12 @@
       "bunches": 4,
       "stems": 100,
       "line_total": 24.0,
-      "articulo_id": 36510,
+      "articulo_id": 37042,
       "articulo_name": "ROSA SILANTOI 40CM 25U FLORAROMA",
       "match_status": "ok",
       "match_confidence": 1.0,
-      "link_confidence": 1.0
+      "link_confidence": 1.0,
+      "articulo_id_erp": "28481"
     },
     {
       "raw_description": "1 19 - 19 QB MIMOS MOLHOS S.O. E 1 Explorer 50 25 25 0.300 7.500",
@@ -838,11 +889,12 @@
       "bunches": 1,
       "stems": 25,
       "line_total": 7.5,
-      "articulo_id": 33758,
+      "articulo_id": 34119,
       "articulo_name": "ROSA EXPLORER 50CM 25U FLORAROMA",
       "match_status": "ok",
       "match_confidence": 1.0,
-      "link_confidence": 1.0
+      "link_confidence": 1.0,
+      "articulo_id_erp": "25657"
     },
     {
       "raw_description": "E 1 Momentum 50 25 25 0.280 7.000",
@@ -854,11 +906,12 @@
       "bunches": 1,
       "stems": 25,
       "line_total": 7.0,
-      "articulo_id": 35379,
+      "articulo_id": 35843,
       "articulo_name": "ROSA MOMENTUM 50CM 25U FLORAROMA",
       "match_status": "ok",
       "match_confidence": 1.0,
-      "link_confidence": 1.0
+      "link_confidence": 1.0,
+      "articulo_id_erp": "28482"
     },
     {
       "raw_description": "E 1 Mondial 50 25 25 0.300 7.500",
@@ -870,11 +923,12 @@
       "bunches": 1,
       "stems": 25,
       "line_total": 7.5,
-      "articulo_id": 35476,
+      "articulo_id": 35940,
       "articulo_name": "ROSA MONDIAL 50CM 25U FLORAROMA",
       "match_status": "ok",
       "match_confidence": 1.0,
-      "link_confidence": 1.0
+      "link_confidence": 1.0,
+      "articulo_id_erp": "25581"
     },
     {
       "raw_description": "E 1 Silantoi 50 25 25 0.280 7.000",
@@ -886,11 +940,12 @@
       "bunches": 1,
       "stems": 25,
       "line_total": 7.0,
-      "articulo_id": 36529,
+      "articulo_id": 37061,
       "articulo_name": "ROSA SILANTOI 50CM 25U FLORAROMA",
       "match_status": "ok",
       "match_confidence": 1.0,
-      "link_confidence": 1.0
+      "link_confidence": 1.0,
+      "articulo_id_erp": "30196"
     },
     {
       "raw_description": "2 20 - 21 HB GAIA S.O. E 24 Mondial 50 25 600 0.300 180.000",
@@ -902,11 +957,12 @@
       "bunches": 24,
       "stems": 600,
       "line_total": 180.0,
-      "articulo_id": 35476,
+      "articulo_id": 35940,
       "articulo_name": "ROSA MONDIAL 50CM 25U FLORAROMA",
       "match_status": "ok",
       "match_confidence": 1.0,
-      "link_confidence": 1.0
+      "link_confidence": 1.0,
+      "articulo_id_erp": "25581"
     },
     {
       "raw_description": "1 22 - 22 HB SUSANA FELGUEIRAS S.O.E 6 Explorer 50 25 150 0.300 45.000",
@@ -918,11 +974,12 @@
       "bunches": 6,
       "stems": 150,
       "line_total": 45.0,
-      "articulo_id": 33758,
+      "articulo_id": 34119,
       "articulo_name": "ROSA EXPLORER 50CM 25U FLORAROMA",
       "match_status": "ok",
       "match_confidence": 1.0,
-      "link_confidence": 1.0
+      "link_confidence": 1.0,
+      "articulo_id_erp": "25657"
     },
     {
       "raw_description": "E 2 Frutteto 50 25 50 0.280 14.000",
@@ -934,11 +991,12 @@
       "bunches": 2,
       "stems": 50,
       "line_total": 14.0,
-      "articulo_id": 34082,
+      "articulo_id": 34500,
       "articulo_name": "ROSA FRUTTETO 50CM 25U FLORAROMA",
       "match_status": "ok",
       "match_confidence": 1.0,
-      "link_confidence": 1.0
+      "link_confidence": 1.0,
+      "articulo_id_erp": "28475"
     },
     {
       "raw_description": "E 2 Mondial 50 25 50 0.300 15.000",
@@ -950,11 +1008,12 @@
       "bunches": 2,
       "stems": 50,
       "line_total": 15.0,
-      "articulo_id": 35476,
+      "articulo_id": 35940,
       "articulo_name": "ROSA MONDIAL 50CM 25U FLORAROMA",
       "match_status": "ok",
       "match_confidence": 1.0,
-      "link_confidence": 1.0
+      "link_confidence": 1.0,
+      "articulo_id_erp": "25581"
     },
     {
       "raw_description": "E 2 Wasabi 50 25 50 0.280 14.000",
@@ -966,11 +1025,12 @@
       "bunches": 2,
       "stems": 50,
       "line_total": 14.0,
-      "articulo_id": 37716,
+      "articulo_id": 38280,
       "articulo_name": "ROSA WASABI 50CM 25U FLORAROMA",
       "match_status": "ok",
       "match_confidence": 1.0,
-      "link_confidence": 1.0
+      "link_confidence": 1.0,
+      "articulo_id_erp": "28478"
     },
     {
       "raw_description": "1 23 - 23 QB SUSANA FELGUEIRAS S.O.E 4 Mondial 50 25 100 0.300 30.000",
@@ -982,11 +1042,12 @@
       "bunches": 4,
       "stems": 100,
       "line_total": 30.0,
-      "articulo_id": 35476,
+      "articulo_id": 35940,
       "articulo_name": "ROSA MONDIAL 50CM 25U FLORAROMA",
       "match_status": "ok",
       "match_confidence": 1.0,
-      "link_confidence": 1.0
+      "link_confidence": 1.0,
+      "articulo_id_erp": "25581"
     },
     {
       "raw_description": "E 2 Silantoi 50 25 50 0.280 14.000",
@@ -998,11 +1059,12 @@
       "bunches": 2,
       "stems": 50,
       "line_total": 14.0,
-      "articulo_id": 36529,
+      "articulo_id": 37061,
       "articulo_name": "ROSA SILANTOI 50CM 25U FLORAROMA",
       "match_status": "ok",
       "match_confidence": 1.0,
-      "link_confidence": 1.0
+      "link_confidence": 1.0,
+      "articulo_id_erp": "30196"
     },
     {
       "raw_description": "1 24 - 24 HB TERESA OLINDA S.O. E 4 Explorer 50 25 100 0.300 30.000",
@@ -1014,11 +1076,12 @@
       "bunches": 4,
       "stems": 100,
       "line_total": 30.0,
-      "articulo_id": 33758,
+      "articulo_id": 34119,
       "articulo_name": "ROSA EXPLORER 50CM 25U FLORAROMA",
       "match_status": "ok",
       "match_confidence": 1.0,
-      "link_confidence": 1.0
+      "link_confidence": 1.0,
+      "articulo_id_erp": "25657"
     },
     {
       "raw_description": "E 2 Frutteto 50 25 50 0.280 14.000",
@@ -1030,11 +1093,12 @@
       "bunches": 2,
       "stems": 50,
       "line_total": 14.0,
-      "articulo_id": 34082,
+      "articulo_id": 34500,
       "articulo_name": "ROSA FRUTTETO 50CM 25U FLORAROMA",
       "match_status": "ok",
       "match_confidence": 1.0,
-      "link_confidence": 1.0
+      "link_confidence": 1.0,
+      "articulo_id_erp": "28475"
     },
     {
       "raw_description": "E 1 Momentum 50 25 25 0.280 7.000",
@@ -1046,11 +1110,12 @@
       "bunches": 1,
       "stems": 25,
       "line_total": 7.0,
-      "articulo_id": 35379,
+      "articulo_id": 35843,
       "articulo_name": "ROSA MOMENTUM 50CM 25U FLORAROMA",
       "match_status": "ok",
       "match_confidence": 1.0,
-      "link_confidence": 1.0
+      "link_confidence": 1.0,
+      "articulo_id_erp": "28482"
     },
     {
       "raw_description": "E 2 Mondial 50 25 50 0.300 15.000",
@@ -1062,11 +1127,12 @@
       "bunches": 2,
       "stems": 50,
       "line_total": 15.0,
-      "articulo_id": 35476,
+      "articulo_id": 35940,
       "articulo_name": "ROSA MONDIAL 50CM 25U FLORAROMA",
       "match_status": "ok",
       "match_confidence": 1.0,
-      "link_confidence": 1.0
+      "link_confidence": 1.0,
+      "articulo_id_erp": "25581"
     },
     {
       "raw_description": "E 2 Vendela 50 25 50 0.280 14.000",
@@ -1078,11 +1144,12 @@
       "bunches": 2,
       "stems": 50,
       "line_total": 14.0,
-      "articulo_id": 37563,
+      "articulo_id": 38120,
       "articulo_name": "ROSA VENDELA 50CM 25U FLORAROMA",
       "match_status": "ok",
       "match_confidence": 1.0,
-      "link_confidence": 1.0
+      "link_confidence": 1.0,
+      "articulo_id_erp": "28484"
     },
     {
       "raw_description": "1 25 - 25 HB TERRAREA S.O. E 3 Explorer 50 25 75 0.300 22.500",
@@ -1094,11 +1161,12 @@
       "bunches": 3,
       "stems": 75,
       "line_total": 22.5,
-      "articulo_id": 33758,
+      "articulo_id": 34119,
       "articulo_name": "ROSA EXPLORER 50CM 25U FLORAROMA",
       "match_status": "ok",
       "match_confidence": 1.0,
-      "link_confidence": 1.0
+      "link_confidence": 1.0,
+      "articulo_id_erp": "25657"
     },
     {
       "raw_description": "E 2 Frutteto 50 25 50 0.280 14.000",
@@ -1110,11 +1178,12 @@
       "bunches": 2,
       "stems": 50,
       "line_total": 14.0,
-      "articulo_id": 34082,
+      "articulo_id": 34500,
       "articulo_name": "ROSA FRUTTETO 50CM 25U FLORAROMA",
       "match_status": "ok",
       "match_confidence": 1.0,
-      "link_confidence": 1.0
+      "link_confidence": 1.0,
+      "articulo_id_erp": "28475"
     },
     {
       "raw_description": "E 2 Kahala 50 25 50 0.280 14.000",
@@ -1126,11 +1195,12 @@
       "bunches": 2,
       "stems": 50,
       "line_total": 14.0,
-      "articulo_id": 34707,
+      "articulo_id": 35138,
       "articulo_name": "ROSA KAHALA 50CM 25U FLORAROMA",
       "match_status": "ok",
       "match_confidence": 1.0,
-      "link_confidence": 1.0
+      "link_confidence": 1.0,
+      "articulo_id_erp": "28564"
     },
     {
       "raw_description": "E 3 Mondial 50 25 75 0.300 22.500",
@@ -1142,11 +1212,12 @@
       "bunches": 3,
       "stems": 75,
       "line_total": 22.5,
-      "articulo_id": 35476,
+      "articulo_id": 35940,
       "articulo_name": "ROSA MONDIAL 50CM 25U FLORAROMA",
       "match_status": "ok",
       "match_confidence": 1.0,
-      "link_confidence": 1.0
+      "link_confidence": 1.0,
+      "articulo_id_erp": "25581"
     },
     {
       "raw_description": "E 2 Shimmer 50 25 50 0.280 14.000",
@@ -1158,11 +1229,12 @@
       "bunches": 2,
       "stems": 50,
       "line_total": 14.0,
-      "articulo_id": 36462,
+      "articulo_id": 36989,
       "articulo_name": "ROSA SHIMMER 50CM 25U FLORAROMA",
       "match_status": "ok",
       "match_confidence": 1.0,
-      "link_confidence": 1.0
+      "link_confidence": 1.0,
+      "articulo_id_erp": "28476"
     }
   ]
 }

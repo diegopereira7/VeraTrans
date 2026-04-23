@@ -21,11 +21,12 @@
       "bunches": 1,
       "stems": 25,
       "line_total": 5.5,
-      "articulo_id": 32779,
+      "articulo_id": 33138,
       "articulo_name": "ROSA EC BRIGHTON 40CM 25U",
       "match_status": "ok",
       "match_confidence": 1.0,
-      "link_confidence": 1.0
+      "link_confidence": 1.0,
+      "articulo_id_erp": "13558"
     },
     {
       "raw_description": "H DANS Frutteto 8 25 40 200 0,220 44,000",
@@ -37,11 +38,12 @@
       "bunches": 8,
       "stems": 200,
       "line_total": 44.0,
-      "articulo_id": 32999,
+      "articulo_id": 33353,
       "articulo_name": "ROSA EC FRUTTETO 40CM 25U",
       "match_status": "ok",
       "match_confidence": 1.0,
-      "link_confidence": 1.0
+      "link_confidence": 1.0,
+      "articulo_id_erp": "13565"
     },
     {
       "raw_description": "H DANS Momentum 2 25 40 50 0,220 11,000",
@@ -53,11 +55,12 @@
       "bunches": 2,
       "stems": 50,
       "line_total": 11.0,
-      "articulo_id": 33222,
+      "articulo_id": 33571,
       "articulo_name": "ROSA EC MOMENTUM 40CM 25U",
       "match_status": "ok",
       "match_confidence": 1.0,
-      "link_confidence": 1.0
+      "link_confidence": 1.0,
+      "articulo_id_erp": "15803"
     },
     {
       "raw_description": "H DANS Rise & Shine 1 25 40 25 0,220 5,500",
@@ -69,11 +72,12 @@
       "bunches": 1,
       "stems": 25,
       "line_total": 5.5,
-      "articulo_id": 33402,
+      "articulo_id": 33751,
       "articulo_name": "ROSA EC RISE & SHINE 40CM 25U",
       "match_status": "ok",
       "match_confidence": 1.0,
-      "link_confidence": 1.0
+      "link_confidence": 1.0,
+      "articulo_id_erp": "16851"
     },
     {
       "raw_description": "H DANS Super Sun 2 25 40 50 0,220 11,000",
@@ -85,11 +89,12 @@
       "bunches": 2,
       "stems": 50,
       "line_total": 11.0,
-      "articulo_id": 33488,
+      "articulo_id": 33837,
       "articulo_name": "ROSA EC SUPER SUN 40CM 25U",
       "match_status": "ok",
       "match_confidence": 1.0,
-      "link_confidence": 1.0
+      "link_confidence": 1.0,
+      "articulo_id_erp": "16901"
     },
     {
       "raw_description": "2 H FVIDA Brighton 4 25 50 100 0,300 30,000",
@@ -101,11 +106,12 @@
       "bunches": 4,
       "stems": 100,
       "line_total": 30.0,
-      "articulo_id": 32780,
+      "articulo_id": 33139,
       "articulo_name": "ROSA EC BRIGHTON 50CM 25U",
       "match_status": "ok",
       "match_confidence": 1.0,
-      "link_confidence": 1.0
+      "link_confidence": 1.0,
+      "articulo_id_erp": "11811"
     },
     {
       "raw_description": "H FVIDA Frutteto 4 25 50 100 0,300 30,000",
@@ -117,11 +123,12 @@
       "bunches": 4,
       "stems": 100,
       "line_total": 30.0,
-      "articulo_id": 33000,
+      "articulo_id": 33354,
       "articulo_name": "ROSA EC FRUTTETO 50CM 25U",
       "match_status": "ok",
       "match_confidence": 1.0,
-      "link_confidence": 1.0
+      "link_confidence": 1.0,
+      "articulo_id_erp": "11808"
     },
     {
       "raw_description": "H FVIDA Iguazu 4 25 50 100 0,300 30,000",
@@ -133,11 +140,12 @@
       "bunches": 4,
       "stems": 100,
       "line_total": 30.0,
-      "articulo_id": 33101,
+      "articulo_id": 33454,
       "articulo_name": "ROSA EC IGUAZU BICOLOR 50CM 25U",
       "match_status": "ambiguous_match",
       "match_confidence": 0.65,
-      "link_confidence": 0.65
+      "link_confidence": 0.65,
+      "articulo_id_erp": "13692"
     },
     {
       "raw_description": "3 H Mondial 14 25 60 350 0,300 105,000",
@@ -149,11 +157,12 @@
       "bunches": 14,
       "stems": 350,
       "line_total": 105.0,
-      "articulo_id": 33232,
+      "articulo_id": 33581,
       "articulo_name": "ROSA EC MONDIAL 60CM 25U",
       "match_status": "ok",
       "match_confidence": 1.0,
-      "link_confidence": 1.0
+      "link_confidence": 1.0,
+      "articulo_id_erp": "712"
     },
     {
       "raw_description": "4 H Mondial 14 25 60 350 0,300 105,000",
@@ -165,11 +174,12 @@
       "bunches": 14,
       "stems": 350,
       "line_total": 105.0,
-      "articulo_id": 33232,
+      "articulo_id": 33581,
       "articulo_name": "ROSA EC MONDIAL 60CM 25U",
       "match_status": "ok",
       "match_confidence": 1.0,
-      "link_confidence": 1.0
+      "link_confidence": 1.0,
+      "articulo_id_erp": "712"
     },
     {
       "raw_description": "5 H Mondial 14 25 60 350 0,350 122,500",
@@ -181,11 +191,12 @@
       "bunches": 14,
       "stems": 350,
       "line_total": 122.5,
-      "articulo_id": 33232,
+      "articulo_id": 33581,
       "articulo_name": "ROSA EC MONDIAL 60CM 25U",
       "match_status": "ok",
       "match_confidence": 1.0,
-      "link_confidence": 1.0
+      "link_confidence": 1.0,
+      "articulo_id_erp": "712"
     },
     {
       "raw_description": "6 H Mondial 14 25 60 350 0,350 122,500",
@@ -197,11 +208,12 @@
       "bunches": 14,
       "stems": 350,
       "line_total": 122.5,
-      "articulo_id": 33232,
+      "articulo_id": 33581,
       "articulo_name": "ROSA EC MONDIAL 60CM 25U",
       "match_status": "ok",
       "match_confidence": 1.0,
-      "link_confidence": 1.0
+      "link_confidence": 1.0,
+      "articulo_id_erp": "712"
     },
     {
       "raw_description": "7 H Explorer 14 25 60 350 0,350 122,500",
@@ -213,11 +225,12 @@
       "bunches": 14,
       "stems": 350,
       "line_total": 122.5,
-      "articulo_id": 32952,
+      "articulo_id": 33305,
       "articulo_name": "ROSA EC EXPLORER 60CM 25U",
       "match_status": "ok",
       "match_confidence": 1.0,
-      "link_confidence": 1.0
+      "link_confidence": 1.0,
+      "articulo_id_erp": "729"
     },
     {
       "raw_description": "8 H Explorer 14 25 60 350 0,350 122,500",
@@ -229,11 +242,12 @@
       "bunches": 14,
       "stems": 350,
       "line_total": 122.5,
-      "articulo_id": 32952,
+      "articulo_id": 33305,
       "articulo_name": "ROSA EC EXPLORER 60CM 25U",
       "match_status": "ok",
       "match_confidence": 1.0,
-      "link_confidence": 1.0
+      "link_confidence": 1.0,
+      "articulo_id_erp": "729"
     }
   ]
 }

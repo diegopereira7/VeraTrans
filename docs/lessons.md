@@ -199,3 +199,43 @@ transversales:
   externa (sinónimo, histórico, prior) debe tener un contrapeso
   contextual cuando compite con una señal estructural fuerte** como la
   marca propia.
+- **`variety_match` parcial por tokens de familia es ruido**: cuando
+  la variety incluye palabras que aparecen en TODOS los candidatos del
+  mismo pool (PANICULATA/XLENCE/TEÑIDA para gypsophila teñida, ROSA/EC
+  para rosas EC), el +0.30 de `variety_match` dispara universalmente
+  y el único discriminante real es el token del color. `variety_full`
+  (todos los tokens cubiertos) debe pesar lo suficiente (+0.10) para
+  superar el +0.09 del fuzzy prior que los rivales inferiores
+  acumulan. Sesión 10s.
+- **Modificadores de color (OSCURO/CLARO/PASTEL) cambian el color,
+  no lo matizan**: si la variety pide "AZUL" pero el candidato es
+  "AZUL CLARO", son artículos distintos — penalty
+  `color_modifier_extra` (−0.12) cuando el nombre del artículo
+  contiene un modificador que la variety no incluye. Sesión 10s.
+- **Tiebreak cualitativo simétrico**: cuando dos candidatos empatan
+  dentro del margen, el tiebreak debe mirar las dos direcciones —
+  si top2 tiene la ventaja crítica (variety_full, size_exact, o
+  ausencia de color_modifier_extra) que top1 no, swap. No basta con
+  mirar si top1 tiene la ventaja: el fuzzy prior puede poner en top1
+  un candidato inferior. Sesión 10s.
+
+## Catálogo / BD
+
+- **Nombres truncados por export phpMyAdmin**: 68 artículos Florsani
+  tenían `nombre = 'PANICULATA XLENCE TE'` (se perdió la Ñ de
+  "TEÑIDA" en el volcado histórico). Los campos estructurados
+  (`color`, `marca`, `variedad`, `tamano`, `paquete`) estaban
+  intactos. Fix: `ArticulosLoader._reconstruct_truncated_name`
+  detecta el truncado y reconstruye `{familia} TEÑIDA {color}
+  {tamano} {paquete}U {marca}`. Lección transferible: **cuando la BD
+  tiene múltiples fuentes de verdad para un atributo (campo canónico
+  vs campo estructurado), prefiere la fuente más rica cuando la
+  canónica falla**. La heurística "si es truncado, reconstruir" es
+  aditiva y no afecta artículos con nombre completo.
+- **Traducción EN→ES en parsers cuando el catálogo es ES**: parsers
+  de proveedores que emiten factura en inglés (Florsani, Latin,
+  partes de Auto_Cean) deben traducir colores/grados al español del
+  catálogo en el propio parser. Pretender que el matcher haga
+  fuzzy-translate EN↔ES es frágil: "LAVANDER" ↔ "LAVANDA" ↔
+  "LAVANDA OSCURO" son tres artículos distintos y la distancia
+  léxica no captura la semántica.

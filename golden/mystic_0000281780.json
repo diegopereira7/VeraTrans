@@ -22,11 +22,12 @@
       "bunches": 4,
       "stems": 100,
       "line_total": 30.0,
-      "articulo_id": 32780,
+      "articulo_id": 33139,
       "articulo_name": "ROSA EC BRIGHTON 50CM 25U",
       "match_status": "ok",
       "match_confidence": 1.0,
-      "link_confidence": 1.0
+      "link_confidence": 1.0,
+      "articulo_id_erp": "11811"
     },
     {
       "raw_description": "H R14 FRUTTETO 2 25 50 50 0,300 15,000",
@@ -38,11 +39,12 @@
       "bunches": 2,
       "stems": 50,
       "line_total": 15.0,
-      "articulo_id": 33000,
+      "articulo_id": 33354,
       "articulo_name": "ROSA EC FRUTTETO 50CM 25U",
       "match_status": "ok",
       "match_confidence": 1.0,
-      "link_confidence": 1.0
+      "link_confidence": 1.0,
+      "articulo_id_erp": "11808"
     },
     {
       "raw_description": "H R14 PINK MONDIAL 2 25 50 50 0,300 15,000",
@@ -54,11 +56,12 @@
       "bunches": 2,
       "stems": 50,
       "line_total": 15.0,
-      "articulo_id": 33338,
+      "articulo_id": 33687,
       "articulo_name": "ROSA EC PINK MONDIAL 50CM 25U",
       "match_status": "ok",
       "match_confidence": 1.0,
-      "link_confidence": 1.0
+      "link_confidence": 1.0,
+      "articulo_id_erp": "13587"
     },
     {
       "raw_description": "H R14 SWEETNESS 4 25 50 100 0,300 30,000",
@@ -70,11 +73,12 @@
       "bunches": 4,
       "stems": 100,
       "line_total": 30.0,
-      "articulo_id": 33501,
+      "articulo_id": 33850,
       "articulo_name": "ROSA EC SWEETNESS BICOLOR 50CM 25U",
       "match_status": "ambiguous_match",
       "match_confidence": 0.8,
-      "link_confidence": 0.8
+      "link_confidence": 0.8,
+      "articulo_id_erp": "13579"
     },
     {
       "raw_description": "1 H R19 SORIALES BRIGHTON 1 25 50 25 0,300 7,500",
@@ -86,11 +90,12 @@
       "bunches": 1,
       "stems": 25,
       "line_total": 7.5,
-      "articulo_id": 32780,
+      "articulo_id": 33139,
       "articulo_name": "ROSA EC BRIGHTON 50CM 25U",
       "match_status": "ok",
       "match_confidence": 1.0,
-      "link_confidence": 1.0
+      "link_confidence": 1.0,
+      "articulo_id_erp": "11811"
     },
     {
       "raw_description": "H R19 SORIALES DEEP PURPLE 1 25 50 25 0,300 7,500",
@@ -102,11 +107,12 @@
       "bunches": 1,
       "stems": 25,
       "line_total": 7.5,
-      "articulo_id": 32915,
+      "articulo_id": 33267,
       "articulo_name": "ROSA EC DEEP PURPLE  50CM 25U",
       "match_status": "ok",
       "match_confidence": 1.0,
-      "link_confidence": 1.0
+      "link_confidence": 1.0,
+      "articulo_id_erp": "13550"
     },
     {
       "raw_description": "H R19 SORIALES EXPLORER 3 25 50 75 0,300 22,500",
@@ -118,11 +124,12 @@
       "bunches": 3,
       "stems": 75,
       "line_total": 22.5,
-      "articulo_id": 32950,
+      "articulo_id": 33303,
       "articulo_name": "ROSA EC EXPLORER 50CM 25U",
       "match_status": "ok",
       "match_confidence": 1.0,
-      "link_confidence": 1.0
+      "link_confidence": 1.0,
+      "articulo_id_erp": "727"
     },
     {
       "raw_description": "H R19 SORIALES FRUTTETO 1 25 50 25 0,300 7,500",
@@ -134,11 +141,12 @@
       "bunches": 1,
       "stems": 25,
       "line_total": 7.5,
-      "articulo_id": 33000,
+      "articulo_id": 33354,
       "articulo_name": "ROSA EC FRUTTETO 50CM 25U",
       "match_status": "ok",
       "match_confidence": 1.0,
-      "link_confidence": 1.0
+      "link_confidence": 1.0,
+      "articulo_id_erp": "11808"
     },
     {
       "raw_description": "H R19 SORIALES GOTCHA 1 25 50 25 0,300 7,500",
@@ -150,11 +158,12 @@
       "bunches": 1,
       "stems": 25,
       "line_total": 7.5,
-      "articulo_id": 33026,
+      "articulo_id": 33380,
       "articulo_name": "ROSA EC GOTCHA 50CM 25U",
       "match_status": "ok",
       "match_confidence": 1.0,
-      "link_confidence": 1.0
+      "link_confidence": 1.0,
+      "articulo_id_erp": "18935"
     },
     {
       "raw_description": "H R19 SORIALES HIGH & MAGIC 1 25 50 25 0,300 7,500",
@@ -166,11 +175,12 @@
       "bunches": 1,
       "stems": 25,
       "line_total": 7.5,
-      "articulo_id": 33074,
+      "articulo_id": 33427,
       "articulo_name": "ROSA EC HIGH MAGIC BICOLOR 50CM 25U",
       "match_status": "ambiguous_match",
       "match_confidence": 0.688,
-      "link_confidence": 0.688
+      "link_confidence": 0.688,
+      "articulo_id_erp": "13571"
     },
     {
       "raw_description": "H R19 SORIALES LIMONADA 1 25 50 25 0,300 7,500",
@@ -182,11 +192,12 @@
       "bunches": 1,
       "stems": 25,
       "line_total": 7.5,
-      "articulo_id": 33133,
+      "articulo_id": 33484,
       "articulo_name": "ROSA EC LEMONADE 50CM 25U",
       "match_status": "ambiguous_match",
       "match_confidence": 0.582,
-      "link_confidence": 0.582
+      "link_confidence": 0.582,
+      "articulo_id_erp": "13563"
     },
     {
       "raw_description": "H R19 SORIALES MONDIAL 3 25 50 75 0,300 22,500",
@@ -198,11 +209,12 @@
       "bunches": 3,
       "stems": 75,
       "line_total": 22.5,
-      "articulo_id": 33230,
+      "articulo_id": 33579,
       "articulo_name": "ROSA EC MONDIAL 50CM 25U",
       "match_status": "ok",
       "match_confidence": 1.0,
-      "link_confidence": 1.0
+      "link_confidence": 1.0,
+      "articulo_id_erp": "710"
     },
     {
       "raw_description": "1 H R19 IGLESIAS EXPLORER 3 25 50 75 0,300 22,500",
@@ -214,11 +226,12 @@
       "bunches": 3,
       "stems": 75,
       "line_total": 22.5,
-      "articulo_id": 32950,
+      "articulo_id": 33303,
       "articulo_name": "ROSA EC EXPLORER 50CM 25U",
       "match_status": "ok",
       "match_confidence": 1.0,
-      "link_confidence": 1.0
+      "link_confidence": 1.0,
+      "articulo_id_erp": "727"
     },
     {
       "raw_description": "H R19 IGLESIAS FRUTTETO 1 25 50 25 0,300 7,500",
@@ -230,11 +243,12 @@
       "bunches": 1,
       "stems": 25,
       "line_total": 7.5,
-      "articulo_id": 33000,
+      "articulo_id": 33354,
       "articulo_name": "ROSA EC FRUTTETO 50CM 25U",
       "match_status": "ok",
       "match_confidence": 1.0,
-      "link_confidence": 1.0
+      "link_confidence": 1.0,
+      "articulo_id_erp": "11808"
     },
     {
       "raw_description": "H R19 IGLESIAS GOLDFINCH 1 25 50 25 0,300 7,500",
@@ -246,11 +260,12 @@
       "bunches": 1,
       "stems": 25,
       "line_total": 7.5,
-      "articulo_id": 33020,
+      "articulo_id": 33374,
       "articulo_name": "ROSA EC GOLDFINCH 50CM 25U",
       "match_status": "ok",
       "match_confidence": 1.0,
-      "link_confidence": 1.0
+      "link_confidence": 1.0,
+      "articulo_id_erp": "18133"
     },
     {
       "raw_description": "H R19 IGLESIAS GOTCHA 1 25 50 25 0,300 7,500",
@@ -262,11 +277,12 @@
       "bunches": 1,
       "stems": 25,
       "line_total": 7.5,
-      "articulo_id": 33026,
+      "articulo_id": 33380,
       "articulo_name": "ROSA EC GOTCHA 50CM 25U",
       "match_status": "ok",
       "match_confidence": 1.0,
-      "link_confidence": 1.0
+      "link_confidence": 1.0,
+      "articulo_id_erp": "18935"
     },
     {
       "raw_description": "H R19 IGLESIAS GREY KNIGHTS 1 25 50 25 0,300 7,500",
@@ -278,11 +294,12 @@
       "bunches": 1,
       "stems": 25,
       "line_total": 7.5,
-      "articulo_id": 33037,
+      "articulo_id": 33391,
       "articulo_name": "ROSA EC GREY KNIGHTS 50CM 25U",
       "match_status": "ok",
       "match_confidence": 1.0,
-      "link_confidence": 1.0
+      "link_confidence": 1.0,
+      "articulo_id_erp": "17528"
     },
     {
       "raw_description": "H R19 IGLESIAS HIGH & MAGIC 1 25 50 25 0,300 7,500",
@@ -294,11 +311,12 @@
       "bunches": 1,
       "stems": 25,
       "line_total": 7.5,
-      "articulo_id": 33074,
+      "articulo_id": 33427,
       "articulo_name": "ROSA EC HIGH MAGIC BICOLOR 50CM 25U",
       "match_status": "ambiguous_match",
       "match_confidence": 0.688,
-      "link_confidence": 0.688
+      "link_confidence": 0.688,
+      "articulo_id_erp": "13571"
     },
     {
       "raw_description": "H R19 IGLESIAS MONDIAL 3 25 50 75 0,300 22,500",
@@ -310,11 +328,12 @@
       "bunches": 3,
       "stems": 75,
       "line_total": 22.5,
-      "articulo_id": 33230,
+      "articulo_id": 33579,
       "articulo_name": "ROSA EC MONDIAL 50CM 25U",
       "match_status": "ok",
       "match_confidence": 1.0,
-      "link_confidence": 1.0
+      "link_confidence": 1.0,
+      "articulo_id_erp": "710"
     },
     {
       "raw_description": "H R19 IGLESIAS SWEET UNIQUE 1 25 50 25 0,300 7,500",
@@ -326,11 +345,12 @@
       "bunches": 1,
       "stems": 25,
       "line_total": 7.5,
-      "articulo_id": 33498,
+      "articulo_id": 33847,
       "articulo_name": "ROSA EC SWEET UNIQUE 50CM 25U",
       "match_status": "ambiguous_match",
       "match_confidence": 0.9,
-      "link_confidence": 0.9
+      "link_confidence": 0.9,
+      "articulo_id_erp": "14852"
     },
     {
       "raw_description": "1 H R14 DEEP PURPLE 2 25 50 50 0,300 15,000",
@@ -342,11 +362,12 @@
       "bunches": 2,
       "stems": 50,
       "line_total": 15.0,
-      "articulo_id": 32915,
+      "articulo_id": 33267,
       "articulo_name": "ROSA EC DEEP PURPLE  50CM 25U",
       "match_status": "ok",
       "match_confidence": 1.0,
-      "link_confidence": 1.0
+      "link_confidence": 1.0,
+      "articulo_id_erp": "13550"
     },
     {
       "raw_description": "H R14 GOTCHA 2 25 50 50 0,300 15,000",
@@ -358,11 +379,12 @@
       "bunches": 2,
       "stems": 50,
       "line_total": 15.0,
-      "articulo_id": 33026,
+      "articulo_id": 33380,
       "articulo_name": "ROSA EC GOTCHA 50CM 25U",
       "match_status": "ok",
       "match_confidence": 1.0,
-      "link_confidence": 1.0
+      "link_confidence": 1.0,
+      "articulo_id_erp": "18935"
     },
     {
       "raw_description": "H R14 HIGH & MAGIC 2 25 50 50 0,300 15,000",
@@ -374,11 +396,12 @@
       "bunches": 2,
       "stems": 50,
       "line_total": 15.0,
-      "articulo_id": 33074,
+      "articulo_id": 33427,
       "articulo_name": "ROSA EC HIGH MAGIC BICOLOR 50CM 25U",
       "match_status": "ambiguous_match",
       "match_confidence": 0.688,
-      "link_confidence": 0.688
+      "link_confidence": 0.688,
+      "articulo_id_erp": "13571"
     },
     {
       "raw_description": "H R14 MISS PIGGY 2 25 50 50 0,300 15,000",
@@ -406,11 +429,12 @@
       "bunches": 2,
       "stems": 50,
       "line_total": 15.0,
-      "articulo_id": 33557,
+      "articulo_id": 33906,
       "articulo_name": "ROSA EC TIFFANY 50CM 25U",
       "match_status": "ok",
       "match_confidence": 1.0,
-      "link_confidence": 1.0
+      "link_confidence": 1.0,
+      "articulo_id_erp": "13593"
     },
     {
       "raw_description": "H R14 TOPAZ 2 25 50 50 0,300 15,000",
@@ -422,11 +446,12 @@
       "bunches": 2,
       "stems": 50,
       "line_total": 15.0,
-      "articulo_id": 33570,
+      "articulo_id": 33919,
       "articulo_name": "ROSA EC TOPAZ 50CM 25U",
       "match_status": "ok",
       "match_confidence": 1.0,
-      "link_confidence": 1.0
+      "link_confidence": 1.0,
+      "articulo_id_erp": "15537"
     }
   ]
 }

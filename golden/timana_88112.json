@@ -21,11 +21,12 @@
       "bunches": 0,
       "stems": 600,
       "line_total": 132.0,
-      "articulo_id": 37534,
+      "articulo_id": 38090,
       "articulo_name": "ROSA VENDELA 40CM 25U TIMANÁ",
       "match_status": "ok",
       "match_confidence": 1.0,
-      "link_confidence": 1.0
+      "link_confidence": 1.0,
+      "articulo_id_erp": "29097"
     },
     {
       "raw_description": "ROSE VENDELA WHITE 50CM OF CO-FREE0603110050 1 HB 12 25 300 0.320 $ 96.000",
@@ -37,11 +38,12 @@
       "bunches": 0,
       "stems": 300,
       "line_total": 96.0,
-      "articulo_id": 37568,
+      "articulo_id": 38124,
       "articulo_name": "ROSA VENDELA 50CM 25U TIMANÁ",
       "match_status": "ok",
       "match_confidence": 1.0,
-      "link_confidence": 1.0
+      "link_confidence": 1.0,
+      "articulo_id_erp": "29096"
     },
     {
       "raw_description": "ROSE PINK FLOYD HOT PINK 40CM 4 25 0.220",
@@ -53,11 +55,12 @@
       "bunches": 4,
       "stems": 100,
       "line_total": 22.0,
-      "articulo_id": 32342,
+      "articulo_id": 32684,
       "articulo_name": "ROSA COL PINK FLOYD 40CM 25U",
       "match_status": "ok",
       "match_confidence": 1.0,
-      "link_confidence": 1.0
+      "link_confidence": 1.0,
+      "articulo_id_erp": "15619"
     },
     {
       "raw_description": "ROSE HIGH AND MAGIC ORANGE 40CM 4 25 0.220",
@@ -69,11 +72,12 @@
       "bunches": 4,
       "stems": 100,
       "line_total": 22.0,
-      "articulo_id": 32279,
+      "articulo_id": 32622,
       "articulo_name": "ROSA COL HIGH MAGIC BICOLOR 40CM 25U",
       "match_status": "ambiguous_match",
       "match_confidence": 0.62,
-      "link_confidence": 0.62
+      "link_confidence": 0.62,
+      "articulo_id_erp": "15620"
     },
     {
       "raw_description": "ROSE ASSORTED ASSORTED 40CM 4 25 0.220",
@@ -85,11 +89,12 @@
       "bunches": 4,
       "stems": 100,
       "line_total": 22.0,
-      "articulo_id": 32226,
+      "articulo_id": 32569,
       "articulo_name": "ROSA COL COLOR MIXTO 40CM 25U",
       "match_status": "sin_match",
       "match_confidence": 0.598,
-      "link_confidence": 0.598
+      "link_confidence": 0.598,
+      "articulo_id_erp": "14393"
     },
     {
       "raw_description": "ROSE MONDIAL WHITE 60CM OF CO-FREE0603110050 1 HB 10 25 250 0.350 $ 87.500",
@@ -101,11 +106,12 @@
       "bunches": 0,
       "stems": 250,
       "line_total": 87.5,
-      "articulo_id": 35542,
+      "articulo_id": 36006,
       "articulo_name": "ROSA MONDIAL 60CM 25U TIMANÁ",
       "match_status": "ok",
       "match_confidence": 1.0,
-      "link_confidence": 1.0
+      "link_confidence": 1.0,
+      "articulo_id_erp": "29099"
     },
     {
       "raw_description": "ROSE PINK MONDIAL PINK 40CM 4 25 0.220",
@@ -117,11 +123,12 @@
       "bunches": 4,
       "stems": 100,
       "line_total": 22.0,
-      "articulo_id": 36101,
+      "articulo_id": 36594,
       "articulo_name": "ROSA PINK MONDIAL 40CM 25U TIMANÁ",
       "match_status": "ok",
       "match_confidence": 1.0,
-      "link_confidence": 1.0
+      "link_confidence": 1.0,
+      "articulo_id_erp": "37526"
     },
     {
       "raw_description": "ROSE GOLDFINCH YELLOW 40CM 4 25 0.220",
@@ -133,11 +140,12 @@
       "bunches": 4,
       "stems": 100,
       "line_total": 22.0,
-      "articulo_id": 32268,
+      "articulo_id": 32611,
       "articulo_name": "ROSA COL GOLDFINCH 40CM 25U",
       "match_status": "ok",
       "match_confidence": 1.0,
-      "link_confidence": 1.0
+      "link_confidence": 1.0,
+      "articulo_id_erp": "33428"
     },
     {
       "raw_description": "ROSE DEEP PURPLE LAVANDER 40CM 4 25 0.220",
@@ -149,11 +157,12 @@
       "bunches": 4,
       "stems": 100,
       "line_total": 22.0,
-      "articulo_id": 32245,
+      "articulo_id": 32588,
       "articulo_name": "ROSA COL DEEP PURPLE 40CM 25U",
       "match_status": "ok",
       "match_confidence": 1.0,
-      "link_confidence": 1.0
+      "link_confidence": 1.0,
+      "articulo_id_erp": "20411"
     },
     {
       "raw_description": "ROSE PRICELESS PINK 60CM 3 25 0.350",
@@ -165,11 +174,12 @@
       "bunches": 3,
       "stems": 75,
       "line_total": 26.25,
-      "articulo_id": 32356,
+      "articulo_id": 32698,
       "articulo_name": "ROSA COL PRICELESS 60CM 25U",
       "match_status": "ok",
       "match_confidence": 1.0,
-      "link_confidence": 1.0
+      "link_confidence": 1.0,
+      "articulo_id_erp": "20924"
     },
     {
       "raw_description": "ROSE PINK FLOYD HOT PINK 60CM 3 25 0.350",
@@ -181,11 +191,12 @@
       "bunches": 3,
       "stems": 75,
       "line_total": 26.25,
-      "articulo_id": 32341,
+      "articulo_id": 32683,
       "articulo_name": "ROSA COL PINK FLOYD 60CM 25U",
       "match_status": "ok",
       "match_confidence": 1.0,
-      "link_confidence": 1.0
+      "link_confidence": 1.0,
+      "articulo_id_erp": "13668"
     },
     {
       "raw_description": "ROSE HIGH AND MAGIC ORANGE 60CM 2 25 0.350",
@@ -197,11 +208,12 @@
       "bunches": 2,
       "stems": 50,
       "line_total": 17.5,
-      "articulo_id": 32278,
+      "articulo_id": 32621,
       "articulo_name": "ROSA COL HIGH MAGIC BICOLOR 60CM 25U",
       "match_status": "ambiguous_match",
       "match_confidence": 0.62,
-      "link_confidence": 0.62
+      "link_confidence": 0.62,
+      "articulo_id_erp": "13674"
     },
     {
       "raw_description": "ROSE GOLDFINCH YELLOW 60CM 2 25 0.350",
@@ -213,11 +225,12 @@
       "bunches": 2,
       "stems": 50,
       "line_total": 17.5,
-      "articulo_id": 32268,
+      "articulo_id": 32611,
       "articulo_name": "ROSA COL GOLDFINCH 40CM 25U",
       "match_status": "ok",
       "match_confidence": 0.624,
-      "link_confidence": 0.624
+      "link_confidence": 0.624,
+      "articulo_id_erp": "33428"
     },
     {
       "raw_description": "ROSE CHERRY BRANDY PEACH 60CM 2 25 0.350",
@@ -229,11 +242,12 @@
       "bunches": 2,
       "stems": 50,
       "line_total": 17.5,
-      "articulo_id": 32222,
+      "articulo_id": 32565,
       "articulo_name": "ROSA COL CHERRY BRANDY BICOLOR 50CM 25U",
       "match_status": "ambiguous_match",
       "match_confidence": 0.632,
-      "link_confidence": 0.632
+      "link_confidence": 0.632,
+      "articulo_id_erp": "27084"
     },
     {
       "raw_description": "Rose: 7 HB 3.500 82 2,050",

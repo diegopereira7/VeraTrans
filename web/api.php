@@ -332,14 +332,34 @@ function handleHistory(): void
 function handleSaveSynonym(): void
 {
     $input = json_decode(file_get_contents('php://input'), true);
-    if (!$input || empty($input['key']) || empty($input['articulo_id'])) {
-        echo json_encode(['ok' => false, 'error' => 'Datos incompletos']);
+    if (!$input || empty($input['key'])) {
+        echo json_encode(['ok' => false, 'error' => 'Datos incompletos (falta key)']);
         return;
     }
 
     $key = $input['key'];
-    $artId = (int)$input['articulo_id'];
-    $artName = $input['articulo_name'] ?? '';
+
+    // Resolución del artículo — política 10r: el frontend puede enviar
+    // `articulo_id_erp` (preferido) o `q` (id_erp o referencia). Si solo
+    // viene `articulo_id` (frontend legacy), lo interpretamos también
+    // como id_erp para forzar consistencia — NUNCA como id autoincrement.
+    $db = get_db();
+    $artErpQuery = trim((string)($input['articulo_id_erp'] ?? $input['q'] ?? $input['articulo_id'] ?? ''));
+    if ($artErpQuery === '') {
+        echo json_encode(['ok' => false, 'error' => 'Falta articulo_id_erp o q']);
+        return;
+    }
+    $row = _lookupArticleByErpOrRef($db, $artErpQuery);
+    if (!$row) {
+        echo json_encode([
+            'ok' => false,
+            'error' => "«$artErpQuery» no existe como id_erp ni referencia",
+        ]);
+        return;
+    }
+    $artId    = (int)$row['id'];
+    $artIdErp = (string)($row['id_erp'] ?? '');
+    $artName  = $input['articulo_name'] ?? $row['nombre'];
 
     // La clave viene en formato "provider_id|species|variety|size|spb|grade"
     // (mismo formato que SynonymStore._key en el lado Python). Se desempaca para
@@ -354,8 +374,9 @@ function handleSaveSynonym(): void
     $grado        = $parts[5] ?? '';
 
     // MySQL — el enum `origen` solo acepta manual/auto/auto-fuzzy, así que
-    // 'manual-web' se mapea a 'manual'.
-    $db = get_db();
+    // 'manual-web' se mapea a 'manual'. El `id_articulo` guardado es el
+    // autoincrement local (FK interna de la tabla sinónimos); lo que
+    // el sistema usa como clave estable es `id_erp` del lado JSON.
     if ($db) {
         $stmt = $db->prepare(
             "INSERT INTO sinonimos
@@ -375,14 +396,32 @@ function handleSaveSynonym(): void
         $stmt->execute();
     }
 
-    // JSON sync
+    // JSON sync — includes id_erp (clave estable entre reimports, 10q/10r).
     _syncSynonymToJson($key, [
-        'articulo_id' => $artId, 'articulo_name' => $artName, 'origen' => 'manual-web',
+        'articulo_id' => $artId,
+        'articulo_id_erp' => $artIdErp,
+        'articulo_name' => $artName, 'origen' => 'manual-web',
         'provider_id' => (int)($input['provider_id'] ?? 0),
         'species' => $input['species'] ?? '', 'variety' => $input['variety'] ?? '',
         'size' => (int)($input['size'] ?? 0), 'stems_per_bunch' => (int)($input['stems_per_bunch'] ?? 0),
         'grade' => $input['grade'] ?? '',
     ]);
+
+    // Shadow mode: save_synonym ≡ operador asigna artículo cuando el matcher no
+    // propuso nada (sin_match/sin_parser, oldArtId=0). Se loguea como
+    // decision=correct con proposed=0 para no perder cobertura real del matcher.
+    // El input viene de batch-line-save con provider_id/species/variety/..., o
+    // del formulario de sinónimos manual sin esos campos — en el segundo caso
+    // se rellenan desde la propia clave.
+    $shadowInput = $input + [
+        'provider_id'     => $provId,
+        'species'         => $especie,
+        'variety'         => $variety,
+        'size'            => $talla,
+        'stems_per_bunch' => $spb,
+        'grade'           => $grado,
+    ];
+    _shadowLogDecision('correct', $shadowInput, 0, $artId, $artName);
 
     echo json_encode(['ok' => true, 'message' => 'Sinónimo guardado']);
 }
@@ -423,6 +462,16 @@ function handleConfirmMatch(): void
     if (in_array($status, ['aprendido_en_prueba', ''], true)) {
         $entry['status'] = 'aprendido_confirmado';
     }
+    // Hidratar articulo_id_erp si la entry es vieja y no lo tiene todavía.
+    // Sesión 10q: id_erp es la clave estable para preservar vínculos entre
+    // reimports del dump del catálogo.
+    if (empty($entry['articulo_id_erp']) && $artId > 0) {
+        $db = get_db();
+        $erp = _getArtIdErp($db, $artId);
+        if ($erp !== '') {
+            $entry['articulo_id_erp'] = $erp;
+        }
+    }
     // Persist
     $json = json_encode($data, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
     $tmp = SYNONYMS_FILE . '.tmp';
@@ -450,14 +499,35 @@ function handleConfirmMatch(): void
 function handleCorrectMatch(): void
 {
     $input = json_decode(file_get_contents('php://input'), true);
-    if (!$input || empty($input['key']) || empty($input['new_articulo_id'])) {
-        echo json_encode(['ok' => false, 'error' => 'Datos incompletos']);
+    if (!$input || empty($input['key'])) {
+        echo json_encode(['ok' => false, 'error' => 'Datos incompletos (falta key)']);
         return;
     }
     $key       = $input['key'];
     $oldArtId  = (int)($input['old_articulo_id'] ?? 0);
-    $newArtId  = (int)$input['new_articulo_id'];
-    $newArtName = $input['new_articulo_name'] ?? '';
+
+    // Política 10r: el nuevo artículo se identifica SIEMPRE por id_erp
+    // o referencia, nunca por id autoincrement. Aceptamos varios nombres
+    // de campo por retrocompat.
+    $db = get_db();
+    $newErpQuery = trim((string)($input['new_articulo_id_erp']
+                                 ?? $input['q']
+                                 ?? $input['new_articulo_id'] ?? ''));
+    if ($newErpQuery === '') {
+        echo json_encode(['ok' => false, 'error' => 'Falta new_articulo_id_erp o q']);
+        return;
+    }
+    $newRow = _lookupArticleByErpOrRef($db, $newErpQuery);
+    if (!$newRow) {
+        echo json_encode([
+            'ok' => false,
+            'error' => "«$newErpQuery» no existe como id_erp ni referencia",
+        ]);
+        return;
+    }
+    $newArtId    = (int)$newRow['id'];
+    $newArtIdErp = (string)($newRow['id_erp'] ?? '');
+    $newArtName  = $input['new_articulo_name'] ?? $newRow['nombre'];
 
     $data = [];
     if (file_exists(SYNONYMS_FILE)) {
@@ -474,22 +544,6 @@ function handleCorrectMatch(): void
         }
     }
 
-    // Guardar el sinónimo nuevo (sobreescribe el viejo con el artículo correcto)
-    $data[$key] = array_merge($data[$key] ?? [], [
-        'articulo_id'     => $newArtId,
-        'articulo_name'   => $newArtName,
-        'origen'          => 'manual-web',
-        'provider_id'     => (int)($input['provider_id'] ?? 0),
-        'species'         => $input['species'] ?? '',
-        'variety'         => $input['variety'] ?? '',
-        'size'            => (int)($input['size'] ?? 0),
-        'stems_per_bunch' => (int)($input['stems_per_bunch'] ?? 0),
-        'grade'           => $input['grade'] ?? '',
-        'status'          => 'manual_confirmado',
-        'times_confirmed' => 1,
-        'last_confirmed_at' => date('c'),
-    ]);
-
     // MySQL sync para el nuevo
     $parts = explode('|', $key);
     $provId = isset($parts[0]) ? (int)$parts[0] : 0;
@@ -498,7 +552,8 @@ function handleCorrectMatch(): void
     $talla = isset($parts[3]) ? (int)$parts[3] : 0;
     $spb = isset($parts[4]) ? (int)$parts[4] : 0;
     $grado = $parts[5] ?? '';
-    $db = get_db();
+    // `newArtId`/`newArtIdErp` ya están resueltos arriba desde el payload
+    // por id_erp o referencia (política 10r).
     if ($db) {
         $stmt = $db->prepare(
             "INSERT INTO sinonimos
@@ -513,6 +568,23 @@ function handleCorrectMatch(): void
         $stmt->bind_param('sissiisis', $key, $provId, $variety, $especie, $talla, $spb, $grado, $newArtId, $newArtName);
         $stmt->execute();
     }
+
+    // Guardar el sinónimo nuevo (sobreescribe el viejo con el artículo correcto)
+    $data[$key] = array_merge($data[$key] ?? [], [
+        'articulo_id'     => $newArtId,
+        'articulo_id_erp' => $newArtIdErp,
+        'articulo_name'   => $newArtName,
+        'origen'          => 'manual-web',
+        'provider_id'     => (int)($input['provider_id'] ?? 0),
+        'species'         => $input['species'] ?? '',
+        'variety'         => $input['variety'] ?? '',
+        'size'            => (int)($input['size'] ?? 0),
+        'stems_per_bunch' => (int)($input['stems_per_bunch'] ?? 0),
+        'grade'           => $input['grade'] ?? '',
+        'status'          => 'manual_confirmado',
+        'times_confirmed' => 1,
+        'last_confirmed_at' => date('c'),
+    ]);
 
     // Persist JSON
     $json = json_encode($data, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
@@ -545,9 +617,12 @@ function handleCorrectMatch(): void
  */
 function handleLookupArticle(): void
 {
-    $q = trim($_GET['id'] ?? $_GET['q'] ?? '');
+    // Aceptamos `q` (nombre canónico a partir de 10r). `id` queda como
+    // alias por retrocompat del frontend, pero SIEMPRE se interpreta
+    // como id_erp o referencia, nunca como id autoincrement.
+    $q = trim($_GET['q'] ?? $_GET['id'] ?? '');
     if (!$q) {
-        echo json_encode(['ok' => false, 'error' => 'ID o referencia no proporcionado']);
+        echo json_encode(['ok' => false, 'error' => 'id_erp o referencia no proporcionado']);
         return;
     }
 
@@ -557,37 +632,58 @@ function handleLookupArticle(): void
         return;
     }
 
-    // Lookup by F-reference code (e.g. F000636001)
-    if (preg_match('/^F\d+$/i', $q)) {
-        $stmt = $db->prepare("SELECT id, nombre, referencia FROM articulos WHERE referencia = ? LIMIT 1");
-        $ref = strtoupper($q);
-        $stmt->bind_param('s', $ref);
-        $stmt->execute();
-        $result = $stmt->get_result();
-        if ($row = $result->fetch_assoc()) {
-            echo json_encode(['ok' => true, 'id' => (int)$row['id'], 'nombre' => $row['nombre'], 'ref' => $row['referencia']]);
-        } else {
-            echo json_encode(['ok' => false, 'error' => "Referencia $ref no encontrada"]);
-        }
+    // Política 10r: el id autoincrement NO es aceptado como input — se
+    // renumera al reimportar el catálogo y genera asignaciones
+    // equivocadas. Solo `id_erp` (estable entre reimports) o
+    // `referencia` (F...).
+    $row = _lookupArticleByErpOrRef($db, $q);
+    if ($row) {
+        echo json_encode([
+            'ok'     => true,
+            'id'     => (int)$row['id'],
+            'id_erp' => (string)($row['id_erp'] ?? ''),
+            'nombre' => $row['nombre'],
+            'ref'    => $row['referencia'],
+        ]);
         return;
     }
+    echo json_encode([
+        'ok' => false,
+        'error' => "«$q» no existe como id_erp ni referencia. "
+                 . "El id autoincrement no se acepta (sesión 10r).",
+    ]);
+}
 
-    // Lookup by numeric ID
-    $id = (int)$q;
-    if (!$id) {
-        echo json_encode(['ok' => false, 'error' => "Valor no válido: $q"]);
-        return;
+/**
+ * Resuelve un artículo por id_erp o referencia. Devuelve el row o null.
+ */
+function _lookupArticleByErpOrRef($db, string $q): ?array
+{
+    if (!$db || $q === '') {
+        return null;
     }
-
-    $stmt = $db->prepare("SELECT id, nombre, referencia FROM articulos WHERE id = ? LIMIT 1");
-    $stmt->bind_param('i', $id);
+    // 1) id_erp (string — la tabla admite valores numéricos o alfa).
+    $stmt = $db->prepare(
+        "SELECT id, id_erp, nombre, referencia FROM articulos WHERE id_erp = ? LIMIT 1"
+    );
+    $stmt->bind_param('s', $q);
     $stmt->execute();
-    $result = $stmt->get_result();
-    if ($row = $result->fetch_assoc()) {
-        echo json_encode(['ok' => true, 'id' => (int)$row['id'], 'nombre' => $row['nombre'], 'ref' => $row['referencia']]);
-    } else {
-        echo json_encode(['ok' => false, 'error' => "Artículo $id no encontrado"]);
+    $res = $stmt->get_result();
+    if ($row = $res->fetch_assoc()) {
+        return $row;
     }
+    // 2) referencia (F...) — comparación case-insensitive.
+    $ref = strtoupper($q);
+    $stmt = $db->prepare(
+        "SELECT id, id_erp, nombre, referencia FROM articulos WHERE UPPER(referencia) = ? LIMIT 1"
+    );
+    $stmt->bind_param('s', $ref);
+    $stmt->execute();
+    $res = $stmt->get_result();
+    if ($row = $res->fetch_assoc()) {
+        return $row;
+    }
+    return null;
 }
 
 /**
@@ -778,6 +874,33 @@ function _syncSynonymToJson(string $key, array $entry): void
     $tmp = SYNONYMS_FILE . '.tmp';
     file_put_contents($tmp, $json);
     rename($tmp, SYNONYMS_FILE);
+}
+
+/**
+ * Busca el `id_erp` (clave estable del ERP externo) de un artículo
+ * dado su id autoincrement.
+ *
+ * Se usa al guardar sinónimos para almacenar también `articulo_id_erp`,
+ * necesario para preservar el vínculo sinónimo↔artículo tras un
+ * reimport del dump que reasigne los ids autoincrement. Ver sesión 10q.
+ */
+function _getArtIdErp($db, int $artId): string
+{
+    if (!$db || $artId <= 0) {
+        return '';
+    }
+    try {
+        $stmt = $db->prepare("SELECT id_erp FROM articulos WHERE id = ?");
+        $stmt->bind_param('i', $artId);
+        $stmt->execute();
+        $res = $stmt->get_result();
+        if ($row = $res->fetch_assoc()) {
+            return (string)($row['id_erp'] ?? '');
+        }
+    } catch (Throwable $e) {
+        // silencioso: nunca rompe flujo principal
+    }
+    return '';
 }
 
 // ── Importación Masiva ──────────────────────────────────────────────────────

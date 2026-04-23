@@ -8,6 +8,210 @@ aquí y se quita de CLAUDE.md.
 Para el estado actual del proyecto, ver [`CLAUDE.md`](../CLAUDE.md) (raíz).
 Para lecciones transversales reutilizables, ver [`lessons.md`](lessons.md).
 
+### 2026-04-23 — sesión 10o: 4 fixes transversales shadow-driven (autoapprove 92.6% → 94.1%, Uma VIOLETA)
+
+Al mirar el backlog del shadow (87 pendientes), Uma Flowers tenía
+13 líneas `ambiguous_match` con **12 sobre la misma variety**
+(`GYPSOPHILA XL NATURAL WHITE 80cm 25spb`) proponiendo 28189
+(PANICULATA MIXTO genérico) con link=0.535, penalty=`low_evidence`.
+El operador me confirmó el dato clave para diagnosticar: **VIOLETA
+es la marca comercial de Uma para paniculata/gypsophila**, no un
+color.
+
+Investigación encadenada reveló 4 bugs distintos, todos los
+cambios aditivos:
+
+1. **Multi-marca por proveedor** — `ArticulosLoader._build_brand_index`
+   guardaba solo el sufijo más frecuente por proveedor. Uma tiene
+   62 artículos terminados en UMA (rosas) y **24 terminados en
+   VIOLETA** (paniculata) — VIOLETA quedaba fuera. Nuevo field
+   `brands_by_provider: dict[int, set[str]]` con TODAS las
+   marcas ≥ BRAND_MIN_ARTICLES (5). `_own_brands_norm` en
+   `matcher.py` las incluye. Efecto: Uma reconoce UMA y VIOLETA
+   como propias → `brand_in_name(UMA)` dispara para
+   PANICULATA...VIOLETA (+0.25 score).
+
+2. **`trust_exempts` en `_score_candidate`** — un sinónimo con
+   trust ≥ 0.85 (manual_confirmado o aprendido_confirmado) es
+   prueba EXPLÍCITA del operador de que VARIETY→ARTICULO es
+   válido, aunque los tokens no solapen. Antes recibía
+   `variety_no_overlap -0.10` → perdía contra fuzzy casual de
+   tokens irrelevantes (MIXTO en PANICULATA genérico coincidía
+   con GYPSOPHILA). Nuevo chequeo: si
+   `cand.source == 'synonym' AND (cand.trust or 0) >= 0.85`,
+   skip la penalty y añadir reason `synonym_overrides_variety`.
+
+3. **El matcher degradaba sinónimos manuales** — bug histórico
+   crítico. Cuando el matcher ganaba un `ok` con un candidato
+   de `source=synonym`, llamaba `self.syn.add(..., 'auto')`.
+   `add()` protegía solo si `prev.status == 'manual_confirmado'`
+   **literal**, pero muchas entries tenían `status=None` con
+   `origen=manual-web` (derivadamente manual vía
+   `_STATUS_BY_ORIGIN`, trust 0.98). Esas entries se reescribían
+   a `origen='auto'`, `status='aprendido_en_prueba'`, trust 0.55.
+   Resultado: tras el primer run, la entry perdía fuerza y en el
+   siguiente run ya no ganaba. Fix aditivo:
+   `if top1.source != 'synonym': self.syn.add(...)`. Un sinónimo
+   ganador NO necesita re-alta — `register_match_hit` (existente)
+   ya incrementa `times_confirmed`.
+
+4. **`plausible` descartaba sinónimos sub-umbral** — si
+   link < 0.70 sin `variety_match` ni fuzzy ≥ 0.85, la línea
+   caía a `sin_match`. Un sinónimo EXISTE = afirmación explícita
+   de plausibilidad. Fix aditivo: `plausible = ... or
+   top1.source == 'synonym'`.
+
+**Adicional**: migración one-shot
+[`tools/migrate_uma_gypsophila_spb.py`](../tools/migrate_uma_gypsophila_spb.py)
+para 12 sinónimos Uma GYPSOPHILA con `spb=0` (legacy del
+formulario manual antiguo) → `spb=25` (lo que emite el parser
+actual). 9 renamed, 3 dropped por conflicto (spb=25 existente
+era más fuerte). Backup preservado.
+
+**Métricas**:
+- UMA.pdf: 15/21 ok → **21/21 ok (100%)**, 0 ambiguous.
+- Autoapprove global: 92.6% → **94.1% (+1.5pp, récord)**.
+- `variety_no_overlap` penalties globales: 232 → **165 (-29%)**.
+- `weak_synonym`: 190 → 188. `low_evidence`: 114 → 106.
+- **Golden 997/997 (100%) intacto** en todo momento.
+
+**Lección transversal**: el sinónimo manual es la
+verdad-del-operador; el matcher no debe degradarlo, contradecirlo,
+ni descartarlo por falta de evidencia léxica.
+
+### 2026-04-23 — sesión 10n: cierre gap save_synonym en shadow + reporter afina rescates vs errores
+
+El primer lote real del operador (10m) dejó el shadow log con **769
+propuestas y 0 decisiones**. La pista estaba en el propio comentario
+del JS — [`web/assets/app.js:1434`](../web/assets/app.js#L1434):
+`sin oldArtId → save_synonym (sin decision, gap histórico)`. Es el
+caso más común del batch-line-save: una línea `sin_match` no tiene
+`oldArtId`, así que el click en la UI rutea a `save_synonym`, que
+hasta ahora no llamaba `_shadowLogDecision`.
+
+**Cambios**:
+
+- [`web/api.php`](../web/api.php) — `handleSaveSynonym`: emite
+  `_shadowLogDecision('correct', $shadowInput, 0, $artId, $artName)`.
+  El input se enriquece con los campos de la propia key para que
+  el reporte tenga contexto aunque el frontend no mande esos campos.
+- [`tools/shadow_report.py`](../tools/shadow_report.py) — distingue:
+  - `confirmaciones`: matcher clavó (`action=confirm`).
+  - `correcciones matcher`: `action=correct` con
+    `proposed_articulo_id ≠ 0` (matcher propuso mal).
+  - `rescates sin_match`: `action=correct` con
+    `proposed_articulo_id = 0` (matcher no propuso, operador asignó).
+  - Nueva métrica **"Accuracy del matcher cuando propuso"** con
+    denominador `confirm + correcciones reales`, excluyendo rescates.
+  - El "Top 10 correcciones" ahora filtra a correcciones con
+    propuesta y corrige el bug previo que imprimía
+    `propuso X / correcto X` cuando no había propuesta.
+
+**Smoke test**: entry sintética simulando `save_synonym`. Reporter
+la clasificó correctamente como rescate, "Accuracy del matcher"
+excluyó el caso. Entry y archivo de prueba eliminados tras el check.
+
+**Métricas técnicas** (sin cambios — trabajo de infraestructura):
+autoapprove 92.6% · Golden 997/997 (100%) intacto.
+
+### 2026-04-22 — sesión 10m: batch de 7 fixes parsers shadow-driven
+
+Primer ciclo completo de Fase 10 operando. El operador (Ángel)
+procesó un lote real de 27 facturas de la semana y señaló desde
+la UI una lista creciente de errores. Cada uno convertido en fix
+concreto: FLORAROMA 2026 (AROMA), EQR (stems=total_stems),
+FLORSANI (box types + sub-líneas + tints), GARDA (box_code en
+label, sub-líneas heredadas), MALIMA (coma miles US), MYSTIC (Ñ
+en code + TNT block name), LIFE (MARL label).
+
+Pattern recurrente detectado: **box codes/labels metidos en
+variety**. Los parsers capturaban como parte del nombre de la
+variedad tokens UPPERCASE que en realidad son destinos/rutas/
+códigos internos (ELOY, MARL, R16, CORUÑA, TNT, ZAIRA). Fix
+común: grupo opcional `[A-Z]{3,}` o `[A-ZÑÁÉÍÓÚ]{3,}` antes de
+variety que se guarda en `label`. Audit global detectó 5
+parsers más con el patrón (ROSALEDA EURO, SAYONARA SP, APOSENTOS
+ILIAS, MONTEROSA EUGENIA, EL CAMPANARIO ZAIRA) — se atenderán
+cuando aparezcan en shadow real.
+
+**Métricas**:
+- ~200 líneas nuevas recuperadas en benchmark (antes no
+  parseaban o tenían datos corruptos silenciosamente).
+- Golden **997/997 (100%) intacto** en todo momento.
+- Autoapprove 93.9% → **92.6%** (dilución por denominador
+  creciente; las nuevas líneas todavía no tienen sinónimo manual
+  — se recuperarán cuando el operador las confirme en UI).
+- FLORSANI2.pdf: 0 → **54** líneas. GARDA: 11 → **28** líneas.
+  AROMA: 0 → 4. LIFE: variety limpia sin MARL. MYSTIC1: variety
+  limpia sin CORUÑA/TNT. MALIMA: total correcto (2.00 → 2450.00).
+
+### 2026-04-22 — sesión 10k: shadow mode arrancado (Fase 10) — infraestructura propuesta↔decisión
+
+Fin del ciclo técnico de quick wins (10f-10j llevaron de 92.7% a
+93.6% autoapprove) y arranque de la Fase 10 del roadmap. El
+objetivo ya no es extraer más del benchmark sino **medir la
+calidad real en producción**: de las propuestas del matcher, ¿qué
+porcentaje confirma el operador y qué porcentaje corrige? ¿Qué
+patrones de corrección se repiten?
+
+**Arquitectura**:
+
+Dos tipos de entry en `shadow_log.jsonl` (JSONL en raíz):
+
+- `propuesta`: una por línea de factura al procesarse en la web.
+  Incluye `synonym_key` (clave de cruce), variety/size/spb/grade,
+  proposed_articulo_id+name, match_status, link_confidence,
+  review_lane, reasons, penalties.
+- `decision`: una por acción confirm/correct del operador. Lleva
+  `synonym_key` + `proposed_articulo_id` + `decided_articulo_id`
+  + action ∈ {confirm, correct}.
+
+**Cambios en código**:
+
+- [`web/api.php`](../web/api.php): dos nuevos helpers
+  `_shadowLogProposals($result, $pdfPath)` y
+  `_shadowLogDecision($action, $input, $proposedId, $decidedId,
+  $decidedName)`. Llamadas integradas en `handleProcess` (tras
+  parsear el JSON de `procesar_pdf.py`), `handleConfirmMatch` y
+  `handleCorrectMatch`. Helper `_shadowSynKey(providerId, line)`
+  replica la estructura de `SynonymStore._key` en Python:
+  `<provider_id>|<species>|<variety.upper>|<size>|<spb>|<grade.upper>`.
+- [`tools/shadow_report.py`](../tools/shadow_report.py) (nuevo):
+  - Cruza propuestas con decisiones por `synonym_key`, eligiendo
+    la propuesta más reciente anterior a la decisión.
+  - Reporta: accuracy global real (% confirmaciones /
+    decisiones), accuracy por proveedor, top-N correcciones con
+    par "propuso X / correcto Y", backlog pendiente (líneas
+    ambiguous/sin_match sin decisión humana).
+  - Flags: `--since YYYY-MM-DD`, `--provider <substr>`,
+    `--top-errors N`.
+
+**Diseño**:
+
+- Logueo silencioso (nunca rompe la respuesta al cliente aunque
+  falle el file_put_contents).
+- Propuestas se loguean ANTES de que el operador toque nada —
+  evita contaminación por las acciones posteriores.
+- Cruce por `synonym_key` + timestamp permite atribución correcta
+  incluso si varias propuestas comparten key (fractura de
+  líneas, varias facturas del mismo proveedor).
+- El log también captura propuestas sin articulo_id (sin_match,
+  sin_parser) — útil para medir cobertura del matcher.
+
+**Smoke test** con 4 entries sintéticas (2 propuestas + 2
+decisiones: 1 confirm + 1 correct) confirmó pipeline correcto:
+accuracy 50%, top error correctamente identificado como "ROSA EC
+FREEDOM genérico propuesto cuando el correcto era el branded
+BRISSAS". Log limpiado tras el test.
+
+**Métricas técnicas (sin cambios vs 10j)**:
+- Autoapprove 93.6% · Golden 997/997 100%.
+
+**Gap conocido al cierre**: `handleSaveSynonym` no logueaba
+decisión. Cuando el operador asigna artículo a un `sin_match`
+desde la UI (caso más común: oldArtId=0 → save_synonym),
+la acción se perdía para shadow. Cerrado en sesión 10n.
+
 ### 2026-04-22 — sesión 10l: fix parser FLORAROMA variante 2026 (auto 93.6→93.9%, primer fix shadow-driven)
 
 Primer fix derivado del flujo shadow real. Ángel procesó un lote

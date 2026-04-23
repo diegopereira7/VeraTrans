@@ -139,7 +139,7 @@ PROVIDERS = {
     'aposentos': {'id': 90004,     'name': 'Flores de Aposentos',      'fmt': 'aposentos',    'patterns': ['FLORES DE APOSENTOS']},
     # Farms registradas por formato existente
     'laila': {'id': 90023,     'name': 'Laila Flowers',            'fmt': 'alegria',      'patterns': ['LAILA FLOWERS', 'LOMCEM']},
-    'tierraverde': {'id': 90038,     'name': 'Tierra Verde',             'fmt': 'alegria',      'patterns': ['TIERRA VERDE CIA']},
+    'tierraverde': {'id': 90038,     'name': 'Tierra Verde',             'fmt': 'alegria',      'patterns': ['TIERRA VERDE CIA'],         'country': 'COL', 'catalog_brands': ['TIERRA VERDE']},
     'hacienda': {'id': 90018,     'name': 'Flores de la Hacienda',    'fmt': 'rosaleda',     'patterns': ['FLORES DE LA HACIENDA']},
     'rosadex': {'id': 90033,     'name': 'Rosadex',                  'fmt': 'rosaleda',     'patterns': ['ROSADEX']},
     'cananvalle': {'id': 90006,     'name': 'Cananvalley Flowers',      'fmt': 'custinv',      'patterns': ['CANANVALLEY', 'CANANVALLE']},

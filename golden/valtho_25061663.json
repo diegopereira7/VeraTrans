@@ -22,11 +22,12 @@
       "bunches": 2,
       "stems": 50,
       "line_total": 15.0,
-      "articulo_id": 31608,
+      "articulo_id": 31922,
       "articulo_name": "ROSA ABSOLUT IN PINK 50CM 25U CANTIZA",
       "match_status": "ok",
       "match_confidence": 1.0,
-      "link_confidence": 1.0
+      "link_confidence": 1.0,
+      "articulo_id_erp": "34935"
     },
     {
       "raw_description": "CORAL REEF 50CM N 25ST CZ",
@@ -38,11 +39,12 @@
       "bunches": 2,
       "stems": 50,
       "line_total": 15.0,
-      "articulo_id": 32481,
+      "articulo_id": 32825,
       "articulo_name": "ROSA CORAL REEF 50CM 25U CANTIZA",
       "match_status": "ok",
       "match_confidence": 1.0,
-      "link_confidence": 1.0
+      "link_confidence": 1.0,
+      "articulo_id_erp": "28859"
     },
     {
       "raw_description": "DEEP PURPLE 50CM N 25ST CZ",
@@ -54,11 +56,12 @@
       "bunches": 2,
       "stems": 50,
       "line_total": 15.0,
-      "articulo_id": 32615,
+      "articulo_id": 32969,
       "articulo_name": "ROSA DEEP PURPLE 50CM 25U CANTIZA",
       "match_status": "ok",
       "match_confidence": 1.0,
-      "link_confidence": 1.0
+      "link_confidence": 1.0,
+      "articulo_id_erp": "27776"
     },
     {
       "raw_description": "HIGH MAGIC 50CM N 25ST CZ",
@@ -70,11 +73,12 @@
       "bunches": 2,
       "stems": 50,
       "line_total": 15.0,
-      "articulo_id": 34483,
+      "articulo_id": 34912,
       "articulo_name": "ROSA HIGH MAGIC 50CM 25U CANTIZA",
       "match_status": "ok",
       "match_confidence": 1.0,
-      "link_confidence": 1.0
+      "link_confidence": 1.0,
+      "articulo_id_erp": "27777"
     },
     {
       "raw_description": "PINK MONDIAL 50CM N 25ST CZ",
@@ -86,11 +90,12 @@
       "bunches": 2,
       "stems": 50,
       "line_total": 15.0,
-      "articulo_id": 36045,
+      "articulo_id": 36538,
       "articulo_name": "ROSA PINK MONDIAL 50CM 25U CANTIZA",
       "match_status": "ok",
       "match_confidence": 1.0,
-      "link_confidence": 1.0
+      "link_confidence": 1.0,
+      "articulo_id_erp": "27697"
     },
     {
       "raw_description": "BELIEVE IN PINK 50CM N 25ST CZ",
@@ -102,11 +107,12 @@
       "bunches": 1,
       "stems": 25,
       "line_total": 8.75,
-      "articulo_id": 31776,
+      "articulo_id": 32097,
       "articulo_name": "ROSA BELIEVE 50CM 25U CANTIZA",
       "match_status": "ok",
       "match_confidence": 1.0,
-      "link_confidence": 1.0
+      "link_confidence": 1.0,
+      "articulo_id_erp": "38970"
     },
     {
       "raw_description": "CAROUSEL 50CM N 25ST CZ",
@@ -118,11 +124,12 @@
       "bunches": 2,
       "stems": 50,
       "line_total": 17.5,
-      "articulo_id": 32150,
+      "articulo_id": 32484,
       "articulo_name": "ROSA CARROUSEL 50CM 25U CANTIZA",
       "match_status": "ok",
       "match_confidence": 0.888,
-      "link_confidence": 0.888
+      "link_confidence": 0.888,
+      "articulo_id_erp": "28923"
     },
     {
       "raw_description": "FREEDOM 50CM N 25ST CZ",
@@ -134,11 +141,12 @@
       "bunches": 2,
       "stems": 50,
       "line_total": 17.5,
-      "articulo_id": 33953,
+      "articulo_id": 34343,
       "articulo_name": "ROSA FREEDOM 50CM 25U CANTIZA",
       "match_status": "ok",
       "match_confidence": 1.0,
-      "link_confidence": 1.0
+      "link_confidence": 1.0,
+      "articulo_id_erp": "29276"
     },
     {
       "raw_description": "PINK FLOYD 50CM N 25ST CZ",
@@ -150,11 +158,12 @@
       "bunches": 2,
       "stems": 50,
       "line_total": 17.5,
-      "articulo_id": 36000,
+      "articulo_id": 36489,
       "articulo_name": "ROSA PINK FLOYD 50CM 25U CANTIZA",
       "match_status": "ok",
       "match_confidence": 1.0,
-      "link_confidence": 1.0
+      "link_confidence": 1.0,
+      "articulo_id_erp": "38256"
     },
     {
       "raw_description": "PURPLE FICTION 50CM N 25ST CZ",
@@ -166,11 +175,12 @@
       "bunches": 1,
       "stems": 25,
       "line_total": 8.75,
-      "articulo_id": 36271,
+      "articulo_id": 36781,
       "articulo_name": "ROSA PURPLE FICTION 50CM 25U CANTIZA",
       "match_status": "ok",
       "match_confidence": 1.0,
-      "link_confidence": 1.0
+      "link_confidence": 1.0,
+      "articulo_id_erp": "40985"
     },
     {
       "raw_description": "SUPER SUN 50CM N 25ST CZ",
@@ -182,11 +192,12 @@
       "bunches": 2,
       "stems": 50,
       "line_total": 17.5,
-      "articulo_id": 36859,
+      "articulo_id": 37408,
       "articulo_name": "ROSA SUPER SUN 50CM 25U CANTIZA",
       "match_status": "ok",
       "match_confidence": 1.0,
-      "link_confidence": 1.0
+      "link_confidence": 1.0,
+      "articulo_id_erp": "33368"
     },
     {
       "raw_description": "BRIGHTON 40CM N 25ST CZ",
@@ -198,11 +209,12 @@
       "bunches": 3,
       "stems": 75,
       "line_total": 18.75,
-      "articulo_id": 31877,
+      "articulo_id": 32203,
       "articulo_name": "ROSA BRIGHTON 40CM 25U CANTIZA",
       "match_status": "ok",
       "match_confidence": 1.0,
-      "link_confidence": 1.0
+      "link_confidence": 1.0,
+      "articulo_id_erp": "27668"
     },
     {
       "raw_description": "CABARET 40CM N 25ST CZ",
@@ -214,11 +226,12 @@
       "bunches": 3,
       "stems": 75,
       "line_total": 18.75,
-      "articulo_id": 32013,
+      "articulo_id": 32342,
       "articulo_name": "ROSA CABARET 40CM 25U CANTIZA",
       "match_status": "ok",
       "match_confidence": 1.0,
-      "link_confidence": 1.0
+      "link_confidence": 1.0,
+      "articulo_id_erp": "28867"
     },
     {
       "raw_description": "DEEP PURPLE 40CM N 25ST CZ",
@@ -230,11 +243,12 @@
       "bunches": 2,
       "stems": 50,
       "line_total": 12.5,
-      "articulo_id": 32603,
+      "articulo_id": 32957,
       "articulo_name": "ROSA DEEP PURPLE 40CM 25U CANTIZA",
       "match_status": "ok",
       "match_confidence": 1.0,
-      "link_confidence": 1.0
+      "link_confidence": 1.0,
+      "articulo_id_erp": "27674"
     },
     {
       "raw_description": "FRUTTETO 40CM N 25ST CZ",
@@ -246,11 +260,12 @@
       "bunches": 4,
       "stems": 100,
       "line_total": 25.0,
-      "articulo_id": 34058,
+      "articulo_id": 34476,
       "articulo_name": "ROSA FRUTTETO 40CM 25U CANTIZA",
       "match_status": "ok",
       "match_confidence": 1.0,
-      "link_confidence": 1.0
+      "link_confidence": 1.0,
+      "articulo_id_erp": "27670"
     },
     {
       "raw_description": "BRIGHTON 50CM N 25ST CZ",
@@ -262,11 +277,12 @@
       "bunches": 6,
       "stems": 150,
       "line_total": 45.0,
-      "articulo_id": 31899,
+      "articulo_id": 32225,
       "articulo_name": "ROSA BRIGHTON 50CM 25U CANTIZA",
       "match_status": "ok",
       "match_confidence": 1.0,
-      "link_confidence": 1.0
+      "link_confidence": 1.0,
+      "articulo_id_erp": "27673"
     },
     {
       "raw_description": "MONDIAL 50CM N 25ST CZ",
@@ -278,11 +294,12 @@
       "bunches": 6,
       "stems": 150,
       "line_total": 45.0,
-      "articulo_id": 35473,
+      "articulo_id": 35937,
       "articulo_name": "ROSA MONDIAL 50CM 25U CANTIZA",
       "match_status": "ok",
       "match_confidence": 1.0,
-      "link_confidence": 1.0
+      "link_confidence": 1.0,
+      "articulo_id_erp": "25572"
     },
     {
       "raw_description": "BRIGHTON 50CM N 25ST CZ",
@@ -294,11 +311,12 @@
       "bunches": 3,
       "stems": 75,
       "line_total": 24.75,
-      "articulo_id": 31899,
+      "articulo_id": 32225,
       "articulo_name": "ROSA BRIGHTON 50CM 25U CANTIZA",
       "match_status": "ok",
       "match_confidence": 1.0,
-      "link_confidence": 1.0
+      "link_confidence": 1.0,
+      "articulo_id_erp": "27673"
     },
     {
       "raw_description": "IGUAZU 50CM N 25ST CZ",
@@ -310,11 +328,12 @@
       "bunches": 2,
       "stems": 50,
       "line_total": 16.5,
-      "articulo_id": 34637,
+      "articulo_id": 35068,
       "articulo_name": "ROSA IGUAZU 50CM 25U CANTIZA",
       "match_status": "ok",
       "match_confidence": 1.0,
-      "link_confidence": 1.0
+      "link_confidence": 1.0,
+      "articulo_id_erp": "27781"
     },
     {
       "raw_description": "IGUAZU 50CM N 25ST CZ",
@@ -326,11 +345,12 @@
       "bunches": 1,
       "stems": 25,
       "line_total": 8.25,
-      "articulo_id": 34637,
+      "articulo_id": 35068,
       "articulo_name": "ROSA IGUAZU 50CM 25U CANTIZA",
       "match_status": "ok",
       "match_confidence": 1.0,
-      "link_confidence": 1.0
+      "link_confidence": 1.0,
+      "articulo_id_erp": "27781"
     },
     {
       "raw_description": "JOY 50CM N 25ST CZ",
@@ -342,11 +362,12 @@
       "bunches": 3,
       "stems": 75,
       "line_total": 24.75,
-      "articulo_id": 34689,
+      "articulo_id": 35120,
       "articulo_name": "ROSA JOY 50CM 25U CANTIZA",
       "match_status": "ok",
       "match_confidence": 1.0,
-      "link_confidence": 1.0
+      "link_confidence": 1.0,
+      "articulo_id_erp": "38746"
     },
     {
       "raw_description": "PALOMA 50CM N 25ST CZ",
@@ -358,11 +379,12 @@
       "bunches": 2,
       "stems": 50,
       "line_total": 16.5,
-      "articulo_id": 35873,
+      "articulo_id": 36354,
       "articulo_name": "ROSA PALOMA 50CM 25U CANTIZA",
       "match_status": "ok",
       "match_confidence": 1.0,
-      "link_confidence": 1.0
+      "link_confidence": 1.0,
+      "articulo_id_erp": "33996"
     },
     {
       "raw_description": "PINK MONDIAL 50CM N 25ST CZ",
@@ -374,11 +396,12 @@
       "bunches": 2,
       "stems": 50,
       "line_total": 16.5,
-      "articulo_id": 36045,
+      "articulo_id": 36538,
       "articulo_name": "ROSA PINK MONDIAL 50CM 25U CANTIZA",
       "match_status": "ok",
       "match_confidence": 1.0,
-      "link_confidence": 1.0
+      "link_confidence": 1.0,
+      "articulo_id_erp": "27697"
     },
     {
       "raw_description": "BRIGHTON 60CM N 25ST CZ",
@@ -390,11 +413,12 @@
       "bunches": 1,
       "stems": 25,
       "line_total": 9.5,
-      "articulo_id": 31927,
+      "articulo_id": 32254,
       "articulo_name": "ROSA BRIGHTON 60CM 25U CANTIZA",
       "match_status": "ok",
       "match_confidence": 1.0,
-      "link_confidence": 1.0
+      "link_confidence": 1.0,
+      "articulo_id_erp": "27689"
     },
     {
       "raw_description": "CABARET 60CM N 25ST CZ",
@@ -406,11 +430,12 @@
       "bunches": 1,
       "stems": 25,
       "line_total": 9.5,
-      "articulo_id": 32047,
+      "articulo_id": 32376,
       "articulo_name": "ROSA CABARET 60CM 25U CANTIZA",
       "match_status": "ok",
       "match_confidence": 1.0,
-      "link_confidence": 1.0
+      "link_confidence": 1.0,
+      "articulo_id_erp": "39877"
     },
     {
       "raw_description": "EXPLORER 60CM N 25ST CZ",
@@ -422,11 +447,12 @@
       "bunches": 2,
       "stems": 50,
       "line_total": 19.0,
-      "articulo_id": 33788,
+      "articulo_id": 34154,
       "articulo_name": "ROSA EXPLORER 60CM 25U CANTIZA",
       "match_status": "ok",
       "match_confidence": 1.0,
-      "link_confidence": 1.0
+      "link_confidence": 1.0,
+      "articulo_id_erp": "25649"
     },
     {
       "raw_description": "FRUTTETO 60CM N 25ST CZ",
@@ -438,11 +464,12 @@
       "bunches": 1,
       "stems": 25,
       "line_total": 9.5,
-      "articulo_id": 34112,
+      "articulo_id": 34530,
       "articulo_name": "ROSA FRUTTETO 60CM 25U CANTIZA",
       "match_status": "ok",
       "match_confidence": 1.0,
-      "link_confidence": 1.0
+      "link_confidence": 1.0,
+      "articulo_id_erp": "27690"
     },
     {
       "raw_description": "JOY 60CM N 25ST CZ",
@@ -454,11 +481,12 @@
       "bunches": 1,
       "stems": 25,
       "line_total": 9.5,
-      "articulo_id": 34690,
+      "articulo_id": 35121,
       "articulo_name": "ROSA JOY 60CM 25U CANTIZA",
       "match_status": "ok",
       "match_confidence": 1.0,
-      "link_confidence": 1.0
+      "link_confidence": 1.0,
+      "articulo_id_erp": "38056"
     },
     {
       "raw_description": "MONDIAL 60CM N 25ST CZ",
@@ -470,11 +498,12 @@
       "bunches": 2,
       "stems": 50,
       "line_total": 19.0,
-      "articulo_id": 35525,
+      "articulo_id": 35989,
       "articulo_name": "ROSA MONDIAL 60CM 25U CANTIZA",
       "match_status": "ok",
       "match_confidence": 1.0,
-      "link_confidence": 1.0
+      "link_confidence": 1.0,
+      "articulo_id_erp": "25573"
     },
     {
       "raw_description": "CABARET 50CM N 25ST CZ",
@@ -486,11 +515,12 @@
       "bunches": 6,
       "stems": 150,
       "line_total": 45.0,
-      "articulo_id": 32026,
+      "articulo_id": 32355,
       "articulo_name": "ROSA CABARET 50CM 25U CANTIZA",
       "match_status": "ok",
       "match_confidence": 1.0,
-      "link_confidence": 1.0
+      "link_confidence": 1.0,
+      "articulo_id_erp": "28522"
     },
     {
       "raw_description": "IGUANA 50CM N 25ST CZ",
@@ -502,11 +532,12 @@
       "bunches": 6,
       "stems": 150,
       "line_total": 45.0,
-      "articulo_id": 34604,
+      "articulo_id": 35034,
       "articulo_name": "ROSA IGUANA 50CM 25U CANTIZA",
       "match_status": "ok",
       "match_confidence": 1.0,
-      "link_confidence": 1.0
+      "link_confidence": 1.0,
+      "articulo_id_erp": "27677"
     },
     {
       "raw_description": "CABARET 50CM N 25ST CZ",
@@ -518,11 +549,12 @@
       "bunches": 2,
       "stems": 50,
       "line_total": 16.5,
-      "articulo_id": 32026,
+      "articulo_id": 32355,
       "articulo_name": "ROSA CABARET 50CM 25U CANTIZA",
       "match_status": "ok",
       "match_confidence": 1.0,
-      "link_confidence": 1.0
+      "link_confidence": 1.0,
+      "articulo_id_erp": "28522"
     },
     {
       "raw_description": "DEEP PURPLE 50CM N 25ST CZ",
@@ -534,11 +566,12 @@
       "bunches": 2,
       "stems": 50,
       "line_total": 16.5,
-      "articulo_id": 32615,
+      "articulo_id": 32969,
       "articulo_name": "ROSA DEEP PURPLE 50CM 25U CANTIZA",
       "match_status": "ok",
       "match_confidence": 1.0,
-      "link_confidence": 1.0
+      "link_confidence": 1.0,
+      "articulo_id_erp": "27776"
     },
     {
       "raw_description": "FRUTTETO 50CM N 25ST CZ",
@@ -550,11 +583,12 @@
       "bunches": 2,
       "stems": 50,
       "line_total": 16.5,
-      "articulo_id": 34079,
+      "articulo_id": 34497,
       "articulo_name": "ROSA FRUTTETO 50CM 25U CANTIZA",
       "match_status": "ok",
       "match_confidence": 1.0,
-      "link_confidence": 1.0
+      "link_confidence": 1.0,
+      "articulo_id_erp": "27686"
     },
     {
       "raw_description": "IGUANA 50CM N 25ST CZ",
@@ -566,11 +600,12 @@
       "bunches": 2,
       "stems": 50,
       "line_total": 16.5,
-      "articulo_id": 34604,
+      "articulo_id": 35034,
       "articulo_name": "ROSA IGUANA 50CM 25U CANTIZA",
       "match_status": "ok",
       "match_confidence": 1.0,
-      "link_confidence": 1.0
+      "link_confidence": 1.0,
+      "articulo_id_erp": "27677"
     },
     {
       "raw_description": "MAGIC TIMES 50CM N 25ST CZ",
@@ -582,11 +617,12 @@
       "bunches": 1,
       "stems": 25,
       "line_total": 10.0,
-      "articulo_id": 35203,
+      "articulo_id": 35655,
       "articulo_name": "ROSA MAGIC TIMES 50CM 25U CANTIZA",
       "match_status": "ok",
       "match_confidence": 1.0,
-      "link_confidence": 1.0
+      "link_confidence": 1.0,
+      "articulo_id_erp": "39528"
     },
     {
       "raw_description": "MAGIC TIMES 50CM N 25ST CZ",
@@ -598,11 +634,12 @@
       "bunches": 1,
       "stems": 25,
       "line_total": 10.0,
-      "articulo_id": 35203,
+      "articulo_id": 35655,
       "articulo_name": "ROSA MAGIC TIMES 50CM 25U CANTIZA",
       "match_status": "ok",
       "match_confidence": 1.0,
-      "link_confidence": 1.0
+      "link_confidence": 1.0,
+      "articulo_id_erp": "39528"
     },
     {
       "raw_description": "TUTTI FRUTTI 50CM N 20ST CZ",
@@ -614,11 +651,12 @@
       "bunches": 15,
       "stems": 300,
       "line_total": 90.0,
-      "articulo_id": 37487,
+      "articulo_id": 38042,
       "articulo_name": "ROSA TUTTI FRUTTI 50CM 20U CANTIZA",
       "match_status": "ok",
       "match_confidence": 1.0,
-      "link_confidence": 1.0
+      "link_confidence": 1.0,
+      "articulo_id_erp": "27685"
     }
   ]
 }

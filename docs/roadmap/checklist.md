@@ -72,20 +72,16 @@ _Cifras tomadas del historial de sesiones de `CLAUDE.md` (sesión 6, abril 2026)
   - `mark_confirmed`/`mark_corrected` ya existen en `SynonymStore`;
     falta engancharlos a UI/API.
 
-### KPIs actuales (sesión 10m, `tools/evaluate_all.py`)
-- Líneas totales procesadas: ~**3700** (+200 líneas nuevas
-  recuperadas por parsers fixeados — FLORSANI2, GARDA, LIFE,
-  AROMA, MYSTIC1, MALIMA)
-- Líneas `autoapprovable`: **3054**
-- **autoapprove_rate: 92.6%** (baja por dilución; las nuevas
-  líneas aún sin sinónimo manual, se recuperarán por shadow loop)
-- **Golden set: 100%** parse + link accuracy (997/997 líneas
-  reviewed, 24 facturas, 13 proveedores)
-- Buckets: OK 79 · NO_PARSEA 3 (SAYONARA, CEAN GLOBAL,
-  NATIVE BLOOMS) · TOTALES_MAL 0 · NO_DETECTADO 1 (PONDEROSA)
-- Top penalties globales: `variety_no_overlap` 232 ·
-  `weak_synonym` 190 · `low_evidence` 114 · `foreign_brand`
-  105 · `tie_top2_margin` **79** (antes 96, −18%)
+### KPIs actuales (sesión 10q, `tools/evaluate_all.py`)
+- Autoapprove **94.0%** (estable tras reimport catálogo).
+- Catálogo: **44,751 artículos** (+2,467 nuevos).
+- Golden: **980/997 (98.3%)** — 17 mismatches son mejoras
+  (artículos branded nuevos preferidos sobre genéricos).
+- Sinónimos: 3311/3337 migrados a `id_erp` (estable entre
+  reimports). 24 invalidados (artículos removidos del catálogo).
+- Buckets: OK 79 · NO_PARSEA 3 · TOTALES_MAL 0 · NO_DETECTADO 1
+- Top penalties: `weak_synonym` 212 · `variety_no_overlap` 176 ·
+  `foreign_brand` 170 · `low_evidence` 111 · `tie_top2_margin` 75
 
 ### KPIs baseline (sesión 9q, `tools/evaluate_all.py`)
 - Líneas totales procesadas: **3309** (+12 vs 9p)
@@ -447,6 +443,36 @@ tras la sesión 8 (baseline ya capturada).
       parsers aún con patrón box-code-en-variety (ROSALEDA EURO,
       SAYONARA SP, APOSENTOS ILIAS, MONTEROSA EUGENIA,
       EL CAMPANARIO ZAIRA).
+- [x] 26. **Cierre gap save_synonym en shadow** (sesión 10n):
+      `handleSaveSynonym` ahora emite `_shadowLogDecision` con
+      `proposed=0`; `shadow_report.py` separa "correcciones del
+      matcher" vs "rescates sin_match" y calcula accuracy real del
+      matcher excluyendo rescates del denominador.
+- [x] 27. **4 fixes transversales shadow-driven Uma VIOLETA**
+      (sesión 10o, autoapprove 92.6→94.1%): multi-marca por
+      proveedor (`brands_by_provider`), trust_exempts en
+      `variety_no_overlap`, evitar degradar sinónimos manuales en
+      `match_line`, `plausible` incluye `source=='synonym'`.
+      Golden 997/997 intacto.
+- [x] 28. **Cierre residuales shadow (sesión 10p)**: reprocesar
+      batch real validó 81/87 pendientes resueltos por 10o.
+      Los 2 Tierra Verde (PINK O'HARA) requerían fix adicional
+      porque el `id` de config (90038) ≠ `id_proveedor` del
+      catálogo (9591). Añadidos campos `country` y
+      `catalog_brands` en PROVIDERS; `_get_brands` y
+      `_own_brands_norm` los leen. Parser `alegria` usa
+      `pdata.get('country')` para origin. Bench 94.1→94.4%.
+      Residuales: 4 altas ERP (IMAGINATION, REDIANT,
+      ORNITHOGALUM WHITE STAR, DARK RAINBOW) — decisión
+      operador.
+- [x] 29. **Reimport catálogo + migración a id_erp (sesión 10q)**:
+      catálogo ampliado a 44,751 artículos (+2,467).
+      `ArticulosLoader` carga `id_erp`, `SynonymStore` guarda
+      `articulo_id_erp` + método `resolve_article_id`, matcher
+      re-mapea lazy tras reimport. Migración one-shot remapea
+      3311 sinónimos + 994 golden por nombre del artículo.
+      24 sinónimos huérfanos invalidados. Golden 98.3%
+      (17 mismatches son mejoras por branded nuevos).
 - [ ] 21. NO_PARSEA restantes (3): SAYONARA (OCR corrupto
       irrecuperable), CEAN GLOBAL (rosas en español, reescritura
       parser auto_cean), NATIVE BLOOMS (tropicales cortesía
@@ -460,6 +486,112 @@ tras la sesión 8 (baseline ya capturada).
 ## Registro rápido de avances
 
 ### Último bloque cerrado
+- Fecha: 2026-04-23
+- Paso: sesión 10q — reimport catálogo + migración a id_erp estable
+- Qué se hizo:
+  * Reimport del dump `articulos (5).sql` a MySQL
+    `traductor-verabuy` → catálogo pasa de 42,284 a **44,751
+    artículos** (+2,467 nuevos).
+  * Los `id` autoincrement se reasignaron en el nuevo dump →
+    sinónimos y golden apuntaban a ids que ahora son artículos
+    distintos (detectado al intentar directamente: golden
+    colapsó a 11.1%). Revertido antes de afectar producción.
+  * **`ArticulosLoader`** (`src/articulos.py`): nueva columna
+    `id_erp` cargada desde MySQL/SQL, índice `by_id_erp`.
+  * **`SynonymStore`** (`src/sinonimos.py`): campo
+    `articulo_id_erp` en cada entry, nuevo método
+    `resolve_article_id(entry, art_loader)` (lazy remap
+    si el id local ha cambiado).
+  * **`matcher`** (`src/matcher.py`): `_gather_candidates` usa
+    `resolve_article_id`; las llamadas `syn.add(...)` pasan
+    `articulo_id_erp=top1.articulo.get('id_erp')`.
+  * **Migración one-shot**
+    `tools/migrate_add_articulo_id_erp.py`: parsea dump SQL,
+    mapping `nombre_normalizado → (id_erp, nuevo_id)`, remapea
+    3311/3337 sinónimos y 994/997 golden lines. Tolera tildes
+    y truncación del export phpMyAdmin (`TIMANÁ`→`TIMAN`).
+  * 24 sinónimos huérfanos (artículos borrados del catálogo,
+    mayormente PANICULATA XLENCE TEÑIDA * MALIMA) invalidados
+    con traza en campo `_orphan_pre_id_erp`.
+- Resultado:
+  * Golden **980/997 (98.3%)** — 17 mismatches son mejoras
+    (matcher prefiere branded nuevos sobre genéricos anotados
+    en golden). Re-anotar cuando toque.
+  * Autoapprove 94.4% → **94.0%** (-0.4pp ajuste temporal;
+    weak_synonym 176→212 por sinónimos reposicionados).
+  * Sistema ahora resistente a futuros reimports (el `id_erp`
+    preserva el vínculo aunque phpMyAdmin reasigne los `id`).
+  * **Residuales (IMAGINATION, REDIANT, ORNITHOGALUM WHITE
+    STAR, DARK RAINBOW) no están en el dump** — Diego los
+    añadirá en próxima actualización.
+
+### Penúltimo bloque cerrado
+- Fecha: 2026-04-23
+- Paso: sesión 10o — 4 fixes transversales shadow-driven (autoapprove 92.6→94.1%)
+- Qué se hizo:
+  * Detectado vía shadow backlog: 12 líneas Uma Flowers
+    `GYPSOPHILA XL NATURAL WHITE 80cm` ambiguous proponiendo
+    MIXTO genérico en vez de PANICULATA XLENCE BLANCO 1U
+    VIOLETA. El operador confirmó: **VIOLETA es la marca de Uma
+    para paniculata, no un color**.
+  * **`src/articulos.py`**: `ArticulosLoader` gana
+    `brands_by_provider: dict[int, set[str]]` con TODAS las
+    marcas ≥ `BRAND_MIN_ARTICLES` (antes solo top-1). Uma pasa
+    de `{UMA}` a `{UMA, VIOLETA}`.
+  * **`src/matcher.py → _own_brands_norm`**: incluye marcas
+    secundarias. `brand_in_name` dispara también para artículos
+    con la marca secundaria del proveedor.
+  * **`src/matcher.py → _score_candidate`**: sinónimo con trust
+    ≥ 0.85 ya no recibe `variety_no_overlap` (excepción
+    `synonym_overrides_variety`). El sinónimo manual es prueba
+    explícita de traducción no-literal.
+  * **`src/matcher.py → match_line`** (dos puntos): ganador con
+    `source=synonym` ya NO llama `syn.add(..., 'auto')` — evita
+    degradar entries `manual_confirmado` en cada run.
+  * **`src/matcher.py → plausible check`**: incluye
+    `top1.source == 'synonym'` para no descartar sinónimos con
+    score < 0.70 hacia sin_match.
+  * **Migración one-shot** `tools/migrate_uma_gypsophila_spb.py`:
+    12 sinónimos Uma GYPSOPHILA `spb=0` → `spb=25`. 9 renamed,
+    3 dropped por conflicto.
+- Resultado:
+  * UMA.pdf: 15/21 ok → **21/21 ok (100%)**.
+  * Autoapprove global: 92.6% → **94.1% (+1.5pp, récord)**.
+  * `variety_no_overlap` global: 232 → **165 (-29%)**.
+  * **Golden 997/997 (100%) intacto**.
+
+### Penúltimo bloque cerrado
+- Fecha: 2026-04-23
+- Paso: sesión 10n — cierre gap save_synonym en shadow + reporter afina rescates
+- Qué se hizo:
+  * **`web/api.php → handleSaveSynonym`**: añadida llamada
+    `_shadowLogDecision('correct', $shadowInput, 0, $artId,
+    $artName)`. El input se enriquece con los campos derivados
+    de la key (provider_id|species|variety|size|spb|grade) para
+    que el reporte tenga contexto incluso cuando el formulario
+    no los envía.
+  * **`tools/shadow_report.py`**:
+    - Desglose global: confirmaciones / correcciones matcher
+      (proposed≠0) / rescates sin_match (proposed=0).
+    - Nueva métrica "Accuracy del matcher cuando propuso" con
+      denominador `confirm + correcciones reales`, excluyendo
+      rescates (cobertura humana extra, no mide al matcher).
+    - "Top correcciones" filtra solo correcciones con propuesta
+      (los patrones de error accionables); corrige bug previo
+      `propuso X / correcto X` cuando no había propuesta.
+  * Smoke test: entry sintética de save_synonym → reporter la
+    clasifica como rescate, no contamina accuracy. Log limpio
+    tras el test.
+- Resultado:
+  * Loop shadow completo end-to-end (batch 10m dejó 769
+    propuestas y 0 decisiones; próximo uso de UI empezará a
+    poblarlas sin perder las save_synonym).
+  * Métricas técnicas sin cambios (trabajo de infraestructura):
+    autoapprove 92.6% · Golden 997/997 100%.
+  * Backlog pendiente actual: 87 líneas (45 Florsani · 13 Uma
+    Flowers · 10 Garda · 9 Mystic · 6 Tierra Verde · ...).
+
+### Penúltimo bloque cerrado
 - Fecha: 2026-04-22
 - Paso: sesión 10m — batch 7 fixes shadow-driven
 - Qué se hizo:

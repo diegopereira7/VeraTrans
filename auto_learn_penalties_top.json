@@ -1,33 +1,37 @@
 {
   "top": [
     [
-      "variety_no_overlap",
-      231
-    ],
-    [
       "weak_synonym",
-      186
+      255
     ],
     [
-      "tie_top2_margin",
-      123
-    ],
-    [
-      "low_evidence",
-      114
+      "variety_no_overlap",
+      174
     ],
     [
       "foreign_brand",
-      105
+      166
+    ],
+    [
+      "tie_top2_margin",
+      99
+    ],
+    [
+      "low_evidence",
+      65
+    ],
+    [
+      "color_modifier_extra",
+      48
     ],
     [
       "size_off",
-      18
+      16
     ],
     [
       "generic_vs_own_brand",
-      9
+      10
     ]
   ],
-  "total_penalties": 786
+  "total_penalties": 833
 }

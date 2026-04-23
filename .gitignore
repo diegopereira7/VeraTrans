@@ -16,3 +16,7 @@ batch_results/*.xlsx
 shadow_log.jsonl
 sinonimos_universal.json.backup_*
 FACTURAS BRISSAS/
+articulos*.sql
+articulos_backup_*.sql
+golden/backups_*/
+golden/pendientes/

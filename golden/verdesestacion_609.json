@@ -22,11 +22,12 @@
       "bunches": 0,
       "stems": 300,
       "line_total": 48.0,
-      "articulo_id": 33912,
+      "articulo_id": 34296,
       "articulo_name": "ROSA FREEDOM 40CM 25U PONDEROSA",
       "match_status": "ok",
       "match_confidence": 1.0,
-      "link_confidence": 1.0
+      "link_confidence": 1.0,
+      "articulo_id_erp": "27468"
     },
     {
       "raw_description": "54 / 60 0,50 1,00 Explorer 40 300 TIPO B VERALEZA SLU FRESH CUT ROSES*25 CO 0603110000 $ 0,16 $ 48,00",
@@ -38,11 +39,12 @@
       "bunches": 0,
       "stems": 300,
       "line_total": 48.0,
-      "articulo_id": 33731,
+      "articulo_id": 34088,
       "articulo_name": "ROSA EXPLORER 40CM 25U PONDEROSA",
       "match_status": "ok",
       "match_confidence": 1.0,
-      "link_confidence": 1.0
+      "link_confidence": 1.0,
+      "articulo_id_erp": "25650"
     },
     {
       "raw_description": "55 / 60 0,50 1,00 Frutteto 40 25 TIPO B VERALEZA SLU FRESH CUT ROSES*25 CO 0603110000 $ 0,16 $ 4,00",
@@ -54,11 +56,12 @@
       "bunches": 0,
       "stems": 25,
       "line_total": 4.0,
-      "articulo_id": 34066,
+      "articulo_id": 34484,
       "articulo_name": "ROSA FRUTTETO 40CM 25U PONDEROSA",
       "match_status": "ok",
       "match_confidence": 1.0,
-      "link_confidence": 1.0
+      "link_confidence": 1.0,
+      "articulo_id_erp": "32726"
     },
     {
       "raw_description": "Vendela 40 75 TIPO B VERALEZA SLU FRESH CUT ROSES*25 CO 0603110000 $ 0,16 $ 12,00",
@@ -70,11 +73,12 @@
       "bunches": 0,
       "stems": 75,
       "line_total": 12.0,
-      "articulo_id": 37531,
+      "articulo_id": 38087,
       "articulo_name": "ROSA VENDELA 40CM 25U PONDEROSA",
       "match_status": "ok",
       "match_confidence": 1.0,
-      "link_confidence": 1.0
+      "link_confidence": 1.0,
+      "articulo_id_erp": "27641"
     },
     {
       "raw_description": "Orange 40 25 TIPO B VERALEZA SLU FRESH CUT ROSES*25 CO 0603110000 $ 0,16 $ 4,00",
@@ -86,11 +90,12 @@
       "bunches": 0,
       "stems": 25,
       "line_total": 4.0,
-      "articulo_id": 35810,
+      "articulo_id": 36284,
       "articulo_name": "ROSA ORANGE CRUSH 40CM 25U PONDEROSA",
       "match_status": "ok",
       "match_confidence": 1.0,
-      "link_confidence": 1.0
+      "link_confidence": 1.0,
+      "articulo_id_erp": "27965"
     },
     {
       "raw_description": "Brighton 40 25 TIPO B VERALEZA SLU FRESH CUT ROSES*25 CO 0603110000 $ 0,16 $ 4,00",
@@ -102,11 +107,12 @@
       "bunches": 0,
       "stems": 25,
       "line_total": 4.0,
-      "articulo_id": 31887,
+      "articulo_id": 32212,
       "articulo_name": "ROSA BRIGHTON 40CM 25U PONDEROSA",
       "match_status": "ok",
       "match_confidence": 1.0,
-      "link_confidence": 1.0
+      "link_confidence": 1.0,
+      "articulo_id_erp": "34303"
     },
     {
       "raw_description": "High and magic 40 50 TIPO B VERALEZA SLU FRESH CUT ROSES*25 CO 0603110000 $ 0,16 $ 8,00",
@@ -118,11 +124,12 @@
       "bunches": 0,
       "stems": 50,
       "line_total": 8.0,
-      "articulo_id": 34468,
+      "articulo_id": 34897,
       "articulo_name": "ROSA HIGH MAGIC 40CM 25U PONDEROSA",
       "match_status": "ok",
       "match_confidence": 1.0,
-      "link_confidence": 1.0
+      "link_confidence": 1.0,
+      "articulo_id_erp": "27753"
     },
     {
       "raw_description": "Malibu 40 25 TIPO B VERALEZA SLU FRESH CUT ROSES*25 CO 0603110000 $ 0,16 $ 4,00",
@@ -134,11 +141,12 @@
       "bunches": 0,
       "stems": 25,
       "line_total": 4.0,
-      "articulo_id": 35219,
+      "articulo_id": 35672,
       "articulo_name": "ROSA MALIBU 40CM 25U PONDEROSA",
       "match_status": "ok",
       "match_confidence": 1.0,
-      "link_confidence": 1.0
+      "link_confidence": 1.0,
+      "articulo_id_erp": "27644"
     },
     {
       "raw_description": "Explorer 40 25 TIPO B VERALEZA SLU FRESH CUT ROSES*25 CO 0603110000 $ 0,16 $ 4,00",
@@ -150,11 +158,12 @@
       "bunches": 0,
       "stems": 25,
       "line_total": 4.0,
-      "articulo_id": 33731,
+      "articulo_id": 34088,
       "articulo_name": "ROSA EXPLORER 40CM 25U PONDEROSA",
       "match_status": "ok",
       "match_confidence": 1.0,
-      "link_confidence": 1.0
+      "link_confidence": 1.0,
+      "articulo_id_erp": "25650"
     },
     {
       "raw_description": "Pink mondial 40 50 TIPO B VERALEZA SLU FRESH CUT ROSES*25 CO 0603110000 $ 0,16 $ 8,00",
@@ -166,11 +175,12 @@
       "bunches": 0,
       "stems": 50,
       "line_total": 8.0,
-      "articulo_id": 36047,
+      "articulo_id": 36540,
       "articulo_name": "ROSA PINK MONDIAL 40CM 25U PONDEROSA",
       "match_status": "ok",
       "match_confidence": 1.0,
-      "link_confidence": 1.0
+      "link_confidence": 1.0,
+      "articulo_id_erp": "27961"
     },
     {
       "raw_description": "56 / 60 0,50 1,00 Orange 40 25 TIPO B VERALEZA SLU FRESH CUT ROSES*25 CO 0603110000 $ 0,16 $ 4,00",
@@ -182,11 +192,12 @@
       "bunches": 0,
       "stems": 25,
       "line_total": 4.0,
-      "articulo_id": 35810,
+      "articulo_id": 36284,
       "articulo_name": "ROSA ORANGE CRUSH 40CM 25U PONDEROSA",
       "match_status": "ok",
       "match_confidence": 1.0,
-      "link_confidence": 1.0
+      "link_confidence": 1.0,
+      "articulo_id_erp": "27965"
     },
     {
       "raw_description": "Pink mondial 40 50 TIPO B VERALEZA SLU FRESH CUT ROSES*25 CO 0603110000 $ 0,16 $ 8,00",
@@ -198,11 +209,12 @@
       "bunches": 0,
       "stems": 50,
       "line_total": 8.0,
-      "articulo_id": 36047,
+      "articulo_id": 36540,
       "articulo_name": "ROSA PINK MONDIAL 40CM 25U PONDEROSA",
       "match_status": "ok",
       "match_confidence": 1.0,
-      "link_confidence": 1.0
+      "link_confidence": 1.0,
+      "articulo_id_erp": "27961"
     },
     {
       "raw_description": "Mondial 40 25 TIPO B VERALEZA SLU FRESH CUT ROSES*25 CO 0603110000 $ 0,16 $ 4,00",
@@ -214,11 +226,12 @@
       "bunches": 0,
       "stems": 25,
       "line_total": 4.0,
-      "articulo_id": 35436,
+      "articulo_id": 35900,
       "articulo_name": "ROSA MONDIAL 40CM 25U PONDEROSA",
       "match_status": "ok",
       "match_confidence": 1.0,
-      "link_confidence": 1.0
+      "link_confidence": 1.0,
+      "articulo_id_erp": "25578"
     },
     {
       "raw_description": "Freedom 40 75 TIPO B VERALEZA SLU FRESH CUT ROSES*25 CO 0603110000 $ 0,16 $ 12,00",
@@ -230,11 +243,12 @@
       "bunches": 0,
       "stems": 75,
       "line_total": 12.0,
-      "articulo_id": 33912,
+      "articulo_id": 34296,
       "articulo_name": "ROSA FREEDOM 40CM 25U PONDEROSA",
       "match_status": "ok",
       "match_confidence": 1.0,
-      "link_confidence": 1.0
+      "link_confidence": 1.0,
+      "articulo_id_erp": "27468"
     },
     {
       "raw_description": "Silantoy 40 50 TIPO B VERALEZA SLU FRESH CUT ROSES*25 CO 0603110000 $ 0,16 $ 8,00",
@@ -246,11 +260,12 @@
       "bunches": 0,
       "stems": 50,
       "line_total": 8.0,
-      "articulo_id": 36519,
+      "articulo_id": 37051,
       "articulo_name": "ROSA SILANTOI 40CM 25U PONDEROSA",
       "match_status": "ok",
       "match_confidence": 0.975,
-      "link_confidence": 0.975
+      "link_confidence": 0.975,
+      "articulo_id_erp": "34300"
     },
     {
       "raw_description": "Brighton 40 25 TIPO B VERALEZA SLU FRESH CUT ROSES*25 CO 0603110000 $ 0,16 $ 4,00",
@@ -262,11 +277,12 @@
       "bunches": 0,
       "stems": 25,
       "line_total": 4.0,
-      "articulo_id": 31887,
+      "articulo_id": 32212,
       "articulo_name": "ROSA BRIGHTON 40CM 25U PONDEROSA",
       "match_status": "ok",
       "match_confidence": 1.0,
-      "link_confidence": 1.0
+      "link_confidence": 1.0,
+      "articulo_id_erp": "34303"
     },
     {
       "raw_description": "Vendela 40 25 TIPO B VERALEZA SLU FRESH CUT ROSES*25 CO 0603110000 $ 0,16 $ 4,00",
@@ -278,11 +294,12 @@
       "bunches": 0,
       "stems": 25,
       "line_total": 4.0,
-      "articulo_id": 37531,
+      "articulo_id": 38087,
       "articulo_name": "ROSA VENDELA 40CM 25U PONDEROSA",
       "match_status": "ok",
       "match_confidence": 1.0,
-      "link_confidence": 1.0
+      "link_confidence": 1.0,
+      "articulo_id_erp": "27641"
     },
     {
       "raw_description": "Carrousel 40 25 TIPO B VERALEZA SLU FRESH CUT ROSES*25 CO 0603110000 $ 0,16 $ 4,00",
@@ -294,11 +311,12 @@
       "bunches": 0,
       "stems": 25,
       "line_total": 4.0,
-      "articulo_id": 32143,
+      "articulo_id": 32477,
       "articulo_name": "ROSA CARROUSEL 40CM 25U PONDEROSA",
       "match_status": "ok",
       "match_confidence": 1.0,
-      "link_confidence": 1.0
+      "link_confidence": 1.0,
+      "articulo_id_erp": "34301"
     },
     {
       "raw_description": "57 / 60 0,50 1,00 Pink mondial 40 50 TIPO B VERALEZA SLU FRESH CUT ROSES*25 CO 0603110000 $ 0,16 $ 8,00",
@@ -310,11 +328,12 @@
       "bunches": 0,
       "stems": 50,
       "line_total": 8.0,
-      "articulo_id": 36047,
+      "articulo_id": 36540,
       "articulo_name": "ROSA PINK MONDIAL 40CM 25U PONDEROSA",
       "match_status": "ok",
       "match_confidence": 1.0,
-      "link_confidence": 1.0
+      "link_confidence": 1.0,
+      "articulo_id_erp": "27961"
     },
     {
       "raw_description": "Explorer 40 50 TIPO B VERALEZA SLU FRESH CUT ROSES*25 CO 0603110000 $ 0,16 $ 8,00",
@@ -326,11 +345,12 @@
       "bunches": 0,
       "stems": 50,
       "line_total": 8.0,
-      "articulo_id": 33731,
+      "articulo_id": 34088,
       "articulo_name": "ROSA EXPLORER 40CM 25U PONDEROSA",
       "match_status": "ok",
       "match_confidence": 1.0,
-      "link_confidence": 1.0
+      "link_confidence": 1.0,
+      "articulo_id_erp": "25650"
     },
     {
       "raw_description": "Atomic 40 25 TIPO B VERALEZA SLU FRESH CUT ROSES*25 CO 0603110000 $ 0,16 $ 4,00",
@@ -342,11 +362,12 @@
       "bunches": 0,
       "stems": 25,
       "line_total": 4.0,
-      "articulo_id": 31708,
+      "articulo_id": 32028,
       "articulo_name": "ROSA ATOMIC 40CM 25U PONDEROSA",
       "match_status": "ok",
       "match_confidence": 1.0,
-      "link_confidence": 1.0
+      "link_confidence": 1.0,
+      "articulo_id_erp": "32638"
     },
     {
       "raw_description": "Vendela 40 50 TIPO B VERALEZA SLU FRESH CUT ROSES*25 CO 0603110000 $ 0,16 $ 8,00",
@@ -358,11 +379,12 @@
       "bunches": 0,
       "stems": 50,
       "line_total": 8.0,
-      "articulo_id": 37531,
+      "articulo_id": 38087,
       "articulo_name": "ROSA VENDELA 40CM 25U PONDEROSA",
       "match_status": "ok",
       "match_confidence": 1.0,
-      "link_confidence": 1.0
+      "link_confidence": 1.0,
+      "articulo_id_erp": "27641"
     },
     {
       "raw_description": "Mondial 40 25 TIPO B VERALEZA SLU FRESH CUT ROSES*25 CO 0603110000 $ 0,16 $ 4,00",
@@ -374,11 +396,12 @@
       "bunches": 0,
       "stems": 25,
       "line_total": 4.0,
-      "articulo_id": 35436,
+      "articulo_id": 35900,
       "articulo_name": "ROSA MONDIAL 40CM 25U PONDEROSA",
       "match_status": "ok",
       "match_confidence": 1.0,
-      "link_confidence": 1.0
+      "link_confidence": 1.0,
+      "articulo_id_erp": "25578"
     },
     {
       "raw_description": "Frutteto 40 25 TIPO B VERALEZA SLU FRESH CUT ROSES*25 CO 0603110000 $ 0,16 $ 4,00",
@@ -390,11 +413,12 @@
       "bunches": 0,
       "stems": 25,
       "line_total": 4.0,
-      "articulo_id": 34066,
+      "articulo_id": 34484,
       "articulo_name": "ROSA FRUTTETO 40CM 25U PONDEROSA",
       "match_status": "ok",
       "match_confidence": 1.0,
-      "link_confidence": 1.0
+      "link_confidence": 1.0,
+      "articulo_id_erp": "32726"
     },
     {
       "raw_description": "Brighton 40 50 TIPO B VERALEZA SLU FRESH CUT ROSES*25 CO 0603110000 $ 0,16 $ 8,00",
@@ -406,11 +430,12 @@
       "bunches": 0,
       "stems": 50,
       "line_total": 8.0,
-      "articulo_id": 31887,
+      "articulo_id": 32212,
       "articulo_name": "ROSA BRIGHTON 40CM 25U PONDEROSA",
       "match_status": "ok",
       "match_confidence": 1.0,
-      "link_confidence": 1.0
+      "link_confidence": 1.0,
+      "articulo_id_erp": "34303"
     },
     {
       "raw_description": "Carrousel 40 25 TIPO B VERALEZA SLU FRESH CUT ROSES*25 CO 0603110000 $ 0,16 $ 4,00",
@@ -422,11 +447,12 @@
       "bunches": 0,
       "stems": 25,
       "line_total": 4.0,
-      "articulo_id": 32143,
+      "articulo_id": 32477,
       "articulo_name": "ROSA CARROUSEL 40CM 25U PONDEROSA",
       "match_status": "ok",
       "match_confidence": 1.0,
-      "link_confidence": 1.0
+      "link_confidence": 1.0,
+      "articulo_id_erp": "34301"
     },
     {
       "raw_description": "58 / 60 0,50 1,00 Silantoy 40 50 TIPO B VERALEZA SLU FRESH CUT ROSES*25 CO 0603110000 $ 0,16 $ 8,00",
@@ -438,11 +464,12 @@
       "bunches": 0,
       "stems": 50,
       "line_total": 8.0,
-      "articulo_id": 36519,
+      "articulo_id": 37051,
       "articulo_name": "ROSA SILANTOI 40CM 25U PONDEROSA",
       "match_status": "ok",
       "match_confidence": 0.975,
-      "link_confidence": 0.975
+      "link_confidence": 0.975,
+      "articulo_id_erp": "34300"
     },
     {
       "raw_description": "Vendela 40 25 TIPO B VERALEZA SLU FRESH CUT ROSES*25 CO 0603110000 $ 0,16 $ 4,00",
@@ -454,11 +481,12 @@
       "bunches": 0,
       "stems": 25,
       "line_total": 4.0,
-      "articulo_id": 37531,
+      "articulo_id": 38087,
       "articulo_name": "ROSA VENDELA 40CM 25U PONDEROSA",
       "match_status": "ok",
       "match_confidence": 1.0,
-      "link_confidence": 1.0
+      "link_confidence": 1.0,
+      "articulo_id_erp": "27641"
     },
     {
       "raw_description": "Explorer 40 25 TIPO B VERALEZA SLU FRESH CUT ROSES*25 CO 0603110000 $ 0,16 $ 4,00",
@@ -470,11 +498,12 @@
       "bunches": 0,
       "stems": 25,
       "line_total": 4.0,
-      "articulo_id": 33731,
+      "articulo_id": 34088,
       "articulo_name": "ROSA EXPLORER 40CM 25U PONDEROSA",
       "match_status": "ok",
       "match_confidence": 1.0,
-      "link_confidence": 1.0
+      "link_confidence": 1.0,
+      "articulo_id_erp": "25650"
     },
     {
       "raw_description": "Topaz 40 25 TIPO B VERALEZA SLU FRESH CUT ROSES*25 CO 0603110000 $ 0,16 $ 4,00",
@@ -486,11 +515,12 @@
       "bunches": 0,
       "stems": 25,
       "line_total": 4.0,
-      "articulo_id": 37213,
+      "articulo_id": 37778,
       "articulo_name": "ROSA TOPAZ 40CM 25U PONDEROSA",
       "match_status": "ok",
       "match_confidence": 1.0,
-      "link_confidence": 1.0
+      "link_confidence": 1.0,
+      "articulo_id_erp": "27963"
     },
     {
       "raw_description": "Frutteto 40 25 TIPO B VERALEZA SLU FRESH CUT ROSES*25 CO 0603110000 $ 0,16 $ 4,00",
@@ -502,11 +532,12 @@
       "bunches": 0,
       "stems": 25,
       "line_total": 4.0,
-      "articulo_id": 34066,
+      "articulo_id": 34484,
       "articulo_name": "ROSA FRUTTETO 40CM 25U PONDEROSA",
       "match_status": "ok",
       "match_confidence": 1.0,
-      "link_confidence": 1.0
+      "link_confidence": 1.0,
+      "articulo_id_erp": "32726"
     },
     {
       "raw_description": "Orange 40 50 TIPO B VERALEZA SLU FRESH CUT ROSES*25 CO 0603110000 $ 0,16 $ 8,00",
@@ -518,11 +549,12 @@
       "bunches": 0,
       "stems": 50,
       "line_total": 8.0,
-      "articulo_id": 35810,
+      "articulo_id": 36284,
       "articulo_name": "ROSA ORANGE CRUSH 40CM 25U PONDEROSA",
       "match_status": "ok",
       "match_confidence": 1.0,
-      "link_confidence": 1.0
+      "link_confidence": 1.0,
+      "articulo_id_erp": "27965"
     },
     {
       "raw_description": "Carrousel 40 25 TIPO B VERALEZA SLU FRESH CUT ROSES*25 CO 0603110000 $ 0,16 $ 4,00",
@@ -534,11 +566,12 @@
       "bunches": 0,
       "stems": 25,
       "line_total": 4.0,
-      "articulo_id": 32143,
+      "articulo_id": 32477,
       "articulo_name": "ROSA CARROUSEL 40CM 25U PONDEROSA",
       "match_status": "ok",
       "match_confidence": 1.0,
-      "link_confidence": 1.0
+      "link_confidence": 1.0,
+      "articulo_id_erp": "34301"
     },
     {
       "raw_description": "Pink mondial 40 50 TIPO B VERALEZA SLU FRESH CUT ROSES*25 CO 0603110000 $ 0,16 $ 8,00",
@@ -550,11 +583,12 @@
       "bunches": 0,
       "stems": 50,
       "line_total": 8.0,
-      "articulo_id": 36047,
+      "articulo_id": 36540,
       "articulo_name": "ROSA PINK MONDIAL 40CM 25U PONDEROSA",
       "match_status": "ok",
       "match_confidence": 1.0,
-      "link_confidence": 1.0
+      "link_confidence": 1.0,
+      "articulo_id_erp": "27961"
     },
     {
       "raw_description": "Mondial 40 25 TIPO B VERALEZA SLU FRESH CUT ROSES*25 CO 0603110000 $ 0,16 $ 4,00",
@@ -566,11 +600,12 @@
       "bunches": 0,
       "stems": 25,
       "line_total": 4.0,
-      "articulo_id": 35436,
+      "articulo_id": 35900,
       "articulo_name": "ROSA MONDIAL 40CM 25U PONDEROSA",
       "match_status": "ok",
       "match_confidence": 1.0,
-      "link_confidence": 1.0
+      "link_confidence": 1.0,
+      "articulo_id_erp": "25578"
     },
     {
       "raw_description": "59 / 60 0,50 1,00 Frutteto 40 100 TIPO B VERALEZA SLU FRESH CUT ROSES*25 CO 0603110000 $ 0,16 $ 16,00",
@@ -582,11 +617,12 @@
       "bunches": 0,
       "stems": 100,
       "line_total": 16.0,
-      "articulo_id": 34066,
+      "articulo_id": 34484,
       "articulo_name": "ROSA FRUTTETO 40CM 25U PONDEROSA",
       "match_status": "ok",
       "match_confidence": 1.0,
-      "link_confidence": 1.0
+      "link_confidence": 1.0,
+      "articulo_id_erp": "32726"
     },
     {
       "raw_description": "Magic time 40 25 TIPO B VERALEZA SLU FRESH CUT ROSES*25 CO 0603110000 $ 0,16 $ 4,00",
@@ -598,11 +634,12 @@
       "bunches": 0,
       "stems": 25,
       "line_total": 4.0,
-      "articulo_id": 35187,
+      "articulo_id": 35638,
       "articulo_name": "ROSA MAGIC TIMES 40CM 25U PONDEROSA",
       "match_status": "ok",
       "match_confidence": 1.0,
-      "link_confidence": 1.0
+      "link_confidence": 1.0,
+      "articulo_id_erp": "34161"
     },
     {
       "raw_description": "Pink mondial 40 25 TIPO B VERALEZA SLU FRESH CUT ROSES*25 CO 0603110000 $ 0,16 $ 4,00",
@@ -614,11 +651,12 @@
       "bunches": 0,
       "stems": 25,
       "line_total": 4.0,
-      "articulo_id": 36047,
+      "articulo_id": 36540,
       "articulo_name": "ROSA PINK MONDIAL 40CM 25U PONDEROSA",
       "match_status": "ok",
       "match_confidence": 1.0,
-      "link_confidence": 1.0
+      "link_confidence": 1.0,
+      "articulo_id_erp": "27961"
     },
     {
       "raw_description": "Explorer 40 25 TIPO B VERALEZA SLU FRESH CUT ROSES*25 CO 0603110000 $ 0,16 $ 4,00",
@@ -630,11 +668,12 @@
       "bunches": 0,
       "stems": 25,
       "line_total": 4.0,
-      "articulo_id": 33731,
+      "articulo_id": 34088,
       "articulo_name": "ROSA EXPLORER 40CM 25U PONDEROSA",
       "match_status": "ok",
       "match_confidence": 1.0,
-      "link_confidence": 1.0
+      "link_confidence": 1.0,
+      "articulo_id_erp": "25650"
     },
     {
       "raw_description": "Topaz 40 50 TIPO B VERALEZA SLU FRESH CUT ROSES*25 CO 0603110000 $ 0,16 $ 8,00",
@@ -646,11 +685,12 @@
       "bunches": 0,
       "stems": 50,
       "line_total": 8.0,
-      "articulo_id": 37213,
+      "articulo_id": 37778,
       "articulo_name": "ROSA TOPAZ 40CM 25U PONDEROSA",
       "match_status": "ok",
       "match_confidence": 1.0,
-      "link_confidence": 1.0
+      "link_confidence": 1.0,
+      "articulo_id_erp": "27963"
     },
     {
       "raw_description": "Vendela 40 25 TIPO B VERALEZA SLU FRESH CUT ROSES*25 CO 0603110000 $ 0,16 $ 4,00",
@@ -662,11 +702,12 @@
       "bunches": 0,
       "stems": 25,
       "line_total": 4.0,
-      "articulo_id": 37531,
+      "articulo_id": 38087,
       "articulo_name": "ROSA VENDELA 40CM 25U PONDEROSA",
       "match_status": "ok",
       "match_confidence": 1.0,
-      "link_confidence": 1.0
+      "link_confidence": 1.0,
+      "articulo_id_erp": "27641"
     },
     {
       "raw_description": "Atomic 40 50 TIPO B VERALEZA SLU FRESH CUT ROSES*25 CO 0603110000 $ 0,16 $ 8,00",
@@ -678,11 +719,12 @@
       "bunches": 0,
       "stems": 50,
       "line_total": 8.0,
-      "articulo_id": 31708,
+      "articulo_id": 32028,
       "articulo_name": "ROSA ATOMIC 40CM 25U PONDEROSA",
       "match_status": "ok",
       "match_confidence": 1.0,
-      "link_confidence": 1.0
+      "link_confidence": 1.0,
+      "articulo_id_erp": "32638"
     },
     {
       "raw_description": "60 / 60 0,50 1,00 Brighton 40 50 TIPO B VERALEZA SLU FRESH CUT ROSES*25 CO 0603110000 $ 0,16 $ 8,00",
@@ -694,11 +736,12 @@
       "bunches": 0,
       "stems": 50,
       "line_total": 8.0,
-      "articulo_id": 31887,
+      "articulo_id": 32212,
       "articulo_name": "ROSA BRIGHTON 40CM 25U PONDEROSA",
       "match_status": "ok",
       "match_confidence": 1.0,
-      "link_confidence": 1.0
+      "link_confidence": 1.0,
+      "articulo_id_erp": "34303"
     },
     {
       "raw_description": "Explorer 40 25 TIPO B VERALEZA SLU FRESH CUT ROSES*25 CO 0603110000 $ 0,16 $ 4,00",
@@ -710,11 +753,12 @@
       "bunches": 0,
       "stems": 25,
       "line_total": 4.0,
-      "articulo_id": 33731,
+      "articulo_id": 34088,
       "articulo_name": "ROSA EXPLORER 40CM 25U PONDEROSA",
       "match_status": "ok",
       "match_confidence": 1.0,
-      "link_confidence": 1.0
+      "link_confidence": 1.0,
+      "articulo_id_erp": "25650"
     },
     {
       "raw_description": "Frutteto 40 25 TIPO B VERALEZA SLU FRESH CUT ROSES*25 CO 0603110000 $ 0,16 $ 4,00",
@@ -726,11 +770,12 @@
       "bunches": 0,
       "stems": 25,
       "line_total": 4.0,
-      "articulo_id": 34066,
+      "articulo_id": 34484,
       "articulo_name": "ROSA FRUTTETO 40CM 25U PONDEROSA",
       "match_status": "ok",
       "match_confidence": 1.0,
-      "link_confidence": 1.0
+      "link_confidence": 1.0,
+      "articulo_id_erp": "32726"
     },
     {
       "raw_description": "Mondial 40 50 TIPO B VERALEZA SLU FRESH CUT ROSES*25 CO 0603110000 $ 0,16 $ 8,00",
@@ -742,11 +787,12 @@
       "bunches": 0,
       "stems": 50,
       "line_total": 8.0,
-      "articulo_id": 35436,
+      "articulo_id": 35900,
       "articulo_name": "ROSA MONDIAL 40CM 25U PONDEROSA",
       "match_status": "ok",
       "match_confidence": 1.0,
-      "link_confidence": 1.0
+      "link_confidence": 1.0,
+      "articulo_id_erp": "25578"
     },
     {
       "raw_description": "Carrousel 40 50 TIPO B VERALEZA SLU FRESH CUT ROSES*25 CO 0603110000 $ 0,16 $ 8,00",
@@ -758,11 +804,12 @@
       "bunches": 0,
       "stems": 50,
       "line_total": 8.0,
-      "articulo_id": 32143,
+      "articulo_id": 32477,
       "articulo_name": "ROSA CARROUSEL 40CM 25U PONDEROSA",
       "match_status": "ok",
       "match_confidence": 1.0,
-      "link_confidence": 1.0
+      "link_confidence": 1.0,
+      "articulo_id_erp": "34301"
     },
     {
       "raw_description": "Pink mondial 40 25 TIPO B VERALEZA SLU FRESH CUT ROSES*25 CO 0603110000 $ 0,16 $ 4,00",
@@ -774,11 +821,12 @@
       "bunches": 0,
       "stems": 25,
       "line_total": 4.0,
-      "articulo_id": 36047,
+      "articulo_id": 36540,
       "articulo_name": "ROSA PINK MONDIAL 40CM 25U PONDEROSA",
       "match_status": "ok",
       "match_confidence": 1.0,
-      "link_confidence": 1.0
+      "link_confidence": 1.0,
+      "articulo_id_erp": "27961"
     },
     {
       "raw_description": "Blush 40 25 TIPO B VERALEZA SLU FRESH CUT ROSES*25 CO 0603110000 $ 0,16 $ 4,00",
@@ -790,11 +838,12 @@
       "bunches": 0,
       "stems": 25,
       "line_total": 4.0,
-      "articulo_id": 31817,
+      "articulo_id": 32138,
       "articulo_name": "ROSA BLUSH 40CM 25U PONDEROSA",
       "match_status": "ok",
       "match_confidence": 1.0,
-      "link_confidence": 1.0
+      "link_confidence": 1.0,
+      "articulo_id_erp": "27632"
     },
     {
       "raw_description": "Vendela 40 25 TIPO B VERALEZA SLU FRESH CUT ROSES*25 CO 0603110000 $ 0,16 $ 4,00",
@@ -806,11 +855,12 @@
       "bunches": 0,
       "stems": 25,
       "line_total": 4.0,
-      "articulo_id": 37531,
+      "articulo_id": 38087,
       "articulo_name": "ROSA VENDELA 40CM 25U PONDEROSA",
       "match_status": "ok",
       "match_confidence": 1.0,
-      "link_confidence": 1.0
+      "link_confidence": 1.0,
+      "articulo_id_erp": "27641"
     },
     {
       "raw_description": "Topaz 40 25 TIPO B VERALEZA SLU FRESH CUT ROSES*25 CO 0603110000 $ 0,16 $ 4,00",
@@ -822,11 +872,12 @@
       "bunches": 0,
       "stems": 25,
       "line_total": 4.0,
-      "articulo_id": 37213,
+      "articulo_id": 37778,
       "articulo_name": "ROSA TOPAZ 40CM 25U PONDEROSA",
       "match_status": "ok",
       "match_confidence": 1.0,
-      "link_confidence": 1.0
+      "link_confidence": 1.0,
+      "articulo_id_erp": "27963"
     }
   ]
 }

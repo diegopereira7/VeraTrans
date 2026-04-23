@@ -309,9 +309,44 @@ class SynonymStore:
             return self.syns.get(fallback_key)
         return None
 
+    def resolve_article_id(self, entry: dict, art_loader) -> int:
+        """Devuelve el `articulo_id` actual del sinónimo, usando `id_erp`
+        como clave estable si el id local ha cambiado tras un reimport
+        de la tabla MySQL.
+
+        Pasos:
+        1. Si el entry tiene `articulo_id_erp` y el art_loader lo conoce,
+           devolver el id actual de ese id_erp (y actualizar el entry si
+           no coincide — lazy remap).
+        2. Si no hay id_erp, fallback al `articulo_id` tal cual.
+        """
+        art_id = int(entry.get('articulo_id') or 0)
+        erp = (entry.get('articulo_id_erp') or '').strip()
+        if erp and getattr(art_loader, 'by_id_erp', None):
+            art = art_loader.by_id_erp.get(erp)
+            if art:
+                current_id = int(art.get('id') or 0)
+                if current_id and current_id != art_id:
+                    # Lazy remap — actualizamos el entry para próximas
+                    # consultas y dejamos rastro del cambio.
+                    entry['articulo_id'] = current_id
+                    entry['articulo_name'] = art.get('nombre') or entry.get('articulo_name', '')
+                    entry['_id_remapped_at'] = datetime.now().isoformat(timespec='seconds')
+                    self._mark_dirty()
+                return current_id
+        return art_id
+
+    def _mark_dirty(self) -> None:
+        """Registra que hay cambios pendientes de persistir al disco.
+
+        `save()` internamente respeta el contexto batch (difiere la
+        escritura real si estamos dentro de un `with syn.batch()`).
+        """
+        self.save()
+
     def add(self, provider_id: int, line: InvoiceLine,
             articulo_id: int, articulo_name: str, origin: str = 'manual',
-            invoice: str = '') -> None:
+            invoice: str = '', articulo_id_erp: str = '') -> None:
         """Añade o actualiza un sinónimo.
 
         Si el sinónimo ya existe y se está actualizando al MISMO artículo,
@@ -319,6 +354,11 @@ class SynonymStore:
         el artículo, se asume que el operador lo corrigió → llama a
         mark_corrected antes de pisar y reinicia el nuevo con status
         adecuado por origin.
+
+        `articulo_id_erp` (opcional): identificador estable del ERP externo.
+        Se guarda junto al id para poder re-mapear si el `id` autoincrement
+        cambia tras un reimport del dump SQL. Los callers deberían pasarlo
+        extrayendo `art.get('id_erp')` del dict del catálogo.
         """
         k = self._key(provider_id, line)
         prev = self.syns.get(k)
@@ -367,8 +407,14 @@ class SynonymStore:
             times_confirmed += 1
             last_confirmed = now
 
+        # Preservar el id_erp previo si el caller no lo pasa (refresh
+        # de metadatos sin el dict del catálogo a mano).
+        if not articulo_id_erp and prev:
+            articulo_id_erp = prev.get('articulo_id_erp', '') or ''
+
         entry = {
             'articulo_id': articulo_id,
+            'articulo_id_erp': articulo_id_erp,
             'articulo_name': articulo_name,
             'origen': origin,
             'status': status,

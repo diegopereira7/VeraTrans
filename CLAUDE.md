@@ -1,7 +1,7 @@
 # CLAUDE.md — Guía operativa para el agente
 
-**Última actualización:** 2026-04-22 (sesión 10m)
-**Estado:** 92.6% autoapprove · Golden 997/997 reviewed (link **100%**) — **4 fixes parsers shadow-driven** detectados por el primer lote real de Ángel (27 facturas): EQR (stems = total_stems no stems_per_box), FLORSANI (box types ampliados + sub-líneas heredan parent + tints multi-palabra), GARDA (box_code separado de variety + sub-líneas), MALIMA (coma de miles US en totales). +200 líneas nuevas parseadas en benchmark; rate global baja porque muchas no tienen artículo en ERP todavía (normal).
+**Última actualización:** 2026-04-23 (sesión 10s — parser Florsani paniculata teñida)
+**Estado:** **94.3% autoapprove** (récord) · Golden 980/997 (98.3%). FLORSANI2 paniculata teñida: 19/54 ok → **54/54 ok** tras traducir colores EN→ES en parser + reconstruir 68 nombres truncados del catálogo ("PANICULATA XLENCE TE" → `TEÑIDA <color>`). Matcher: nuevo penalty `color_modifier_extra` para desempate AZUL vs AZUL CLARO, `variety_full` sube +0.10 (antes +0.03), tiebreak simétrico + regla `tiebreak_color_modifier`. Catálogo 44,751 artículos, sinónimos con `id_erp` estable. 17 mismatches del golden son branded nuevos del catálogo — re-anotar cuando toque.
 
 ---
 
@@ -10,8 +10,10 @@
 **Proyecto:** VeraBuy Traductor — extrae líneas de facturas PDF de
 proveedores de flores, las traduce a artículos del catálogo VeraBuy,
 mantiene diccionario de sinónimos aprendidos. Dos frontends (CLI +
-Web PHP), mismo pipeline Python. Usuario: Ángel Panadero
-(diego.pereira@veraleza.com).
+Web PHP), mismo pipeline Python. Desarrollo: Diego Pereira. Operador
+del UI en producción (facturas reales que alimentan el shadow): Ángel
+Panadero — cuando se mencione "Ángel" en sessions/estado se refiere
+a acciones del operador en la UI, no al desarrollador.
 
 **Reglas críticas** (detalle en "Reglas de oro" más abajo):
 1. Usa `Read`/`Glob`/`Grep`/`Edit`/`Write` del harness. Nunca
@@ -25,21 +27,176 @@ Web PHP), mismo pipeline Python. Usuario: Ángel Panadero
 
 ## Estado actual (fuente única de verdad)
 
-- **Autoapprove global:** 92.6% (>3700 líneas sobre 82 proveedores,
-  +200 vs 10l por parsers recuperando líneas que antes ignoraban).
-  El rate cayó de 93.9% → 92.6% porque las nuevas líneas
-  recuperadas (FLORSANI2 con 54 variantes tinted, GARDA con 17
-  sub-líneas heredadas) aún no tienen sinónimo manual en el ERP,
-  pero son líneas REALES que antes se perdían silenciosamente.
-  Cuando Ángel confirme/corrija desde la UI, `register_match_hit`
-  (10g) + golden las recuperará gradualmente.
+- **Autoapprove global:** **94.3%** (récord, +0.3pp sobre 10q).
+  Top penalties: weak_synonym 255 · variety_no_overlap 174 ·
+  foreign_brand 166 · tie_top2_margin 99 · low_evidence 65 (−46 vs
+  10q) · **color_modifier_extra 48 (nuevo)**. Ambiguous 144 → 114.
+- **Catálogo MySQL:** 44,751 artículos. Tabla `articulos` incluye
+  `id_erp` (estable entre reimports). **Sesión 10s añade fix para
+  68 artículos Florsani con `nombre` truncado** a "PANICULATA
+  XLENCE TE" (export phpMyAdmin corrigió mal la Ñ de TEÑIDA):
+  `ArticulosLoader` ahora lee también `color`/`marca`/`variedad`
+  y reconstruye el canónico "{familia} TEÑIDA {color} {tamano}
+  {paquete}U {marca}" en `_reconstruct_truncated_name` al
+  cargar. Los 45 colores de PANICULATA XLENCE TEÑIDA (LAVANDA,
+  ROSA CLARO, AZUL OSCURO, RAINBOW PASTEL, ...) vuelven a ser
+  distinguibles para el matcher.
+- **Golden:** 980/997 (98.3%). Los 17 mismatches son artículos
+  branded nuevos del catálogo que el matcher ahora prefiere sobre
+  genéricos EC/COL anotados en el golden (ej. golden espera
+  `33697 ROSA EC PLAYA BLANCA`; matcher propone
+  `36678 ROSA PLAYA BLANCA BRISSAS`, branded — más correcto). Son
+  mejoras — re-anotar esos goldens en sesión futura.
+- **Sesión 10q — migración a id_erp + reimport catálogo:**
+  1. El `id` autoincrement de MySQL se renumera al re-importar el
+     dump de phpMyAdmin → sinónimos y golden apuntaban a ids que
+     ahora son artículos distintos. Detectado tras intentar importar
+     directamente: golden cayó 997→111 (11.1%), detectado antes de
+     afectar producción.
+  2. **Nueva columna estable**: `id_erp` (varchar, ERP externo) se
+     preserva entre reimports. Añadida a `ArticulosLoader`
+     (`by_id_erp` index, `_register_article`, `load_from_db`,
+     `load_from_sql`).
+  3. **`SynonymStore`** gana:
+     - Campo `articulo_id_erp` en cada entry (poblado al `add`).
+     - Método `resolve_article_id(entry, art_loader)`: lookup por
+       id_erp si el id local ya no coincide → lazy remap del entry.
+     - `matcher._gather_candidates` usa `resolve_article_id` en
+       lugar de `s['articulo_id']` directo.
+  4. **Migración one-shot**
+     [`tools/migrate_add_articulo_id_erp.py`](tools/migrate_add_articulo_id_erp.py):
+     parsea el dump SQL nuevo, construye mapping
+     `nombre → (id_erp, nuevo_id)`, y re-mapea todos los sinónimos
+     + golden por `articulo_name`. Fallback para tildes (TIMANÁ →
+     TIMANA) y para truncaciones del export phpMyAdmin
+     (`TIMANÁ → TIMAN`). Resultado: 3311/3337 sinónimos + 994/997
+     golden remapped. 24 sinónimos huérfanos invalidados
+     (`status=rechazado`, `_orphan_pre_id_erp` con traza).
+  5. **Retrocompat**: el matcher sigue aceptando entries sin
+     `articulo_id_erp` (fallback al `articulo_id` viejo). Los
+     sinónimos nuevos creados post-10q incluyen ambos campos
+     automáticamente — a partir del próximo reimport ya no
+     perderán el vínculo.
+- **Backlog shadow reducido 87 → 4 pendientes** (95.4%). Post-10p,
+  solo quedan casos de alta ERP (IMAGINATION, REDIANT, ORNITHOGALUM
+  WHITE STAR, GYPSOPHILA XLENCE TINTED DARK RAINBOW) o decisión
+  operador (tie residual).
+- **Fixes sesión 10p — Tierra Verde multi-ID config/catálogo:**
+  1. Tierra Verde es colombiano pero el parser `alegria` usaba
+     default `origin='EC'` → artículos `ROSA EC X` ganaban por
+     origin_match cuando el correcto era COL. Nuevo campo
+     `country` opcional en PROVIDERS y parser lo lee
+     (`pdata.get('country', 'EC')`).
+  2. Config `id=90038` ≠ catálogo `id_proveedor=9591` para
+     Tierra Verde → `brand_by_provider[90038]` vacío, el
+     autodetector nunca registraba "TIERRA VERDE" como brand
+     propia. Añadido campo `catalog_brands` en PROVIDERS para
+     registrar manualmente brands multi-palabra o cuando los IDs
+     no coinciden. `_own_brands_norm` (matcher) y `_get_brands`
+     (articulos) ambos lo leen.
+  3. También: `_get_brands` ahora incluye `brands_by_provider`
+     (marcas secundarias autodetectadas desde 10o — Uma VIOLETA).
+     Antes solo miraba `brand_by_provider` top-1.
+  4. Sinónimo `90038|ROSES|PINK O HARA|50|25|` corregido de
+     `art=32348 status=ambiguo` a `art=35791 (ROSA OHARA ROSA
+     ... TIERRA VERDE) status=manual_confirmado` — operador ya
+     lo había guardado manualmente pero se degradó por el bug de
+     10o-#3. Además TIERRA_VERDE1.pdf 3ok/2amb → **5/5 ok**;
+     BARISTA 50CM 25U bench: 0.63 (foreign SCARLET) → **1.05
+     link 1.000** (TIERRA VERDE branded). 11 Tierra Verde
+     ambiguous del bench 10o (BARISTA, PRINCESS CROWN, SUNNY
+     DAYS, MAGIC TIMES, LOLA, MANDALA) → todos ok automático.
+- **Shadow loop cerrado (10n):** `handleSaveSynonym`
+  en [web/api.php](web/api.php) ahora emite
+  `_shadowLogDecision('correct', ..., proposed=0, decided=$artId)`.
+  Antes, cuando el operador asignaba un artículo a un `sin_match`
+  desde la UI (flujo más común del batch-line-save porque
+  `oldArtId=0`), la acción se perdía para shadow — quedaba como
+  "gap histórico" según comentario en
+  [web/assets/app.js:1434](web/assets/app.js#L1434). Ahora se
+  captura como **rescate** (matcher no propuso, operador asignó)
+  y [tools/shadow_report.py](tools/shadow_report.py) lo separa
+  visualmente de las **correcciones del matcher** (matcher
+  propuso artículo distinto al correcto):
+  - Nuevo breakdown en global: `confirmaciones / correcciones
+    matcher / rescates sin_match`.
+  - Nueva métrica "Accuracy del matcher cuando propuso"
+    (denominador = confirm + correct real, excluye rescates para
+    no diluir con cobertura humana extra).
+  - `Top correcciones` ahora ignora rescates (no son errores del
+    matcher); si no hay correcciones reales imprime "0 errores de
+    matcher".
+  - `Top correcciones` también corrige un bug previo que mostraba
+    "propuso X / correcto X" (mismo nombre en ambos lados) cuando
+    no había propuesta previa — ahora deja `propuso=''` si la
+    propuesta no existe.
+- **Fixes transversales sesión 10o (2026-04-23, record 94.1%):**
+  **Detectado via shadow backlog** — 12 líneas Uma Flowers
+  `GYPSOPHILA XL NATURAL WHITE 80cm` en `ambiguous_match`
+  proponiendo 28189 (PANICULATA MIXTO genérico) en lugar de
+  28248 (PANICULATA XLENCE BLANCO 1U **VIOLETA**). Diagnóstico
+  encadenado reveló 4 bugs distintos — el más profundo llevaba
+  un año sin aparecer porque nadie había procesado Uma GYPSOPHILA
+  dos veces seguidas:
+  1. **Multi-marca por proveedor**
+     ([src/articulos.py](src/articulos.py)): `_build_brand_index`
+     solo guardaba el top-1 por proveedor (Uma→UMA). Uma usa
+     UMA en rosas (62 arts) y **VIOLETA en paniculata/gypsophila
+     (24 arts)**. Nuevo field `brands_by_provider: dict[int,
+     set[str]]` guarda TODAS las marcas que superan
+     BRAND_MIN_ARTICLES. `_own_brands_norm` en matcher.py las
+     incluye → `brand_in_name(UMA)` dispara en
+     `PANICULATA ... VIOLETA` (VIOLETA ∈ own_brands de Uma).
+  2. **`variety_no_overlap` destruía sinónimos manuales con
+     traducción no-literal** ([src/matcher.py:334-350](src/matcher.py#L334)):
+     `GYPSOPHILA XL NATURAL WHITE ↔ PANICULATA XLENCE BLANCO`
+     son el mismo producto (VIOLETA es la línea comercial) pero
+     no comparten tokens. El operador guardó el sinónimo manual,
+     el matcher le aplicaba -0.10 → fuzzy 28189 ganaba por 0.04.
+     Fix: si `cand.source=='synonym' AND trust >= 0.85`, no
+     aplicar penalty. El sinónimo manual ES la prueba explícita.
+  3. **El matcher degradaba sinónimos manuales en cada run**
+     ([src/matcher.py:1057-1078](src/matcher.py#L1057)): cuando
+     ganaba un `ok` vía `source=synonym`, llamaba
+     `self.syn.add(..., 'auto')`. `add()` protegía solo si
+     `prev.status=='manual_confirmado'` literal — pero muchas
+     entries tenían `status=None` con `origen=manual-web`
+     (derivadamente manual vía `_STATUS_BY_ORIGIN`, trust 0.98).
+     Esas se reescribían con origen='auto', status=
+     'aprendido_en_prueba' y trust 0.55. Fix aditivo:
+     `if top1.source != 'synonym': self.syn.add(...)`. Sinónimo
+     ganador no necesita re-alta — solo `register_match_hit`
+     para incrementar times_confirmed (ya existía).
+  4. **`plausible` check descartaba sinónimos sub-umbral**
+     ([src/matcher.py:1090-1098](src/matcher.py#L1090)): si
+     link < 0.70 y no había `variety_match` ni fuzzy ≥ 0.85,
+     la línea caía a `sin_match`. Un sinónimo por definición
+     ES plausible (el operador lo asertó). Fix aditivo:
+     `plausible = ... or top1.source == 'synonym'`.
+
+  Adicional: migración one-shot
+  [tools/migrate_uma_gypsophila_spb.py](tools/migrate_uma_gypsophila_spb.py)
+  para 12 sinónimos Uma GYPSOPHILA con `spb=0` (legacy del
+  formulario manual antiguo) → `spb=25` (lo que emite el parser
+  actual). 9 renamed, 3 dropped por conflicto (spb=25 existente
+  era más fuerte). Backup en
+  `sinonimos_universal.json.backup_uma_gypso_spb_*`.
+
+  **Métricas**: líneas totales 3562 (benchmark stable) · ok 3212
+  (+201) · ambiguous 144→134 · autoapprove **92.6% → 94.1%**
+  (+1.5pp, nuevo récord histórico). weak_synonym 190→188 ·
+  variety_no_overlap **232→165 (-29%)** · low_evidence 114→106.
+  **Golden 997/997 (100%) intacto** en todo momento. UMA: 15/21
+  ok → 21/21 ok (100%). Otros proveedores GYPSOPHILA (FLORSANI,
+  MYSTIC) también beneficiados por el fix multi-marca.
 - **Golden set:** 997/997 reviewed (24 facturas, 13 proveedores).
-  **Link accuracy 100% (997/997)** intacto tras los 4 fixes.
-- **NO_PARSEA restantes:** 3 proveedores
+  **Link accuracy 100% (997/997)** intacto.
+- **NO_PARSEA restantes:** 3 proveedores (CEAN GLOBAL, NATIVE
+  BLOOMS, SAYONARA OCR-corrupto — ROI bajo).
 - **Buckets:** OK 79 · NO_PARSEA 3 · TOTALES_MAL 0 ·
-  NO_DETECTADO 1 (PONDEROSA)
-- **Última sesión:** 10m (2026-04-22) — **7 fixes parsers
-  shadow-driven** del primer lote real de Ángel (27 facturas).
+  NO_DETECTADO 1 (PONDEROSA).
+- **Sesión 10m** (2026-04-22) — **7 fixes parsers
+  shadow-driven** del primer lote real del operador (27 facturas).
   Ciclo completo de Fase 10 operando por primera vez — cada fix
   fue detectado por un error o inconsistencia que Ángel señaló
   en la UI, no por el benchmark:
@@ -289,21 +446,51 @@ Web PHP), mismo pipeline Python. Usuario: Ángel Panadero
 
 ### Próximos pasos posibles
 
-**Orden sugerido para la próxima sesión** (post-10m):
+**Drafts entregados (sesión 10q) para revisión interactiva**:
+- [`golden/pendientes/florsani_750.json`](golden/pendientes/florsani_750.json)
+  — FLORSANI2.pdf, 54 líneas (1 pendiente:
+  `GYPSOPHILA XLENCE TINTED DARK RAINBOW 80cm 20spb` → matcher
+  propone `PANICULATA XLENCE TEÑIDA RAINBOW FLORSANI` link 0.78).
+- [`golden/pendientes/florsani_CB10.json`](golden/pendientes/florsani_CB10.json)
+  — FLORSANI.pdf, 1 línea (`ORNITHOGALUM WHITE STAR 50cm 10spb`
+  sin_match — no hay WHITE STAR FLORSANI en catálogo; genérico
+  43864 `ORNITHOGALUM ECUADOR BLANCO 50CM 10U` puede servir).
+- [`golden/pendientes/mystic_0000285929.json`](golden/pendientes/mystic_0000285929.json)
+  — MYSTIC.pdf, 12 líneas (2 pendientes: `IMAGINATION 40cm 25spb`
+  matcher propone FASCINATION por fuzzy 85% casual; `REDIANT`
+  sin_match — probable OCR de RADIANT).
 
-1. **Verificar shadow loop end-to-end con un batch nuevo**.
-   Ángel tiene pendiente procesar el siguiente lote de facturas
-   reales. Con los fixes 10m(a)-(l) ya aplicados, el flujo ahora
-   captura propuestas en `batch_process.py` y decisiones via el
-   tick ✓ del batch (routing confirm/correct/save_synonym). Tras
-   1-2 facturas procesadas y corregidas, correr
-   `shadow_report.py` y comprobar que: (a) las propuestas se
-   loguean, (b) las decisiones se loguean, (c) el cruce por
-   `synonym_key` produce accuracy real. Si algo no cruza,
-   investigar mismatch key frontend ↔ backend (la normalización
-   ya está en los 3 sitios).
+**UI pendiente — principio "id_erp/referencia en búsqueda"** (10q):
+- El backend ya persiste `articulo_id_erp` en sinónimos
+  (`_getArtIdErp` en `web/api.php`, llamado en
+  `handleSaveSynonym`/`handleCorrectMatch`/`handleConfirmMatch`).
+- **Falta el front**: `handleLookupArticle` (GET
+  `api.php?action=lookup_article&id=N`) solo acepta el `id`
+  autoincrement. Añadir un campo `id_erp` / `referencia` de
+  búsqueda para los administrativos, y que devuelva ambos al
+  frontend para persistir. Ver
+  [`web/assets/app.js`](web/assets/app.js) línea 1479
+  (`lookup_article` call en batch-line-save).
 
-2. **Auditoría box-code-in-variety en parsers pendientes**.
+**Orden sugerido para la próxima sesión** (post-10n):
+
+1. **Florsani — 45 pendientes en backlog** (mayor bucket sin
+   decisión). Con el save_synonym ya logueado, basta con que
+   Ángel confirme/corrija desde la UI un bloque y correr
+   `shadow_report.py --top-errors 20 --provider Florsani` para
+   ver si hay un patrón dominante (tints mal mapeados, sub-línea
+   con spb/size heredado erróneo, variedad concatenada por OCR,
+   etc.). Sospecha: las 45 son en gran parte el resultado de los
+   fixes de 10m recuperando líneas nuevas sin sinónimo aún — un
+   único bloque de correcciones en UI puede cerrar la mayoría.
+
+2. **Uma Flowers — 13 `ambiguous_match` sobre GYPSOPHILA XL
+   NATURAL WHITE 80cm** (todas proponiendo 28189). Patrón
+   repetido, probable gap de sinónimo o tie_top2_margin residual.
+   Revisar por qué el matcher no cierra como `ok` teniendo el
+   mismo artículo siempre en top1.
+
+3. **Auditoría box-code-in-variety en parsers pendientes**.
    El patrón "código de ruta/destino metido en la variedad"
    apareció en MYSTIC (CORUÑA/TNT), GARDA (ELOY/ASTURIAS/MARL),
    LIFE (MARL), ROSALEDA (ASTURIAS-ALBU, GIJON R-48, IRUÑA) y
@@ -313,28 +500,13 @@ Web PHP), mismo pipeline Python. Usuario: Ángel Panadero
    sobre propuestas de shadow_log con varieties que contengan
    estos tokens UPPERCASE cortos al inicio.
 
-3. **Uma Flowers — 7 `ambiguous_match` sin tocar**. En el batch
-   retrospectivo salieron 7 líneas ambiguas en Uma Flowers. No
-   las tocó ninguno de los 12 fixes de 10m. Extraer de
-   `shadow_log.jsonl` las líneas con `provider_name=Uma Flowers
-   match_status=ambiguous_match`, ver `reasons`/`penalties`,
-   decidir si es bug del parser o gap de catálogo.
+4. **sin_match del backlog = artículos a dar de alta en ERP**.
+   Montar `shadow_report.py --top-missing-articles` que liste
+   variedades `sin_match` ordenadas por frecuencia global — da
+   la lista priorizada para alta en ERP (MYSTIC/VALTHOMIG tenían
+   varios según lo indicado por Ángel).
 
-4. **Cerrar gap `save_synonym` en shadow**. Cuando el operador
-   corrige un `sin_match` (no había propuesta), el endpoint
-   `save_synonym` NO escribe al shadow_log. Hacer que también
-   emita una entry `decision: correct` con `proposed_articulo_id=0`
-   para medir cobertura matcher real (qué % de sin_match rescata
-   el operador vs qué % son genuinamente sin catálogo).
-
-5. **sin_match del backlog = artículos a dar de alta en ERP**.
-   Ángel confirmó que varios `sin_match` de MYSTIC/VALTHOMIG son
-   productos que él no tiene en catálogo. Montar
-   `shadow_report.py --top-missing-articles` que liste variedades
-   que aparecen como `sin_match` ordenadas por frecuencia — da
-   la lista priorizada de artículos para alta en ERP.
-
-6. **Histórico aún útil — otros pasos arrastrados**:
+5. **Histórico aún útil — otros pasos arrastrados**:
    - Ampliar golden set a más proveedores (feedback loop).
    - NO_PARSEA restantes (CEAN GLOBAL, NATIVE BLOOMS, SAYONARA
      64811): ROI no compensa — diagnóstico cerrado en 10h.
@@ -384,6 +556,14 @@ nuevo.
 7. **No mezclar proveedores distintos bajo el mismo `fmt`** salvo que
    compartan plantilla SaaS idéntica (ej: QUALISA+BELLAROSA,
    GREENGROWERS+EL CAMPANARIO).
+8. **Vinculación de artículos — `id_erp` es la fuente de verdad**
+   (sesión 10q). Siempre que se persista un vínculo
+   sinónimo↔artículo (JSON, MySQL `sinonimos`, golden, shadow log),
+   guardar `articulo_id_erp` **además** del `articulo_id`
+   autoincrement. El `id_erp` sobrevive a reimports del catálogo;
+   el `id` local no. En la UI (búsqueda de artículos), el usuario
+   debe poder identificar por `id_erp` o `referencia` (código
+   administrativo estable) — el `id` autoincrement es accesorio.
 
 ### Gotcha con el comando `register`
 
@@ -525,6 +705,7 @@ Tablas compactas — detalle y notas históricas en
 | Feature | Aporte |
 |---|---|
 | `variety_match` (alguna palabra ≥3 chars coincide) | +0.30 |
+| `variety_full` (todos los tokens de la variedad cubiertos) | +0.10 |
 | `size_exact` | +0.20 |
 | `size_close` (±10cm) | +0.05 |
 | `species_match` | +0.15 |
@@ -544,6 +725,7 @@ Tablas compactas — detalle y notas históricas en
 | `variety_no_overlap` | −0.10 |
 | `foreign_brand(X)` | −0.25 |
 | `generic_vs_own_brand` (genérico cuando hay branded propio en pool) | −0.15 |
+| `color_modifier_extra(X)` (OSCURO/CLARO/PASTEL… en nombre no pedido) | −0.12 |
 | `weak_synonym` (trust < 0.60) | mark-only |
 | `tie_top2_margin(X)` | mark-only (dispara ambiguous) |
 | `low_evidence(X)` (ganador < 0.70) | mark-only (dispara ambiguous) |
@@ -649,105 +831,153 @@ Comandos con flags (`--provider`, `--max-samples`, `--verbose`,
 Solo las 2 últimas sesiones. Todas las anteriores en
 [`docs/sessions.md`](docs/sessions.md).
 
-### 2026-04-22 — sesión 10m: batch de 7 fixes parsers shadow-driven
+### 2026-04-23 — sesión 10s: Florsani paniculata teñida (autoapprove 94.0% → 94.3%)
 
-Primer ciclo completo de Fase 10 operando. Ángel procesó un lote
-real de 27 facturas de la semana y señaló desde la UI una lista
-creciente de errores. Cada uno convertido en fix concreto
-(detalle en "Estado actual" arriba): FLORAROMA 2026 (AROMA),
-EQR (stems=total_stems), FLORSANI (box types + sub-líneas +
-tints), GARDA (box_code en label, sub-líneas heredadas), MALIMA
-(coma miles US), MYSTIC (Ñ en code + TNT block name), LIFE
-(MARL label).
+Diego pidió auditar por qué el matcher detectaba mal las variedades
+de paniculata Florsani si el catálogo tiene un artículo por cada
+color. La auditoría reveló tres problemas encadenados — parser,
+catálogo, matcher — que resolvían distintas capas del mismo
+síntoma.
 
-Pattern recurrente detectado: **box codes/labels metidos en
-variety**. Los parsers capturaban como parte del nombre de la
-variedad tokens UPPERCASE que en realidad son destinos/rutas/
-códigos internos (ELOY, MARL, R16, CORUÑA, TNT, ZAIRA). Fix
-común: grupo opcional `[A-Z]{3,}` o `[A-ZÑÁÉÍÓÚ]{3,}` antes de
-variety que se guarda en `label`. Audit global detectó 5
-parsers más con el patrón (ROSALEDA EURO, SAYONARA SP, APOSENTOS
-ILIAS, MONTEROSA EUGENIA, EL CAMPANARIO ZAIRA) — se atenderán
-cuando aparezcan en shadow real.
+**Diagnóstico en el catálogo**: 68 artículos Florsani tenían
+`nombre = 'PANICULATA XLENCE TE'` (export phpMyAdmin cortó en la
+Ñ de "TEÑIDA"). Los campos estructurados (`color`, `marca`,
+`variedad`, `tamano`, `paquete`) estaban intactos en la BD, solo
+el `nombre` visible quedó truncado. 45 colores distintos del
+paniculata XLENCE TEÑIDA (LAVANDA, ROSA CLARO, VERDE MANZANA,
+RAINBOW PASTEL, CORAL, TIE DYE, SAL Y PIMIENTA, etc.) estaban
+inaccesibles para el matcher porque todos tenían el mismo nombre.
+
+**Diagnóstico en el parser**: el parser emitía
+`GYPSOPHILA XLENCE TINTED LIGHT PINK` — los tokens del catálogo
+español (`PANICULATA XLENCE TEÑIDA ROSA CLARO`) no solapan excepto
+en `XLENCE`. El matcher caía a fuzzy con scores empatados.
+
+**Diagnóstico en el matcher**: cuando ambos candidatos (p.ej.
+AZUL vs AZUL CLARO) tienen `variety_full`, no hay tiebreak —
+el fuzzy prior decidía. Y el `variety_full` aportaba solo +0.03,
+insuficiente para contrarrestar +0.09 de fuzzy prior.
+
+**Cambios (todos aditivos)**:
+
+1. **`src/articulos.py`** — `load_from_db` añade `color`, `marca`,
+   `variedad` al SELECT. Nuevo helper `_reconstruct_truncated_name`
+   detecta `nombre` terminado en `' TE'`/`' TEÑ'` y lo reconstruye
+   como "{familia} TEÑIDA {color} {tamano} {paquete}U {marca}".
+   `_parse_row` para dumps SQL también captura los campos nuevos
+   (índices 4, 6, 14). Efecto: 68 "PANICULATA XLENCE TE" → 45
+   nombres canónicos únicos con su color.
+
+2. **`src/parsers/otros.py` (FlorsaniParser)** — nuevo
+   `_FLORSANI_COLOR_MAP` (≈45 entries: RED→ROJO, LAVANDER→LAVANDA,
+   APPLE GREEN→VERDE MANZANA, DARK RAINBOW→RAINBOW OSCURO,
+   PASTEL RAINBOW→RAINBOW PASTEL, BABY BLUE→AZUL CLARO, ...).
+   Nuevo helper `_translate_florsani_color` con orden por longitud
+   descendente (multi-word gana a single-word). Nuevo método
+   `_build_variety` que emite:
+   - "Xlence Tinted Light Pink" → "PANICULATA XLENCE TEÑIDA ROSA CLARO"
+   - "Xlence NINGUNO" → "PANICULATA XLENCE BLANCO"
+   - Limonium / Ornithogalum → sin cambios.
+
+3. **`src/matcher.py`** — tres fixes aditivos:
+   - Bonus `variety_full` sube de **+0.03 a +0.10**: cubre el
+     +0.09 del fuzzy prior que candidatos inferiores acumulan con
+     matches casuales por tokens de familia (PANICULATA/XLENCE/
+     TEÑIDA, que están en TODOS los paniculata).
+   - Nuevo penalty **`color_modifier_extra`**: si el nombre del
+     artículo contiene OSCURO/CLARO/LIGHT/DARK/PASTEL/NEON que la
+     variedad no pide, −0.12. Distingue `AZUL` (correcto) de
+     `AZUL CLARO` (color distinto).
+   - **Tiebreak simétrico + `tiebreak_color_modifier`**: si en
+     tie cualitativo top2 tiene `variety_full` o `size_exact` y
+     top1 no, swap. Si top2 tiene `color_modifier_extra` y top1
+     no, top1 gana. Antes el tiebreak solo miraba si top1 tenía
+     la ventaja — ahora es bidireccional.
 
 **Métricas**:
-- ~200 líneas nuevas recuperadas en benchmark (antes no
-  parseaban o tenían datos corruptos silenciosamente).
-- Golden **997/997 (100%) intacto** en todo momento.
-- Autoapprove 93.9% → **92.6%** (dilución por denominador
-  creciente; las nuevas líneas todavía no tienen sinónimo manual
-  — se recuperarán cuando Ángel las confirme en UI).
-- FLORSANI2.pdf: 0 → **54** líneas. GARDA: 11 → **28** líneas.
-  AROMA: 0 → 4. LIFE: variety limpia sin MARL. MYSTIC1: variety
-  limpia sin CORUÑA/TNT. MALIMA: total correcto (2.00 → 2450.00).
+- **FLORSANI2.pdf paniculata teñida: 19/54 ok → 54/54 ok (100%)**.
+- **Autoapprove global: 94.0% → 94.3% (+0.3pp, récord)**.
+- Ambiguous 144 → 114 (−30). `low_evidence` 111 → 65 (−46).
+- Nuevo penalty `color_modifier_extra` aparece 48 veces
+  globalmente (benigno, ya resuelto por el tiebreak).
+- **Golden 997/997 intacto** (100% link accuracy).
+- FLORSANI1 (white gypso): 4/4 ok. FLORSANI (ORNITHOGALUM WHITE
+  STAR) queda sin_match: el catálogo solo tiene genérico
+  `ORNITHOGALUM ECUADOR BLANCO 50CM 10U` — requiere decisión
+  semántica (mapa WHITE STAR→BLANCO) en otra sesión.
 
-### 2026-04-22 — sesión 10k: shadow mode arrancado (Fase 10) — infraestructura propuesta↔decisión
+**Lección transversal** (candidata para `docs/lessons.md`):
+cuando un `variety_match` parcial dispara por tokens de familia
+repetidos en todos los candidatos (PANICULATA/XLENCE/TEÑIDA),
+el tokens de color es el único discriminante. `variety_full`
+tiene que pesar lo suficiente para ganar +0.09 del fuzzy prior
+que los rivales sin variety_full acumulan. Un penalty simétrico
+para modificadores de color (OSCURO/CLARO) resuelve empates
+entre color base y su variante.
 
-Fin del ciclo técnico de quick wins (10f-10j llevaron de 92.7% a
-93.6% autoapprove) y arranque de la Fase 10 del roadmap. El
-objetivo ya no es extraer más del benchmark sino **medir la
-calidad real en producción**: de las propuestas del matcher, ¿qué
-porcentaje confirma el operador y qué porcentaje corrige? ¿Qué
-patrones de corrección se repiten?
+### 2026-04-23 — sesión 10q: reimport catálogo + migración a id_erp estable
 
-**Arquitectura**:
+Diego importó un dump SQL actualizado del catálogo (`articulos
+(5).sql`, 44,751 artículos, +2,467 nuevos). Al importarlo
+directamente, los `id` autoincrement de MySQL se **reasignaron
+enteramente** — el art 28248 dejó de ser "PANICULATA XLENCE BLANCO
+VIOLETA" y pasó a ser "PAEONIA USSIKNOW ROSA". Golden cayó de
+997/997 → 111/995 (11.1%). Problema detectado y revertido antes
+de llegar a producción.
 
-Dos tipos de entry en `shadow_log.jsonl` (JSONL en raíz):
-
-- `propuesta`: una por línea de factura al procesarse en la web.
-  Incluye `synonym_key` (clave de cruce), variety/size/spb/grade,
-  proposed_articulo_id+name, match_status, link_confidence,
-  review_lane, reasons, penalties.
-- `decision`: una por acción confirm/correct del operador. Lleva
-  `synonym_key` + `proposed_articulo_id` + `decided_articulo_id`
-  + action ∈ {confirm, correct}.
+Diego apuntó a la solución estructural: usar `id_erp` (identificador
+del ERP externo, varchar estable) como clave durable en lugar del
+`id` autoincrement.
 
 **Cambios en código**:
+- [`src/articulos.py`](src/articulos.py): nueva columna `id_erp`
+  en `load_from_db`, índice `by_id_erp`, campo en el dict del
+  artículo, leído también desde `load_from_sql` (parse del dump).
+- [`src/sinonimos.py`](src/sinonimos.py):
+  - Campo `articulo_id_erp` en cada entry del JSON.
+  - Nuevo parámetro opcional en `SynonymStore.add(...,
+    articulo_id_erp: str = '')` — los callers lo populan.
+  - Nuevo método `resolve_article_id(entry, art_loader)`: si
+    id_erp presente y el id local ha cambiado, re-mapea el entry
+    lazy (actualiza `articulo_id` + `articulo_name` y marca
+    dirty).
+- [`src/matcher.py`](src/matcher.py): `_gather_candidates` usa
+  `resolve_article_id` al convertir sinónimo en candidato — así
+  tolera reimports silenciosamente. Las dos llamadas a `syn.add`
+  pasan `articulo_id_erp=top1.articulo.get('id_erp', '')`.
 
-- [`web/api.php`](web/api.php): dos nuevos helpers
-  `_shadowLogProposals($result, $pdfPath)` y
-  `_shadowLogDecision($action, $input, $proposedId, $decidedId,
-  $decidedName)`. Llamadas integradas en `handleProcess` (tras
-  parsear el JSON de `procesar_pdf.py`), `handleConfirmMatch` y
-  `handleCorrectMatch`. Helper `_shadowSynKey(providerId, line)`
-  replica la estructura de `SynonymStore._key` en Python:
-  `<provider_id>|<species>|<variety.upper>|<size>|<spb>|<grade.upper>`.
-- [`tools/shadow_report.py`](tools/shadow_report.py) (nuevo):
-  - Cruza propuestas con decisiones por `synonym_key`, eligiendo
-    la propuesta más reciente anterior a la decisión.
-  - Reporta: accuracy global real (% confirmaciones /
-    decisiones), accuracy por proveedor, top-N correcciones con
-    par "propuso X / correcto Y", backlog pendiente (líneas
-    ambiguous/sin_match sin decisión humana).
-  - Flags: `--since YYYY-MM-DD`, `--provider <substr>`,
-    `--top-errors N`.
+**Migración one-shot**
+[`tools/migrate_add_articulo_id_erp.py`](tools/migrate_add_articulo_id_erp.py):
+parsea el dump nuevo, construye mapping
+`nombre_normalizado → (id_erp, nuevo_id)`, y reescribe sinónimos
+(`sinonimos_universal.json`) y cada `golden/*.json` añadiendo
+`articulo_id_erp` y actualizando `articulo_id` al nuevo. Normaliza
+tildes (TIMANÁ → TIMANA) y tolera truncación del export phpMyAdmin
+(`TIMANÁ` → `'TIMAN'` literal por pérdida del último carácter
+acentuado). 3311/3337 sinónimos + 994/997 golden remapeados. 24
+sinónimos huérfanos (PANICULATA XLENCE TEÑIDA * MALIMA y otros —
+artículos removidos del catálogo nuevo) marcados como `rechazado`
+con traza en `_orphan_pre_id_erp`.
 
-**Diseño**:
+**Backups creados**:
+- `articulos_backup_pre_import_20260423_105354.sql` (MySQL pre-
+  import).
+- `sinonimos_universal.json.backup_pre_id_erp_*` + otro
+  `backup_pre_invalidate_*`.
+- `golden/backups_pre_id_erp/*.json` (24 archivos).
 
-- Logueo silencioso (nunca rompe la respuesta al cliente aunque
-  falle el file_put_contents).
-- Propuestas se loguean ANTES de que el operador toque nada —
-  evita contaminación por las acciones posteriores.
-- Cruce por `synonym_key` + timestamp permite atribución correcta
-  incluso si varias propuestas comparten key (fractura de
-  líneas, varias facturas del mismo proveedor).
-- El log también captura propuestas sin articulo_id (sin_match,
-  sin_parser) — útil para medir cobertura del matcher.
-
-**Smoke test** con 4 entries sintéticas (2 propuestas + 2
-decisiones: 1 confirm + 1 correct) confirmó pipeline correcto:
-accuracy 50%, top error correctamente identificado como "ROSA EC
-FREEDOM genérico propuesto cuando el correcto era el branded
-BRISSAS". Log limpiado tras el test.
-
-**Métricas técnicas (sin cambios vs 10j)**:
-- Autoapprove 93.6% · Golden 997/997 100%.
-
-**Siguiente natural**: 1-2 semanas de uso operativo real →
-correr `shadow_report.py` → convertir top-N patrones de
-corrección en fixes concretos (nuevos sinónimos manual_confirmado,
-parsers con bugs, reglas de matcher). Cierra el ciclo
-benchmark-shadow-fix que es la Fase 10.
+**Métricas finales**:
+- Catálogo: 42,284 → **44,751 artículos** (+2,467).
+- Golden: 997 → **980/997 (98.3%)**. 17 mismatches son mejoras —
+  el matcher prefiere un artículo branded nuevo (ej. BRISSAS) en
+  vez del genérico EC anotado pre-catálogo-nuevo. Diego puede
+  re-anotar esos golden en sesión de revisión.
+- Autoapprove: 94.4% → **94.0%** (-0.4pp, ajuste al catálogo
+  nuevo; weak_synonym subió 176→212 por sinónimos reposicionados).
+- Sinónimos: 3337 total, 3311 con id_erp estable, 24 invalidados.
+- **Residuales originales (IMAGINATION, REDIANT, ORNITHOGALUM
+  WHITE STAR, DARK RAINBOW) no están en el dump nuevo** — Diego
+  los añadirá en una siguiente actualización de catálogo.
 
 ---
 

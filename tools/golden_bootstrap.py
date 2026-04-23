@@ -67,6 +67,15 @@ def bootstrap(pdf_path: str) -> dict:
     validate_invoice(header, matched)
 
     # Construir anotación
+    # `articulo_id_erp` es la clave estable entre reimports del catálogo.
+    # La cogemos del dict del artículo en el loader (sesión 10q en adelante
+    # toda búsqueda de artículo expone id_erp).
+    def _erp_of(art_id: int) -> str:
+        if not art_id:
+            return ''
+        a = art.articulos.get(art_id)
+        return (a.get('id_erp') or '') if a else ''
+
     gold_lines = []
     for l in matched:
         gold_lines.append({
@@ -80,6 +89,7 @@ def bootstrap(pdf_path: str) -> dict:
             'stems': l.stems,
             'line_total': l.line_total,
             'articulo_id': l.articulo_id,
+            'articulo_id_erp': _erp_of(l.articulo_id),
             'articulo_name': l.articulo_name,
             'match_status': l.match_status,
             'match_confidence': round(l.match_confidence, 3) if l.match_confidence else 0,
@@ -100,6 +110,7 @@ def bootstrap(pdf_path: str) -> dict:
             'stems': l.stems,
             'line_total': l.line_total,
             'articulo_id': 0,
+            'articulo_id_erp': '',
             'articulo_name': '',
             'match_status': 'rescue',
             'match_confidence': 0,

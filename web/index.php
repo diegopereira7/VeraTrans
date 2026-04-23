@@ -213,8 +213,8 @@
                     <label>Clave (provider|species|variety|size|spb|grade)
                         <input type="text" id="synAddKey" placeholder="2222|ROSES|FREEDOM|50|25|">
                     </label>
-                    <label>ID Artículo VeraBuy
-                        <input type="number" id="synAddArticuloId" placeholder="32993">
+                    <label>id_erp o referencia del artículo
+                        <input type="text" id="synAddArticuloId" placeholder="id_erp (ej. 47195) o F000..." title="id_erp o referencia (F...). El id autoincrement no se acepta (sesión 10r).">
                     </label>
                     <label>Nombre Artículo
                         <input type="text" id="synAddArticuloName" placeholder="ROSA EC FREEDOM 50CM 25U">

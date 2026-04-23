@@ -22,11 +22,12 @@
       "bunches": 288,
       "stems": 7200,
       "line_total": 1512.0,
-      "articulo_id": 28248,
+      "articulo_id": 28396,
       "articulo_name": "PANICULATA XLENCE BLANCO 750GR 1U VIOLETA",
       "match_status": "ok",
       "match_confidence": 0.724,
-      "link_confidence": 0.787
+      "link_confidence": 0.787,
+      "articulo_id_erp": "27998"
     },
     {
       "raw_description": "97341 1 hb 450 Gyp XL Especial 80 cm /750gr Violeta Flowers 450 25 18 $ 8 ,50 $ 1 53,00",
@@ -38,11 +39,12 @@
       "bunches": 18,
       "stems": 450,
       "line_total": 153.0,
-      "articulo_id": 28205,
+      "articulo_id": 28353,
       "articulo_name": "PANICULATA XLENCE TEÑIDA MIXTO 750GR 1U",
       "match_status": "ambiguous_match",
       "match_confidence": 0.489,
-      "link_confidence": 0.532
+      "link_confidence": 0.532,
+      "articulo_id_erp": "159"
     },
     {
       "raw_description": "97341 1 hb 450 Gyp XL Rainbow Mix Light 80/750gr Violeta Flowers 450 25 18 $ 8 ,50 $ 1 53,00",
@@ -54,11 +56,12 @@
       "bunches": 18,
       "stems": 450,
       "line_total": 153.0,
-      "articulo_id": 28255,
+      "articulo_id": 28403,
       "articulo_name": "PANICULATA XLENCE TEÑIDA RAINBOW 750GR 1U VIOLETA",
       "match_status": "ok",
       "match_confidence": 0.724,
-      "link_confidence": 0.787
+      "link_confidence": 0.787,
+      "articulo_id_erp": "28048"
     },
     {
       "raw_description": "97341 1 hb 450 Gypso Xlence Natural 80 cm / 1000 gr Violeta Flowers 450 25 18 $ 8 ,00 $ 1 44,00",
@@ -70,11 +73,12 @@
       "bunches": 18,
       "stems": 450,
       "line_total": 144.0,
-      "articulo_id": 28248,
+      "articulo_id": 28396,
       "articulo_name": "PANICULATA XLENCE BLANCO 750GR 1U VIOLETA",
       "match_status": "ok",
       "match_confidence": 0.724,
-      "link_confidence": 0.787
+      "link_confidence": 0.787,
+      "articulo_id_erp": "27998"
     },
     {
       "raw_description": "9576 1 hb 350 Mondial 50 cm Acuña Jacome/ Sammerh 350 25 14 $ 0 ,28 $ 9 8,00",
@@ -86,11 +90,12 @@
       "bunches": 14,
       "stems": 350,
       "line_total": 98.0,
-      "articulo_id": 35517,
+      "articulo_id": 35981,
       "articulo_name": "ROSA MONDIAL 50CM 25U UMA",
       "match_status": "ok",
       "match_confidence": 0.92,
-      "link_confidence": 1.0
+      "link_confidence": 1.0,
+      "articulo_id_erp": "42012"
     },
     {
       "raw_description": "1758 1 hb 350 Mondial 50 cm Castro Pazmiño/ Vegu 350 25 14 $ 0 ,28 $ 9 8,00",
@@ -102,11 +107,12 @@
       "bunches": 14,
       "stems": 350,
       "line_total": 98.0,
-      "articulo_id": 35517,
+      "articulo_id": 35981,
       "articulo_name": "ROSA MONDIAL 50CM 25U UMA",
       "match_status": "ok",
       "match_confidence": 0.92,
-      "link_confidence": 1.0
+      "link_confidence": 1.0,
+      "articulo_id_erp": "42012"
     },
     {
       "raw_description": "1030 2 hb 300 Mondial 50 cm Roy Nixon/ Suyen flowers 600 25 24 $ 0 ,28 $ 1 68,00",
@@ -118,11 +124,12 @@
       "bunches": 24,
       "stems": 600,
       "line_total": 168.0,
-      "articulo_id": 35517,
+      "articulo_id": 35981,
       "articulo_name": "ROSA MONDIAL 50CM 25U UMA",
       "match_status": "ok",
       "match_confidence": 0.92,
-      "link_confidence": 1.0
+      "link_confidence": 1.0,
+      "articulo_id_erp": "42012"
     },
     {
       "raw_description": "2641 2 hb 350 Mondial 50 cm Cuzco Carlos / Zc Flowers 700 25 28 $ 0 ,28 $ 1 96,00",
@@ -134,11 +141,12 @@
       "bunches": 28,
       "stems": 700,
       "line_total": 196.0,
-      "articulo_id": 35517,
+      "articulo_id": 35981,
       "articulo_name": "ROSA MONDIAL 50CM 25U UMA",
       "match_status": "ok",
       "match_confidence": 0.92,
-      "link_confidence": 1.0
+      "link_confidence": 1.0,
+      "articulo_id_erp": "42012"
     },
     {
       "raw_description": "11267 2 hb 300 Mondial 50 cm Enriquez Pablo/ Ariadne 600 25 24 $ 0 ,28 $ 1 68,00",
@@ -150,11 +158,12 @@
       "bunches": 24,
       "stems": 600,
       "line_total": 168.0,
-      "articulo_id": 35517,
+      "articulo_id": 35981,
       "articulo_name": "ROSA MONDIAL 50CM 25U UMA",
       "match_status": "ok",
       "match_confidence": 0.92,
-      "link_confidence": 1.0
+      "link_confidence": 1.0,
+      "articulo_id_erp": "42012"
     },
     {
       "raw_description": "6464 1 hb 300 Nectarine 50 cm Floricola BloomingAcres 300 25 12 $ 0 ,35 $ 1 05,00",
@@ -166,11 +175,12 @@
       "bunches": 12,
       "stems": 300,
       "line_total": 105.0,
-      "articulo_id": 35660,
+      "articulo_id": 36125,
       "articulo_name": "ROSA NECTARINE 50CM 25U UMA",
       "match_status": "ok",
       "match_confidence": 0.92,
-      "link_confidence": 1.0
+      "link_confidence": 1.0,
+      "articulo_id_erp": "42081"
     },
     {
       "raw_description": "7453 1 hb 350 Mondial 40 cm Franco Luzpa/ Coemxiger 350 25 14 $ 0 ,22 $ 7 7,00",
@@ -182,11 +192,12 @@
       "bunches": 14,
       "stems": 350,
       "line_total": 77.0,
-      "articulo_id": 35468,
+      "articulo_id": 35932,
       "articulo_name": "ROSA MONDIAL 40CM 25U UMA",
       "match_status": "ok",
       "match_confidence": 0.92,
-      "link_confidence": 1.0
+      "link_confidence": 1.0,
+      "articulo_id_erp": "42024"
     },
     {
       "raw_description": "1 hb 350 Mondial 50 cm Guaman Augusto/ Edelmy 350 25 14 $ 0 ,28 $ 9 8,00",
@@ -198,11 +209,12 @@
       "bunches": 14,
       "stems": 350,
       "line_total": 98.0,
-      "articulo_id": 35517,
+      "articulo_id": 35981,
       "articulo_name": "ROSA MONDIAL 50CM 25U UMA",
       "match_status": "ok",
       "match_confidence": 0.92,
-      "link_confidence": 1.0
+      "link_confidence": 1.0,
+      "articulo_id_erp": "42012"
     },
     {
       "raw_description": "2 hb 350 Mondial 50 cm Torres Marlene / Atenea 700 25 28 $ 0 ,28 $ 1 96,00",
@@ -214,11 +226,12 @@
       "bunches": 28,
       "stems": 700,
       "line_total": 196.0,
-      "articulo_id": 35517,
+      "articulo_id": 35981,
       "articulo_name": "ROSA MONDIAL 50CM 25U UMA",
       "match_status": "ok",
       "match_confidence": 0.92,
-      "link_confidence": 1.0
+      "link_confidence": 1.0,
+      "articulo_id_erp": "42012"
     },
     {
       "raw_description": "2775 3 hb 350 Mondial 50 cm Zurita Maria/ Sae Flowers 1050 25 42 $ 0 ,28 $ 2 94,00",
@@ -230,11 +243,12 @@
       "bunches": 42,
       "stems": 1050,
       "line_total": 294.0,
-      "articulo_id": 35517,
+      "articulo_id": 35981,
       "articulo_name": "ROSA MONDIAL 50CM 25U UMA",
       "match_status": "ok",
       "match_confidence": 0.92,
-      "link_confidence": 1.0
+      "link_confidence": 1.0,
+      "articulo_id_erp": "42012"
     }
   ]
 }

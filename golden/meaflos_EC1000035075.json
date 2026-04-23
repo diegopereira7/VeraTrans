@@ -22,11 +22,12 @@
       "bunches": 0,
       "stems": 300,
       "line_total": 78.0,
-      "articulo_id": 33230,
+      "articulo_id": 33579,
       "articulo_name": "ROSA EC MONDIAL 50CM 25U",
       "match_status": "ok",
       "match_confidence": 1.0,
-      "link_confidence": 1.0
+      "link_confidence": 1.0,
+      "articulo_id_erp": "710"
     },
     {
       "raw_description": "Rosas - Mondial 50cm 0,00 0,00 600 0,26 156,00",
@@ -38,11 +39,12 @@
       "bunches": 0,
       "stems": 600,
       "line_total": 156.0,
-      "articulo_id": 33230,
+      "articulo_id": 33579,
       "articulo_name": "ROSA EC MONDIAL 50CM 25U",
       "match_status": "ok",
       "match_confidence": 1.0,
-      "link_confidence": 1.0
+      "link_confidence": 1.0,
+      "articulo_id_erp": "710"
     },
     {
       "raw_description": "Rosas - Explorer 50cm 0,00 0,00 300 0,26 78,00",
@@ -54,11 +56,12 @@
       "bunches": 0,
       "stems": 300,
       "line_total": 78.0,
-      "articulo_id": 32950,
+      "articulo_id": 33303,
       "articulo_name": "ROSA EC EXPLORER 50CM 25U",
       "match_status": "ok",
       "match_confidence": 1.0,
-      "link_confidence": 1.0
+      "link_confidence": 1.0,
+      "articulo_id_erp": "727"
     },
     {
       "raw_description": "Rosas - Explorer 50cm 0,00 0,00 600 0,26 156,00",
@@ -70,11 +73,12 @@
       "bunches": 0,
       "stems": 600,
       "line_total": 156.0,
-      "articulo_id": 32950,
+      "articulo_id": 33303,
       "articulo_name": "ROSA EC EXPLORER 50CM 25U",
       "match_status": "ok",
       "match_confidence": 1.0,
-      "link_confidence": 1.0
+      "link_confidence": 1.0,
+      "articulo_id_erp": "727"
     },
     {
       "raw_description": "Rosas - Atomic 50cm 0,00 0,00 300 0,26 78,00",
@@ -86,11 +90,12 @@
       "bunches": 0,
       "stems": 300,
       "line_total": 78.0,
-      "articulo_id": 32727,
+      "articulo_id": 33085,
       "articulo_name": "ROSA EC ATOMIC BICOLOR 50CM 25U",
       "match_status": "ok",
       "match_confidence": 0.938,
-      "link_confidence": 0.938
+      "link_confidence": 0.938,
+      "articulo_id_erp": "13560"
     },
     {
       "raw_description": "Rosas - Mondial 50cm 0,00 0,00 300 0,24 72,00",
@@ -102,11 +107,12 @@
       "bunches": 0,
       "stems": 300,
       "line_total": 72.0,
-      "articulo_id": 33230,
+      "articulo_id": 33579,
       "articulo_name": "ROSA EC MONDIAL 50CM 25U",
       "match_status": "ok",
       "match_confidence": 1.0,
-      "link_confidence": 1.0
+      "link_confidence": 1.0,
+      "articulo_id_erp": "710"
     },
     {
       "raw_description": "Rosas - Explorer 50cm 0,00 0,00 300 0,24 72,00",
@@ -118,11 +124,12 @@
       "bunches": 0,
       "stems": 300,
       "line_total": 72.0,
-      "articulo_id": 32950,
+      "articulo_id": 33303,
       "articulo_name": "ROSA EC EXPLORER 50CM 25U",
       "match_status": "ok",
       "match_confidence": 1.0,
-      "link_confidence": 1.0
+      "link_confidence": 1.0,
+      "articulo_id_erp": "727"
     },
     {
       "raw_description": "Rosas - Mondial 50cm 0,00 0,00 300 0,24 72,00",
@@ -134,11 +141,12 @@
       "bunches": 0,
       "stems": 300,
       "line_total": 72.0,
-      "articulo_id": 33230,
+      "articulo_id": 33579,
       "articulo_name": "ROSA EC MONDIAL 50CM 25U",
       "match_status": "ok",
       "match_confidence": 1.0,
-      "link_confidence": 1.0
+      "link_confidence": 1.0,
+      "articulo_id_erp": "710"
     },
     {
       "raw_description": "Rosas - Explorer 50cm 0,00 0,00 900 0,25 225,00",
@@ -150,11 +158,12 @@
       "bunches": 0,
       "stems": 900,
       "line_total": 225.0,
-      "articulo_id": 32950,
+      "articulo_id": 33303,
       "articulo_name": "ROSA EC EXPLORER 50CM 25U",
       "match_status": "ok",
       "match_confidence": 1.0,
-      "link_confidence": 1.0
+      "link_confidence": 1.0,
+      "articulo_id_erp": "727"
     },
     {
       "raw_description": "Rosas - Frutteto 50cm 0,00 0,00 350 0,26 91,00",
@@ -166,11 +175,12 @@
       "bunches": 0,
       "stems": 350,
       "line_total": 91.0,
-      "articulo_id": 33000,
+      "articulo_id": 33354,
       "articulo_name": "ROSA EC FRUTTETO 50CM 25U",
       "match_status": "ok",
       "match_confidence": 1.0,
-      "link_confidence": 1.0
+      "link_confidence": 1.0,
+      "articulo_id_erp": "11808"
     },
     {
       "raw_description": "Rosas - Mondial 50cm 0,00 0,00 700 0,26 182,00",
@@ -182,11 +192,12 @@
       "bunches": 0,
       "stems": 700,
       "line_total": 182.0,
-      "articulo_id": 33230,
+      "articulo_id": 33579,
       "articulo_name": "ROSA EC MONDIAL 50CM 25U",
       "match_status": "ok",
       "match_confidence": 1.0,
-      "link_confidence": 1.0
+      "link_confidence": 1.0,
+      "articulo_id_erp": "710"
     },
     {
       "raw_description": "Rosas - Mondial 50cm 0,00 0,00 300 0,24 72,00",
@@ -198,11 +209,12 @@
       "bunches": 0,
       "stems": 300,
       "line_total": 72.0,
-      "articulo_id": 33230,
+      "articulo_id": 33579,
       "articulo_name": "ROSA EC MONDIAL 50CM 25U",
       "match_status": "ok",
       "match_confidence": 1.0,
-      "link_confidence": 1.0
+      "link_confidence": 1.0,
+      "articulo_id_erp": "710"
     }
   ]
 }

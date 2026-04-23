@@ -91,14 +91,14 @@
     "fecha": "2026-03-30 17:11"
   },
   "750": {
-    "pdf": "FLORSANI2.pdf",
+    "pdf": "FLORSANI1.pdf",
     "provider": "Florsani",
-    "total_usd": 2464.5,
-    "lineas": 54,
-    "ok": 10,
+    "total_usd": 954.76,
+    "lineas": 4,
+    "ok": 4,
     "sin_match": 0,
-    "fecha": "2026-04-22 16:07",
-    "pdf_path": "C:\\verabuy-traductor\\batch_uploads\\20260422140659_bd4995b4\\FLORSANI2.pdf"
+    "fecha": "2026-04-23 12:19",
+    "pdf_path": "C:\\verabuy-traductor\\batch_uploads\\20260422140659_bd4995b4\\FLORSANI1.pdf"
   },
   "GOLDEN 105369.pdf": {
     "pdf": "GOLDEN 105369.pdf",
@@ -908,7 +908,7 @@
     "lineas": 23,
     "ok": 23,
     "sin_match": 0,
-    "fecha": "2026-04-22 16:09",
+    "fecha": "2026-04-23 11:35",
     "pdf_path": "C:\\verabuy-traductor\\batch_uploads\\20260422140659_bd4995b4\\OLIMPO.pdf"
   },
   "90688973": {
@@ -10612,13 +10612,14 @@
     "fecha": "2026-03-30 17:08"
   },
   "00039059": {
-    "pdf": "TIERRA VERDE (2).pdf",
+    "pdf": "01 - 369-99022674 - TIERRA VERDE TIERRA VERDE (2).pdf",
     "provider": "Tierra Verde",
     "total_usd": 505.0,
     "lineas": 10,
-    "ok": 10,
-    "sin_match": 0,
-    "fecha": "2026-03-30 17:08"
+    "ok": 4,
+    "sin_match": 6,
+    "fecha": "2026-04-23 10:39",
+    "pdf_path": "C:\\Users\\diego.pereira\\Desktop\\DOC VERA\\FACTURAS IMPORTACION\\PROVEEDORES\\TIERRA VERDE\\01 - 369-99022674 - TIERRA VERDE TIERRA VERDE (2).pdf"
   },
   "00036450": {
     "pdf": "TIERRA VERDE 2.pdf",
@@ -11796,13 +11797,14 @@
     "fecha": "2026-03-30 17:12"
   },
   "00038953": {
-    "pdf": "SEMANA_12_✈️_075-6771_2282_(48)XX_TIERRA VERDE.pdf",
+    "pdf": "03 - 075-67712282 - TIERRA VERDE TIERRA VERDE.pdf",
     "provider": "Tierra Verde",
     "total_usd": 475.0,
     "lineas": 8,
-    "ok": 8,
-    "sin_match": 0,
-    "fecha": "2026-03-30 17:12"
+    "ok": 6,
+    "sin_match": 2,
+    "fecha": "2026-04-23 10:38",
+    "pdf_path": "C:\\Users\\diego.pereira\\Desktop\\DOC VERA\\FACTURAS IMPORTACION\\PROVEEDORES\\TIERRA VERDE\\03 - 075-67712282 - TIERRA VERDE TIERRA VERDE.pdf"
   },
   "0000338850": {
     "pdf": "SEMANA_12_✈️_075-6771_4625_SAFTEC_JUEVE_GARDA.pdf",
@@ -11832,13 +11834,14 @@
     "fecha": "2026-03-30 09:58"
   },
   "00039015": {
-    "pdf": "SEMANA_12_✈️_075-6771_4625_SAFTEC_JUEVE_TIERRA VERDE 2.pdf",
+    "pdf": "02 - 075-67714625 - TIERRA VERDE TIERRA VERDE 2.pdf",
     "provider": "Tierra Verde",
     "total_usd": 180.0,
     "lineas": 4,
     "ok": 4,
     "sin_match": 0,
-    "fecha": "2026-03-30 09:58"
+    "fecha": "2026-04-23 10:38",
+    "pdf_path": "C:\\Users\\diego.pereira\\Desktop\\DOC VERA\\FACTURAS IMPORTACION\\PROVEEDORES\\TIERRA VERDE\\02 - 075-67714625 - TIERRA VERDE TIERRA VERDE 2.pdf"
   },
   "0000041703": {
     "pdf": "01 - 075-67714636 - NATIVE BLOOMS NATIVE.pdf",
@@ -16134,7 +16137,7 @@
     "lineas": 21,
     "ok": 21,
     "sin_match": 0,
-    "fecha": "2026-04-22 16:07",
+    "fecha": "2026-04-23 11:34",
     "pdf_path": "C:\\verabuy-traductor\\batch_uploads\\20260422140659_bd4995b4\\CANTIZA.pdf"
   },
   "25016077": {
@@ -16154,7 +16157,7 @@
     "lineas": 1,
     "ok": 1,
     "sin_match": 0,
-    "fecha": "2026-04-22 16:07",
+    "fecha": "2026-04-23 11:34",
     "pdf_path": "C:\\verabuy-traductor\\batch_uploads\\20260422140659_bd4995b4\\AGRIVALDANI.pdf"
   },
   "00047859": {
@@ -16164,7 +16167,7 @@
     "lineas": 6,
     "ok": 6,
     "sin_match": 0,
-    "fecha": "2026-04-22 16:07",
+    "fecha": "2026-04-23 11:34",
     "pdf_path": "C:\\verabuy-traductor\\batch_uploads\\20260422140659_bd4995b4\\ALEGRIA.pdf"
   },
   "000004224": {
@@ -16174,7 +16177,7 @@
     "lineas": 21,
     "ok": 21,
     "sin_match": 0,
-    "fecha": "2026-04-22 16:07",
+    "fecha": "2026-04-23 11:34",
     "pdf_path": "C:\\verabuy-traductor\\batch_uploads\\20260422140659_bd4995b4\\BRISSAS__1_.pdf"
   },
   "25063225": {
@@ -16184,7 +16187,7 @@
     "lineas": 1,
     "ok": 1,
     "sin_match": 0,
-    "fecha": "2026-04-22 16:07",
+    "fecha": "2026-04-23 11:34",
     "pdf_path": "C:\\verabuy-traductor\\batch_uploads\\20260422140659_bd4995b4\\CANTIZA1.pdf"
   },
   "596730": {
@@ -16194,7 +16197,7 @@
     "lineas": 2,
     "ok": 2,
     "sin_match": 0,
-    "fecha": "2026-04-22 16:07",
+    "fecha": "2026-04-23 11:34",
     "pdf_path": "C:\\verabuy-traductor\\batch_uploads\\20260422140659_bd4995b4\\EQR.pdf"
   },
   "0000143934": {
@@ -16204,7 +16207,7 @@
     "lineas": 9,
     "ok": 9,
     "sin_match": 0,
-    "fecha": "2026-04-22 16:07",
+    "fecha": "2026-04-23 11:34",
     "pdf_path": "C:\\verabuy-traductor\\batch_uploads\\20260422140659_bd4995b4\\FIORENTINA.pdf"
   },
   "0001094306": {
@@ -16214,7 +16217,7 @@
     "lineas": 11,
     "ok": 11,
     "sin_match": 0,
-    "fecha": "2026-04-22 16:07",
+    "fecha": "2026-04-23 11:35",
     "pdf_path": "C:\\verabuy-traductor\\batch_uploads\\20260422140659_bd4995b4\\FLORIFRUT.pdf"
   },
   "CB10": {
@@ -16224,7 +16227,7 @@
     "lineas": 1,
     "ok": 0,
     "sin_match": 1,
-    "fecha": "2026-04-22 16:07",
+    "fecha": "2026-04-23 12:19",
     "pdf_path": "C:\\verabuy-traductor\\batch_uploads\\20260422140659_bd4995b4\\FLORSANI.pdf"
   },
   "0000341791": {
@@ -16232,9 +16235,9 @@
     "provider": "GardaExport",
     "total_usd": 1329.5,
     "lineas": 28,
-    "ok": 23,
-    "sin_match": 2,
-    "fecha": "2026-04-22 16:08",
+    "ok": 28,
+    "sin_match": 0,
+    "fecha": "2026-04-23 11:35",
     "pdf_path": "C:\\verabuy-traductor\\batch_uploads\\20260422140659_bd4995b4\\GARDA.pdf"
   },
   "LF42693": {
@@ -16244,7 +16247,7 @@
     "lineas": 76,
     "ok": 76,
     "sin_match": 0,
-    "fecha": "2026-04-22 16:08",
+    "fecha": "2026-04-23 11:35",
     "pdf_path": "C:\\verabuy-traductor\\batch_uploads\\20260422140659_bd4995b4\\LATIN.pdf"
   },
   "5119259": {
@@ -16254,7 +16257,7 @@
     "lineas": 2,
     "ok": 2,
     "sin_match": 0,
-    "fecha": "2026-04-22 16:08",
+    "fecha": "2026-04-23 11:35",
     "pdf_path": "C:\\verabuy-traductor\\batch_uploads\\20260422140659_bd4995b4\\MALIMA.pdf"
   },
   "0000285929": {
@@ -16263,8 +16266,8 @@
     "total_usd": 246.0,
     "lineas": 12,
     "ok": 10,
-    "sin_match": 1,
-    "fecha": "2026-04-22 16:08",
+    "sin_match": 2,
+    "fecha": "2026-04-23 11:35",
     "pdf_path": "C:\\verabuy-traductor\\batch_uploads\\20260422140659_bd4995b4\\MYSTIC.pdf"
   },
   "0000285857": {
@@ -16274,7 +16277,7 @@
     "lineas": 7,
     "ok": 7,
     "sin_match": 0,
-    "fecha": "2026-04-22 16:08",
+    "fecha": "2026-04-23 11:35",
     "pdf_path": "C:\\verabuy-traductor\\batch_uploads\\20260422140659_bd4995b4\\MYSTIC1.pdf"
   },
   "0000285850": {
@@ -16284,7 +16287,7 @@
     "lineas": 1,
     "ok": 1,
     "sin_match": 0,
-    "fecha": "2026-04-22 16:08",
+    "fecha": "2026-04-23 11:35",
     "pdf_path": "C:\\verabuy-traductor\\batch_uploads\\20260422140659_bd4995b4\\MYSTIC2.pdf"
   },
   "0000285837": {
@@ -16294,7 +16297,7 @@
     "lineas": 6,
     "ok": 6,
     "sin_match": 0,
-    "fecha": "2026-04-22 16:08",
+    "fecha": "2026-04-23 11:35",
     "pdf_path": "C:\\verabuy-traductor\\batch_uploads\\20260422140659_bd4995b4\\MYSTIC3.pdf"
   },
   "0000043713": {
@@ -16304,7 +16307,7 @@
     "lineas": 3,
     "ok": 3,
     "sin_match": 0,
-    "fecha": "2026-04-22 16:08",
+    "fecha": "2026-04-23 11:35",
     "pdf_path": "C:\\verabuy-traductor\\batch_uploads\\20260422140659_bd4995b4\\NATIVE.pdf"
   },
   "0000010681": {
@@ -16314,7 +16317,7 @@
     "lineas": 2,
     "ok": 2,
     "sin_match": 0,
-    "fecha": "2026-04-22 16:09",
+    "fecha": "2026-04-23 11:35",
     "pdf_path": "C:\\verabuy-traductor\\batch_uploads\\20260422140659_bd4995b4\\ROSALEDA.pdf"
   },
   "000007393": {
@@ -16324,7 +16327,7 @@
     "lineas": 88,
     "ok": 88,
     "sin_match": 0,
-    "fecha": "2026-04-22 16:09",
+    "fecha": "2026-04-23 11:35",
     "pdf_path": "C:\\verabuy-traductor\\batch_uploads\\20260422140659_bd4995b4\\ROSALEDA__2_.pdf"
   },
   "90742036": {
@@ -16334,7 +16337,7 @@
     "lineas": 5,
     "ok": 5,
     "sin_match": 0,
-    "fecha": "2026-04-22 16:09",
+    "fecha": "2026-04-23 11:35",
     "pdf_path": "C:\\verabuy-traductor\\batch_uploads\\20260422140659_bd4995b4\\TESSA.pdf"
   },
   "00039934": {
@@ -16342,9 +16345,9 @@
     "provider": "Tierra Verde",
     "total_usd": 217.5,
     "lineas": 5,
-    "ok": 3,
-    "sin_match": 2,
-    "fecha": "2026-04-22 16:51",
+    "ok": 5,
+    "sin_match": 0,
+    "fecha": "2026-04-23 11:35",
     "pdf_path": "C:\\verabuy-traductor\\batch_uploads\\20260422140659_bd4995b4\\TIERRA_VERDE1.pdf"
   },
   "138650": {
@@ -16354,17 +16357,17 @@
     "lineas": 8,
     "ok": 6,
     "sin_match": 0,
-    "fecha": "2026-04-22 16:42",
-    "pdf_path": "C:\\verabuy-traductor\\batch_uploads\\20260422104746_30b63d2a\\TURFLOR.pdf"
+    "fecha": "2026-04-23 11:35",
+    "pdf_path": "C:\\verabuy-traductor\\batch_uploads\\20260422140659_bd4995b4\\TURFLOR.pdf"
   },
   "18358": {
     "pdf": "UMA.pdf",
     "provider": "Uma Flowers",
     "total_usd": 3570.5,
     "lineas": 21,
-    "ok": 15,
+    "ok": 21,
     "sin_match": 0,
-    "fecha": "2026-04-22 16:13",
+    "fecha": "2026-04-23 11:36",
     "pdf_path": "C:\\verabuy-traductor\\batch_uploads\\20260422140659_bd4995b4\\UMA.pdf"
   },
   "001102685": {
@@ -16374,7 +16377,7 @@
     "lineas": 4,
     "ok": 4,
     "sin_match": 0,
-    "fecha": "2026-04-22 16:07",
+    "fecha": "2026-04-23 11:34",
     "pdf_path": "C:\\verabuy-traductor\\batch_uploads\\20260422140659_bd4995b4\\AROMA.pdf"
   }
 }

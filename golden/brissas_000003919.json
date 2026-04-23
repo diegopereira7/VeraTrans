@@ -22,11 +22,12 @@
       "bunches": 0,
       "stems": 300,
       "line_total": 84.0,
-      "articulo_id": 35523,
+      "articulo_id": 35987,
       "articulo_name": "ROSA MONDIAL 50CM 25U BRISSAS",
       "match_status": "ok",
       "match_confidence": 1.0,
-      "link_confidence": 1.0
+      "link_confidence": 1.0,
+      "articulo_id_erp": "44483"
     },
     {
       "raw_description": "2 - 2 EXXIDE 1 HB ROSE CABARET 50 350 350 0.280 98.000 Venta diaria EXXIDE S.A.",
@@ -38,11 +39,12 @@
       "bunches": 0,
       "stems": 350,
       "line_total": 98.0,
-      "articulo_id": 32041,
+      "articulo_id": 32370,
       "articulo_name": "ROSA CABARET 50CM 25U BRISSAS",
       "match_status": "ok",
       "match_confidence": 1.0,
-      "link_confidence": 1.0
+      "link_confidence": 1.0,
+      "articulo_id_erp": "44677"
     },
     {
       "raw_description": "3 - 3 JOYMARY 1 HB ROSE EXPLORER 50 300 300 0.280 84.000 Standing JOYMARY",
@@ -54,11 +56,12 @@
       "bunches": 0,
       "stems": 300,
       "line_total": 84.0,
-      "articulo_id": 33784,
+      "articulo_id": 34145,
       "articulo_name": "ROSA EXPLORER 50CM 25U BRISSAS",
       "match_status": "ok",
       "match_confidence": 1.0,
-      "link_confidence": 1.0
+      "link_confidence": 1.0,
+      "articulo_id_erp": "44487"
     },
     {
       "raw_description": "4 - 4 JOYMARY 1 HB ROSE MONDIAL 50 300 300 0.280 84.000 Standing JOYMARY",
@@ -70,11 +73,12 @@
       "bunches": 0,
       "stems": 300,
       "line_total": 84.0,
-      "articulo_id": 35523,
+      "articulo_id": 35987,
       "articulo_name": "ROSA MONDIAL 50CM 25U BRISSAS",
       "match_status": "ok",
       "match_confidence": 1.0,
-      "link_confidence": 1.0
+      "link_confidence": 1.0,
+      "articulo_id_erp": "44483"
     },
     {
       "raw_description": "5 - 5 JOYMARY 1 HB ROSE MONDIAL 50 50 50 0.280 14.000 Standing JOYMARY",
@@ -86,11 +90,12 @@
       "bunches": 0,
       "stems": 50,
       "line_total": 14.0,
-      "articulo_id": 35523,
+      "articulo_id": 35987,
       "articulo_name": "ROSA MONDIAL 50CM 25U BRISSAS",
       "match_status": "ok",
       "match_confidence": 1.0,
-      "link_confidence": 1.0
+      "link_confidence": 1.0,
+      "articulo_id_erp": "44483"
     },
     {
       "raw_description": "ROSE MONDIAL 60 250 250 0.320 80.000 Standing JOYMARY",
@@ -102,11 +107,12 @@
       "bunches": 0,
       "stems": 250,
       "line_total": 80.0,
-      "articulo_id": 35567,
+      "articulo_id": 36031,
       "articulo_name": "ROSA MONDIAL 60CM 25U BRISSAS",
       "match_status": "ok",
       "match_confidence": 1.0,
-      "link_confidence": 1.0
+      "link_confidence": 1.0,
+      "articulo_id_erp": "44484"
     },
     {
       "raw_description": "6 - 6 GALAXY 1 HB ROSE VENDELA 40 300 300 0.220 66.000 Venta diaria GALAXYTRADE",
@@ -118,11 +124,12 @@
       "bunches": 0,
       "stems": 300,
       "line_total": 66.0,
-      "articulo_id": 37559,
+      "articulo_id": 38115,
       "articulo_name": "ROSA VENDELA 40CM 25U BRISSAS",
       "match_status": "ok",
       "match_confidence": 1.0,
-      "link_confidence": 1.0
+      "link_confidence": 1.0,
+      "articulo_id_erp": "44517"
     },
     {
       "raw_description": "7 - 9 GOLDENLAND 3 QB ROSE CANDLELIGHT 50 100 300 0.280 84.000 Standing GOLDENLAND",
@@ -134,11 +141,12 @@
       "bunches": 0,
       "stems": 300,
       "line_total": 84.0,
-      "articulo_id": 32092,
+      "articulo_id": 32423,
       "articulo_name": "ROSA CANDLELIGHT 50CM 25U BRISSAS",
       "match_status": "ok",
       "match_confidence": 1.0,
-      "link_confidence": 1.0
+      "link_confidence": 1.0,
+      "articulo_id_erp": "44684"
     },
     {
       "raw_description": "10 - 10 GOLDENLAND 1 HB ROSE MONDIAL 50 225 225 0.280 63.000 Standing GOLDENLAND",
@@ -150,11 +158,12 @@
       "bunches": 0,
       "stems": 225,
       "line_total": 63.0,
-      "articulo_id": 35523,
+      "articulo_id": 35987,
       "articulo_name": "ROSA MONDIAL 50CM 25U BRISSAS",
       "match_status": "ok",
       "match_confidence": 1.0,
-      "link_confidence": 1.0
+      "link_confidence": 1.0,
+      "articulo_id_erp": "44483"
     },
     {
       "raw_description": "ROSE MONDIAL 60 75 75 0.320 24.000 Standing GOLDENLAND",
@@ -166,11 +175,12 @@
       "bunches": 0,
       "stems": 75,
       "line_total": 24.0,
-      "articulo_id": 35567,
+      "articulo_id": 36031,
       "articulo_name": "ROSA MONDIAL 60CM 25U BRISSAS",
       "match_status": "ok",
       "match_confidence": 1.0,
-      "link_confidence": 1.0
+      "link_confidence": 1.0,
+      "articulo_id_erp": "44484"
     },
     {
       "raw_description": "11 - 11 GOLDENLAND 1 HB ROSE MONDIAL 50 300 300 0.280 84.000 Standing GOLDENLAND",
@@ -182,11 +192,12 @@
       "bunches": 0,
       "stems": 300,
       "line_total": 84.0,
-      "articulo_id": 35523,
+      "articulo_id": 35987,
       "articulo_name": "ROSA MONDIAL 50CM 25U BRISSAS",
       "match_status": "ok",
       "match_confidence": 1.0,
-      "link_confidence": 1.0
+      "link_confidence": 1.0,
+      "articulo_id_erp": "44483"
     },
     {
       "raw_description": "12 - 12 GOLDENLAND 1 HB ROSE SILANTOI 50 300 300 0.280 84.000 Standing GOLDENLAND",
@@ -198,11 +209,12 @@
       "bunches": 0,
       "stems": 300,
       "line_total": 84.0,
-      "articulo_id": 36542,
+      "articulo_id": 37074,
       "articulo_name": "ROSA SILANTOI 50CM 25U BRISSAS",
       "match_status": "ok",
       "match_confidence": 1.0,
-      "link_confidence": 1.0
+      "link_confidence": 1.0,
+      "articulo_id_erp": "44720"
     },
     {
       "raw_description": "13 - 14 SHADDAI ROSES 2 HB ROSE EXPLORER 50 300 600 0.280 168.000 Standing SHADDAI ROSES",
@@ -214,11 +226,12 @@
       "bunches": 0,
       "stems": 600,
       "line_total": 168.0,
-      "articulo_id": 33784,
+      "articulo_id": 34145,
       "articulo_name": "ROSA EXPLORER 50CM 25U BRISSAS",
       "match_status": "ok",
       "match_confidence": 1.0,
-      "link_confidence": 1.0
+      "link_confidence": 1.0,
+      "articulo_id_erp": "44487"
     },
     {
       "raw_description": "15 - 16 SHADDAI ROSES 2 HB ROSE MONDIAL 50 300 600 0.280 168.000 Standing SHADDAI ROSES",
@@ -230,11 +243,12 @@
       "bunches": 0,
       "stems": 600,
       "line_total": 168.0,
-      "articulo_id": 35523,
+      "articulo_id": 35987,
       "articulo_name": "ROSA MONDIAL 50CM 25U BRISSAS",
       "match_status": "ok",
       "match_confidence": 1.0,
-      "link_confidence": 1.0
+      "link_confidence": 1.0,
+      "articulo_id_erp": "44483"
     },
     {
       "raw_description": "17 - 17 SHADDAI ROSES 1 HB ROSE PINK MONDIAL 50 300 300 0.280 84.000 Standing SHADDAI ROSES",
@@ -246,11 +260,12 @@
       "bunches": 0,
       "stems": 300,
       "line_total": 84.0,
-      "articulo_id": 36133,
+      "articulo_id": 36626,
       "articulo_name": "ROSA PINK MONDIAL 50CM 25U BRISSAS",
       "match_status": "ok",
       "match_confidence": 1.0,
-      "link_confidence": 1.0
+      "link_confidence": 1.0,
+      "articulo_id_erp": "44491"
     },
     {
       "raw_description": "18 - 18 SHADDAI ROSES 1 HB ROSE PLAYA BLANCA 50 300 300 0.280 84.000 Standing SHADDAI ROSES",
@@ -262,11 +277,12 @@
       "bunches": 0,
       "stems": 300,
       "line_total": 84.0,
-      "articulo_id": 33348,
+      "articulo_id": 33697,
       "articulo_name": "ROSA EC PLAYA BLANCA 50CM 25U",
       "match_status": "ok",
       "match_confidence": 1.0,
-      "link_confidence": 1.0
+      "link_confidence": 1.0,
+      "articulo_id_erp": "11827"
     },
     {
       "raw_description": "19 - 19 SHADDAI ROSES 1 HB ROSE TOFFE 50 300 300 0.280 84.000 Standing SHADDAI ROSES",
@@ -278,11 +294,12 @@
       "bunches": 0,
       "stems": 300,
       "line_total": 84.0,
-      "articulo_id": 33564,
+      "articulo_id": 33913,
       "articulo_name": "ROSA EC TOFEE 50CM 25U",
       "match_status": "ok",
       "match_confidence": 0.787,
-      "link_confidence": 0.787
+      "link_confidence": 0.787,
+      "articulo_id_erp": "13624"
     },
     {
       "raw_description": "20 - 20 BYDDA ROSES 1 HB ROSE MONDIAL 50 300 300 0.280 84.000 Standing BYDDA ROSES",
@@ -294,11 +311,12 @@
       "bunches": 0,
       "stems": 300,
       "line_total": 84.0,
-      "articulo_id": 35523,
+      "articulo_id": 35987,
       "articulo_name": "ROSA MONDIAL 50CM 25U BRISSAS",
       "match_status": "ok",
       "match_confidence": 1.0,
-      "link_confidence": 1.0
+      "link_confidence": 1.0,
+      "articulo_id_erp": "44483"
     },
     {
       "raw_description": "21 - 21 BYDDA ROSES 1 HB ROSE EXPLORER 50 200 200 0.280 56.000 Standing BYDDA ROSES",
@@ -310,11 +328,12 @@
       "bunches": 0,
       "stems": 200,
       "line_total": 56.0,
-      "articulo_id": 33784,
+      "articulo_id": 34145,
       "articulo_name": "ROSA EXPLORER 50CM 25U BRISSAS",
       "match_status": "ok",
       "match_confidence": 1.0,
-      "link_confidence": 1.0
+      "link_confidence": 1.0,
+      "articulo_id_erp": "44487"
     },
     {
       "raw_description": "ROSE EXPLORER 60 100 100 0.320 32.000 Standing BYDDA ROSES",
@@ -326,11 +345,12 @@
       "bunches": 0,
       "stems": 100,
       "line_total": 32.0,
-      "articulo_id": 33813,
+      "articulo_id": 34179,
       "articulo_name": "ROSA EXPLORER 60CM 25U BRISSAS",
       "match_status": "ok",
       "match_confidence": 1.0,
-      "link_confidence": 1.0
+      "link_confidence": 1.0,
+      "articulo_id_erp": "44488"
     },
     {
       "raw_description": "22 - 23 LANFLOWERS 2 HB ROSE MONDIAL 50 300 600 0.280 168.000 Standing LANFLOWERS S.A",
@@ -342,11 +362,12 @@
       "bunches": 0,
       "stems": 600,
       "line_total": 168.0,
-      "articulo_id": 35523,
+      "articulo_id": 35987,
       "articulo_name": "ROSA MONDIAL 50CM 25U BRISSAS",
       "match_status": "ok",
       "match_confidence": 1.0,
-      "link_confidence": 1.0
+      "link_confidence": 1.0,
+      "articulo_id_erp": "44483"
     },
     {
       "raw_description": "24 - 25 LANFLOWERS 2 HB ROSE EXPLORER 50 300 600 0.280 168.000 Standing LANFLOWERS S.A",
@@ -358,11 +379,12 @@
       "bunches": 0,
       "stems": 600,
       "line_total": 168.0,
-      "articulo_id": 33784,
+      "articulo_id": 34145,
       "articulo_name": "ROSA EXPLORER 50CM 25U BRISSAS",
       "match_status": "ok",
       "match_confidence": 1.0,
-      "link_confidence": 1.0
+      "link_confidence": 1.0,
+      "articulo_id_erp": "44487"
     },
     {
       "raw_description": "26 - 26 LANFLOWERS 1 HB ROSE MIX COLORS 50 300 300 0.280 84.000 Standing LANFLOWERS S.A",
@@ -374,11 +396,12 @@
       "bunches": 0,
       "stems": 300,
       "line_total": 84.0,
-      "articulo_id": 36901,
+      "articulo_id": 37450,
       "articulo_name": "ROSA SURTIDO MIXTO 50CM 25U BRISSAS",
       "match_status": "mixed_box",
       "match_confidence": 0.621,
-      "link_confidence": 0.621
+      "link_confidence": 0.621,
+      "articulo_id_erp": "25554"
     },
     {
       "raw_description": "27 - 28 SANTA CLARA 2 HB ROSE MONDIAL 50 300 600 0.280 168.000 Standing SANTA CLARA GAR",
@@ -390,11 +413,12 @@
       "bunches": 0,
       "stems": 600,
       "line_total": 168.0,
-      "articulo_id": 35523,
+      "articulo_id": 35987,
       "articulo_name": "ROSA MONDIAL 50CM 25U BRISSAS",
       "match_status": "ok",
       "match_confidence": 1.0,
-      "link_confidence": 1.0
+      "link_confidence": 1.0,
+      "articulo_id_erp": "44483"
     },
     {
       "raw_description": "29 - 29 S&F FLOWERS R 16 1 HB ROSE EXPLORER 50 150 150 0.280 42.000 Standing S&F FLOWERS",
@@ -406,11 +430,12 @@
       "bunches": 0,
       "stems": 150,
       "line_total": 42.0,
-      "articulo_id": 33784,
+      "articulo_id": 34145,
       "articulo_name": "ROSA EXPLORER 50CM 25U BRISSAS",
       "match_status": "ok",
       "match_confidence": 1.0,
-      "link_confidence": 1.0
+      "link_confidence": 1.0,
+      "articulo_id_erp": "44487"
     },
     {
       "raw_description": "ROSE MONDIAL 50 150 150 0.280 42.000 Standing S&F FLOWERS",
@@ -422,11 +447,12 @@
       "bunches": 0,
       "stems": 150,
       "line_total": 42.0,
-      "articulo_id": 35523,
+      "articulo_id": 35987,
       "articulo_name": "ROSA MONDIAL 50CM 25U BRISSAS",
       "match_status": "ok",
       "match_confidence": 1.0,
-      "link_confidence": 1.0
+      "link_confidence": 1.0,
+      "articulo_id_erp": "44483"
     },
     {
       "raw_description": "30 - 31 ASDEL ROSES 2 HB ROSE EXPLORER 60 300 600 0.320 192.000 Standing ASDEL ROSES",
@@ -438,11 +464,12 @@
       "bunches": 0,
       "stems": 600,
       "line_total": 192.0,
-      "articulo_id": 33813,
+      "articulo_id": 34179,
       "articulo_name": "ROSA EXPLORER 60CM 25U BRISSAS",
       "match_status": "ok",
       "match_confidence": 1.0,
-      "link_confidence": 1.0
+      "link_confidence": 1.0,
+      "articulo_id_erp": "44488"
     },
     {
       "raw_description": "32 - 32 ASDEL ROSES 1 HB ROSE EXPLORER 50 300 300 0.280 84.000 Standing ASDEL ROSES",
@@ -454,11 +481,12 @@
       "bunches": 0,
       "stems": 300,
       "line_total": 84.0,
-      "articulo_id": 33784,
+      "articulo_id": 34145,
       "articulo_name": "ROSA EXPLORER 50CM 25U BRISSAS",
       "match_status": "ok",
       "match_confidence": 1.0,
-      "link_confidence": 1.0
+      "link_confidence": 1.0,
+      "articulo_id_erp": "44487"
     },
     {
       "raw_description": "33 - 33 ASDEL ROSES 1 HB ROSE MONDIAL 50 300 300 0.280 84.000 Standing ASDEL ROSES",
@@ -470,11 +498,12 @@
       "bunches": 0,
       "stems": 300,
       "line_total": 84.0,
-      "articulo_id": 35523,
+      "articulo_id": 35987,
       "articulo_name": "ROSA MONDIAL 50CM 25U BRISSAS",
       "match_status": "ok",
       "match_confidence": 1.0,
-      "link_confidence": 1.0
+      "link_confidence": 1.0,
+      "articulo_id_erp": "44483"
     },
     {
       "raw_description": "34 - 34 VALENT ROSES 1 HB ROSE FRUTTETO 50 225 225 0.280 63.000 Standing VALENT ROSES",
@@ -486,11 +515,12 @@
       "bunches": 0,
       "stems": 225,
       "line_total": 63.0,
-      "articulo_id": 34111,
+      "articulo_id": 34529,
       "articulo_name": "ROSA FRUTTETO 50CM 25U BRISSAS",
       "match_status": "ok",
       "match_confidence": 1.0,
-      "link_confidence": 1.0
+      "link_confidence": 1.0,
+      "articulo_id_erp": "44512"
     },
     {
       "raw_description": "ROSE PINK MONDIAL 50 75 75 0.280 21.000 Standing VALENT ROSES",
@@ -502,11 +532,12 @@
       "bunches": 0,
       "stems": 75,
       "line_total": 21.0,
-      "articulo_id": 36133,
+      "articulo_id": 36626,
       "articulo_name": "ROSA PINK MONDIAL 50CM 25U BRISSAS",
       "match_status": "ok",
       "match_confidence": 1.0,
-      "link_confidence": 1.0
+      "link_confidence": 1.0,
+      "articulo_id_erp": "44491"
     },
     {
       "raw_description": "35 - 35 VALENT ROSES 1 HB ROSE MONDIAL 50 250 250 0.280 70.000 Standing VALENT ROSES",
@@ -518,11 +549,12 @@
       "bunches": 0,
       "stems": 250,
       "line_total": 70.0,
-      "articulo_id": 35523,
+      "articulo_id": 35987,
       "articulo_name": "ROSA MONDIAL 50CM 25U BRISSAS",
       "match_status": "ok",
       "match_confidence": 1.0,
-      "link_confidence": 1.0
+      "link_confidence": 1.0,
+      "articulo_id_erp": "44483"
     },
     {
       "raw_description": "36 - 36 SUSAN FLOWERS 1 HB ROSE EXPLORER 50 75 75 0.280 21.000 Standing SUSAN FLOWERS",
@@ -534,11 +566,12 @@
       "bunches": 0,
       "stems": 75,
       "line_total": 21.0,
-      "articulo_id": 33784,
+      "articulo_id": 34145,
       "articulo_name": "ROSA EXPLORER 50CM 25U BRISSAS",
       "match_status": "ok",
       "match_confidence": 1.0,
-      "link_confidence": 1.0
+      "link_confidence": 1.0,
+      "articulo_id_erp": "44487"
     },
     {
       "raw_description": "ROSE EXPLORER 60 225 225 0.320 72.000 Standing SUSAN FLOWERS",
@@ -550,11 +583,12 @@
       "bunches": 0,
       "stems": 225,
       "line_total": 72.0,
-      "articulo_id": 33813,
+      "articulo_id": 34179,
       "articulo_name": "ROSA EXPLORER 60CM 25U BRISSAS",
       "match_status": "ok",
       "match_confidence": 1.0,
-      "link_confidence": 1.0
+      "link_confidence": 1.0,
+      "articulo_id_erp": "44488"
     },
     {
       "raw_description": "37 - 37 SUSAN FLOWERS 1 HB ROSE MIX COLORS 50 300 300 0.280 84.000 Standing SUSAN FLOWERS",
@@ -566,11 +600,12 @@
       "bunches": 0,
       "stems": 300,
       "line_total": 84.0,
-      "articulo_id": 36901,
+      "articulo_id": 37450,
       "articulo_name": "ROSA SURTIDO MIXTO 50CM 25U BRISSAS",
       "match_status": "mixed_box",
       "match_confidence": 0.621,
-      "link_confidence": 0.621
+      "link_confidence": 0.621,
+      "articulo_id_erp": "25554"
     },
     {
       "raw_description": "38 - 38 JUYAYLA 1 HB ROSE EXPLORER 60 300 300 0.320 96.000 Standing JUYAYLA SISAGU",
@@ -582,11 +617,12 @@
       "bunches": 0,
       "stems": 300,
       "line_total": 96.0,
-      "articulo_id": 33813,
+      "articulo_id": 34179,
       "articulo_name": "ROSA EXPLORER 60CM 25U BRISSAS",
       "match_status": "ok",
       "match_confidence": 1.0,
-      "link_confidence": 1.0
+      "link_confidence": 1.0,
+      "articulo_id_erp": "44488"
     },
     {
       "raw_description": "39 - 39 JUYAYLA 1 HB ROSE EXPLORER 50 300 300 0.280 84.000 Standing JUYAYLA SISAGU",
@@ -598,11 +634,12 @@
       "bunches": 0,
       "stems": 300,
       "line_total": 84.0,
-      "articulo_id": 33784,
+      "articulo_id": 34145,
       "articulo_name": "ROSA EXPLORER 50CM 25U BRISSAS",
       "match_status": "ok",
       "match_confidence": 1.0,
-      "link_confidence": 1.0
+      "link_confidence": 1.0,
+      "articulo_id_erp": "44487"
     },
     {
       "raw_description": "40 - 40 JUYAYLA 1 HB ROSE MONDIAL 60 300 300 0.320 96.000 Standing JUYAYLA SISAGU",
@@ -614,11 +651,12 @@
       "bunches": 0,
       "stems": 300,
       "line_total": 96.0,
-      "articulo_id": 35567,
+      "articulo_id": 36031,
       "articulo_name": "ROSA MONDIAL 60CM 25U BRISSAS",
       "match_status": "ok",
       "match_confidence": 1.0,
-      "link_confidence": 1.0
+      "link_confidence": 1.0,
+      "articulo_id_erp": "44484"
     },
     {
       "raw_description": "41 - 41 RICC ROSES 1 HB ROSE BRIGHTON 50 25 25 0.280 7.000 Standing RICC ROSES",
@@ -630,11 +668,12 @@
       "bunches": 0,
       "stems": 25,
       "line_total": 7.0,
-      "articulo_id": 31925,
+      "articulo_id": 32251,
       "articulo_name": "ROSA BRIGHTON 50CM 25U BRISSAS",
       "match_status": "ok",
       "match_confidence": 1.0,
-      "link_confidence": 1.0
+      "link_confidence": 1.0,
+      "articulo_id_erp": "44509"
     },
     {
       "raw_description": "ROSE BRIGHTON 60 275 275 0.320 88.000 Standing RICC ROSES",
@@ -646,11 +685,12 @@
       "bunches": 0,
       "stems": 275,
       "line_total": 88.0,
-      "articulo_id": 31949,
+      "articulo_id": 32276,
       "articulo_name": "ROSA BRIGHTON 60CM 25U BRISSAS",
       "match_status": "ok",
       "match_confidence": 1.0,
-      "link_confidence": 1.0
+      "link_confidence": 1.0,
+      "articulo_id_erp": "44510"
     },
     {
       "raw_description": "42 - 42 RICC ROSES 1 HB ROSE HIGH AND 60 300 300 0.320 96.000 Standing RICC ROSES",
@@ -662,11 +702,12 @@
       "bunches": 0,
       "stems": 300,
       "line_total": 96.0,
-      "articulo_id": 34524,
+      "articulo_id": 34954,
       "articulo_name": "ROSA HIGH MAGIC 60CM 25U BRISSAS",
       "match_status": "ok",
       "match_confidence": 1.0,
-      "link_confidence": 1.0
+      "link_confidence": 1.0,
+      "articulo_id_erp": "44528"
     },
     {
       "raw_description": "43 - 43 RICC ROSES 1 QB ROSE BLUE SKY 50 125 125 0.450 56.250 Standing RICC ROSES",
@@ -678,11 +719,12 @@
       "bunches": 0,
       "stems": 125,
       "line_total": 56.25,
-      "articulo_id": 37069,
+      "articulo_id": 37626,
       "articulo_name": "ROSA TEÑIDA AZUL 50CM 25U BRISSAS",
       "match_status": "ambiguous_match",
       "match_confidence": 0.624,
-      "link_confidence": 0.624
+      "link_confidence": 0.624,
+      "articulo_id_erp": "44777"
     },
     {
       "raw_description": "44 - 44 RICC ROSES 1 HB ROSE FRUTTETO 50 125 125 0.280 35.000 Standing RICC ROSES",
@@ -694,11 +736,12 @@
       "bunches": 0,
       "stems": 125,
       "line_total": 35.0,
-      "articulo_id": 34111,
+      "articulo_id": 34529,
       "articulo_name": "ROSA FRUTTETO 50CM 25U BRISSAS",
       "match_status": "ok",
       "match_confidence": 1.0,
-      "link_confidence": 1.0
+      "link_confidence": 1.0,
+      "articulo_id_erp": "44512"
     },
     {
       "raw_description": "ROSE FRUTTETO 60 175 175 0.320 56.000 Standing RICC ROSES",
@@ -710,11 +753,12 @@
       "bunches": 0,
       "stems": 175,
       "line_total": 56.0,
-      "articulo_id": 34133,
+      "articulo_id": 34551,
       "articulo_name": "ROSA FRUTTETO 60CM 25U BRISSAS",
       "match_status": "ok",
       "match_confidence": 1.0,
-      "link_confidence": 1.0
+      "link_confidence": 1.0,
+      "articulo_id_erp": "44513"
     },
     {
       "raw_description": "45 - 45 RICC ROSES 1 HB ROSE MONDIAL 60 275 275 0.320 88.000 Standing RICC ROSES",
@@ -726,11 +770,12 @@
       "bunches": 0,
       "stems": 275,
       "line_total": 88.0,
-      "articulo_id": 35567,
+      "articulo_id": 36031,
       "articulo_name": "ROSA MONDIAL 60CM 25U BRISSAS",
       "match_status": "ok",
       "match_confidence": 1.0,
-      "link_confidence": 1.0
+      "link_confidence": 1.0,
+      "articulo_id_erp": "44484"
     },
     {
       "raw_description": "ROSE MONDIAL 50 25 25 0.280 7.000 Standing RICC ROSES",
@@ -742,11 +787,12 @@
       "bunches": 0,
       "stems": 25,
       "line_total": 7.0,
-      "articulo_id": 35523,
+      "articulo_id": 35987,
       "articulo_name": "ROSA MONDIAL 50CM 25U BRISSAS",
       "match_status": "ok",
       "match_confidence": 1.0,
-      "link_confidence": 1.0
+      "link_confidence": 1.0,
+      "articulo_id_erp": "44483"
     },
     {
       "raw_description": "46 - 46 RICC ROSES 1 QB ROSE TOFFE 60 125 125 0.320 40.000 Standing RICC ROSES",
@@ -758,11 +804,12 @@
       "bunches": 0,
       "stems": 125,
       "line_total": 40.0,
-      "articulo_id": 33566,
+      "articulo_id": 33915,
       "articulo_name": "ROSA EC TOFEE 60CM 25U",
       "match_status": "sin_match",
       "match_confidence": 0.688,
-      "link_confidence": 0.688
+      "link_confidence": 0.688,
+      "articulo_id_erp": "13625"
     },
     {
       "raw_description": "47 - 47 RICC ROSES 1 HB ROSE EXPLORER 50 100 100 0.280 28.000 Standing RICC ROSES",
@@ -774,11 +821,12 @@
       "bunches": 0,
       "stems": 100,
       "line_total": 28.0,
-      "articulo_id": 33784,
+      "articulo_id": 34145,
       "articulo_name": "ROSA EXPLORER 50CM 25U BRISSAS",
       "match_status": "ok",
       "match_confidence": 1.0,
-      "link_confidence": 1.0
+      "link_confidence": 1.0,
+      "articulo_id_erp": "44487"
     },
     {
       "raw_description": "ROSE EXPLORER 60 200 200 0.320 64.000 Standing RICC ROSES",
@@ -790,11 +838,12 @@
       "bunches": 0,
       "stems": 200,
       "line_total": 64.0,
-      "articulo_id": 33813,
+      "articulo_id": 34179,
       "articulo_name": "ROSA EXPLORER 60CM 25U BRISSAS",
       "match_status": "ok",
       "match_confidence": 1.0,
-      "link_confidence": 1.0
+      "link_confidence": 1.0,
+      "articulo_id_erp": "44488"
     },
     {
       "raw_description": "48 - 48 GECOL 1 HB ROSE MONDIAL 50 250 250 0.280 70.000 Standing GECOL FLOWERS",
@@ -806,11 +855,12 @@
       "bunches": 0,
       "stems": 250,
       "line_total": 70.0,
-      "articulo_id": 35523,
+      "articulo_id": 35987,
       "articulo_name": "ROSA MONDIAL 50CM 25U BRISSAS",
       "match_status": "ok",
       "match_confidence": 1.0,
-      "link_confidence": 1.0
+      "link_confidence": 1.0,
+      "articulo_id_erp": "44483"
     },
     {
       "raw_description": "49 - 49 GECOL 1 HB ROSE EXPLORER 50 250 250 0.280 70.000 Standing GECOL FLOWERS",
@@ -822,11 +872,12 @@
       "bunches": 0,
       "stems": 250,
       "line_total": 70.0,
-      "articulo_id": 33784,
+      "articulo_id": 34145,
       "articulo_name": "ROSA EXPLORER 50CM 25U BRISSAS",
       "match_status": "ok",
       "match_confidence": 1.0,
-      "link_confidence": 1.0
+      "link_confidence": 1.0,
+      "articulo_id_erp": "44487"
     },
     {
       "raw_description": "50 - 50 GECOL 1 HB ROSE EXPLORER 40 300 300 0.220 66.000 Venta diaria GECOL FLOWERS",
@@ -838,11 +889,12 @@
       "bunches": 0,
       "stems": 300,
       "line_total": 66.0,
-      "articulo_id": 33750,
+      "articulo_id": 34106,
       "articulo_name": "ROSA EXPLORER 40CM 25U BRISSAS",
       "match_status": "ok",
       "match_confidence": 1.0,
-      "link_confidence": 1.0
+      "link_confidence": 1.0,
+      "articulo_id_erp": "44486"
     },
     {
       "raw_description": "51 - 51 FLOR GOLD 1 HB ROSE EXPLORER 50 300 300 0.280 84.000 Standing FLOR GOLD",
@@ -854,11 +906,12 @@
       "bunches": 0,
       "stems": 300,
       "line_total": 84.0,
-      "articulo_id": 33784,
+      "articulo_id": 34145,
       "articulo_name": "ROSA EXPLORER 50CM 25U BRISSAS",
       "match_status": "ok",
       "match_confidence": 1.0,
-      "link_confidence": 1.0
+      "link_confidence": 1.0,
+      "articulo_id_erp": "44487"
     },
     {
       "raw_description": "52 - 52 FLOR GOLD 1 HB ROSE MONDIAL 50 300 300 0.280 84.000 Standing FLOR GOLD",
@@ -870,11 +923,12 @@
       "bunches": 0,
       "stems": 300,
       "line_total": 84.0,
-      "articulo_id": 35523,
+      "articulo_id": 35987,
       "articulo_name": "ROSA MONDIAL 50CM 25U BRISSAS",
       "match_status": "ok",
       "match_confidence": 1.0,
-      "link_confidence": 1.0
+      "link_confidence": 1.0,
+      "articulo_id_erp": "44483"
     },
     {
       "raw_description": "53 - 53 FENIX 1 HB ROSE EXPLORER 40 275 275 0.220 60.500 Standing FENIX",
@@ -886,11 +940,12 @@
       "bunches": 0,
       "stems": 275,
       "line_total": 60.5,
-      "articulo_id": 33750,
+      "articulo_id": 34106,
       "articulo_name": "ROSA EXPLORER 40CM 25U BRISSAS",
       "match_status": "ok",
       "match_confidence": 1.0,
-      "link_confidence": 1.0
+      "link_confidence": 1.0,
+      "articulo_id_erp": "44486"
     },
     {
       "raw_description": "ROSE EXPLORER 50 75 75 0.280 21.000 Standing FENIX",
@@ -902,11 +957,12 @@
       "bunches": 0,
       "stems": 75,
       "line_total": 21.0,
-      "articulo_id": 33784,
+      "articulo_id": 34145,
       "articulo_name": "ROSA EXPLORER 50CM 25U BRISSAS",
       "match_status": "ok",
       "match_confidence": 1.0,
-      "link_confidence": 1.0
+      "link_confidence": 1.0,
+      "articulo_id_erp": "44487"
     },
     {
       "raw_description": "54 - 54 FENIX 1 HB ROSE EXPLORER 50 350 350 0.280 98.000 Standing FENIX",
@@ -918,11 +974,12 @@
       "bunches": 0,
       "stems": 350,
       "line_total": 98.0,
-      "articulo_id": 33784,
+      "articulo_id": 34145,
       "articulo_name": "ROSA EXPLORER 50CM 25U BRISSAS",
       "match_status": "ok",
       "match_confidence": 1.0,
-      "link_confidence": 1.0
+      "link_confidence": 1.0,
+      "articulo_id_erp": "44487"
     },
     {
       "raw_description": "55 - 55 FENIX 1 HB ROSE MONDIAL 50 350 350 0.280 98.000 Standing FENIX",
@@ -934,11 +991,12 @@
       "bunches": 0,
       "stems": 350,
       "line_total": 98.0,
-      "articulo_id": 35523,
+      "articulo_id": 35987,
       "articulo_name": "ROSA MONDIAL 50CM 25U BRISSAS",
       "match_status": "ok",
       "match_confidence": 1.0,
-      "link_confidence": 1.0
+      "link_confidence": 1.0,
+      "articulo_id_erp": "44483"
     },
     {
       "raw_description": "56 - 56 VALENTINA FLOWERS 1 HB ROSE EXPLORER 50 300 300 0.280 84.000 Standing VALENTINA FLOWE",
@@ -950,11 +1008,12 @@
       "bunches": 0,
       "stems": 300,
       "line_total": 84.0,
-      "articulo_id": 33784,
+      "articulo_id": 34145,
       "articulo_name": "ROSA EXPLORER 50CM 25U BRISSAS",
       "match_status": "ok",
       "match_confidence": 1.0,
-      "link_confidence": 1.0
+      "link_confidence": 1.0,
+      "articulo_id_erp": "44487"
     },
     {
       "raw_description": "57 - 57 VALENTINA FLOWERS 1 HB ROSE MONDIAL 50 300 300 0.280 84.000 Standing VALENTINA FLOWE",
@@ -966,11 +1025,12 @@
       "bunches": 0,
       "stems": 300,
       "line_total": 84.0,
-      "articulo_id": 35523,
+      "articulo_id": 35987,
       "articulo_name": "ROSA MONDIAL 50CM 25U BRISSAS",
       "match_status": "ok",
       "match_confidence": 1.0,
-      "link_confidence": 1.0
+      "link_confidence": 1.0,
+      "articulo_id_erp": "44483"
     }
   ]
 }

@@ -350,7 +350,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 <td><input class="edit-input edit-line" data-idx="${i}" data-field="line_total" type="number" step="0.01" value="${num(l.line_total||0)}"/></td>
                 <td>${l.articulo_id ? `<strong>${l.articulo_id}</strong> ${esc(l.articulo_name||'')}` : '<em>-</em>'}</td>
                 <td>${matchBadge(l.match_status, l.match_method)}${confBadge(l.match_confidence)}${laneBadge(l.review_lane)}</td>
-                <td style="white-space:nowrap"><input class="edit-input edit-art" data-idx="${i}" placeholder="ID o Fref" style="width:70px;display:inline-block" value="${l.articulo_id||''}"/>${l.articulo_id ? `<button class="btn-icon line-confirm" data-idx="${i}" title="Confirmar match correcto" style="color:var(--success);font-size:14px;vertical-align:middle">✓</button>` : ''}<button class="btn-icon line-delete" data-idx="${i}" title="Eliminar línea" style="color:var(--danger);font-size:14px;vertical-align:middle">✕</button></td>
+                <td style="white-space:nowrap"><input class="edit-input edit-art" data-idx="${i}" placeholder="id_erp/ref" title="id_erp o referencia (F...)" style="width:95px;display:inline-block" value="${l.articulo_id_erp||''}"/>${l.articulo_id ? `<button class="btn-icon line-confirm" data-idx="${i}" title="Confirmar match correcto" style="color:var(--success);font-size:14px;vertical-align:middle">✓</button>` : ''}<button class="btn-icon line-delete" data-idx="${i}" title="Eliminar línea" style="color:var(--danger);font-size:14px;vertical-align:middle">✕</button></td>
             </tr>`;
         }).join('');
 
@@ -397,7 +397,8 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         });
 
-        // Article lookup on Enter or change in the art column
+        // Article lookup on Enter or change in the art column. Input =
+        // id_erp o referencia; el id autoincrement no se acepta (10r).
         document.querySelectorAll('.edit-art').forEach(input => {
             const handler = async () => {
                 const val = input.value.trim();
@@ -405,26 +406,36 @@ document.addEventListener('DOMContentLoaded', () => {
                 const idx = parseInt(input.dataset.idx);
                 const tr = input.closest('tr');
                 try {
-                    const r = await fetch(`api.php?action=lookup_article&id=${encodeURIComponent(val)}`);
+                    const r = await fetch(`api.php?action=lookup_article&q=${encodeURIComponent(val)}`);
                     const d = await r.json();
                     if (d.ok) {
                         const line = window._flatLines[idx];
                         const synKey = tr.dataset.synKey;
                         const oldArtId = line.articulo_id || 0;
+                        const oldArtIdErp = line.articulo_id_erp || '';
                         line.articulo_id = d.id;
+                        line.articulo_id_erp = d.id_erp || '';
                         line.articulo_name = d.nombre;
                         line.match_status = 'ok';
                         tr.querySelectorAll('td')[9].innerHTML = `<strong>${d.id}</strong> ${esc(d.nombre)}`;
                         tr.querySelectorAll('td')[10].innerHTML = '<span class="badge badge-manual">manual-web</span>';
                         tr.classList.remove('row-sin-match');
-                        input.value = d.id;
+                        input.value = d.id_erp || '';
                         // Correct (degrada sinónimo viejo) o save (nuevo)
-                        const action = oldArtId && oldArtId !== d.id ? 'correct_match' : 'save_synonym';
-                        const body = action === 'correct_match'
-                            ? { key:synKey, old_articulo_id:oldArtId, new_articulo_id:d.id, new_articulo_name:d.nombre,
+                        const changed = oldArtIdErp && oldArtIdErp !== d.id_erp;
+                        const action = changed ? 'correct_match' : 'save_synonym';
+                        const body = changed
+                            ? { key:synKey,
+                                old_articulo_id:oldArtId,
+                                new_articulo_id_erp: d.id_erp,
+                                new_articulo_id: d.id,
+                                new_articulo_name:d.nombre,
                                 provider_id:window._currentProviderId, species:line.species,
                                 variety:line.variety, size:line.size, stems_per_bunch:line.stems_per_bunch, grade:line.grade||'' }
-                            : { key:synKey, articulo_id:d.id, articulo_name:d.nombre,
+                            : { key:synKey,
+                                articulo_id_erp: d.id_erp,
+                                articulo_id: d.id,
+                                articulo_name: d.nombre,
                                 provider_id:window._currentProviderId, species:line.species,
                                 variety:line.variety, size:line.size, stems_per_bunch:line.stems_per_bunch, grade:line.grade||'' };
                         await fetch(`api.php?action=${action}`, {
@@ -450,32 +461,35 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    // Editar línea sin match en la tabla de factura individual
+    // Editar línea sin match en la tabla de factura individual.
+    // Input = id_erp o referencia; el id autoincrement queda prohibido (10r).
     document.querySelector('#linesTable tbody').addEventListener('click', async e => {
         const saveBtn = e.target.closest('.batch-line-save');
         if (!saveBtn) return;
         const tr = saveBtn.closest('tr');
         const input = tr.querySelector('.batch-art-id');
-        const artId = parseInt(input.value) || 0;
-        if (!artId) { alert('Introduce un ID de artículo'); return; }
+        const userQuery = (input.value || '').trim();
+        if (!userQuery) { alert('Introduce un id_erp o referencia'); return; }
         const synKey = tr.dataset.synKey;
         try {
-            const lookupResp = await fetch(`api.php?action=lookup_article&id=${artId}`);
+            const lookupResp = await fetch(`api.php?action=lookup_article&q=${encodeURIComponent(userQuery)}`);
             const lookupData = await lookupResp.json();
             if (!lookupData.ok) { alert(lookupData.error); return; }
             const saveResp = await fetch('api.php?action=save_synonym', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ key: synKey, articulo_id: artId, articulo_name: lookupData.nombre }),
+                body: JSON.stringify({
+                    key: synKey,
+                    articulo_id_erp: lookupData.id_erp,
+                    articulo_id: lookupData.id,
+                    articulo_name: lookupData.nombre,
+                }),
             });
             const saveData = await saveResp.json();
             if (saveData.ok) {
                 const cells = tr.querySelectorAll('td');
-                // Artículo VeraBuy (penúltima-2)
-                cells[cells.length - 3].innerHTML = `<strong>${artId}</strong> ${esc(lookupData.nombre)}`;
-                // Match badge
+                cells[cells.length - 3].innerHTML = `<strong>${lookupData.id}</strong> ${esc(lookupData.nombre)}`;
                 cells[cells.length - 2].innerHTML = '<span class="badge badge-manual">manual-web</span>';
-                // Acción
                 cells[cells.length - 1].innerHTML = '<span style="color:green">&#10003;</span>';
                 tr.classList.remove('row-sin-match');
             } else {
@@ -657,7 +671,7 @@ document.addEventListener('DOMContentLoaded', () => {
                                 <td>${esc(l.articulo_name || '-')}</td>
                                 <td>${matchBadge(l.match_status || '', l.match_method || '')}</td>
                                 ${needsReview && isBad ? `<td>
-                                    <input type="number" class="edit-input batch-art-id" placeholder="ID" style="width:65px">
+                                    <input type="text" class="edit-input batch-art-id" placeholder="id_erp/ref" title="id_erp o referencia (F...)" style="width:90px">
                                     <button class="btn-icon batch-line-save" title="Guardar">&#10003;</button>
                                 </td>` : (needsReview ? '<td></td>' : '')}
                             </tr>`;
@@ -669,29 +683,35 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         }
 
-        // Guardar match (reutiliza la misma lógica que batch)
+        // Guardar match (reutiliza la misma lógica que batch). Input =
+        // id_erp o referencia (nunca id autoincrement — política 10r).
         const saveBtn = e.target.closest('.batch-line-save');
         if (saveBtn) {
             const tr = saveBtn.closest('tr');
             const input = tr.querySelector('.batch-art-id');
-            const artId = parseInt(input.value) || 0;
-            if (!artId) { alert('Introduce un ID de artículo'); return; }
+            const userQuery = (input.value || '').trim();
+            if (!userQuery) { alert('Introduce un id_erp o referencia'); return; }
             const synKey = tr.dataset.synKey;
 
             try {
-                const lookupResp = await fetch(`api.php?action=lookup_article&id=${artId}`);
+                const lookupResp = await fetch(`api.php?action=lookup_article&q=${encodeURIComponent(userQuery)}`);
                 const lookupData = await lookupResp.json();
                 if (!lookupData.ok) { alert(lookupData.error); return; }
 
                 const saveResp = await fetch('api.php?action=save_synonym', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ key: synKey, articulo_id: artId, articulo_name: lookupData.nombre }),
+                    body: JSON.stringify({
+                        key: synKey,
+                        articulo_id_erp: lookupData.id_erp,
+                        articulo_id: lookupData.id,
+                        articulo_name: lookupData.nombre,
+                    }),
                 });
                 const saveData = await saveResp.json();
                 if (saveData.ok) {
                     const cells = tr.querySelectorAll('td');
-                    cells[5].textContent = artId;
+                    cells[5].textContent = lookupData.id;
                     cells[6].textContent = lookupData.nombre;
                     cells[7].innerHTML = '<span class="badge badge-manual">manual-web</span>';
                     tr.classList.remove('row-sin-match');
@@ -798,7 +818,7 @@ document.addEventListener('DOMContentLoaded', () => {
             <div class="syn-detail-grid">
                 <div class="syn-detail-field"><label>ID Artículo actual</label><input readonly value="${syn.articulo_id}"/></div>
                 <div class="syn-detail-field full"><label>Artículo actual</label><input readonly value="${esc(syn.articulo_name)}"/></div>
-                <div class="syn-detail-field"><label>Nuevo ID Artículo</label><input type="number" id="synNewArtId" placeholder="Escribir ID..."/></div>
+                <div class="syn-detail-field"><label>Nuevo artículo (id_erp o ref)</label><input type="text" id="synNewArtId" placeholder="id_erp o F000..." title="id_erp o referencia (F...). El id autoincrement no se acepta."/></div>
                 <div class="syn-detail-field"><label>Nombre (auto)</label><input id="synNewArtName" readonly placeholder="Se rellena al buscar"/></div>
             </div>
             <div class="syn-detail-actions">
@@ -816,19 +836,22 @@ document.addEventListener('DOMContentLoaded', () => {
         document.getElementById('synWorkspace').classList.remove('detail-open');
     }
 
-    // Bind Enter key on new art ID field after detail opens
+    // Bind Enter key on new art ID field after detail opens.
+    // El input acepta id_erp o referencia — NUNCA id autoincrement (10r).
     function synBindEnterKey() {
         const input = document.getElementById('synNewArtId');
         if (!input) return;
         input.addEventListener('keydown', async (e) => {
             if (e.key === 'Enter') {
                 e.preventDefault();
-                const id = input.value;
-                if (!id) return;
-                // Lookup + auto-save
-                const r = await fetch(`api.php?action=lookup_article&id=${id}`);
+                const q = (input.value || '').trim();
+                if (!q) return;
+                const r = await fetch(`api.php?action=lookup_article&q=${encodeURIComponent(q)}`);
                 const d = await r.json();
                 document.getElementById('synNewArtName').value = d.ok && d.nombre ? d.nombre : '(no encontrado)';
+                // Cache del lookup — lo usará synDoSave.
+                input.dataset.resolvedIdErp = d.ok ? (d.id_erp || '') : '';
+                input.dataset.resolvedId = d.ok ? (d.id || '') : '';
                 if (d.ok && d.nombre) {
                     await synDoSave();
                 }
@@ -838,29 +861,50 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Detail actions (global scope for onclick)
     window.synDoLookup = async function() {
-        const id = document.getElementById('synNewArtId').value;
-        if (!id) return;
-        const r = await fetch(`api.php?action=lookup_article&id=${id}`);
+        const input = document.getElementById('synNewArtId');
+        const q = (input.value || '').trim();
+        if (!q) return;
+        const r = await fetch(`api.php?action=lookup_article&q=${encodeURIComponent(q)}`);
         const d = await r.json();
         document.getElementById('synNewArtName').value = d.ok && d.nombre ? d.nombre : '(no encontrado)';
+        input.dataset.resolvedIdErp = d.ok ? (d.id_erp || '') : '';
+        input.dataset.resolvedId = d.ok ? (d.id || '') : '';
     };
 
     window.synDoSave = async function() {
-        const nid = parseInt(document.getElementById('synNewArtId').value);
-        const nm = document.getElementById('synNewArtName').value;
-        if (!nid || nm === '(no encontrado)') { alert('Busca un artículo válido primero'); return; }
+        const input = document.getElementById('synNewArtId');
+        const q = (input.value || '').trim();
+        if (!q) { alert('Introduce un id_erp o referencia'); return; }
+        // Usar el lookup cacheado si existe, si no lanzar uno nuevo.
+        let idErp = input.dataset.resolvedIdErp || '';
+        let nid = parseInt(input.dataset.resolvedId || '0', 10) || 0;
+        let nm = document.getElementById('synNewArtName').value;
+        if (!idErp || nm === '(no encontrado)' || !nm) {
+            const r = await fetch(`api.php?action=lookup_article&q=${encodeURIComponent(q)}`);
+            const d = await r.json();
+            if (!d.ok) { alert(d.error || 'Artículo no encontrado'); return; }
+            idErp = d.id_erp || '';
+            nid = d.id;
+            nm = d.nombre;
+            document.getElementById('synNewArtName').value = nm;
+        }
         const oldArtId = synActiveSyn.articulo_id || 0;
         const body = { key: synActiveSyn.key, old_articulo_id: oldArtId,
-            new_articulo_id: nid, new_articulo_name: nm,
+            new_articulo_id_erp: idErp,
+            new_articulo_id: nid,
+            new_articulo_name: nm,
             provider_id: synActiveSyn.provider_id, species: synActiveSyn.species,
             variety: synActiveSyn.variety, size: synActiveSyn.size,
             stems_per_bunch: synActiveSyn.stems_per_bunch, grade: synActiveSyn.grade || '' };
         const r = await fetch('api.php?action=correct_match', {
             method: 'POST', headers: {'Content-Type':'application/json'}, body: JSON.stringify(body) });
         const d = await r.json();
-        if (d.ok) { synActiveSyn.articulo_id = nid; synActiveSyn.articulo_name = nm;
-            synActiveSyn.origen = 'manual-web'; synUpdateKPIs(); synRenderTable(); }
-        else { alert(d.error || 'Error'); }
+        if (d.ok) {
+            synActiveSyn.articulo_id = nid;
+            synActiveSyn.articulo_id_erp = idErp;
+            synActiveSyn.articulo_name = nm;
+            synActiveSyn.origen = 'manual-web'; synUpdateKPIs(); synRenderTable();
+        } else { alert(d.error || 'Error'); }
     };
 
     window.synDoDelete = async function() {
@@ -919,30 +963,59 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('btnSynAddCancel').addEventListener('click', () => {
         document.getElementById('synAddForm').classList.add('hidden');
     });
+    // Formulario de alta manual de sinónimo. El input `synAddArticuloId`
+    // acepta id_erp o referencia (política 10r).
     document.getElementById('synAddArticuloId').addEventListener('change', async () => {
-        const id = parseInt(document.getElementById('synAddArticuloId').value) || 0;
-        if (!id) return;
+        const input = document.getElementById('synAddArticuloId');
+        const q = (input.value || '').trim();
+        if (!q) return;
         try {
-            const res = await fetch(`api.php?action=lookup_article&id=${id}`);
+            const res = await fetch(`api.php?action=lookup_article&q=${encodeURIComponent(q)}`);
             const data = await res.json();
-            if (data.ok) document.getElementById('synAddArticuloName').value = data.nombre;
+            if (data.ok) {
+                document.getElementById('synAddArticuloName').value = data.nombre;
+                input.dataset.resolvedIdErp = data.id_erp || '';
+                input.dataset.resolvedId = data.id || '';
+            } else {
+                document.getElementById('synAddArticuloName').value = '(no encontrado)';
+                input.dataset.resolvedIdErp = '';
+                input.dataset.resolvedId = '';
+            }
         } catch (err) {}
     });
     document.getElementById('btnSynAddSave').addEventListener('click', async () => {
         const key = document.getElementById('synAddKey').value.trim();
-        const artId = parseInt(document.getElementById('synAddArticuloId').value) || 0;
+        const input = document.getElementById('synAddArticuloId');
+        const q = (input.value || '').trim();
         const artName = document.getElementById('synAddArticuloName').value.trim();
-        if (!key || !artId) { alert('Clave e ID artículo son obligatorios'); return; }
+        if (!key || !q) { alert('Clave e id_erp/referencia son obligatorios'); return; }
+        let idErp = input.dataset.resolvedIdErp || '';
+        let artId = parseInt(input.dataset.resolvedId || '0', 10) || 0;
+        if (!idErp || !artId) {
+            // Resolver ahora si no se cacheó
+            try {
+                const res = await fetch(`api.php?action=lookup_article&q=${encodeURIComponent(q)}`);
+                const d = await res.json();
+                if (!d.ok) { alert(d.error || 'Artículo no encontrado'); return; }
+                idErp = d.id_erp || '';
+                artId = d.id;
+            } catch (err) { alert('Error de conexión'); return; }
+        }
         try {
             const res = await fetch('api.php?action=save_synonym', {
                 method: 'POST', headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ key, articulo_id: artId, articulo_name: artName }) });
+                body: JSON.stringify({ key,
+                    articulo_id_erp: idErp,
+                    articulo_id: artId,
+                    articulo_name: artName }) });
             const data = await res.json();
             if (data.ok) {
                 document.getElementById('synAddForm').classList.add('hidden');
                 document.getElementById('synAddKey').value = '';
                 document.getElementById('synAddArticuloId').value = '';
                 document.getElementById('synAddArticuloName').value = '';
+                input.dataset.resolvedIdErp = '';
+                input.dataset.resolvedId = '';
                 loadSynonyms();
             } else { alert('Error: ' + data.error); }
         } catch (err) { alert('Error de conexión'); }
@@ -1352,6 +1425,9 @@ document.addEventListener('DOMContentLoaded', () => {
         else if (needsRev) cls = 'row-low-conf';
         const key = `${invoiceResult.provider_id || 0}|${l.species || ''}|${_normalizeVariety(l.variety)}|${l.size || 0}|${l.stems_per_bunch || 0}|${(l.grade || '').toUpperCase()}`;
         const currentId = l.articulo_id ? l.articulo_id : '';
+        // El input al operador se prellena con id_erp (clave estable);
+        // el id local nunca se muestra como input en ese campo.
+        const currentIdErp = l.articulo_id_erp || '';
         // Dot de error si hay errores de validación en la línea
         const errDot = hasErrors
             ? ` <span class="conf-dot dot-err" title="${esc(l.validation_errors.join(' · '))}">!</span>`
@@ -1367,7 +1443,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 <td>${esc(l.articulo_name || '-')}</td>
                 <td>${matchBadge(l.match_status || '', l.match_method || '')}${confBadge(l.match_confidence)}</td>
                 ${showActions ? `<td style="white-space:nowrap">
-                    <input type="number" class="edit-input batch-art-id" placeholder="ID" style="width:65px" value="${currentId}">
+                    <input type="text" class="edit-input batch-art-id" placeholder="id_erp/ref" title="id_erp o referencia (F...). El id autoincrement NO se acepta." style="width:90px" value="${currentIdErp || ''}">
                     <button class="btn-icon batch-line-save" title="Guardar">&#10003;</button>
                     <button class="btn-icon batch-line-delete" title="Eliminar línea" style="color:var(--danger);font-size:14px;vertical-align:middle">&#10005;</button>
                 </td>` : ''}
@@ -1428,59 +1504,54 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         // Guardar match desde línea de batch.
-        // Enruta según si hay propuesta previa del matcher:
-        //   - oldArtId == newArtId → confirm_match (shadow: decision=confirm)
-        //   - oldArtId && != newArtId → correct_match (shadow: decision=correct)
-        //   - sin oldArtId          → save_synonym (sin decision, gap histórico)
+        // POLÍTICA 10r: el input del operador es id_erp o referencia
+        // (nunca id autoincrement — se renumera al reimportar el
+        // catálogo y causa asignaciones erróneas). El backend resuelve
+        // el id local internamente.
+        //
+        // Enruta según la comparación con el artículo previo:
+        //   - mismo id_erp              → confirm_match
+        //   - había propuesta y cambia  → correct_match (shadow: correct)
+        //   - no había propuesta        → save_synonym (shadow: rescue)
         const saveBtn = e.target.closest('.batch-line-save');
         if (saveBtn) {
             const tr = saveBtn.closest('tr');
             const input = tr.querySelector('.batch-art-id');
-            const newArtId = parseInt(input.value) || 0;
-            if (!newArtId) { alert('Introduce un ID de artículo'); return; }
+            const userQuery = (input.value || '').trim();
+            if (!userQuery) { alert('Introduce un id_erp o referencia (ej. F000636001)'); return; }
             const synKey = tr.dataset.synKey;
             const pdf = tr.dataset.pdf;
             const invoiceIdx = parseInt(tr.dataset.invoiceIdx);
             const lineIdx = parseInt(tr.dataset.lineIdx);
             const line = batchAllResults[invoiceIdx] && batchAllResults[invoiceIdx].lines && batchAllResults[invoiceIdx].lines[lineIdx];
-            const oldArtId = line ? (parseInt(line.articulo_id) || 0) : 0;
+            const oldArtIdErp = line ? (line.articulo_id_erp || '') : '';
             const providerId = batchAllResults[invoiceIdx] && batchAllResults[invoiceIdx].provider_id || 0;
 
-            // Caso rápido: confirmación sin cambio de ID → confirm_match
-            // (no requiere lookup del nombre: el sinónimo ya existe).
-            if (oldArtId && oldArtId === newArtId) {
-                fetch('api.php?action=confirm_match', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ key: synKey, articulo_id: newArtId }),
-                })
+            // Resolver el input (id_erp|ref) → artículo completo. Esto
+            // valida la existencia y captura id_erp/id/nombre de un solo
+            // golpe; luego elegimos action según coincida o no con el
+            // artículo previo.
+            fetch(`api.php?action=lookup_article&q=${encodeURIComponent(userQuery)}`)
                 .then(r => r.json())
                 .then(data => {
-                    if (data && data.ok) {
-                        const orig = saveBtn.innerHTML;
-                        saveBtn.innerHTML = '<span style="color:green">&#10003;&#10003;</span>';
-                        saveBtn.disabled = true;
-                        saveBtn.title = `Confirmado (${data.times_confirmed}x)`;
-                        setTimeout(() => {
-                            saveBtn.innerHTML = orig;
-                            saveBtn.disabled = false;
-                            saveBtn.title = 'Guardar';
-                        }, 1200);
-                    } else if (data) {
-                        alert('Error: ' + data.error);
-                    }
-                })
-                .catch(() => alert('Error de conexión'));
-                return;
-            }
-
-            // Casos con cambio (correct_match) o sin propuesta previa (save_synonym):
-            // necesitamos el nombre del artículo antes de guardar.
-            fetch(`api.php?action=lookup_article&id=${newArtId}`)
-                .then(r => r.json())
-                .then(data => {
-                    if (!data.ok) { alert(data.error); return; }
+                    if (!data.ok) { alert(data.error); return null; }
+                    const newArtId = data.id;
+                    const newArtIdErp = data.id_erp || '';
                     const name = data.nombre;
+
+                    // Caso rápido: mismo artículo que el propuesto → confirm.
+                    if (oldArtIdErp && oldArtIdErp === newArtIdErp) {
+                        return fetch('api.php?action=confirm_match', {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({
+                                key: synKey,
+                                articulo_id: newArtId,
+                                articulo_id_erp: newArtIdErp,
+                            }),
+                        }).then(r => r.json()).then(resp => ({ resp, name, newArtId, newArtIdErp, action: 'confirm' }));
+                    }
+
                     const baseBody = {
                         key: synKey, provider_id: providerId,
                         species: line && line.species || '',
@@ -1490,45 +1561,56 @@ document.addEventListener('DOMContentLoaded', () => {
                         grade: line && line.grade || '',
                     };
                     let action, body;
-                    if (oldArtId && oldArtId !== newArtId) {
+                    if (oldArtIdErp && oldArtIdErp !== newArtIdErp) {
                         action = 'correct_match';
                         body = { ...baseBody,
-                            old_articulo_id: oldArtId,
+                            old_articulo_id: line ? (line.articulo_id || 0) : 0,
+                            new_articulo_id_erp: newArtIdErp,
                             new_articulo_id: newArtId,
                             new_articulo_name: name };
                     } else {
                         action = 'save_synonym';
-                        body = { ...baseBody, articulo_id: newArtId, articulo_name: name };
+                        body = { ...baseBody,
+                            articulo_id_erp: newArtIdErp,
+                            articulo_id: newArtId,
+                            articulo_name: name };
                     }
                     return fetch(`api.php?action=${action}`, {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify(body),
-                    }).then(r => r.json()).then(resp => ({ resp, name }));
+                    }).then(r => r.json()).then(resp => ({ resp, name, newArtId, newArtIdErp, action }));
                 })
                 .then(result => {
                     if (!result) return;
-                    const { resp: data, name } = result;
+                    const { resp: data, name, newArtId, newArtIdErp, action } = result;
                     if (data && data.ok) {
-                        // Actualizar la fila sin destruir el input (puede
-                        // volverse a corregir si hace falta).
-                        const cells = tr.querySelectorAll('td');
-                        cells[5].textContent = newArtId;
-                        cells[6].textContent = name;
-                        cells[7].innerHTML = '<span class="badge badge-manual">manual-web</span>';
-                        tr.classList.remove('row-sin-match');
-                        if (line) {
-                            line.articulo_id = newArtId;
-                            line.articulo_name = name;
-                            line.match_status = 'ok';
-                        }
-                        // Flash visual breve del botón guardar
+                        // Feedback visual distinto para confirm vs correct/save.
                         const orig = saveBtn.innerHTML;
-                        saveBtn.innerHTML = '<span style="color:green">&#10003;</span>';
+                        if (action === 'confirm') {
+                            saveBtn.innerHTML = '<span style="color:green">&#10003;&#10003;</span>';
+                            saveBtn.title = `Confirmado (${data.times_confirmed}x)`;
+                        } else {
+                            saveBtn.innerHTML = '<span style="color:green">&#10003;</span>';
+                            // Actualizar celdas — preserva el input por si
+                            // hay que volver a corregir.
+                            const cells = tr.querySelectorAll('td');
+                            cells[5].textContent = newArtId;
+                            cells[6].textContent = name;
+                            cells[7].innerHTML = '<span class="badge badge-manual">manual-web</span>';
+                            tr.classList.remove('row-sin-match');
+                            if (line) {
+                                line.articulo_id = newArtId;
+                                line.articulo_id_erp = newArtIdErp;
+                                line.articulo_name = name;
+                                line.match_status = 'ok';
+                            }
+                        }
                         saveBtn.disabled = true;
                         setTimeout(() => {
                             saveBtn.innerHTML = orig;
                             saveBtn.disabled = false;
+                            saveBtn.title = 'Guardar';
                         }, 1200);
                     } else if (data) {
                         alert('Error: ' + data.error);

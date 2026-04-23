@@ -728,6 +728,56 @@ class MultifloraParser:
         return h, lines
 
 
+_FLORSANI_COLOR_MAP = {
+    # Rojos / rosados
+    'RED': 'ROJO', 'PINK': 'ROSA', 'LIGHT PINK': 'ROSA CLARO',
+    'DARK PINK': 'ROSA OSCURO', 'HOT PINK': 'ROSA',
+    'FUCSIA': 'FUCSIA', 'FUCHSIA': 'FUCSIA', 'RASPBERRY': 'FRAMBUESA',
+    # Naranjas / amarillos / pastel
+    'ORANGE': 'NARANJA', 'LIGHT ORANGE': 'NARANJA CLARO', 'DARK ORANGE': 'NARANJA OSCURO',
+    'CORAL': 'CORAL', 'SALMON': 'SALMON', 'PEACH': 'MELOCOTON',
+    'YELLOW': 'AMARILLO', 'LIGHT YELLOW': 'AMARILLO CLARO', 'DARK YELLOW': 'AMARILLO OSCURO',
+    # Azules
+    'BLUE': 'AZUL', 'LIGHT BLUE': 'AZUL CLARO', 'BABY BLUE': 'AZUL CLARO',
+    'DARK BLUE': 'AZUL OSCURO', 'SKY BLUE': 'AZUL CLARO',
+    'TURQUOISE': 'TURQUESA', 'DARK TURQUOISE': 'TURQUESA OSCURO',
+    # Morados
+    'PURPLE': 'LILA', 'LILAC': 'LILA', 'LIGHT LILAC': 'LILA CLARO',
+    'LAVANDER': 'LAVANDA', 'LAVENDER': 'LAVANDA',
+    'LIGHT LAVANDER': 'LAVANDA', 'LIGHT LAVENDER': 'LAVANDA',
+    'DARK LAVANDER': 'LAVANDA OSCURO', 'DARK LAVENDER': 'LAVANDA OSCURO',
+    # Verdes
+    'GREEN': 'VERDE', 'LIGHT GREEN': 'VERDE CLARO', 'DARK GREEN': 'VERDE OSCURO',
+    'APPLE GREEN': 'VERDE MANZANA', 'LIME GREEN': 'VERDE LIMA', 'LIME': 'VERDE LIMA',
+    # Neutros / metales / complejos
+    'WHITE': 'BLANCO', 'BLACK': 'NEGRO',
+    'GOLD': 'ORO', 'SILVER': 'PLATA', 'COPPER': 'COBRE',
+    'BROWN': 'CAFE', 'COFFEE': 'CAFE',
+    # Especiales
+    'RAINBOW': 'RAINBOW', 'DARK RAINBOW': 'RAINBOW OSCURO',
+    'PASTEL RAINBOW': 'RAINBOW PASTEL',
+    'TIE DYE': 'TIE DYE', 'GLITTER': 'GLITTER',
+    'SALT AND PEPPER': 'SAL Y PIMIENTA',
+    'MIX': 'MIXTO', 'MIXED': 'MIXTO', 'ASSORTED': 'MIXTO',
+}
+
+
+def _translate_florsani_color(color_en: str) -> str:
+    """Traduce un color EN/raw (p.ej. 'Tinted Light Pink' → 'ROSA CLARO').
+
+    Estrategia:
+      1. UPPER + colapsar espacios.
+      2. Probar multi-word primero (LIGHT PINK antes que PINK).
+      3. Si no hay match, devolver el original normalizado.
+    """
+    t = re.sub(r'\s+', ' ', color_en.upper().strip())
+    # Orden por longitud descendente: multi-word gana a single-word.
+    for en, es in sorted(_FLORSANI_COLOR_MAP.items(), key=lambda kv: -len(kv[0])):
+        if t == en:
+            return es
+    return t
+
+
 class FlorsaniParser:
     """Formato Florsani (Gypsophila / Limonium / Ornithogalum, Ecuador).
 
@@ -779,6 +829,42 @@ class FlorsaniParser:
     def _ocr_normalize(ln: str) -> str:
         """Separa word+weight pegados por OCR: `Rainbow750` → `Rainbow 750`."""
         return re.sub(r'([A-Za-z])(\d{3,})\b', r'\1 \2', ln)
+
+    @staticmethod
+    def _build_variety(species_token: str, variety_raw: str) -> str:
+        """Canónico para match con catálogo.
+
+        Gypsophila/Paniculata:
+          - "Xlence Tinted Light Pink" → "PANICULATA XLENCE TEÑIDA ROSA CLARO"
+          - "Xlence NINGUNO"           → "PANICULATA XLENCE BLANCO"
+          - "Xlence"                   → "PANICULATA XLENCE BLANCO"
+          - "Million Stars"            → "PANICULATA MILLION STARS"
+          - "Small Bloom"              → "PANICULATA SMALL BLOOM"
+        Limonium/Ornithogalum: se devuelve tal cual (UPPER) — sus
+        artículos del catálogo ya usan esos nombres.
+        """
+        raw = re.sub(r'\s*NINGUNO\s*$', '', variety_raw, flags=re.I).strip()
+        sp = species_token.lower()
+        if sp != 'gypsophila':
+            # Limonium, Ornithogalum, etc.: prefijo original + variedad.
+            return f'{species_token.upper()} {raw.upper()}' if raw else species_token.upper()
+
+        # Gypsophila → PANICULATA en catálogo.
+        up = raw.upper()
+        # Línea "Xlence Tinted <color>" — traducir color y normalizar a
+        # "PANICULATA XLENCE TEÑIDA <color_es>".
+        m = re.match(r'^XLENCE\s+TINTED\s+(.+)$', up)
+        if m:
+            color_es = _translate_florsani_color(m.group(1))
+            return f'PANICULATA XLENCE TEÑIDA {color_es}'
+        # Línea "Xlence" sola (NINGUNO quitado): el artículo es BLANCO
+        # (el catálogo distingue por tamaño 750GR vs 1000GR, no por
+        # color — eso lo resuelve el matcher por size).
+        if up == 'XLENCE' or up == '':
+            return 'PANICULATA XLENCE BLANCO'
+        # Otras familias (MILLION STARS, SMALL BLOOM, ...): conservar
+        # palabras tal cual bajo el prefijo PANICULATA.
+        return f'PANICULATA {up}'
 
     def _parse_tail(self, pm, tail_start: int):
         """Extrae las 7 columnas numéricas del tail (helper común).
@@ -833,8 +919,7 @@ class FlorsaniParser:
                 variety_raw = pm.group(5).strip()
                 sz, spb, stems, price, total = self._parse_tail(pm, 5)
                 # Limpiar "NINGUNO" del final de la variedad.
-                variety_clean = re.sub(r'\s*NINGUNO\s*$', '', variety_raw, flags=re.I).strip()
-                variety = f'{species_token.upper()} {variety_clean.upper()}' if variety_clean else species_token.upper()
+                variety = self._build_variety(species_token, variety_raw)
                 il = InvoiceLine(raw_description=raw_ln.strip(), species=species,
                                  variety=variety, size=sz, stems_per_bunch=spb,
                                  stems=stems, price_per_stem=price, line_total=total,
@@ -856,8 +941,7 @@ class FlorsaniParser:
                 species = self._SPECIES_MAP.get(species_token, 'OTHER')
                 variety_raw = pm2.group(3).strip()
                 sz, spb, stems, price, total = self._parse_tail(pm2, 3)
-                variety_clean = re.sub(r'\s*NINGUNO\s*$', '', variety_raw, flags=re.I).strip()
-                variety = f'{species_token.upper()} {variety_clean.upper()}' if variety_clean else species_token.upper()
+                variety = self._build_variety(species_token, variety_raw)
                 il = InvoiceLine(raw_description=raw_ln.strip(), species=species,
                                  variety=variety, size=sz, stems_per_bunch=spb,
                                  stems=stems, price_per_stem=price, line_total=total,

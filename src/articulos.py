@@ -83,6 +83,25 @@ class ArticulosLoader:
         self.rosas_col: Dict[str, int] = {}
         self.by_species: Dict[str, List] = {}
         self.brand_by_provider: Dict[int, str] = {}
+        # Marcas secundarias: muchos proveedores tienen una marca principal en
+        # rosas (ej. UMA) y una distinta en gypsophila/paniculata (ej. VIOLETA).
+        # `brand_by_provider` guarda solo el top-1 para retrocompatibilidad;
+        # `brands_by_provider` guarda todas las marcas que superan
+        # BRAND_MIN_ARTICLES para que el matcher pueda reconocerlas todas
+        # como "propias". Detectado al añadir GYPSOPHILA Uma en sesión 10o
+        # (VIOLETA tiene 24 artículos de Uma pero el top-1 era UMA con 62).
+        self.brands_by_provider: Dict[int, set] = {}
+        # Índice `id_erp → articulo_dict`. El `id` autoincrement de MySQL
+        # puede renumerarse al re-importar el dump desde phpMyAdmin
+        # (sesión 10q). `id_erp` es el identificador del ERP externo y
+        # es estable — lo usamos como clave durable para sinónimos y
+        # golden, y al cargar el catálogo re-mapeamos id_erp → id actual.
+        self.by_id_erp: Dict[str, dict] = {}
+        # Índice `referencia → articulo_dict` (ej. F000636001). Clave
+        # administrativa estable — sesión 10r hace que sea el otro
+        # identificador válido de entrada (junto con id_erp). El `id`
+        # autoincrement queda solo para uso interno (FKs de MySQL).
+        self.by_referencia: Dict[str, dict] = {}
         # Índice variedad+talla → lista de artículos (para matching mejorado)
         self.by_variety_size: Dict[str, List[dict]] = defaultdict(list)
         # Índice variedad → lista de artículos (sin talla)
@@ -126,6 +145,7 @@ class ArticulosLoader:
                     art = self._parse_row(ln)
                     if not art:
                         continue
+                    self._reconstruct_truncated_name(art)
                     self._register_article(art)
                     count += 1
                 except (ValueError, IndexError):
@@ -141,8 +161,9 @@ class ArticulosLoader:
     def load_from_db(self) -> int:
         """Carga artículos desde la tabla MySQL `articulos`.
 
-        Lee los mismos 6 campos que extrae `_parse_row` del dump SQL para
-        que la indexación posterior sea idéntica.
+        Lee también los campos estructurados (color, marca, variedad) para
+        reconstruir el nombre canónico cuando está truncado en la BD
+        (export histórico cortó en la Ñ de "TEÑIDA").
 
         Returns:
             Número de artículos cargados.
@@ -157,7 +178,8 @@ class ArticulosLoader:
         try:
             with conn.cursor() as cur:
                 cur.execute(
-                    "SELECT id, id_proveedor, tamano, paquete, nombre, familia "
+                    "SELECT id, id_proveedor, tamano, paquete, nombre, familia, "
+                    "id_erp, referencia, color, marca, variedad "
                     "FROM articulos"
                 )
                 for row in cur.fetchall():
@@ -168,9 +190,15 @@ class ArticulosLoader:
                         'paquete':      int(row[3] or 0),
                         'nombre':       row[4] or '',
                         'familia':      row[5] or '',
+                        'id_erp':       row[6] or '',
+                        'referencia':   row[7] or '',
+                        'color':        row[8] or '',
+                        'marca':        row[9] or '',
+                        'variedad':     row[10] or '',
                     }
                     if not art['id']:
                         continue
+                    self._reconstruct_truncated_name(art)
                     self._register_article(art)
                     count += 1
         finally:
@@ -183,9 +211,54 @@ class ArticulosLoader:
                      count, len(self.rosas_ec), len(self.by_variety))
         return count
 
+    @staticmethod
+    def _reconstruct_truncated_name(art: dict) -> None:
+        """Reconstruye `nombre` cuando el export phpMyAdmin lo dejó truncado.
+
+        Histórico: muchos artículos tienen `nombre='PANICULATA XLENCE TE'`
+        porque un export viejo cortó la Ñ de "TEÑIDA". Los campos
+        estructurados (`color`, `marca`, `variedad`, `familia`, `tamano`,
+        `paquete`) sí están intactos. Esta función detecta el truncado y
+        genera el canónico "{familia} TEÑIDA {color} {tamano} {paquete}U
+        {marca}" para que el matcher pueda distinguirlos.
+        """
+        nombre = (art.get('nombre') or '').strip()
+        is_truncated = (
+            nombre.upper().endswith(' TE') or
+            nombre.upper().endswith(' TEÑ') or
+            nombre.upper().endswith(' TEÑIDA') or
+            nombre.upper() == 'PANICULATA XLENCE TE'
+        )
+        if not is_truncated:
+            return
+        familia = (art.get('familia') or '').strip().upper()
+        color   = (art.get('color')   or '').strip().upper()
+        tamano  = (art.get('tamano')  or '').strip().upper()
+        marca   = (art.get('marca')   or '').strip().upper()
+        paquete = art.get('paquete') or 0
+        if not (familia and color):
+            return
+        bits = [familia, 'TEÑIDA', color]
+        if tamano:
+            bits.append(tamano)
+        if paquete:
+            bits.append(f'{paquete}U')
+        if marca:
+            bits.append(marca)
+        art['nombre'] = ' '.join(bits)
+
     def _register_article(self, art: dict) -> None:
         """Registra un artículo en los índices internos (compartido SQL/DB)."""
         self.articulos[art['id']] = art
+        # Índice por id_erp (estable entre reimports). Si el dump SQL no
+        # trae la columna id_erp queda vacío y el índice no se usa.
+        erp = (art.get('id_erp') or '').strip()
+        if erp:
+            self.by_id_erp[erp] = art
+        # Índice por referencia (F...) — clave administrativa estable.
+        ref = (art.get('referencia') or '').strip().upper()
+        if ref:
+            self.by_referencia[ref] = art
         nombre = art['nombre']
         if nombre:
             self.by_name[nombre.upper()] = art['id']
@@ -195,6 +268,27 @@ class ArticulosLoader:
             self._index_species(art)
 
     # --- Búsquedas ---
+
+    def find_by_erp_or_ref(self, q: str) -> Optional[dict]:
+        """Resuelve un artículo por `id_erp` o `referencia` (sesión 10r).
+
+        Política: **no aceptar nunca el `id` autoincrement como input**.
+        El `id` local se renumera al reimportar el catálogo y causa
+        asignaciones equivocadas (3037 local ≠ 3037 id_erp). El usuario
+        siempre teclea id_erp (típicamente numérico) o referencia
+        (F000...). Centralizar aquí garantiza que todas las vías de
+        asignación (CLI golden_review, web API, UI) compartan criterio.
+        """
+        if not q:
+            return None
+        q = q.strip()
+        by_erp = self.by_id_erp.get(q)
+        if by_erp:
+            return by_erp
+        by_ref = self.by_referencia.get(q.upper())
+        if by_ref:
+            return by_ref
+        return None
 
     def find_by_name(self, name: str) -> Optional[dict]:
         """Busca un artículo por nombre exacto."""
@@ -366,9 +460,17 @@ class ArticulosLoader:
                     and parts[1].isalpha() and parts[1] not in BRAND_IGNORE_SUFFIXES):
                 prov_suffixes.setdefault(pid, []).append(parts[1])
         for pid, suffixes in prov_suffixes.items():
-            top = Counter(suffixes).most_common(1)[0]
+            counts = Counter(suffixes)
+            top = counts.most_common(1)[0]
             if top[1] >= BRAND_MIN_ARTICLES:
                 self.brand_by_provider[pid] = top[0]
+            # Registrar TODAS las marcas que superan el umbral (no solo la
+            # principal). Un proveedor puede tener líneas distintas con
+            # marcas distintas (Uma: ROSAS→UMA, PANICULATA→VIOLETA) y el
+            # matcher debe reconocer ambas como propias.
+            all_brands = {b for b, n in counts.items() if n >= BRAND_MIN_ARTICLES}
+            if all_brands:
+                self.brands_by_provider[pid] = all_brands
 
     def _build_variety_index(self) -> None:
         """Construye índices por variedad y variedad+talla para búsqueda flexible."""
@@ -614,14 +716,22 @@ class ArticulosLoader:
         b = self.brand_by_provider.get(provider_id)
         if b:
             brands.append(b)
+        # Marcas secundarias autodetectadas (Uma: UMA + VIOLETA).
+        extra_auto = self.brands_by_provider.get(provider_id)
+        if extra_auto:
+            brands.extend(extra_auto)
         # Clave del proveedor en PROVIDERS como posible marca
         if provider_key:
             brands.append(provider_key.upper())
-        # Buscar la clave del proveedor por id
+        # Buscar la clave del proveedor por id + registrar catalog_brands
+        # manuales (marcas multi-palabra que el autodetector no capta o
+        # cuando el id config no coincide con id_proveedor del catálogo).
         from src.config import PROVIDERS
         for pkey, pdata in PROVIDERS.items():
             if pdata.get('id') == provider_id:
                 brands.append(pkey.upper())
+                for b in pdata.get('catalog_brands') or []:
+                    brands.append(b)
                 break
         return list(dict.fromkeys(_normalize(b) for b in brands if b))
 
@@ -710,6 +820,11 @@ class ArticulosLoader:
         return {
             'id': ci(flds[0]), 'nombre': cs(flds[8]), 'familia': cs(flds[9]),
             'tamano': cs(flds[5]), 'paquete': ci(flds[7]), 'id_proveedor': ci(flds[3]),
+            'id_erp': cs(flds[1]),
+            'referencia': cs(flds[10]) if len(flds) > 10 else '',
+            'color':    cs(flds[4])  if len(flds) >  4 else '',
+            'marca':    cs(flds[6])  if len(flds) >  6 else '',
+            'variedad': cs(flds[14]) if len(flds) > 14 else '',
         }
 
     @staticmethod

@@ -164,6 +164,7 @@ class AlegriaParser:
                 line_total=total,
                 box_type=box_type,
                 provider_key=pdata.get('key', ''),
+                origin=pdata.get('country', 'EC'),
             )
             lines.append(il)
 
@@ -199,6 +200,7 @@ class AlegriaParser:
                             size=sz, stems_per_bunch=spb, stems=int(stems_f),
                             price_per_stem=price, line_total=total, box_type='',
                             provider_key=pdata.get('key', ''),
+                            origin=pdata.get('country', 'EC'),
                         )
                         lines.append(il)
                     continue
@@ -223,6 +225,7 @@ class AlegriaParser:
                 size=0, stems_per_bunch=spb, stems=stems,
                 price_per_stem=price, line_total=total, box_type=btype,
                 provider_key=pdata.get('key', ''),
+                origin=pdata.get('country', 'EC'),
             )
             lines.append(il)
 

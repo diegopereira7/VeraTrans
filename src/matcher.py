@@ -112,6 +112,16 @@ class Candidate:
 _SIZE_TOL = 10  # cm — match "close" sin penalty
 _SIZE_TOL_MAX = 20  # cm — umbral duro (veto por encima)
 
+# Modificadores de color (tokens que cambian una variante del color base).
+# Si aparecen en el nombre del artículo PERO NO en la variedad, penalizar:
+# la variedad "LAVANDA" no debe ganar con "LAVANDA OSCURO" cuando existe
+# "LAVANDA" a secas, ni "AZUL" con "AZUL CLARO" cuando existe "AZUL".
+_COLOR_MODIFIERS = {
+    'OSCURO', 'OSCURA', 'CLARO', 'CLARA',
+    'LIGHT', 'DARK', 'PASTEL', 'MEDIUM',
+    'NEON', 'BICOLOR',
+}
+
 
 _FOREIGN_BRANDS_CACHE: Optional[set[str]] = None
 # Patrón de sufijos que NO son marcas (tamaños, unidades, orígenes)
@@ -159,11 +169,34 @@ def _own_brands_norm(pkey: str, provider_id: int,
         if pn:
             brands.add(pn)
     if art_loader and provider_id:
+        # Primary brand (top-1) — retrocompatibilidad.
         catalog_brand = art_loader.brand_by_provider.get(provider_id)
         if catalog_brand:
             cn = _normalize(catalog_brand)
             if cn:
                 brands.add(cn)
+        # Secondary brands autodetectadas: un proveedor puede tener varias
+        # marcas (Uma usa UMA en rosas y VIOLETA en paniculata). Cualquier
+        # marca con ≥ BRAND_MIN_ARTICLES en el catálogo cuenta como propia.
+        extra = getattr(art_loader, 'brands_by_provider', {}).get(provider_id)
+        if extra:
+            for b in extra:
+                bn = _normalize(b)
+                if bn:
+                    brands.add(bn)
+    # Brands registradas manualmente en config (`catalog_brands`) — para
+    # proveedores con marca multi-palabra que el autodetector ignora
+    # (p. ej. TIERRA VERDE — `rsplit(' ', 1)` solo ve "VERDE" y está en
+    # BRAND_IGNORE_SUFFIXES), o para mapear cuando el id de config no
+    # coincide con el id_proveedor del catálogo ERP.
+    if pkey:
+        from src.config import PROVIDERS
+        pdata = PROVIDERS.get(pkey)
+        if pdata:
+            for b in pdata.get('catalog_brands') or []:
+                bn = _normalize(b)
+                if bn:
+                    brands.add(bn)
     return brands
 
 
@@ -329,11 +362,43 @@ def _score_candidate(line: InvoiceLine, cand: Candidate,
         # misma marca propia). Bonus pequeño para también influir en
         # el ranking fuera de brand_boost.
         if all(t in nombre for t in line_var_tokens):
-            score += 0.03
+            # Bonus alto porque variety_full significa que el candidato
+            # cubre *todos* los tokens de la variedad. Cuando la variedad
+            # incluye palabras genéricas de familia (PANICULATA/XLENCE/
+            # TEÑIDA/ROSA), el `variety_match` parcial puede dispararse
+            # por esos tokens — en ese caso el candidato correcto es el
+            # único con variety_full porque tiene también el token
+            # discriminante (color, modelo). El bonus de 0.10 es
+            # suficiente para ganar +0.09 del fuzzy prior que los
+            # rivales inferiores suelen acumular.
+            score += 0.10
             reasons.append('variety_full')
+        # Penalty por *modificador de color extra* en el nombre del
+        # artículo que no está en la variedad. Casos típicos: variedad
+        # "LAVANDA" empatando con "LAVANDA OSCURO", o "AZUL" empatando
+        # con "AZUL CLARO". El modificador añade especificidad que la
+        # factura no pide, así que el artículo más ajustado debe ganar.
+        _NOMBRE_TOKS = set(re.findall(r'[A-ZÑ]{3,}', nombre))
+        extra_mods = (_NOMBRE_TOKS & _COLOR_MODIFIERS) - line_var_tokens
+        if extra_mods:
+            score -= 0.12
+            penalties.append(f'color_modifier_extra({"/".join(sorted(extra_mods))})')
     elif line.variety:
-        penalties.append('variety_no_overlap')
-        score -= 0.10
+        # Excepción: un sinónimo de alto trust (manual_confirmado o
+        # aprendido_confirmado) ES prueba explícita de que la traducción
+        # tokens→artículo es válida aunque no haya overlap literal
+        # (ej: GYPSOPHILA XL NATURAL WHITE → PANICULATA XLENCE BLANCO).
+        # Sin esta excepción el sinónimo manual pierde -0.10 y puede ser
+        # superado por un candidato fuzzy con overlap casual de tokens
+        # irrelevantes (MIXTO por GYPSOPHILA genérico). El trust ya pesa
+        # 0.98*0.25=0.245 en el score, que es proporcional al hecho.
+        trust_exempts = (cand.source == 'synonym'
+                         and (cand.trust or 0) >= 0.85)
+        if not trust_exempts:
+            penalties.append('variety_no_overlap')
+            score -= 0.10
+        else:
+            reasons.append('synonym_overrides_variety')
 
     # — Talla
     sz_art = _infer_article_size(art)
@@ -595,15 +660,19 @@ class Matcher:
 
         # 1) Sinónimo guardado — si existe y no está rechazado
         s = self.syn.find(provider_id, line)
-        if s and int(s.get('articulo_id', 0) or 0) > 0 and s.get('status') != 'rechazado':
-            art = self.art.articulos.get(s['articulo_id'])
-            if art is None:
-                # Fallback: reconstruir art mínimo a partir del entry del syn.
-                art = {'id': s['articulo_id'], 'nombre': s.get('articulo_name', '')}
-            cands.append(Candidate(
-                articulo=art, source='synonym', method_hint='sinónimo',
-                trust=SynonymStore.trust_score(s),
-            ))
+        if s and s.get('status') != 'rechazado':
+            # Resolver el articulo_id actual vía id_erp si está presente
+            # (re-mapea tras reimport de la tabla que haya reasignado ids).
+            art_id = self.syn.resolve_article_id(s, self.art)
+            if art_id > 0:
+                art = self.art.articulos.get(art_id)
+                if art is None:
+                    # Fallback: reconstruir art mínimo a partir del entry del syn.
+                    art = {'id': art_id, 'nombre': s.get('articulo_name', '')}
+                cands.append(Candidate(
+                    articulo=art, source='synonym', method_hint='sinónimo',
+                    trust=SynonymStore.trust_score(s),
+                ))
 
         # 2) Búsqueda priorizada (variedad+talla+marca > proveedor > genérico)
         if line.variety and self.art.by_variety:
@@ -980,39 +1049,68 @@ class Matcher:
                 required_margin = _MARGIN_MIN
             if margin < required_margin and top2_score >= _LINK_OK_THRESHOLD:
                 # Desempate cualitativo: el margen numérico es ajustado,
-                # pero top1 puede dominar objetivamente si tiene una
-                # feature crítica que top2 NO tiene. Dos son
+                # pero uno puede dominar objetivamente si tiene una
+                # feature crítica que el otro NO tiene. Dos son
                 # determinantes:
-                #   - `size_exact` vs `size_close`: top1 coincide en
-                #     talla exacta (ej. sz 40 == 40CM) y top2 solo
-                #     coincide aproximada (sz 40 vs 50CM). Típico en
-                #     tallas cercanas del mismo branded.
+                #   - `size_exact` vs `size_close`: un candidato
+                #     coincide en talla exacta (ej. sz 40 == 40CM) y el
+                #     otro solo coincide aproximada. Típico en tallas
+                #     cercanas del mismo branded.
                 #   - `variety_full` vs `variety_match` parcial: todos
                 #     los tokens de la variedad aparecen en el nombre,
                 #     frente a uno solo. Típico en variedades
-                #     multi-palabra ("VIOLET HILL", "STAR PLATINUM").
-                # Si top1 gana cualitativamente, no es realmente un
-                # empate: marcar ok y guardar cómo lo resolvimos.
+                #     multi-palabra ("VIOLET HILL", "RAINBOW PASTEL").
+                # El desempate es SIMÉTRICO: si el ganador cualitativo es
+                # top2 (no top1), lo promovemos a ganador antes de
+                # aplicar el tiebreak. Ej.: top1 = fuzzy 63% con score
+                # levemente superior por el prior, top2 = variety_full
+                # exacto — el correcto es top2.
                 top2_reasons = set(viable[1].reasons or [])
                 top1_reasons_set = set(top1.reasons)
+                # ¿top2 gana cualitativamente? Si sí, swap.
+                top2_decisive_size = ('size_exact' in top2_reasons
+                                      and 'size_exact' not in top1_reasons_set
+                                      and 'size_close' in top1_reasons_set)
+                top2_decisive_variety = ('variety_full' in top2_reasons
+                                         and 'variety_full' not in top1_reasons_set)
+                if top2_decisive_size or top2_decisive_variety:
+                    # Swap: top2 pasa a ser top1 (ganador).
+                    top1, viable[0], viable[1] = viable[1], viable[1], top1
+                    top1_reasons_set = set(top1.reasons)
+                    top2_reasons = set(viable[1].reasons or [])
+                    line.match_reasons = list(top1.reasons)
+                    line.match_penalties = list(top1.penalties)
                 decisive_size = ('size_exact' in top1_reasons_set
                                  and 'size_exact' not in top2_reasons
                                  and 'size_close' in top2_reasons)
                 decisive_variety = ('variety_full' in top1_reasons_set
                                     and 'variety_full' not in top2_reasons)
-                if decisive_size or decisive_variety:
+                # Color-modifier asimétrico: top2 introduce un modificador
+                # (OSCURO/CLARO/PASTEL...) que la variedad no pide, top1
+                # no. Ej: la línea dice "AZUL" y top2 es "AZUL CLARO".
+                # Color distinto → top1 es el correcto.
+                top2_pen_names = {p.split('(', 1)[0] for p in (viable[1].penalties or [])}
+                top1_pen_names = {p.split('(', 1)[0] for p in (top1.penalties or [])}
+                decisive_color_mod = ('color_modifier_extra' in top2_pen_names
+                                      and 'color_modifier_extra' not in top1_pen_names)
+                if decisive_size or decisive_variety or decisive_color_mod:
                     tag = ('tiebreak_size_exact' if decisive_size
-                           else 'tiebreak_variety_full')
+                           else 'tiebreak_variety_full' if decisive_variety
+                           else 'tiebreak_color_modifier')
                     line.match_reasons.append(tag)
                     # Ganador claro por desempate cualitativo.
                     line.match_status = 'ok'
                     line.match_method = top1.method_hint or 'evidencia'
                     line.articulo_id = top1.articulo.get('id')
                     line.articulo_name = top1.articulo.get('nombre', '')
-                    self.syn.add(provider_id, line, line.articulo_id,
-                                 line.articulo_name,
-                                 _origin_from_source(top1.source),
-                                 invoice=invoice)
+                    # No rescribir el sinónimo si él mismo fue el ganador
+                    # (evita degradar entries manual_confirmado a 'auto').
+                    if top1.source != 'synonym':
+                        self.syn.add(provider_id, line, line.articulo_id,
+                                     line.articulo_name,
+                                     _origin_from_source(top1.source),
+                                     invoice=invoice,
+                                     articulo_id_erp=top1.articulo.get('id_erp', '') or '')
                     has_independent_evidence = (
                         'variety_match' in top1.reasons
                         and ('size_exact' in top1.reasons
@@ -1035,8 +1133,18 @@ class Matcher:
             line.articulo_id = top1.articulo.get('id')
             line.articulo_name = top1.articulo.get('nombre', '')
             # Guardar sinónimo (en prueba) para refuerzo si no lo había.
-            self.syn.add(provider_id, line, line.articulo_id, line.articulo_name,
-                         _origin_from_source(top1.source), invoice=invoice)
+            # PERO: si el ganador YA vino del sinónimo, no tiene sentido
+            # hacer add(): el sinónimo preexiste, no hay "alta", y un add
+            # con origen='auto' degradaría una entry previa con
+            # status=manual_confirmado a aprendido_en_prueba (perdiendo la
+            # verdad del operador). register_match_hit abajo ya incrementa
+            # times_confirmed — suficiente para reforzar el sinónimo.
+            if top1.source != 'synonym':
+                self.syn.add(provider_id, line, line.articulo_id,
+                             line.articulo_name,
+                             _origin_from_source(top1.source),
+                             invoice=invoice,
+                             articulo_id_erp=top1.articulo.get('id_erp', '') or '')
             # Auto-confirmación del sinónimo: si el ok ganó con evidencia
             # independiente (variety+size_exact o variety+brand_in_name),
             # cuenta como hit. Tras ≥ 2 hits el sinónimo promueve de
@@ -1063,8 +1171,13 @@ class Matcher:
         # para no proponer matches arbitrarios tipo "SHY → SYMBOL".
         # Mantenemos ambiguous si la fuzzy es alta (LIMONADA→LEMONADE
         # sin solape literal pero similitud 88%) — el operador decide.
+        # Un sinónimo preexistente es por definición una afirmación
+        # explícita (manual o aprendida) de que VARIETY→ARTICULO es
+        # válido. Aunque los tokens no solapen ni la fuzzy sea alta, el
+        # match es plausible por la mera existencia del sinónimo.
         plausible = ('variety_match' in top1.reasons
-                     or top1.hint_score >= 0.85)
+                     or top1.hint_score >= 0.85
+                     or top1.source == 'synonym')
         if top1.score >= 0.50 and plausible:
             line.match_status = 'ambiguous_match'
             line.match_method = top1.method_hint or 'evidencia'
