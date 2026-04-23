@@ -159,7 +159,7 @@ PROVIDERS = {
     # Proveedores nuevos (SEMANA 7)
     'conejera': {'id': 90010,     'name': 'Flores La Conejera',       'fmt': 'auto_conejera', 'patterns': ['FLORES LA CONEJERA', 'LA CONEJERA', 'NIT: 860501528', 'FE042138']},
     'iwa': {'id': 90022,     'name': 'IWA Flowers',              'fmt': 'iwa',          'patterns': ['IWA FLOWERS', 'IWA7']},
-    'timana': {'id': 90039,     'name': 'Flores Timana',            'fmt': 'timana',       'patterns': ['FLORES TIMANA', 'florestimana']},
+    'timana': {'id': 90039,     'name': 'Flores Timana',            'fmt': 'timana',       'patterns': ['FLORES TIMANA', 'florestimana'], 'catalog_brands': ['TIMAN', 'TIMANA']},
     'rosabella': {'id': 90032,     'name': 'Rosabella',                'fmt': 'auto_rosabella', 'patterns': ['rosabella.ec', 'ROSABELLA', 'teresita@rosabella']},
     'agrosanalfonso': {'id': 90002,  'name': 'Agro San Alfonso (Glamour)','fmt': 'auto_agrosanalfonso', 'patterns': ['AGROSANALFONSO', 'SANALFONSO', 'AGROSANALFONSOS.A.', '1791289714']},
     # Stubs — proveedores detectados sin parser (TODO: crear parser cuando haya ejemplos)

@@ -277,29 +277,29 @@
       "bunches": 0,
       "stems": 300,
       "line_total": 84.0,
-      "articulo_id": 33697,
-      "articulo_name": "ROSA EC PLAYA BLANCA 50CM 25U",
+      "articulo_id": 36678,
+      "articulo_name": "ROSA PLAYA BLANCA 50CM 25U BRISSAS",
       "match_status": "ok",
       "match_confidence": 1.0,
       "link_confidence": 1.0,
-      "articulo_id_erp": "11827"
+      "articulo_id_erp": "44959"
     },
     {
       "raw_description": "19 - 19 SHADDAI ROSES 1 HB ROSE TOFFE 50 300 300 0.280 84.000 Standing SHADDAI ROSES",
       "species": "ROSES",
-      "variety": "TOFFE",
+      "variety": "TOFEE",
       "origin": "EC",
       "size": 50,
       "stems_per_bunch": 25,
       "bunches": 0,
       "stems": 300,
       "line_total": 84.0,
-      "articulo_id": 33913,
-      "articulo_name": "ROSA EC TOFEE 50CM 25U",
+      "articulo_id": 37775,
+      "articulo_name": "ROSA TOFEE 50CM 25U BRISSAS",
       "match_status": "ok",
       "match_confidence": 0.787,
       "link_confidence": 0.787,
-      "articulo_id_erp": "13624"
+      "articulo_id_erp": "44974"
     },
     {
       "raw_description": "20 - 20 BYDDA ROSES 1 HB ROSE MONDIAL 50 300 300 0.280 84.000 Standing BYDDA ROSES",
@@ -797,19 +797,19 @@
     {
       "raw_description": "46 - 46 RICC ROSES 1 QB ROSE TOFFE 60 125 125 0.320 40.000 Standing RICC ROSES",
       "species": "ROSES",
-      "variety": "TOFFE",
+      "variety": "TOFEE",
       "origin": "EC",
       "size": 60,
       "stems_per_bunch": 25,
       "bunches": 0,
       "stems": 125,
       "line_total": 40.0,
-      "articulo_id": 33915,
-      "articulo_name": "ROSA EC TOFEE 60CM 25U",
+      "articulo_id": 37776,
+      "articulo_name": "ROSA TOFEE 60CM 25U BRISSAS",
       "match_status": "sin_match",
       "match_confidence": 0.688,
       "link_confidence": 0.688,
-      "articulo_id_erp": "13625"
+      "articulo_id_erp": "44975"
     },
     {
       "raw_description": "47 - 47 RICC ROSES 1 HB ROSE EXPLORER 50 100 100 0.280 28.000 Standing RICC ROSES",

@@ -28253,7 +28253,7 @@
     "raw": "ALSTRO (TSTEM ASSORTED SUPERSELEC 1 80 80 .240 19.20",
     "invoice": "93725",
     "status": "ambiguo",
-    "times_corrected": 1683,
+    "times_corrected": 1734,
     "articulo_id_erp": "21300"
   },
   "281|ALSTROEMERIA|MIXTO|0|10|SELECT": {
@@ -28269,7 +28269,7 @@
     "raw": "ALSTRO (TSTEM ASSORTED SELECT 2 100 200 .180 36.00",
     "invoice": "94114",
     "status": "ambiguo",
-    "times_corrected": 693,
+    "times_corrected": 714,
     "articulo_id_erp": "21300"
   },
   "281|ALSTROEMERIA|WHITE|0|10|SELECT": {
@@ -28285,7 +28285,7 @@
     "raw": "ALSTRO (TSTEM WHITE SELECT 1 100 100 .180 18.00",
     "invoice": "94114",
     "status": "ambiguo",
-    "times_corrected": 297,
+    "times_corrected": 306,
     "articulo_id_erp": "21316"
   },
   "281|ROSES|GARDEN MAYRA S WHITE|40|25|": {
@@ -28353,7 +28353,7 @@
     "times_used": 0,
     "times_confirmed": 0,
     "times_corrected": 0,
-    "first_seen_at": "2026-04-23T16:11:28",
+    "first_seen_at": "2026-04-23T16:48:44",
     "last_confirmed_at": ""
   },
   "13001|ROSES|TESSA D LIMONADA|60|4|": {
@@ -32365,8 +32365,8 @@
     "times_used": 0,
     "times_confirmed": 1,
     "times_corrected": 0,
-    "first_seen_at": "2026-04-23T16:06:17",
-    "last_confirmed_at": "2026-04-23T16:06:17"
+    "first_seen_at": "2026-04-23T16:41:36",
+    "last_confirmed_at": "2026-04-23T16:41:36"
   },
   "90007|ROSES|BRIGHTON|50|25|": {
     "articulo_id": 32234,
@@ -33209,7 +33209,7 @@
     "raw": "5 H Rose Freedom X 10 - 50 47806- 50 GONZA x 10 0603.11.00.00 200 1000 ST 0.32 320.00",
     "invoice": "",
     "status": "ambiguo",
-    "times_corrected": 101,
+    "times_corrected": 104,
     "articulo_id_erp": "12607"
   },
   "90012|ROSES|TIFFANY|60|25|": {
@@ -37848,7 +37848,7 @@
     "raw": "1 H Rose Freedom X 10 - 50 45337 50 GONZA X 10 0603.11.00.00 200 200 ST 0.30 60.00",
     "invoice": "",
     "status": "ambiguo",
-    "times_corrected": 196,
+    "times_corrected": 202,
     "articulo_id_erp": "12607"
   },
   "90044|ROSES|VENDELA|50|25|": {
@@ -44155,9 +44155,9 @@
     "articulo_id_erp": "37470"
   },
   "90039|ROSES|VENDELA WHITE|40|25|": {
-    "articulo_id": 32766,
-    "articulo_id_erp": "13660",
-    "articulo_name": "ROSA COL VENDELA 40CM 25U",
+    "articulo_id": 38090,
+    "articulo_id_erp": "29097",
+    "articulo_name": "ROSA VENDELA 40CM 25U TIMAN",
     "origen": "auto-color-strip",
     "status": "aprendido_confirmado",
     "provider_id": 90039,
@@ -44171,13 +44171,13 @@
     "times_used": 0,
     "times_confirmed": 2,
     "times_corrected": 0,
-    "first_seen_at": "2026-04-23T13:00:26",
-    "last_confirmed_at": "2026-04-23T13:00:31"
+    "first_seen_at": "2026-04-23T16:22:15",
+    "last_confirmed_at": "2026-04-23T16:27:41"
   },
   "90039|ROSES|PINK MONDIAL PINK|40|25|": {
-    "articulo_id": 32686,
-    "articulo_id_erp": "13664",
-    "articulo_name": "ROSA COL PINK MONDIAL 40CM 25U",
+    "articulo_id": 36594,
+    "articulo_id_erp": "37526",
+    "articulo_name": "ROSA PINK MONDIAL 40CM 25U TIMAN",
     "origen": "auto-color-strip",
     "status": "aprendido_confirmado",
     "provider_id": 90039,
@@ -44191,8 +44191,8 @@
     "times_used": 0,
     "times_confirmed": 2,
     "times_corrected": 0,
-    "first_seen_at": "2026-04-23T13:00:28",
-    "last_confirmed_at": "2026-04-23T13:00:32"
+    "first_seen_at": "2026-04-23T16:22:17",
+    "last_confirmed_at": "2026-04-23T16:27:42"
   },
   "90039|ROSES|FREEDOM RED|40|25|": {
     "articulo_id": 34309,
@@ -44611,8 +44611,8 @@
     "times_used": 0,
     "times_confirmed": 1,
     "times_corrected": 0,
-    "first_seen_at": "2026-04-23T16:11:44",
-    "last_confirmed_at": "2026-04-23T16:11:44"
+    "first_seen_at": "2026-04-23T16:49:01",
+    "last_confirmed_at": "2026-04-23T16:49:01"
   },
   "435|ROSES|VENDELA|40|25|": {
     "articulo_id": 38088,
@@ -49967,9 +49967,9 @@
     "articulo_id_erp": "21989"
   },
   "90039|ROSES|VENDELA WHITE|50|25|": {
-    "articulo_id": 32768,
-    "articulo_id_erp": "13661",
-    "articulo_name": "ROSA COL VENDELA 50CM 25U",
+    "articulo_id": 38124,
+    "articulo_id_erp": "29096",
+    "articulo_name": "ROSA VENDELA 50CM 25U TIMAN",
     "origen": "auto-color-strip",
     "status": "aprendido_confirmado",
     "provider_id": 90039,
@@ -49983,8 +49983,8 @@
     "times_used": 0,
     "times_confirmed": 2,
     "times_corrected": 0,
-    "first_seen_at": "2026-04-23T13:00:26",
-    "last_confirmed_at": "2026-04-23T13:00:32"
+    "first_seen_at": "2026-04-23T16:22:15",
+    "last_confirmed_at": "2026-04-23T16:27:41"
   },
   "90039|ROSES|PINK FLOYD HOT PINK|40|25|": {
     "articulo_id": 32684,
@@ -50007,9 +50007,9 @@
     "articulo_id_erp": "15619"
   },
   "90039|ROSES|MONDIAL WHITE|60|25|": {
-    "articulo_id": 32661,
-    "articulo_id_erp": "13654",
-    "articulo_name": "ROSA COL MONDIAL 60CM 25U",
+    "articulo_id": 36006,
+    "articulo_id_erp": "29099",
+    "articulo_name": "ROSA MONDIAL 60CM 25U TIMAN",
     "origen": "auto-color-strip",
     "status": "aprendido_confirmado",
     "provider_id": 90039,
@@ -50023,8 +50023,8 @@
     "times_used": 0,
     "times_confirmed": 2,
     "times_corrected": 0,
-    "first_seen_at": "2026-04-23T13:00:28",
-    "last_confirmed_at": "2026-04-23T13:00:32"
+    "first_seen_at": "2026-04-23T16:22:16",
+    "last_confirmed_at": "2026-04-23T16:27:42"
   },
   "90039|ROSES|GOLDFINCH YELLOW|40|25|": {
     "articulo_id": 32611,
@@ -52678,8 +52678,8 @@
     "times_used": 0,
     "times_confirmed": 1,
     "times_corrected": 0,
-    "first_seen_at": "2026-04-23T16:11:44",
-    "last_confirmed_at": "2026-04-23T16:11:44"
+    "first_seen_at": "2026-04-23T16:49:02",
+    "last_confirmed_at": "2026-04-23T16:49:02"
   },
   "90046|ROSES|VIOLET HILL|60|0|": {
     "articulo_id": 33963,
@@ -57373,7 +57373,7 @@
     "articulo_id_erp": "38327",
     "articulo_name": "CLAVEL FANCY ROJO 70CM 20U PREMIUM",
     "origen": "auto-matching",
-    "status": "aprendido_en_prueba",
+    "status": "aprendido_confirmado",
     "provider_id": 90030,
     "species": "CARNATIONS",
     "variety": "ROJO",
@@ -57383,17 +57383,17 @@
     "raw": "4 HB 600 120 CARNATION RED RED VERALEZA 0603.12.7000 Stems 2400 US$ 0.090 US$ 1.800 US$",
     "invoice": "",
     "times_used": 0,
-    "times_confirmed": 1,
+    "times_confirmed": 2,
     "times_corrected": 0,
     "first_seen_at": "2026-04-23T16:09:41",
-    "last_confirmed_at": "2026-04-23T16:09:41"
+    "last_confirmed_at": "2026-04-23T16:26:52"
   },
   "90030|CARNATIONS|BLANCO|70|10|": {
     "articulo_id": 12129,
     "articulo_id_erp": "41194",
     "articulo_name": "CLAVEL FANCY BLANCO 70CM 20U PREMIUM",
     "origen": "auto-matching",
-    "status": "aprendido_en_prueba",
+    "status": "aprendido_confirmado",
     "provider_id": 90030,
     "species": "CARNATIONS",
     "variety": "BLANCO",
@@ -57403,17 +57403,17 @@
     "raw": "2 QB 500 50 CARNATION WHITE Rl4 0603.12.7000 ORDEN Stems 1000 US$ 0.120 US$ US$",
     "invoice": "",
     "times_used": 0,
-    "times_confirmed": 1,
+    "times_confirmed": 2,
     "times_corrected": 0,
     "first_seen_at": "2026-04-23T16:09:41",
-    "last_confirmed_at": "2026-04-23T16:09:41"
+    "last_confirmed_at": "2026-04-23T16:26:53"
   },
   "90030|CARNATIONS|ROJO|70|20|": {
     "articulo_id": 12218,
     "articulo_id_erp": "38327",
     "articulo_name": "CLAVEL FANCY ROJO 70CM 20U PREMIUM",
     "origen": "auto-matching",
-    "status": "aprendido_en_prueba",
+    "status": "aprendido_confirmado",
     "provider_id": 90030,
     "species": "CARNATIONS",
     "variety": "ROJO",
@@ -57423,10 +57423,10 @@
     "raw": "1 HB 600 30 CARNATION RED RED. VERALEZA 0603.12.7000 ORDEN Stems 600 US$ 0.080 US$ US$",
     "invoice": "",
     "times_used": 0,
-    "times_confirmed": 1,
+    "times_confirmed": 2,
     "times_corrected": 0,
     "first_seen_at": "2026-04-23T16:09:41",
-    "last_confirmed_at": "2026-04-23T16:09:41"
+    "last_confirmed_at": "2026-04-23T16:26:53"
   },
   "90053|HYDRANGEAS|PREMIUM BLANCO|60|1|": {
     "articulo_id": 22553,
@@ -57467,5 +57467,125 @@
     "times_corrected": 0,
     "first_seen_at": "2026-04-23T16:12:41",
     "last_confirmed_at": "2026-04-23T16:12:41"
+  },
+  "435|ROSES|MANGO TANGO|50|25|": {
+    "articulo_id": 44512,
+    "articulo_id_erp": "47775",
+    "articulo_name": "ROSA MANGO TANGO 50CM 25U CANTIZA",
+    "origen": "auto-matching",
+    "status": "aprendido_en_prueba",
+    "provider_id": 435,
+    "species": "ROSES",
+    "variety": "MANGO TANGO",
+    "size": 50,
+    "stems_per_bunch": 25,
+    "grade": "",
+    "raw": "MANGO TANGO 50CM N 25ST CZ",
+    "invoice": "1776954741_CANTIZA.pdf",
+    "times_used": 0,
+    "times_confirmed": 1,
+    "times_corrected": 0,
+    "first_seen_at": "2026-04-23T16:32:30",
+    "last_confirmed_at": "2026-04-23T16:32:30"
+  },
+  "435|ROSES|MANGO TANGO|60|25|": {
+    "articulo_id": 35734,
+    "articulo_id_erp": "43217",
+    "articulo_name": "ROSA MANGO TANGO 60CM 25U CANTIZA",
+    "origen": "auto-matching",
+    "status": "aprendido_en_prueba",
+    "provider_id": 435,
+    "species": "ROSES",
+    "variety": "MANGO TANGO",
+    "size": 60,
+    "stems_per_bunch": 25,
+    "grade": "",
+    "raw": "MANGO TANGO 60CM N 25ST CZ",
+    "invoice": "1776954741_CANTIZA.pdf",
+    "times_used": 0,
+    "times_confirmed": 1,
+    "times_corrected": 0,
+    "first_seen_at": "2026-04-23T16:32:32",
+    "last_confirmed_at": "2026-04-23T16:32:32"
+  },
+  "90023|ROSES|SWAN|70|25|": {
+    "articulo_id": 33775,
+    "articulo_id_erp": "",
+    "articulo_name": "ROSA EC SALMA 70CM 25U",
+    "origen": "auto-fuzzy",
+    "status": "aprendido_en_prueba",
+    "provider_id": 90023,
+    "species": "ROSES",
+    "variety": "SWAN",
+    "size": 70,
+    "stems_per_bunch": 25,
+    "grade": "",
+    "raw": "3 HB SWAN 25 X 0     1      25 0.45 11.25",
+    "invoice": "",
+    "times_used": 0,
+    "times_confirmed": 0,
+    "times_corrected": 0,
+    "first_seen_at": "2026-04-23T16:35:26",
+    "last_confirmed_at": ""
+  },
+  "2652|ROSES|SHY|40|25|": {
+    "articulo_id": 32749,
+    "articulo_id_erp": "",
+    "articulo_name": "ROSA COL SYMBOL 40CM 25U",
+    "origen": "auto-fuzzy",
+    "status": "aprendido_en_prueba",
+    "provider_id": 2652,
+    "species": "ROSES",
+    "variety": "SHY",
+    "size": 40,
+    "stems_per_bunch": 25,
+    "grade": "",
+    "raw": "ROSES SHY X 25 - 40 Milagro 2 50 0.250",
+    "invoice": "",
+    "times_used": 0,
+    "times_confirmed": 0,
+    "times_corrected": 0,
+    "first_seen_at": "2026-04-23T16:35:46",
+    "last_confirmed_at": ""
+  },
+  "90001|ROSES|TOFEE|50|25|": {
+    "articulo_id": 37775,
+    "articulo_id_erp": "44974",
+    "articulo_name": "ROSA TOFEE 50CM 25U BRISSAS",
+    "origen": "auto-matching",
+    "status": "aprendido_confirmado",
+    "provider_id": 90001,
+    "species": "ROSES",
+    "variety": "TOFEE",
+    "size": 50,
+    "stems_per_bunch": 25,
+    "grade": "",
+    "raw": "19 - 19 SHADDAI ROSES 1 HB ROSE TOFFE 50 300 300 0.280 84.000 Standing SHADDAI ROSES",
+    "invoice": "",
+    "times_used": 0,
+    "times_confirmed": 2,
+    "times_corrected": 0,
+    "first_seen_at": "2026-04-23T16:39:59",
+    "last_confirmed_at": "2026-04-23T16:41:29"
+  },
+  "90001|ROSES|TOFEE|60|25|": {
+    "articulo_id": 37776,
+    "articulo_id_erp": "44975",
+    "articulo_name": "ROSA TOFEE 60CM 25U BRISSAS",
+    "origen": "auto-matching",
+    "status": "aprendido_confirmado",
+    "provider_id": 90001,
+    "species": "ROSES",
+    "variety": "TOFEE",
+    "size": 60,
+    "stems_per_bunch": 25,
+    "grade": "",
+    "raw": "46 - 46 RICC ROSES 1 QB ROSE TOFFE 60 125 125 0.320 40.000 Standing RICC ROSES",
+    "invoice": "",
+    "times_used": 0,
+    "times_confirmed": 2,
+    "times_corrected": 0,
+    "first_seen_at": "2026-04-23T16:40:00",
+    "last_confirmed_at": "2026-04-23T16:41:30"
   }
 }

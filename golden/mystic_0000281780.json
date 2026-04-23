@@ -413,11 +413,12 @@
       "bunches": 2,
       "stems": 50,
       "line_total": 15.0,
-      "articulo_id": 33207,
-      "articulo_name": "ROSA EC MISS PIGGY ROSA 50CM 25U",
+      "articulo_id": 35818,
+      "articulo_name": "ROSA MISS PIGGY 50CM 25U CANTIZA",
       "match_status": "ambiguous_match",
       "match_confidence": 0.982,
-      "link_confidence": 0.982
+      "link_confidence": 0.982,
+      "articulo_id_erp": "42494"
     },
     {
       "raw_description": "H R14 TIFFANY 2 25 50 50 0,300 15,000",

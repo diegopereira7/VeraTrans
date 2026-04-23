@@ -293,12 +293,12 @@
       "bunches": 0,
       "stems": 1000,
       "line_total": 190.0,
-      "articulo_id": 11928,
-      "articulo_name": "CLAVEL COL FANCY CREMA 70CM 20U",
+      "articulo_id": 12138,
+      "articulo_name": "CLAVEL FANCY CREMA 70CM 20U COLIBRI",
       "match_status": "ok",
       "match_confidence": 0.987,
       "link_confidence": 0.987,
-      "articulo_id_erp": "15779"
+      "articulo_id_erp": "26785"
     },
     {
       "raw_description": "2 H Carnation Royal Damascus X 20 - FAN 598625- FAN CO-0603129000 500 1000 ST 0.190 190.000",
@@ -408,16 +408,17 @@
       "variety": "RED",
       "origin": "COL",
       "size": 0,
-      "stems_per_bunch": 25,
+      "stems_per_bunch": 20,
       "bunches": 0,
       "stems": 5000,
       "line_total": 500.0,
-      "articulo_id": 11970,
-      "articulo_name": "CLAVEL COL SELECT ROJO 70CM 25U",
+      "articulo_id": 12210,
+      "articulo_name": "CLAVEL FANCY ROJO 70CM 20U COLIBRI",
       "match_status": "ok",
       "match_confidence": 0.987,
       "link_confidence": 0.987,
-      "articulo_id_erp": "15141"
+      "articulo_id_erp": "22998",
+      "grade": "FANCY"
     },
     {
       "raw_description": "10 H Carnation Novelty X 25 - SEL 599074- SEL BEA CO-0603129000 500 5000 ST 0.100 500.000",
@@ -429,12 +430,12 @@
       "bunches": 0,
       "stems": 5000,
       "line_total": 500.0,
-      "articulo_id": 11967,
-      "articulo_name": "CLAVEL COL SELECT NOVEDADES 70CM 20U",
+      "articulo_id": 12345,
+      "articulo_name": "CLAVEL SELECT NOVEDADES 70CM 20U COLIBRI",
       "match_status": "ambiguous_match",
       "match_confidence": 0.888,
       "link_confidence": 0.888,
-      "articulo_id_erp": "13641"
+      "articulo_id_erp": "23731"
     },
     {
       "raw_description": "2 H Minicarnation mix 598566- SEL GARCIA CO-0603121000 500 1000 ST 0.200 200.000",

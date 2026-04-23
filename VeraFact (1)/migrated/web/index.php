@@ -439,5 +439,6 @@
     ?>
     </script>
     <script src="assets/app.js?v=<?= filemtime(__DIR__ . '/assets/app.js') ?>"></script>
+    <script src="assets/app.extras.js?v=<?= filemtime(__DIR__ . '/assets/app.extras.js') ?>"></script>
 </body>
 </html>

@@ -69,26 +69,13 @@
       "stems": 1.0,
       "line_total": 1.0
     },
-    "link_accuracy": 0.967,
-    "link_correct": 58,
+    "link_accuracy": 1.0,
+    "link_correct": 60,
     "link_total": 60,
-    "full_line_accuracy": 0.967,
-    "full_correct": 58,
+    "full_line_accuracy": 1.0,
+    "full_correct": 60,
     "full_total": 60,
-    "discrepancies": [
-      {
-        "type": "link_mismatch",
-        "gold_variety": "PLAYA BLANCA",
-        "gold_articulo": "33697 (ROSA EC PLAYA BLANCA 50CM 25U)",
-        "sys_articulo": "36678 (ROSA PLAYA BLANCA 50CM 25U BRISSAS)"
-      },
-      {
-        "type": "link_mismatch",
-        "gold_variety": "TOFFE",
-        "gold_articulo": "33913 (ROSA EC TOFEE 50CM 25U)",
-        "sys_articulo": "None ()"
-      }
-    ]
+    "discrepancies": []
   },
   {
     "provider_key": "brissas",
@@ -182,36 +169,17 @@
       "species": 1.0,
       "origin": 1.0,
       "size": 1.0,
-      "stems_per_bunch": 1.0,
+      "stems_per_bunch": 0.964,
       "stems": 1.0,
       "line_total": 1.0
     },
-    "link_accuracy": 0.893,
-    "link_correct": 25,
+    "link_accuracy": 1.0,
+    "link_correct": 28,
     "link_total": 28,
-    "full_line_accuracy": 0.893,
-    "full_correct": 25,
+    "full_line_accuracy": 0.964,
+    "full_correct": 27,
     "full_total": 28,
-    "discrepancies": [
-      {
-        "type": "link_mismatch",
-        "gold_variety": "CREAM",
-        "gold_articulo": "11928 (CLAVEL COL FANCY CREMA 70CM 20U)",
-        "sys_articulo": "12138 (CLAVEL FANCY CREMA 70CM 20U COLIBRI)"
-      },
-      {
-        "type": "link_mismatch",
-        "gold_variety": "RED",
-        "gold_articulo": "11970 (CLAVEL COL SELECT ROJO 70CM 25U)",
-        "sys_articulo": "12210 (CLAVEL FANCY ROJO 70CM 20U COLIBRI)"
-      },
-      {
-        "type": "link_mismatch",
-        "gold_variety": "NOVELTY",
-        "gold_articulo": "11967 (CLAVEL COL SELECT NOVEDADES 70CM 20U)",
-        "sys_articulo": "12345 (CLAVEL SELECT NOVEDADES 70CM 20U COLIBRI)"
-      }
-    ]
+    "discrepancies": []
   },
   {
     "provider_key": "fiorentina",
@@ -397,7 +365,7 @@
       {
         "type": "link_mismatch",
         "gold_variety": "MISS PIGGY",
-        "gold_articulo": "33207 (ROSA EC MISS PIGGY ROSA 50CM 25U)",
+        "gold_articulo": "35818 (ROSA MISS PIGGY 50CM 25U CANTIZA)",
         "sys_articulo": "33558 (ROSA EC MISS WHITE 50CM 25U)"
       }
     ]
@@ -420,38 +388,13 @@
       "stems": 1.0,
       "line_total": 1.0
     },
-    "link_accuracy": 0.714,
-    "link_correct": 10,
+    "link_accuracy": 1.0,
+    "link_correct": 14,
     "link_total": 14,
-    "full_line_accuracy": 0.714,
-    "full_correct": 10,
+    "full_line_accuracy": 1.0,
+    "full_correct": 14,
     "full_total": 14,
-    "discrepancies": [
-      {
-        "type": "link_mismatch",
-        "gold_variety": "VENDELA WHITE",
-        "gold_articulo": "38090 (ROSA VENDELA 40CM 25U TIMANÁ)",
-        "sys_articulo": "32766 (ROSA COL VENDELA 40CM 25U)"
-      },
-      {
-        "type": "link_mismatch",
-        "gold_variety": "VENDELA WHITE",
-        "gold_articulo": "38124 (ROSA VENDELA 50CM 25U TIMANÁ)",
-        "sys_articulo": "32768 (ROSA COL VENDELA 50CM 25U)"
-      },
-      {
-        "type": "link_mismatch",
-        "gold_variety": "MONDIAL WHITE",
-        "gold_articulo": "36006 (ROSA MONDIAL 60CM 25U TIMANÁ)",
-        "sys_articulo": "32661 (ROSA COL MONDIAL 60CM 25U)"
-      },
-      {
-        "type": "link_mismatch",
-        "gold_variety": "PINK MONDIAL PINK",
-        "gold_articulo": "36594 (ROSA PINK MONDIAL 40CM 25U TIMANÁ)",
-        "sys_articulo": "32686 (ROSA COL PINK MONDIAL 40CM 25U)"
-      }
-    ]
+    "discrepancies": []
   },
   {
     "provider_key": "uma",
@@ -497,32 +440,13 @@
       "stems": 1.0,
       "line_total": 1.0
     },
-    "link_accuracy": 0.951,
-    "link_correct": 58,
+    "link_accuracy": 1.0,
+    "link_correct": 61,
     "link_total": 61,
-    "full_line_accuracy": 0.952,
-    "full_correct": 60,
+    "full_line_accuracy": 1.0,
+    "full_correct": 63,
     "full_total": 63,
-    "discrepancies": [
-      {
-        "type": "link_mismatch",
-        "gold_variety": "GOTCHA",
-        "gold_articulo": "33379 (ROSA EC GOTCHA 40CM 25U)",
-        "sys_articulo": "34667 (ROSA GOTCHA 40CM 25U CANTIZA)"
-      },
-      {
-        "type": "link_mismatch",
-        "gold_variety": "SWEET UNIQUE",
-        "gold_articulo": "33846 (ROSA EC SWEET UNIQUE 40CM 25U)",
-        "sys_articulo": "37567 (ROSA SWEET UNIQUE 40CM 25U CANTIZA)"
-      },
-      {
-        "type": "link_mismatch",
-        "gold_variety": "SWEET UNIQUE",
-        "gold_articulo": "33846 (ROSA EC SWEET UNIQUE 40CM 25U)",
-        "sys_articulo": "37567 (ROSA SWEET UNIQUE 40CM 25U CANTIZA)"
-      }
-    ]
+    "discrepancies": []
   },
   {
     "provider_key": "valtho",
@@ -542,32 +466,13 @@
       "stems": 1.0,
       "line_total": 1.0
     },
-    "link_accuracy": 0.889,
-    "link_correct": 24,
+    "link_accuracy": 1.0,
+    "link_correct": 27,
     "link_total": 27,
-    "full_line_accuracy": 0.889,
-    "full_correct": 24,
+    "full_line_accuracy": 1.0,
+    "full_correct": 27,
     "full_total": 27,
-    "discrepancies": [
-      {
-        "type": "link_mismatch",
-        "gold_variety": "MALIBU",
-        "gold_articulo": "35682 (ROSA MALIBU 50CM 25U CANTIZA)",
-        "sys_articulo": "35688 (ROSA MALIBU 60CM 25U CANTIZA)"
-      },
-      {
-        "type": "link_mismatch",
-        "gold_variety": "STAR PLATINUM",
-        "gold_articulo": "33813 (ROSA EC STAR PLATINUM 40CM 25U)",
-        "sys_articulo": "37305 (ROSA STAR PLATINIUM 40CM 25U CANTIZA)"
-      },
-      {
-        "type": "link_mismatch",
-        "gold_variety": "STAR PLATINUM",
-        "gold_articulo": "33814 (ROSA EC STAR PLATINUM 50CM 25U)",
-        "sys_articulo": "37306 (ROSA STAR PLATINIUM 50CM 25U CANTIZA)"
-      }
-    ]
+    "discrepancies": []
   },
   {
     "provider_key": "valtho",
@@ -639,20 +544,13 @@
       "stems": 1.0,
       "line_total": 1.0
     },
-    "link_accuracy": 0.99,
-    "link_correct": 102,
+    "link_accuracy": 1.0,
+    "link_correct": 103,
     "link_total": 103,
-    "full_line_accuracy": 0.99,
-    "full_correct": 102,
+    "full_line_accuracy": 1.0,
+    "full_correct": 103,
     "full_total": 103,
-    "discrepancies": [
-      {
-        "type": "link_mismatch",
-        "gold_variety": "MAYRA'S BRIDAL PINK",
-        "gold_articulo": "35760 (ROSA MAYRA S BRIDAL ROSA 50CM 25U PONDEROSA)",
-        "sys_articulo": "43819 (ROSA MAYRA S BRIDAL ROSA 60CM 25U PONDEROSA)"
-      }
-    ]
+    "discrepancies": []
   },
   {
     "provider_key": "verdesestacion",

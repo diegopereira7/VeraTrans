@@ -141,11 +141,13 @@ class BrissasParser:
                 if not var.startswith('TINTED '):
                     var = re.sub(r'^TINTED\b', 'TINTED', var)
 
-        # Fix known truncations
+        # Fix known truncations y typos del proveedor
         if var == 'HIGH AND':
             var = 'HIGH AND MAGIC'
         elif var == 'ULTRA FREEDOM':
             var = 'FREEDOM'
+        # TOFFE (BRISSAS) → TOFEE (catálogo). Typo común del proveedor.
+        var = re.sub(r'\bTOFFE\b', 'TOFEE', var)
 
         return var
 

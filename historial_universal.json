@@ -7860,13 +7860,14 @@
     "fecha": "2026-03-30 17:12"
   },
   "FA-117549": {
-    "pdf": "SEMANA_12_✈️_729-45937522_REAL_COLIBRI.pdf",
+    "pdf": "02 - 729-45937522 - COLIBRI COLIBRI.pdf",
     "provider": "Colibri Flowers",
-    "total_usd": 0.0,
-    "lineas": 33,
+    "total_usd": 4721.2,
+    "lineas": 28,
     "ok": 28,
-    "sin_match": 5,
-    "fecha": "2026-03-30 17:12"
+    "sin_match": 0,
+    "fecha": "2026-04-23 16:49",
+    "pdf_path": "C:\\Users\\diego.pereira\\Desktop\\DOC VERA\\FACTURAS IMPORTACION\\PROVEEDORES\\COLIBRI\\02 - 729-45937522 - COLIBRI COLIBRI.pdf"
   },
   "4265": {
     "pdf": "02 - 729-45937522 - DAFLOR DAFLOR.pdf",
@@ -8050,9 +8051,9 @@
     "provider": "Mystic Flowers",
     "total_usd": 360.0,
     "lineas": 26,
-    "ok": 24,
-    "sin_match": 2,
-    "fecha": "2026-04-17 10:53",
+    "ok": 26,
+    "sin_match": 0,
+    "fecha": "2026-04-23 16:30",
     "pdf_path": "C:\\Users\\diego.pereira\\Desktop\\DOC VERA\\FACTURAS IMPORTACION\\PROVEEDORES\\MYSTIC\\01 - 075-67712271 - MYSTIC MYSTIC2.pdf"
   },
   "25061663": {
@@ -16786,5 +16787,35 @@
     "sin_match": 0,
     "fecha": "2026-04-23 16:12",
     "pdf_path": "C:\\verabuy-traductor\\web\\uploads\\1776953559_GARDA.pdf"
+  },
+  "88112": {
+    "pdf": "01 - 075-6537 6964 (334) - TIMANA 88112.pdf",
+    "provider": "Flores Timana",
+    "total_usd": 552.5,
+    "lineas": 15,
+    "ok": 14,
+    "sin_match": 0,
+    "fecha": "2026-04-23 16:20",
+    "pdf_path": "C:\\Users\\diego.pereira\\Desktop\\DOC VERA\\FACTURAS IMPORTACION\\PROVEEDORES\\TIMANA\\01 - 075-6537 6964 (334) - TIMANA 88112.pdf"
+  },
+  "000003919": {
+    "pdf": "BRISSAS 000003919.pdf",
+    "provider": "Brissas",
+    "total_usd": 4632.75,
+    "lineas": 60,
+    "ok": 59,
+    "sin_match": 1,
+    "fecha": "2026-04-23 16:38",
+    "pdf_path": "C:\\Users\\diego.pereira\\Desktop\\DOC VERA\\FACTURAS IMPORTACION\\PROVEEDORES\\BRISSAS\\BRISSAS 000003919.pdf"
+  },
+  "25063411": {
+    "pdf": "1776954741_CANTIZA.pdf",
+    "provider": "Valthomig",
+    "total_usd": 776.75,
+    "lineas": 37,
+    "ok": 37,
+    "sin_match": 0,
+    "fecha": "2026-04-23 16:32",
+    "pdf_path": "C:\\verabuy-traductor\\web\\uploads\\1776954741_CANTIZA.pdf"
   }
 }

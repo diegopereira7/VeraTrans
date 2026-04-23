@@ -19,6 +19,10 @@ define('SHADOW_LOG_FILE', PROJECT_ROOT . '/shadow_log.jsonl');
 
 header('Content-Type: application/json; charset=utf-8');
 
+// VeraFact v2 — endpoints opcionales (recent_invoices / suggest_candidates / price_anomalies_timeline).
+// Intercepta antes del switch; cada bloque hace exit si matchea.
+require_once __DIR__ . '/api.extras.php';
+
 // Batch status y download son GET; el resto POST
 $action = $_GET['action'] ?? 'process';
 

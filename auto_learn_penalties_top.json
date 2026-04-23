@@ -2,11 +2,11 @@
   "top": [
     [
       "weak_synonym",
-      283
+      284
     ],
     [
       "variety_no_overlap",
-      164
+      163
     ],
     [
       "foreign_brand",
@@ -26,16 +26,16 @@
     ],
     [
       "foreign_brand_soft",
-      18
+      20
     ],
     [
       "generic_vs_own_brand",
-      8
+      17
     ],
     [
       "size_off",
       6
     ]
   ],
-  "total_penalties": 789
+  "total_penalties": 800
 }
