@@ -40,11 +40,22 @@ _GRADES = {'SHORT', 'SELECT', 'FANCY', 'STANDARD', 'PREMIUM'}
 
 
 def _split_product(product: str) -> tuple[str, str, str]:
-    """Separa 'CARNATION ASSORTED SHORT' en (species_raw, variety, grade)."""
+    """Separa 'CARNATION LIGHT PINK HANOI' en (species, variety, grade).
+
+    Reglas:
+      - Species prefix (1-2 tokens): MINI/SPRAY opcional + CARNATION/ROSE/...
+      - Grade: SHORT/SELECT/FANCY/STANDARD/PREMIUM en cualquier posición.
+      - Color tokens (LIGHT, PINK, HOT, YELLOW, BICOLOR, ...): en CONEJERA
+        vienen *antes* de la variedad real. Ej.: "LIGHT PINK HANOI" →
+        HANOI es la variedad; "HOT PINK BIZET" → BIZET. Si solo hay
+        tokens de color (ej. "SELECT CREAM"), la variedad es el color
+        traducido (CREAM → CREMA) porque el catálogo indexa claveles
+        genéricos por color.
+    """
+    from src.config import CARNATION_COLOR_MAP
     tokens = product.upper().split()
     if not tokens:
         return '', '', ''
-    # Species prefix (puede ser 1-2 palabras)
     species_raw = tokens[0]
     skip = 1
     if len(tokens) > 1 and tokens[0] == 'MINI' and tokens[1] in ('CARNATION', 'ROSE'):
@@ -54,12 +65,30 @@ def _split_product(product: str) -> tuple[str, str, str]:
         species_raw = 'SPRAY ' + tokens[1]
         skip = 2
     rest = tokens[skip:]
-    # Grade = última palabra si matchea
+    # Grade en cualquier posición.
     grade = ''
-    if rest and rest[-1] in _GRADES:
-        grade = rest[-1]
-        rest = rest[:-1]
-    variety = ' '.join(rest) or 'ASSORTED'
+    for g in _GRADES:
+        if g in rest:
+            grade = g
+            rest = [t for t in rest if t != g]
+            break
+    if not rest:
+        return species_raw, 'ASSORTED', grade
+    # Separar prefix de colores (en inglés) de la variedad (token desconocido).
+    color_prefix = []
+    variety_tokens = []
+    i = 0
+    while i < len(rest) and rest[i] in CARNATION_COLOR_MAP:
+        color_prefix.append(rest[i])
+        i += 1
+    variety_tokens = rest[i:]
+    if variety_tokens:
+        # Variety real: el token o tokens no-color.
+        variety = ' '.join(variety_tokens)
+    else:
+        # Solo color: emitir traducido (el matcher hará match contra
+        # artículos genéricos por color: CLAVEL COL SELECT CREMA).
+        variety = ' '.join(color_prefix)
     return species_raw, variety, grade
 
 

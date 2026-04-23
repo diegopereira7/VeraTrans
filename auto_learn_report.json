@@ -3443,9 +3443,7 @@
       "-": 4,
       "ocrmypdf": 1
     },
-    "penalties": {
-      "weak_synonym": 1
-    },
+    "penalties": {},
     "match_statuses": {
       "ok": 5
     },
@@ -3504,9 +3502,7 @@
         "autoapprovable_lines": 1,
         "needs_review_lines": 0,
         "validation_errors_lines": 0,
-        "penalties": {
-          "weak_synonym": 1
-        },
+        "penalties": {},
         "match_statuses": {
           "ok": 1
         },
@@ -3623,13 +3619,13 @@
     "totals_ok": 5,
     "total_parsed": 13,
     "total_rescued": 8,
-    "ok_lines": 4,
-    "ambiguous_lines": 7,
-    "sin_match_lines": 2,
+    "ok_lines": 8,
+    "ambiguous_lines": 1,
+    "sin_match_lines": 4,
     "sin_parser_lines": 0,
-    "autoapprovable_lines": 4,
-    "autoapprove_rate": 0.364,
-    "needs_review_lines": 9,
+    "autoapprovable_lines": 8,
+    "autoapprove_rate": 0.889,
+    "needs_review_lines": 5,
     "validation_errors_lines": 0,
     "extraction_source_mix": {
       "native": 5
@@ -3638,14 +3634,14 @@
       "-": 5
     },
     "penalties": {
-      "tie_top2_margin": 7,
-      "weak_synonym": 4,
-      "variety_no_overlap": 2
+      "weak_synonym": 8,
+      "variety_no_overlap": 4,
+      "tie_top2_margin": 1
     },
     "match_statuses": {
-      "ok": 4,
-      "ambiguous_match": 7,
-      "sin_match": 2
+      "ok": 8,
+      "sin_match": 4,
+      "ambiguous_match": 1
     },
     "samples_raw": [
       {
@@ -3689,8 +3685,8 @@
         "parsed_lines": 1,
         "rescued_lines": 1,
         "ok_lines": 0,
-        "ambiguous_lines": 1,
-        "sin_match_lines": 0,
+        "ambiguous_lines": 0,
+        "sin_match_lines": 1,
         "sin_parser_lines": 0,
         "header_total": 40.0,
         "sum_line_total": 40.0,
@@ -3700,21 +3696,21 @@
         "extraction_engine": "",
         "extraction_confidence": 1.0,
         "extraction_degraded": false,
-        "avg_link_confidence": 0.809,
+        "avg_link_confidence": 0.467,
         "autoapprovable_lines": 0,
         "needs_review_lines": 1,
         "validation_errors_lines": 0,
         "penalties": {
-          "tie_top2_margin": 1
+          "variety_no_overlap": 1
         },
         "match_statuses": {
-          "ambiguous_match": 1
+          "sin_match": 1
         },
         "invoice": "FE047942",
         "error": "",
         "lane_auto": 0,
-        "lane_quick": 1,
-        "lane_full": 0
+        "lane_quick": 0,
+        "lane_full": 1
       },
       {
         "file": "02 - 729-4509 5654 (524) - CONEJERA.pdf",
@@ -3756,9 +3752,9 @@
         "fmt": "auto_conejera",
         "parsed_lines": 6,
         "rescued_lines": 2,
-        "ok_lines": 1,
-        "ambiguous_lines": 4,
-        "sin_match_lines": 1,
+        "ok_lines": 3,
+        "ambiguous_lines": 1,
+        "sin_match_lines": 2,
         "sin_parser_lines": 0,
         "header_total": 238.0,
         "sum_line_total": 238.0,
@@ -3768,25 +3764,25 @@
         "extraction_engine": "",
         "extraction_confidence": 1.0,
         "extraction_degraded": false,
-        "avg_link_confidence": 0.776,
-        "autoapprovable_lines": 1,
-        "needs_review_lines": 5,
+        "avg_link_confidence": 0.775,
+        "autoapprovable_lines": 3,
+        "needs_review_lines": 3,
         "validation_errors_lines": 0,
         "penalties": {
-          "variety_no_overlap": 1,
-          "tie_top2_margin": 4,
-          "weak_synonym": 1
+          "variety_no_overlap": 2,
+          "tie_top2_margin": 1,
+          "weak_synonym": 3
         },
         "match_statuses": {
-          "sin_match": 1,
-          "ambiguous_match": 4,
-          "ok": 1
+          "sin_match": 2,
+          "ambiguous_match": 1,
+          "ok": 3
         },
         "invoice": "FE047707",
         "error": "",
-        "lane_auto": 1,
-        "lane_quick": 4,
-        "lane_full": 1
+        "lane_auto": 3,
+        "lane_quick": 1,
+        "lane_full": 2
       },
       {
         "file": "03 - 729-45488564 - CONEJERA CONEJERA FE047450.pdf",
@@ -3794,8 +3790,8 @@
         "fmt": "auto_conejera",
         "parsed_lines": 4,
         "rescued_lines": 1,
-        "ok_lines": 1,
-        "ambiguous_lines": 2,
+        "ok_lines": 3,
+        "ambiguous_lines": 0,
         "sin_match_lines": 1,
         "sin_parser_lines": 0,
         "header_total": 160.0,
@@ -3806,24 +3802,22 @@
         "extraction_engine": "",
         "extraction_confidence": 1.0,
         "extraction_degraded": false,
-        "avg_link_confidence": 0.771,
-        "autoapprovable_lines": 1,
-        "needs_review_lines": 3,
+        "avg_link_confidence": 0.86,
+        "autoapprovable_lines": 3,
+        "needs_review_lines": 1,
         "validation_errors_lines": 0,
         "penalties": {
-          "tie_top2_margin": 2,
-          "weak_synonym": 1,
+          "weak_synonym": 3,
           "variety_no_overlap": 1
         },
         "match_statuses": {
-          "ambiguous_match": 2,
-          "ok": 1,
+          "ok": 3,
           "sin_match": 1
         },
         "invoice": "FE047450",
         "error": "",
-        "lane_auto": 1,
-        "lane_quick": 2,
+        "lane_auto": 3,
+        "lane_quick": 0,
         "lane_full": 1
       }
     ]
@@ -8152,13 +8146,13 @@
     "totals_ok": 5,
     "total_parsed": 179,
     "total_rescued": 0,
-    "ok_lines": 165,
-    "ambiguous_lines": 14,
+    "ok_lines": 176,
+    "ambiguous_lines": 3,
     "sin_match_lines": 0,
     "sin_parser_lines": 0,
-    "autoapprovable_lines": 165,
-    "autoapprove_rate": 0.922,
-    "needs_review_lines": 14,
+    "autoapprovable_lines": 176,
+    "autoapprove_rate": 0.983,
+    "needs_review_lines": 3,
     "validation_errors_lines": 0,
     "extraction_source_mix": {
       "native": 5
@@ -8167,12 +8161,13 @@
       "-": 5
     },
     "penalties": {
-      "tie_top2_margin": 14,
-      "color_modifier_extra": 4
+      "weak_synonym": 15,
+      "color_modifier_extra": 15,
+      "tie_top2_margin": 3
     },
     "match_statuses": {
-      "ok": 165,
-      "ambiguous_match": 14
+      "ok": 176,
+      "ambiguous_match": 3
     },
     "samples_raw": [
       {
@@ -8181,8 +8176,8 @@
         "fmt": "latin",
         "parsed_lines": 24,
         "rescued_lines": 0,
-        "ok_lines": 21,
-        "ambiguous_lines": 3,
+        "ok_lines": 24,
+        "ambiguous_lines": 0,
         "sin_match_lines": 0,
         "sin_parser_lines": 0,
         "header_total": 705.8,
@@ -8194,20 +8189,20 @@
         "extraction_confidence": 1.0,
         "extraction_degraded": false,
         "avg_link_confidence": 1.0,
-        "autoapprovable_lines": 21,
-        "needs_review_lines": 3,
+        "autoapprovable_lines": 24,
+        "needs_review_lines": 0,
         "validation_errors_lines": 0,
         "penalties": {
-          "tie_top2_margin": 3
+          "weak_synonym": 3,
+          "color_modifier_extra": 3
         },
         "match_statuses": {
-          "ok": 21,
-          "ambiguous_match": 3
+          "ok": 24
         },
         "invoice": "",
         "error": "",
-        "lane_auto": 21,
-        "lane_quick": 3,
+        "lane_auto": 24,
+        "lane_quick": 0,
         "lane_full": 0
       },
       {
@@ -8232,7 +8227,9 @@
         "autoapprovable_lines": 5,
         "needs_review_lines": 0,
         "validation_errors_lines": 0,
-        "penalties": {},
+        "penalties": {
+          "weak_synonym": 1
+        },
         "match_statuses": {
           "ok": 5
         },
@@ -8248,8 +8245,8 @@
         "fmt": "latin",
         "parsed_lines": 64,
         "rescued_lines": 0,
-        "ok_lines": 53,
-        "ambiguous_lines": 11,
+        "ok_lines": 61,
+        "ambiguous_lines": 3,
         "sin_match_lines": 0,
         "sin_parser_lines": 0,
         "header_total": 2169.25,
@@ -8261,21 +8258,22 @@
         "extraction_confidence": 1.0,
         "extraction_degraded": false,
         "avg_link_confidence": 1.0,
-        "autoapprovable_lines": 53,
-        "needs_review_lines": 11,
+        "autoapprovable_lines": 61,
+        "needs_review_lines": 3,
         "validation_errors_lines": 0,
         "penalties": {
-          "tie_top2_margin": 11,
-          "color_modifier_extra": 2
+          "weak_synonym": 4,
+          "color_modifier_extra": 10,
+          "tie_top2_margin": 3
         },
         "match_statuses": {
-          "ok": 53,
-          "ambiguous_match": 11
+          "ok": 61,
+          "ambiguous_match": 3
         },
         "invoice": "",
         "error": "",
-        "lane_auto": 53,
-        "lane_quick": 11,
+        "lane_auto": 61,
+        "lane_quick": 3,
         "lane_full": 0
       },
       {
@@ -8333,6 +8331,7 @@
         "needs_review_lines": 0,
         "validation_errors_lines": 0,
         "penalties": {
+          "weak_synonym": 7,
           "color_modifier_extra": 2
         },
         "match_statuses": {

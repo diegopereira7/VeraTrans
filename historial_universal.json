@@ -125,7 +125,7 @@
     "lineas": 53,
     "ok": 53,
     "sin_match": 0,
-    "fecha": "2026-04-17 09:22",
+    "fecha": "2026-04-23 15:29",
     "pdf_path": "C:\\Users\\diego.pereira\\Desktop\\DOC VERA\\FACTURAS IMPORTACION\\PROVEEDORES\\LATIN FLOWERS\\04 - 729-45996941 - LATIN FLOWERS LATIN 41329.pdf"
   },
   "001030882": {
@@ -304,14 +304,14 @@
     "fecha": "2026-03-30 17:09"
   },
   "": {
-    "pdf": "01 - 075-6537 6964 (334) - VUELVEN 49630.pdf",
-    "provider": "Vuelven",
-    "total_usd": 600.0,
-    "lineas": 11,
-    "ok": 5,
-    "sin_match": 5,
-    "fecha": "2026-04-23 15:11",
-    "pdf_path": "C:\\Users\\diego.pereira\\Desktop\\DOC VERA\\FACTURAS IMPORTACION\\PROVEEDORES\\VUELVEN\\01 - 075-6537 6964 (334) - VUELVEN 49630.pdf"
+    "pdf": "02 - 729- 4457 1424 (387) - LATIN 27104.pdf",
+    "provider": "Latin Flowers",
+    "total_usd": 2169.25,
+    "lineas": 64,
+    "ok": 53,
+    "sin_match": 11,
+    "fecha": "2026-04-23 15:29",
+    "pdf_path": "C:\\Users\\diego.pereira\\Desktop\\DOC VERA\\FACTURAS IMPORTACION\\PROVEEDORES\\LATIN FLOWERS\\02 - 729- 4457 1424 (387) - LATIN 27104.pdf"
   },
   "7.149": {
     "pdf": "000 full.pdf",
@@ -5153,7 +5153,7 @@
     "lineas": 78,
     "ok": 77,
     "sin_match": 1,
-    "fecha": "2026-04-17 09:22",
+    "fecha": "2026-04-23 15:29",
     "pdf_path": "C:\\Users\\diego.pereira\\Desktop\\DOC VERA\\FACTURAS IMPORTACION\\PROVEEDORES\\LATIN FLOWERS\\05 - 729-45915100 - LATIN FLOWERS LATIN.pdf"
   },
   "82967": {
@@ -5562,7 +5562,7 @@
     "lineas": 81,
     "ok": 81,
     "sin_match": 0,
-    "fecha": "2026-04-17 09:22",
+    "fecha": "2026-04-23 15:29",
     "pdf_path": "C:\\Users\\diego.pereira\\Desktop\\DOC VERA\\FACTURAS IMPORTACION\\PROVEEDORES\\LATIN FLOWERS\\03 - 729-45996974 - LATIN FLOWERS LATIN.pdf"
   },
   "00000166862": {
@@ -7930,7 +7930,7 @@
     "lineas": 5,
     "ok": 5,
     "sin_match": 0,
-    "fecha": "2026-04-17 09:22",
+    "fecha": "2026-04-23 15:29",
     "pdf_path": "C:\\Users\\diego.pereira\\Desktop\\DOC VERA\\FACTURAS IMPORTACION\\PROVEEDORES\\LATIN FLOWERS\\02 - 729-45937360 - LATIN FLOWERS latin.pdf"
   },
   "05296": {
@@ -8153,7 +8153,7 @@
     "lineas": 5,
     "ok": 5,
     "sin_match": 0,
-    "fecha": "2026-04-17 09:21",
+    "fecha": "2026-04-23 15:29",
     "pdf_path": "C:\\Users\\diego.pereira\\Desktop\\DOC VERA\\FACTURAS IMPORTACION\\PROVEEDORES\\LATIN FLOWERS\\01 - 996-14255161 - LATIN FLOWERS LATIN.pdf"
   },
   "05551": {
@@ -15909,7 +15909,7 @@
     "lineas": 3,
     "ok": 1,
     "sin_match": 0,
-    "fecha": "2026-04-23 14:37",
+    "fecha": "2026-04-23 15:22",
     "pdf_path": "C:\\Users\\diego.pereira\\Desktop\\DOC VERA\\FACTURAS IMPORTACION\\PROVEEDORES\\CONEJERA\\01 - 729-4509 6004 (415) - CONEJERA.pdf"
   },
   "486": {
@@ -16549,7 +16549,7 @@
     "lineas": 2,
     "ok": 0,
     "sin_match": 1,
-    "fecha": "2026-04-23 14:37",
+    "fecha": "2026-04-23 15:22",
     "pdf_path": "C:\\Users\\diego.pereira\\Desktop\\DOC VERA\\FACTURAS IMPORTACION\\PROVEEDORES\\CONEJERA\\01 - 729-45487886 - CONEJERA CONEJERA FE047942.pdf"
   },
   "FE042373": {
@@ -16559,7 +16559,7 @@
     "lineas": 3,
     "ok": 1,
     "sin_match": 0,
-    "fecha": "2026-04-23 14:37",
+    "fecha": "2026-04-23 15:22",
     "pdf_path": "C:\\Users\\diego.pereira\\Desktop\\DOC VERA\\FACTURAS IMPORTACION\\PROVEEDORES\\CONEJERA\\02 - 729-4509 5654 (524) - CONEJERA.pdf"
   },
   "FE047707": {
@@ -16567,9 +16567,9 @@
     "provider": "Flores La Conejera",
     "total_usd": 238.0,
     "lineas": 8,
-    "ok": 1,
-    "sin_match": 5,
-    "fecha": "2026-04-23 14:37",
+    "ok": 3,
+    "sin_match": 3,
+    "fecha": "2026-04-23 15:22",
     "pdf_path": "C:\\Users\\diego.pereira\\Desktop\\DOC VERA\\FACTURAS IMPORTACION\\PROVEEDORES\\CONEJERA\\02 - 729-45488645 - CONEJERA CONEJERA FE047707.pdf"
   },
   "FE047450": {
@@ -16577,9 +16577,9 @@
     "provider": "Flores La Conejera",
     "total_usd": 160.0,
     "lineas": 5,
-    "ok": 1,
-    "sin_match": 3,
-    "fecha": "2026-04-23 14:38",
+    "ok": 3,
+    "sin_match": 1,
+    "fecha": "2026-04-23 15:22",
     "pdf_path": "C:\\Users\\diego.pereira\\Desktop\\DOC VERA\\FACTURAS IMPORTACION\\PROVEEDORES\\CONEJERA\\03 - 729-45488564 - CONEJERA CONEJERA FE047450.pdf"
   },
   "FE047219": {
@@ -16587,9 +16587,9 @@
     "provider": "Flores La Conejera",
     "total_usd": 240.0,
     "lineas": 7,
-    "ok": 1,
-    "sin_match": 5,
-    "fecha": "2026-04-23 14:38",
+    "ok": 3,
+    "sin_match": 3,
+    "fecha": "2026-04-23 15:22",
     "pdf_path": "C:\\Users\\diego.pereira\\Desktop\\DOC VERA\\FACTURAS IMPORTACION\\PROVEEDORES\\CONEJERA\\04 - 729-45488155 - CONEJERA CONEJERA FE047219.pdf"
   },
   "FE046974": {
@@ -16599,7 +16599,7 @@
     "lineas": 7,
     "ok": 1,
     "sin_match": 5,
-    "fecha": "2026-04-23 14:38",
+    "fecha": "2026-04-23 15:22",
     "pdf_path": "C:\\Users\\diego.pereira\\Desktop\\DOC VERA\\FACTURAS IMPORTACION\\PROVEEDORES\\CONEJERA\\05 - 729-45488100 - CONEJERA CONEJERA FE046974.pdf"
   },
   "5086654": {

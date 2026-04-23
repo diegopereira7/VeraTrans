@@ -15,8 +15,16 @@ class LatinParser:
         'DARK GREEN':'VERDE OSCURO','LIGHT PINK':'ROSA CLARO','DUSTY PINK':'ROSA VIEJO',
         'PINK BLUSH':'ROSA','LIGHT PEACH':'MELOCOTON','LIGHT MOCCA':'MOCCA',
         'LIGHT BLUE':'AZUL CLARO','BLUE BOGOTANA':'AZUL CRIOLLA','BLUE CRIOLLA':'AZUL CRIOLLA',
+        'LIGHT LAVANDER':'LAVANDA','LIGHT LAVENDER':'LAVANDA',
+        'DARK LAVANDER':'LAVANDA','DARK LAVENDER':'LAVANDA',
+        'LAVANDER':'LAVANDA','LAVENDER':'LAVANDA',
+        'RASPBERRY':'RASPBERRY',  # existe literal en catálogo LATIN
+        'LIGHT ORANGE':'NARANJA CLARO','DARK ORANGE':'NARANJA OSCURO',
+        'LIGHT YELLOW':'AMARILLO CLARO','DARK YELLOW':'AMARILLO OSCURO',
+        'LIGHT RED':'ROJO','HOT PINK':'FUCSIA','FUCHSIA':'FUCSIA',
         'WHITE':'BLANCO','BLUE':'AZUL','RED':'ROJO','PINK':'ROSA','GREEN':'VERDE',
         'MIX':'MIXTO','PEACH':'MELOCOTON','SALMON':'SALMON','BURGUNDY':'GRANATE',
+        'YELLOW':'AMARILLO','ORANGE':'NARANJA','LILAC':'LILA','PURPLE':'LILA',
     }
 
     def _map_color(self, color_en:str) -> str:
@@ -40,7 +48,7 @@ class LatinParser:
         if d.startswith('ANTIQUE'):
             d = re.sub(r'^ANTIQUE\s+', '', d).strip()
             return f"ANTIQUE {self._map_color(d)}"
-        grado = 'PREMIUM TENIDA' if is_tinted else 'PREMIUM'
+        grado = 'PREMIUM TEÑIDA' if is_tinted else 'PREMIUM'
         return f"{grado} {self._map_color(d.strip())}"
 
     def parse(self, text:str, pdata:dict):
