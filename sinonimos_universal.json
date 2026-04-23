@@ -57447,5 +57447,25 @@
     "times_corrected": 0,
     "first_seen_at": "2026-04-23T16:10:00",
     "last_confirmed_at": "2026-04-23T16:10:00"
+  },
+  "90017|ROSES|NECTARINE|40|25|": {
+    "articulo_id": 33602,
+    "articulo_id_erp": "13574",
+    "articulo_name": "ROSA EC NECTARINE 40CM 25U",
+    "origen": "auto",
+    "status": "aprendido_en_prueba",
+    "provider_id": 90017,
+    "species": "ROSES",
+    "variety": "NECTARINE",
+    "size": 40,
+    "stems_per_bunch": 25,
+    "grade": "",
+    "raw": "02 H ROSAS (ROSOIDEA) Nectarine 40 12 300 0,22 66,00",
+    "invoice": "1776953559_GARDA.pdf",
+    "times_used": 0,
+    "times_confirmed": 1,
+    "times_corrected": 0,
+    "first_seen_at": "2026-04-23T16:12:41",
+    "last_confirmed_at": "2026-04-23T16:12:41"
   }
 }

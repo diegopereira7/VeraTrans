@@ -15954,7 +15954,7 @@
     "lineas": 1,
     "ok": 1,
     "sin_match": 0,
-    "fecha": "2026-04-23 15:54",
+    "fecha": "2026-04-23 16:13",
     "pdf_path": "C:\\Users\\diego.pereira\\Desktop\\DOC VERA\\FACTURAS IMPORTACION\\PROVEEDORES\\ELITE\\01 - 729-45096310 - ELITE ELITE.pdf"
   },
   "1626083": {
@@ -15964,7 +15964,7 @@
     "lineas": 19,
     "ok": 12,
     "sin_match": 7,
-    "fecha": "2026-04-23 15:54",
+    "fecha": "2026-04-23 16:13",
     "pdf_path": "C:\\Users\\diego.pereira\\Desktop\\DOC VERA\\FACTURAS IMPORTACION\\PROVEEDORES\\ELITE\\01 - 075-6537 6964 (334) - ELITE 1626083.pdf"
   },
   "1633443": {
@@ -15974,7 +15974,7 @@
     "lineas": 23,
     "ok": 11,
     "sin_match": 12,
-    "fecha": "2026-04-23 15:54",
+    "fecha": "2026-04-23 16:13",
     "pdf_path": "C:\\Users\\diego.pereira\\Desktop\\DOC VERA\\FACTURAS IMPORTACION\\PROVEEDORES\\ELITE\\02 - 729- 4457 1424 (387) - ELITE 1633443.pdf"
   },
   "1811881": {
@@ -15984,7 +15984,7 @@
     "lineas": 1,
     "ok": 1,
     "sin_match": 0,
-    "fecha": "2026-04-23 15:54",
+    "fecha": "2026-04-23 16:13",
     "pdf_path": "C:\\Users\\diego.pereira\\Desktop\\DOC VERA\\FACTURAS IMPORTACION\\PROVEEDORES\\ELITE\\02 - 729-45096542 - ELITE ELITE.pdf"
   },
   "1805766": {
@@ -15994,7 +15994,7 @@
     "lineas": 1,
     "ok": 0,
     "sin_match": 1,
-    "fecha": "2026-04-23 15:54",
+    "fecha": "2026-04-23 16:13",
     "pdf_path": "C:\\Users\\diego.pereira\\Desktop\\DOC VERA\\FACTURAS IMPORTACION\\PROVEEDORES\\ELITE\\03 - 045-10594065 - ELITE ELITE.pdf"
   },
   "1804140": {
@@ -16004,7 +16004,7 @@
     "lineas": 1,
     "ok": 0,
     "sin_match": 1,
-    "fecha": "2026-04-23 15:54",
+    "fecha": "2026-04-23 16:13",
     "pdf_path": "C:\\Users\\diego.pereira\\Desktop\\DOC VERA\\FACTURAS IMPORTACION\\PROVEEDORES\\ELITE\\04 - 996-13640631 - ELITE ELITE.pdf"
   },
   "1803503": {
@@ -16014,7 +16014,7 @@
     "lineas": 12,
     "ok": 6,
     "sin_match": 6,
-    "fecha": "2026-04-23 15:54",
+    "fecha": "2026-04-23 16:13",
     "pdf_path": "C:\\Users\\diego.pereira\\Desktop\\DOC VERA\\FACTURAS IMPORTACION\\PROVEEDORES\\ELITE\\05 - 729-45095761 - ELITE ELITE.pdf"
   },
   "INV26486": {
@@ -16776,5 +16776,15 @@
     "sin_match": 1,
     "fecha": "2026-04-23 16:03",
     "pdf_path": "C:\\Users\\diego.pereira\\Desktop\\DOC VERA\\FACTURAS IMPORTACION\\PROVEEDORES\\SAN FRANCISCO\\05 - 729-44941396 - SAN FRANCISCO SAN FRANCISCO.pdf"
+  },
+  "0000342108": {
+    "pdf": "1776953559_GARDA.pdf",
+    "provider": "GardaExport",
+    "total_usd": 136.0,
+    "lineas": 2,
+    "ok": 2,
+    "sin_match": 0,
+    "fecha": "2026-04-23 16:12",
+    "pdf_path": "C:\\verabuy-traductor\\web\\uploads\\1776953559_GARDA.pdf"
   }
 }

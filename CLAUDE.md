@@ -1,7 +1,7 @@
 # CLAUDE.md — Guía operativa para el agente
 
-**Última actualización:** 2026-04-23 (sesión 10t — auto_campanario spb + route codes)
-**Estado:** **94.9% autoapprove** (récord) · Golden 980/997 (98.3%). GREENGROWERS + EL CAMPANARIO parser `auto_campanario` ahora deriva `stems_per_bunch = stems/bunches` (antes 0 → ambigüedad 20U/25U) y trata ZAIRA/JOVI/VERALEZA como route-codes (antes contaminaban la variedad `ZAIRA ABSOLUT IN PINK` → matcher no encontraba el artículo). 4 goldens VALTHO re-anotados (tenían `sz=40` apuntando a artículo 50CM — inconsistencia latente). Ambiguous 114 → 107. 17 mismatches residuales del golden siguen siendo branded nuevos del catálogo — re-anotar cuando toque.
+**Última actualización:** 2026-04-23 (sesiones 10u–10x — ronda profunda de parsers + matcher)
+**Estado:** **96.1% autoapprove** (récord) · Golden 980/997 (98.3%). Ronda de 4 sesiones atacando bucket por bucket los `ambiguous_match`: inicio 114 → **50** (−56%). ok 3235 → 3327 (+92). Fixes: matcher ganó `foreign_brand_soft` (detecta WAYUU via `brands_by_provider`), `fuzzy_typo_overrides_variety` (LIMONADE↔LEMONADE, TIFFANNY↔TIFFANY) y bug fix unit-suffix. Parsers ganaron traducciones EN→ES (MALIMA tint, CONDOR hydrangea, SAN FRANCISCO hydrangea), route-codes separados de variety (EL CAMPANARIO ZAIRA/JOVI/VERALEZA), variedades compuestas (`SUNSET X-PRESSION`), defaults de size para parsers sin CM explícito (ROSABELLA 50, CONDOR 60, PREMIUM 70), y color-split de CONEJERA clavel. 17 mismatches del golden siguen siendo branded nuevos del catálogo — re-anotar cuando toque.
 
 ---
 
@@ -27,10 +27,11 @@ a acciones del operador en la UI, no al desarrollador.
 
 ## Estado actual (fuente única de verdad)
 
-- **Autoapprove global:** **94.9%** (récord, +0.6pp sobre 10s).
-  Top penalties: weak_synonym 269 · variety_no_overlap 174 ·
-  foreign_brand 157 · tie_top2_margin 94 · low_evidence 63 ·
-  color_modifier_extra 47. Ambiguous 144 → 107 (−37 vs 10q).
+- **Autoapprove global:** **96.1%** (récord, +1.8pp sobre 10t).
+  Top penalties: weak_synonym 279+ · variety_no_overlap ~140 ·
+  foreign_brand ~155 · tie_top2_margin ~80 · low_evidence ~55 ·
+  color_modifier_extra ~47 · foreign_brand_soft ~28. Ambiguous
+  114 → **50** (−56% en una ronda de 4 sesiones).
 - **Catálogo MySQL:** 44,751 artículos. Tabla `articulos` incluye
   `id_erp` (estable entre reimports). **Sesión 10s añade fix para
   68 artículos Florsani con `nombre` truncado** a "PANICULATA
