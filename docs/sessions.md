@@ -8,6 +8,52 @@ aquí y se quita de CLAUDE.md.
 Para el estado actual del proyecto, ver [`CLAUDE.md`](../CLAUDE.md) (raíz).
 Para lecciones transversales reutilizables, ver [`lessons.md`](lessons.md).
 
+### 2026-04-23 — sesión 10q: reimport catálogo + migración a id_erp estable
+
+Diego importó un dump SQL actualizado del catálogo (`articulos
+(5).sql`, 44,751 artículos, +2,467 nuevos). Al importarlo
+directamente, los `id` autoincrement de MySQL se **reasignaron
+enteramente** — el art 28248 dejó de ser "PANICULATA XLENCE BLANCO
+VIOLETA" y pasó a ser "PAEONIA USSIKNOW ROSA". Golden cayó de
+997/997 → 111/995 (11.1%). Problema detectado y revertido antes
+de llegar a producción.
+
+Diego apuntó a la solución estructural: usar `id_erp` (identificador
+del ERP externo, varchar estable) como clave durable en lugar del
+`id` autoincrement.
+
+**Cambios en código**:
+- [`src/articulos.py`](../src/articulos.py): nueva columna `id_erp`
+  en `load_from_db`, índice `by_id_erp`, campo en el dict del
+  artículo, leído también desde `load_from_sql` (parse del dump).
+- [`src/sinonimos.py`](../src/sinonimos.py):
+  - Campo `articulo_id_erp` en cada entry del JSON.
+  - Nuevo parámetro opcional en `SynonymStore.add(...,
+    articulo_id_erp: str = '')` — los callers lo populan.
+  - Nuevo método `resolve_article_id(entry, art_loader)`: si
+    id_erp presente y el id local ha cambiado, re-mapea el entry
+    lazy (actualiza `articulo_id` + `articulo_name` y marca
+    dirty).
+- [`src/matcher.py`](../src/matcher.py): `_gather_candidates` usa
+  `resolve_article_id` al convertir sinónimo en candidato — así
+  tolera reimports silenciosamente. Las dos llamadas a `syn.add`
+  pasan `articulo_id_erp=top1.articulo.get('id_erp', '')`.
+
+**Migración one-shot**
+[`tools/migrate_add_articulo_id_erp.py`](../tools/migrate_add_articulo_id_erp.py):
+parsea el dump nuevo, construye mapping
+`nombre_normalizado → (id_erp, nuevo_id)`, y reescribe sinónimos
+(`sinonimos_universal.json`) y cada `golden/*.json` añadiendo
+`articulo_id_erp` y actualizando `articulo_id` al nuevo.
+
+**Métricas finales**:
+- Catálogo: 42,284 → **44,751 artículos** (+2,467).
+- Golden: 997 → **980/997 (98.3%)**. 17 mismatches son mejoras —
+  el matcher prefiere un artículo branded nuevo (ej. BRISSAS) en
+  vez del genérico EC anotado pre-catálogo-nuevo.
+- Autoapprove: 94.4% → **94.0%** (-0.4pp ajuste).
+- Sinónimos: 3337 total, 3311 con id_erp estable, 24 invalidados.
+
 ### 2026-04-23 — sesión 10o: 4 fixes transversales shadow-driven (autoapprove 92.6% → 94.1%, Uma VIOLETA)
 
 Al mirar el backlog del shadow (87 pendientes), Uma Flowers tenía

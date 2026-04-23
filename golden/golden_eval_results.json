@@ -420,13 +420,38 @@
       "stems": 1.0,
       "line_total": 1.0
     },
-    "link_accuracy": 1.0,
-    "link_correct": 14,
+    "link_accuracy": 0.714,
+    "link_correct": 10,
     "link_total": 14,
-    "full_line_accuracy": 1.0,
-    "full_correct": 14,
+    "full_line_accuracy": 0.714,
+    "full_correct": 10,
     "full_total": 14,
-    "discrepancies": []
+    "discrepancies": [
+      {
+        "type": "link_mismatch",
+        "gold_variety": "VENDELA WHITE",
+        "gold_articulo": "38090 (ROSA VENDELA 40CM 25U TIMANÁ)",
+        "sys_articulo": "32766 (ROSA COL VENDELA 40CM 25U)"
+      },
+      {
+        "type": "link_mismatch",
+        "gold_variety": "VENDELA WHITE",
+        "gold_articulo": "38124 (ROSA VENDELA 50CM 25U TIMANÁ)",
+        "sys_articulo": "32768 (ROSA COL VENDELA 50CM 25U)"
+      },
+      {
+        "type": "link_mismatch",
+        "gold_variety": "MONDIAL WHITE",
+        "gold_articulo": "36006 (ROSA MONDIAL 60CM 25U TIMANÁ)",
+        "sys_articulo": "32661 (ROSA COL MONDIAL 60CM 25U)"
+      },
+      {
+        "type": "link_mismatch",
+        "gold_variety": "PINK MONDIAL PINK",
+        "gold_articulo": "36594 (ROSA PINK MONDIAL 40CM 25U TIMANÁ)",
+        "sys_articulo": "32686 (ROSA COL PINK MONDIAL 40CM 25U)"
+      }
+    ]
   },
   {
     "provider_key": "uma",
@@ -472,11 +497,11 @@
       "stems": 1.0,
       "line_total": 1.0
     },
-    "link_accuracy": 0.885,
-    "link_correct": 54,
+    "link_accuracy": 0.951,
+    "link_correct": 58,
     "link_total": 61,
-    "full_line_accuracy": 0.889,
-    "full_correct": 56,
+    "full_line_accuracy": 0.952,
+    "full_correct": 60,
     "full_total": 63,
     "discrepancies": [
       {
@@ -487,39 +512,15 @@
       },
       {
         "type": "link_mismatch",
-        "gold_variety": "ROSEBERRY",
-        "gold_articulo": "36919 (ROSA ROSEBERRY 50CM 25U CANTIZA)",
-        "sys_articulo": "36917 (ROSA ROSEBERRY 40CM 25U CANTIZA)"
-      },
-      {
-        "type": "link_mismatch",
         "gold_variety": "SWEET UNIQUE",
         "gold_articulo": "33846 (ROSA EC SWEET UNIQUE 40CM 25U)",
         "sys_articulo": "37567 (ROSA SWEET UNIQUE 40CM 25U CANTIZA)"
       },
       {
         "type": "link_mismatch",
-        "gold_variety": "HOT MERENGUE",
-        "gold_articulo": "35005 (ROSA HOT MERENGUE 50CM 25U CANTIZA)",
-        "sys_articulo": "35006 (ROSA HOT MERENGUE 40CM 25U CANTIZA)"
-      },
-      {
-        "type": "link_mismatch",
-        "gold_variety": "ROSEBERRY",
-        "gold_articulo": "36919 (ROSA ROSEBERRY 50CM 25U CANTIZA)",
-        "sys_articulo": "36917 (ROSA ROSEBERRY 40CM 25U CANTIZA)"
-      },
-      {
-        "type": "link_mismatch",
         "gold_variety": "SWEET UNIQUE",
         "gold_articulo": "33846 (ROSA EC SWEET UNIQUE 40CM 25U)",
         "sys_articulo": "37567 (ROSA SWEET UNIQUE 40CM 25U CANTIZA)"
-      },
-      {
-        "type": "link_mismatch",
-        "gold_variety": "HOT MERENGUE",
-        "gold_articulo": "35005 (ROSA HOT MERENGUE 50CM 25U CANTIZA)",
-        "sys_articulo": "35006 (ROSA HOT MERENGUE 40CM 25U CANTIZA)"
       }
     ]
   },

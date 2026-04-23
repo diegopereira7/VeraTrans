@@ -200,7 +200,7 @@ def _own_brands_norm(pkey: str, provider_id: int,
     return brands
 
 
-def _detect_foreign_brand(nombre: str, pkey: str) -> Optional[str]:
+def _detect_foreign_brand(nombre: str, pkey: str, art_loader=None) -> Optional[str]:
     """Busca una marca conocida en el nombre del artículo que NO sea pkey.
 
     Devuelve el nombre de la marca ajena si hay match al final del nombre

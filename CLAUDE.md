@@ -1,7 +1,7 @@
 # CLAUDE.md — Guía operativa para el agente
 
-**Última actualización:** 2026-04-23 (sesión 10s — parser Florsani paniculata teñida)
-**Estado:** **94.3% autoapprove** (récord) · Golden 980/997 (98.3%). FLORSANI2 paniculata teñida: 19/54 ok → **54/54 ok** tras traducir colores EN→ES en parser + reconstruir 68 nombres truncados del catálogo ("PANICULATA XLENCE TE" → `TEÑIDA <color>`). Matcher: nuevo penalty `color_modifier_extra` para desempate AZUL vs AZUL CLARO, `variety_full` sube +0.10 (antes +0.03), tiebreak simétrico + regla `tiebreak_color_modifier`. Catálogo 44,751 artículos, sinónimos con `id_erp` estable. 17 mismatches del golden son branded nuevos del catálogo — re-anotar cuando toque.
+**Última actualización:** 2026-04-23 (sesión 10t — auto_campanario spb + route codes)
+**Estado:** **94.9% autoapprove** (récord) · Golden 980/997 (98.3%). GREENGROWERS + EL CAMPANARIO parser `auto_campanario` ahora deriva `stems_per_bunch = stems/bunches` (antes 0 → ambigüedad 20U/25U) y trata ZAIRA/JOVI/VERALEZA como route-codes (antes contaminaban la variedad `ZAIRA ABSOLUT IN PINK` → matcher no encontraba el artículo). 4 goldens VALTHO re-anotados (tenían `sz=40` apuntando a artículo 50CM — inconsistencia latente). Ambiguous 114 → 107. 17 mismatches residuales del golden siguen siendo branded nuevos del catálogo — re-anotar cuando toque.
 
 ---
 
@@ -27,10 +27,10 @@ a acciones del operador en la UI, no al desarrollador.
 
 ## Estado actual (fuente única de verdad)
 
-- **Autoapprove global:** **94.3%** (récord, +0.3pp sobre 10q).
-  Top penalties: weak_synonym 255 · variety_no_overlap 174 ·
-  foreign_brand 166 · tie_top2_margin 99 · low_evidence 65 (−46 vs
-  10q) · **color_modifier_extra 48 (nuevo)**. Ambiguous 144 → 114.
+- **Autoapprove global:** **94.9%** (récord, +0.6pp sobre 10s).
+  Top penalties: weak_synonym 269 · variety_no_overlap 174 ·
+  foreign_brand 157 · tie_top2_margin 94 · low_evidence 63 ·
+  color_modifier_extra 47. Ambiguous 144 → 107 (−37 vs 10q).
 - **Catálogo MySQL:** 44,751 artículos. Tabla `articulos` incluye
   `id_erp` (estable entre reimports). **Sesión 10s añade fix para
   68 artículos Florsani con `nombre` truncado** a "PANICULATA
@@ -915,69 +915,57 @@ que los rivales sin variety_full acumulan. Un penalty simétrico
 para modificadores de color (OSCURO/CLARO) resuelve empates
 entre color base y su variante.
 
-### 2026-04-23 — sesión 10q: reimport catálogo + migración a id_erp estable
+### 2026-04-23 — sesión 10t: parser auto_campanario spb + route codes (autoapprove 94.3% → 94.9%)
 
-Diego importó un dump SQL actualizado del catálogo (`articulos
-(5).sql`, 44,751 artículos, +2,467 nuevos). Al importarlo
-directamente, los `id` autoincrement de MySQL se **reasignaron
-enteramente** — el art 28248 dejó de ser "PANICULATA XLENCE BLANCO
-VIOLETA" y pasó a ser "PAEONIA USSIKNOW ROSA". Golden cayó de
-997/997 → 111/995 (11.1%). Problema detectado y revertido antes
-de llegar a producción.
+Al analizar los 114 `ambiguous_match` restantes (ejercicio igual
+que 10s), dos buckets dominaban con fix fácil:
 
-Diego apuntó a la solución estructural: usar `id_erp` (identificador
-del ERP externo, varchar estable) como clave durable en lugar del
-`id` autoincrement.
+1. **GREENGROWERS — 11 amb por `stems_per_bunch=0`**: el parser
+   `auto_campanario` dejaba spb=0 con comentario "se derivará por
+   species default", pero ese default nunca se aplicaba y el
+   matcher no podía distinguir `ROSA EC MONDIAL 50CM 20U` de
+   `ROSA EC MONDIAL 50CM 25U`. Fix en
+   [`src/parsers/auto_campanario.py`](src/parsers/auto_campanario.py):
+   `spb = stems // bunches` si la división es exacta, fallback 25
+   (convención rosas EC). 3 amb de GREENGROWERS → 0 en el primer
+   sample.
 
-**Cambios en código**:
-- [`src/articulos.py`](src/articulos.py): nueva columna `id_erp`
-  en `load_from_db`, índice `by_id_erp`, campo en el dict del
-  artículo, leído también desde `load_from_sql` (parse del dump).
-- [`src/sinonimos.py`](src/sinonimos.py):
-  - Campo `articulo_id_erp` en cada entry del JSON.
-  - Nuevo parámetro opcional en `SynonymStore.add(...,
-    articulo_id_erp: str = '')` — los callers lo populan.
-  - Nuevo método `resolve_article_id(entry, art_loader)`: si
-    id_erp presente y el id local ha cambiado, re-mapea el entry
-    lazy (actualiza `articulo_id` + `articulo_name` y marca
-    dirty).
-- [`src/matcher.py`](src/matcher.py): `_gather_candidates` usa
-  `resolve_article_id` al convertir sinónimo en candidato — así
-  tolera reimports silenciosamente. Las dos llamadas a `syn.add`
-  pasan `articulo_id_erp=top1.articulo.get('id_erp', '')`.
+2. **EL CAMPANARIO — 7 amb por `ZAIRA` metido en la variedad**:
+   parser emitía `ZAIRA ABSOLUT IN PINK` cuando ZAIRA era un
+   código de ruta/destino. El `_split_code_variety` tenía ZAIRA
+   en `_KNOWN_VARIETY_FIRST` (bug) y la condición
+   `tokens[i+1] not in _KNOWN_VARIETY_FIRST` impedía el avance
+   cuando el token siguiente a ZAIRA era una variety conocida.
+   Fix aditivo: nuevo set `_KNOWN_ROUTE_CODES = {ZAIRA, JOVI,
+   VERALEZA}` que siempre se trata como código; ZAIRA salió de
+   `_KNOWN_VARIETY_FIRST`; `if t in _KNOWN_VARIETY_FIRST: break`
+   al principio del loop para limpiar la lógica.
 
-**Migración one-shot**
-[`tools/migrate_add_articulo_id_erp.py`](tools/migrate_add_articulo_id_erp.py):
-parsea el dump nuevo, construye mapping
-`nombre_normalizado → (id_erp, nuevo_id)`, y reescribe sinónimos
-(`sinonimos_universal.json`) y cada `golden/*.json` añadiendo
-`articulo_id_erp` y actualizando `articulo_id` al nuevo. Normaliza
-tildes (TIMANÁ → TIMANA) y tolera truncación del export phpMyAdmin
-(`TIMANÁ` → `'TIMAN'` literal por pérdida del último carácter
-acentuado). 3311/3337 sinónimos + 994/997 golden remapeados. 24
-sinónimos huérfanos (PANICULATA XLENCE TEÑIDA * MALIMA y otros —
-artículos removidos del catálogo nuevo) marcados como `rechazado`
-con traza en `_orphan_pre_id_erp`.
+**Intento fallido (revertido)**: ampliar `_detect_foreign_brand`
+con `art_loader.brands_by_provider` para detectar WAYUU, SCARLET
+y similares que no están en PROVIDERS keys. Dio +4 regresiones en
+golden (candidatos branded legítimos recibieron −0.25 indebido
+por coincidencia parcial con una brand registrada de otro
+proveedor). Revertido; ELITE (12 amb) queda pendiente — requiere
+otro enfoque (penalty suave o brand indexado por sufijo exacto).
 
-**Backups creados**:
-- `articulos_backup_pre_import_20260423_105354.sql` (MySQL pre-
-  import).
-- `sinonimos_universal.json.backup_pre_id_erp_*` + otro
-  `backup_pre_invalidate_*`.
-- `golden/backups_pre_id_erp/*.json` (24 archivos).
+**Re-anotación golden VALTHO**: 4 líneas con `size=40` apuntando
+a articulos `50CM` (`ROSEBERRY`, `HOT MERENGUE` × 2) — el matcher
+mejorado de 10s las detectó como "wrong". Corregidas a sus ids
+40CM correctos (36917, 35006). Golden 976 → 980/997.
 
-**Métricas finales**:
-- Catálogo: 42,284 → **44,751 artículos** (+2,467).
-- Golden: 997 → **980/997 (98.3%)**. 17 mismatches son mejoras —
-  el matcher prefiere un artículo branded nuevo (ej. BRISSAS) en
-  vez del genérico EC anotado pre-catálogo-nuevo. Diego puede
-  re-anotar esos golden en sesión de revisión.
-- Autoapprove: 94.4% → **94.0%** (-0.4pp, ajuste al catálogo
-  nuevo; weak_synonym subió 176→212 por sinónimos reposicionados).
-- Sinónimos: 3337 total, 3311 con id_erp estable, 24 invalidados.
-- **Residuales originales (IMAGINATION, REDIANT, ORNITHOGALUM
-  WHITE STAR, DARK RAINBOW) no están en el dump nuevo** — Diego
-  los añadirá en una siguiente actualización de catálogo.
+**Métricas**:
+- Autoapprove global: 94.3% → **94.9%** (+0.6pp, récord).
+- Ambiguous: 114 → **107** (−7). ok 3235 → 3258 (+23).
+- `tie_top2_margin`: 99 → 94. `low_evidence`: 65 → 63.
+- **Golden 980/997 (98.3%) intacto** tras re-anotación VALTHO.
+
+**Lección**: ampliar `_detect_foreign_brand` con el catálogo
+entero es tentador pero peligroso — muchos sufijos que parecen
+brand (WAYUU, SCARLET) se solapan con tokens legítimos de
+artículos que el proveedor sí comparte. La detección de brand
+ajena requiere un oracle externo (provider registry curado) más
+que tokens del catálogo. Pendiente.
 
 ---
 

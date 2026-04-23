@@ -48,11 +48,15 @@ _CODE_TOKEN_RE = re.compile(r'^(?:R\s*\d+|[A-Z]{2,8})$')
 # No exhaustivo — complementa al heurístico.
 _KNOWN_VARIETY_FIRST = {
     'MONDIAL', 'EXPLORER', 'FREEDOM', 'ATOMIC', 'BRIGHTON', 'FRUTTETO',
-    'JESSIKA', 'ABSOLUT', 'ZAIRA', 'SILANTOI', 'BOULEVARD', 'VIOLET',
+    'JESSIKA', 'ABSOLUT', 'SILANTOI', 'BOULEVARD', 'VIOLET',
     'HIGH', 'MAGIC', 'SANTANA', 'SHIMMER', 'SWEET', 'PINK', 'SALMA',
     'VENDELA', 'HOT', 'TUTTI', 'MOMENTUM', 'QUICKSAND', 'QUEEN',
     'CANDLE', 'CAFE', 'NECTARINE', 'ESPERANCE', 'MOODY',
 }
+
+# Códigos de ruta/destino que aparecen como box code y NO son variedad
+# (EL CAMPANARIO usa ZAIRA, JOVI como etiquetas de granja/ruta).
+_KNOWN_ROUTE_CODES = {'ZAIRA', 'JOVI', 'VERALEZA'}
 
 
 def _num(s: str) -> float:
@@ -82,20 +86,22 @@ def _split_code_variety(rest: str) -> tuple[str, str]:
     i = 0
     while i < len(tokens) - 1:   # necesitamos dejar ≥1 token para variety
         t = tokens[i]
+        # Una known variety como primer token no pertenece al código.
+        if t in _KNOWN_VARIETY_FIRST:
+            break
         # R seguido de número → combinar 'R' + 'NN' como un solo code
         if t == 'R' and i + 1 < len(tokens) and tokens[i + 1].isdigit():
             code_end = i + 2
             i += 2
             continue
+        # Código de ruta/destino conocido (ZAIRA, JOVI, VERALEZA): siempre
+        # es código, aunque el siguiente token sea una known variety.
+        if t in _KNOWN_ROUTE_CODES:
+            code_end = i + 1
+            i += 1
+            continue
         if _CODE_TOKEN_RE.match(t) and tokens[i + 1] not in _KNOWN_VARIETY_FIRST \
                 and len(tokens) - (i + 1) >= 1:
-            # Si el siguiente token es "code-like" también y tenemos ≥2 tokens
-            # por delante, seguimos extendiendo el código.
-            if i + 2 <= len(tokens) - 1 and _CODE_TOKEN_RE.match(tokens[i + 1]) \
-                    and tokens[i + 1] in {'ZAIRA'}:
-                code_end = i + 2
-                i += 2
-                continue
             code_end = i + 1
             i += 1
             continue
@@ -170,15 +176,18 @@ class AutoParser:
             if not variety or len(variety) < 3:
                 continue
 
+            bunches_v = int(m.group('bunches'))
+            stems_v = int(m.group('stems'))
+            spb = stems_v // bunches_v if bunches_v and (stems_v % bunches_v == 0) else 25
             lines.append(InvoiceLine(
                 raw_description=s[:120],
                 species='ROSES',
                 variety=variety.upper(),
                 origin='EC',      # Lasso, Ecuador
                 size=int(m.group('size')),
-                stems_per_bunch=0,  # no viene en la factura → se derivará por species default
-                bunches=int(m.group('bunches')),
-                stems=int(m.group('stems')),
+                stems_per_bunch=spb,  # derivado de stems/bunches; fallback 25
+                bunches=bunches_v,
+                stems=stems_v,
                 price_per_stem=_num(m.group('price')),
                 line_total=_num(m.group('total')),
                 box_type=f'{box_type_raw}B',  # H → HB, Q → QB, F → FB, T → TB

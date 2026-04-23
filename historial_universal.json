@@ -304,14 +304,14 @@
     "fecha": "2026-03-30 17:09"
   },
   "": {
-    "pdf": "01 - 729-4985 6586 (134) - NATIVE.pdf",
-    "provider": "Native Blooms",
-    "total_usd": 0,
-    "lineas": 9,
-    "ok": 0,
-    "sin_match": 9,
-    "fecha": "2026-04-17 10:44",
-    "pdf_path": "C:\\Users\\diego.pereira\\Desktop\\DOC VERA\\FACTURAS IMPORTACION\\PROVEEDORES\\NATIVE BLOOMS\\01 - 729-4985 6586 (134) - NATIVE.pdf"
+    "pdf": "01 - 075-6537 6964 (334) - VUELVEN 49630.pdf",
+    "provider": "Vuelven",
+    "total_usd": 600.0,
+    "lineas": 11,
+    "ok": 5,
+    "sin_match": 5,
+    "fecha": "2026-04-23 12:42",
+    "pdf_path": "C:\\Users\\diego.pereira\\Desktop\\DOC VERA\\FACTURAS IMPORTACION\\PROVEEDORES\\VUELVEN\\01 - 075-6537 6964 (334) - VUELVEN 49630.pdf"
   },
   "7.149": {
     "pdf": "000 full.pdf",
@@ -7606,9 +7606,9 @@
     "provider": "Valthomig",
     "total_usd": 2102.0,
     "lineas": 63,
-    "ok": 61,
-    "sin_match": 2,
-    "fecha": "2026-04-21 16:05",
+    "ok": 62,
+    "sin_match": 1,
+    "fecha": "2026-04-23 13:24",
     "pdf_path": "C:\\Users\\diego.pereira\\Desktop\\DOC VERA\\FACTURAS IMPORTACION\\PROVEEDORES\\CANTIZA\\02 - 075-67714625 - CANTIZA CANTIZA 2.pdf"
   },
   "25061369": {
@@ -8023,13 +8023,14 @@
     "fecha": "2026-03-28 11:03"
   },
   "5117994": {
-    "pdf": "SEMANA_13_075-6771_2271_ALLIANCE_Falta_Florsani_MALIMA.pdf",
+    "pdf": "01 - 075-67712271 - MALIMA MALIMA.pdf",
     "provider": "Starflowers (Malima)",
     "total_usd": 885.5,
     "lineas": 2,
     "ok": 2,
     "sin_match": 0,
-    "fecha": "2026-03-28 11:03"
+    "fecha": "2026-04-23 12:42",
+    "pdf_path": "C:\\Users\\diego.pereira\\Desktop\\DOC VERA\\FACTURAS IMPORTACION\\PROVEEDORES\\MALIMA\\01 - 075-67712271 - MALIMA MALIMA.pdf"
   },
   "000094588": {
     "pdf": "SEMANA_13_075-6771_2271_ALLIANCE_Falta_Florsani_MONTEROSA.pdf",
@@ -8051,14 +8052,14 @@
     "pdf_path": "C:\\Users\\diego.pereira\\Desktop\\DOC VERA\\FACTURAS IMPORTACION\\PROVEEDORES\\MYSTIC\\01 - 075-67712271 - MYSTIC MYSTIC2.pdf"
   },
   "25061663": {
-    "pdf": "1776695541_01_-_075-67712271_-_VALTHOMIG_VALTHO.pdf",
+    "pdf": "01 - 075-67712271 - VALTHOMIG VALTHO.pdf",
     "provider": "Valthomig",
     "total_usd": 776.75,
     "lineas": 38,
     "ok": 38,
     "sin_match": 0,
-    "fecha": "2026-04-20 16:32",
-    "pdf_path": "C:\\verabuy-traductor\\web\\uploads\\1776695541_01_-_075-67712271_-_VALTHOMIG_VALTHO.pdf"
+    "fecha": "2026-04-23 13:24",
+    "pdf_path": "C:\\Users\\diego.pereira\\Desktop\\DOC VERA\\FACTURAS IMPORTACION\\PROVEEDORES\\VALTHOMIG\\01 - 075-67712271 - VALTHOMIG VALTHO.pdf"
   },
   "00000166889": {
     "pdf": "SEMANA_13_075-6771_4570_SAFTEC_completr_brissass_AGRIVALDANI.pdf",
@@ -9332,13 +9333,14 @@
     "fecha": "2026-03-30 17:02"
   },
   "002005": {
-    "pdf": "LAILA 002005 00007295.pdf",
+    "pdf": "01 - 075-6689 0143 (188) - LAILA 002005 00004763.pdf",
     "provider": "Laila Flowers",
-    "total_usd": 66.0,
-    "lineas": 1,
-    "ok": 1,
-    "sin_match": 0,
-    "fecha": "2026-04-09 09:26"
+    "total_usd": 202.0,
+    "lineas": 6,
+    "ok": 5,
+    "sin_match": 1,
+    "fecha": "2026-04-23 12:42",
+    "pdf_path": "C:\\Users\\diego.pereira\\Desktop\\DOC VERA\\FACTURAS IMPORTACION\\PROVEEDORES\\LAILA\\01 - 075-6689 0143 (188) - LAILA 002005 00004763.pdf"
   },
   "000004684": {
     "pdf": "SEMANA_5_369-9830_7753_(200)_ROSALEDA.pdf",
@@ -15895,9 +15897,9 @@
     "provider": "Flores La Conejera",
     "total_usd": 40.0,
     "lineas": 3,
-    "ok": 0,
+    "ok": 1,
     "sin_match": 0,
-    "fecha": "2026-04-15 16:21",
+    "fecha": "2026-04-23 12:42",
     "pdf_path": "C:\\Users\\diego.pereira\\Desktop\\DOC VERA\\FACTURAS IMPORTACION\\PROVEEDORES\\CONEJERA\\01 - 729-4509 6004 (415) - CONEJERA.pdf"
   },
   "486": {
@@ -15945,9 +15947,9 @@
     "provider": "The Elite Flower",
     "total_usd": 292.8,
     "lineas": 19,
-    "ok": 6,
-    "sin_match": 13,
-    "fecha": "2026-04-17 09:48",
+    "ok": 8,
+    "sin_match": 11,
+    "fecha": "2026-04-23 12:42",
     "pdf_path": "C:\\Users\\diego.pereira\\Desktop\\DOC VERA\\FACTURAS IMPORTACION\\PROVEEDORES\\ELITE\\01 - 075-6537 6964 (334) - ELITE 1626083.pdf"
   },
   "1633443": {
@@ -16379,5 +16381,155 @@
     "sin_match": 0,
     "fecha": "2026-04-23 11:34",
     "pdf_path": "C:\\verabuy-traductor\\batch_uploads\\20260422140659_bd4995b4\\AROMA.pdf"
+  },
+  "30767": {
+    "pdf": "01 - 729-4477 1683 (553) - CONDOR.pdf",
+    "provider": "Condor Andino",
+    "total_usd": 406.0,
+    "lineas": 1,
+    "ok": 0,
+    "sin_match": 1,
+    "fecha": "2026-04-23 12:42",
+    "pdf_path": "C:\\Users\\diego.pereira\\Desktop\\DOC VERA\\FACTURAS IMPORTACION\\PROVEEDORES\\CONDOR ANDINO\\01 - 729-4477 1683 (553) - CONDOR.pdf"
+  },
+  "0000109469": {
+    "pdf": "01 - 729-4932 4122 (194) - GREENGROWERS 0000109469.pdf",
+    "provider": "Green Growers",
+    "total_usd": 717.5,
+    "lineas": 12,
+    "ok": 11,
+    "sin_match": 1,
+    "fecha": "2026-04-23 12:44",
+    "pdf_path": "C:\\Users\\diego.pereira\\Desktop\\DOC VERA\\FACTURAS IMPORTACION\\PROVEEDORES\\GREENGROWERS\\01 - 729-4932 4122 (194) - GREENGROWERS 0000109469.pdf"
+  },
+  "0000108206": {
+    "pdf": "01 - 729-4932 4995 (232) - EL CAMPANARIO 108206.pdf",
+    "provider": "El Campanario",
+    "total_usd": 157.0,
+    "lineas": 11,
+    "ok": 8,
+    "sin_match": 3,
+    "fecha": "2026-04-23 12:44",
+    "pdf_path": "C:\\Users\\diego.pereira\\Desktop\\DOC VERA\\FACTURAS IMPORTACION\\PROVEEDORES\\EL CAMPANARIO\\01 - 729-4932 4995 (232) - EL CAMPANARIO 108206.pdf"
+  },
+  "0000140551": {
+    "pdf": "01 - 729-90860991 - GREENGROWERS GREENGROWERS.pdf",
+    "provider": "Green Growers",
+    "total_usd": 90.0,
+    "lineas": 1,
+    "ok": 1,
+    "sin_match": 0,
+    "fecha": "2026-04-23 12:44",
+    "pdf_path": "C:\\Users\\diego.pereira\\Desktop\\DOC VERA\\FACTURAS IMPORTACION\\PROVEEDORES\\GREENGROWERS\\01 - 729-90860991 - GREENGROWERS GREENGROWERS.pdf"
+  },
+  "0000108976": {
+    "pdf": "02 - 729-4932 5102 (267) - GREENGROWERS 0000108976.pdf",
+    "provider": "Green Growers",
+    "total_usd": 387.5,
+    "lineas": 9,
+    "ok": 9,
+    "sin_match": 0,
+    "fecha": "2026-04-23 12:44",
+    "pdf_path": "C:\\Users\\diego.pereira\\Desktop\\DOC VERA\\FACTURAS IMPORTACION\\PROVEEDORES\\GREENGROWERS\\02 - 729-4932 5102 (267) - GREENGROWERS 0000108976.pdf"
+  },
+  "0000139964": {
+    "pdf": "02 - 729-90860910 - GREENGROWERS GREENGROWER.pdf",
+    "provider": "Green Growers",
+    "total_usd": 90.0,
+    "lineas": 3,
+    "ok": 2,
+    "sin_match": 1,
+    "fecha": "2026-04-23 12:44",
+    "pdf_path": "C:\\Users\\diego.pereira\\Desktop\\DOC VERA\\FACTURAS IMPORTACION\\PROVEEDORES\\GREENGROWERS\\02 - 729-90860910 - GREENGROWERS GREENGROWER.pdf"
+  },
+  "0000139444": {
+    "pdf": "03 - 729-90860965 - GREENGROWERS GREENGROWER1.pdf",
+    "provider": "Green Growers",
+    "total_usd": 273.75,
+    "lineas": 6,
+    "ok": 4,
+    "sin_match": 2,
+    "fecha": "2026-04-23 12:44",
+    "pdf_path": "C:\\Users\\diego.pereira\\Desktop\\DOC VERA\\FACTURAS IMPORTACION\\PROVEEDORES\\GREENGROWERS\\03 - 729-90860965 - GREENGROWERS GREENGROWER1.pdf"
+  },
+  "0000138128": {
+    "pdf": "04 - 075-66257660 - GREENGROWERS GREENGROWERS.pdf",
+    "provider": "Green Growers",
+    "total_usd": 87.5,
+    "lineas": 4,
+    "ok": 3,
+    "sin_match": 1,
+    "fecha": "2026-04-23 12:44",
+    "pdf_path": "C:\\Users\\diego.pereira\\Desktop\\DOC VERA\\FACTURAS IMPORTACION\\PROVEEDORES\\GREENGROWERS\\04 - 075-66257660 - GREENGROWERS GREENGROWERS.pdf"
+  },
+  "0000137724": {
+    "pdf": "05 - 075-66258076 - GREENGROWERS GREENGROWERS.pdf",
+    "provider": "Green Growers",
+    "total_usd": 86.25,
+    "lineas": 3,
+    "ok": 2,
+    "sin_match": 1,
+    "fecha": "2026-04-23 12:44",
+    "pdf_path": "C:\\Users\\diego.pereira\\Desktop\\DOC VERA\\FACTURAS IMPORTACION\\PROVEEDORES\\GREENGROWERS\\05 - 075-66258076 - GREENGROWERS GREENGROWERS.pdf"
+  },
+  "0000140477": {
+    "pdf": "01 - 729-90860991 - EL CAMPANARIO CAMPANARIO.pdf",
+    "provider": "El Campanario",
+    "total_usd": 248.5,
+    "lineas": 11,
+    "ok": 7,
+    "sin_match": 4,
+    "fecha": "2026-04-23 12:44",
+    "pdf_path": "C:\\Users\\diego.pereira\\Desktop\\DOC VERA\\FACTURAS IMPORTACION\\PROVEEDORES\\EL CAMPANARIO\\01 - 729-90860991 - EL CAMPANARIO CAMPANARIO.pdf"
+  },
+  "0000109468": {
+    "pdf": "02 - 729-4932 4122 (194) - EL CAMPANARIO 0000109468.pdf",
+    "provider": "El Campanario",
+    "total_usd": 392.5,
+    "lineas": 10,
+    "ok": 10,
+    "sin_match": 0,
+    "fecha": "2026-04-23 12:45",
+    "pdf_path": "C:\\Users\\diego.pereira\\Desktop\\DOC VERA\\FACTURAS IMPORTACION\\PROVEEDORES\\EL CAMPANARIO\\02 - 729-4932 4122 (194) - EL CAMPANARIO 0000109468.pdf"
+  },
+  "0000139445": {
+    "pdf": "02 - 729-90860965 - EL CAMPANARIO EL CAMPANARIO.pdf",
+    "provider": "El Campanario",
+    "total_usd": 77.5,
+    "lineas": 5,
+    "ok": 3,
+    "sin_match": 2,
+    "fecha": "2026-04-23 12:45",
+    "pdf_path": "C:\\Users\\diego.pereira\\Desktop\\DOC VERA\\FACTURAS IMPORTACION\\PROVEEDORES\\EL CAMPANARIO\\02 - 729-90860965 - EL CAMPANARIO EL CAMPANARIO.pdf"
+  },
+  "0000138129": {
+    "pdf": "03 - 075-66257660 - EL CAMPANARIO CAMPANARIO.pdf",
+    "provider": "El Campanario",
+    "total_usd": 158.25,
+    "lineas": 12,
+    "ok": 8,
+    "sin_match": 4,
+    "fecha": "2026-04-23 12:45",
+    "pdf_path": "C:\\Users\\diego.pereira\\Desktop\\DOC VERA\\FACTURAS IMPORTACION\\PROVEEDORES\\EL CAMPANARIO\\03 - 075-66257660 - EL CAMPANARIO CAMPANARIO.pdf"
+  },
+  "0000137212": {
+    "pdf": "04 - 729-49861755 - EL CAMPANARIO CAMPANARIO.pdf",
+    "provider": "El Campanario",
+    "total_usd": 267.0,
+    "lineas": 14,
+    "ok": 10,
+    "sin_match": 4,
+    "fecha": "2026-04-23 12:45",
+    "pdf_path": "C:\\Users\\diego.pereira\\Desktop\\DOC VERA\\FACTURAS IMPORTACION\\PROVEEDORES\\EL CAMPANARIO\\04 - 729-49861755 - EL CAMPANARIO CAMPANARIO.pdf"
+  },
+  "0000136622": {
+    "pdf": "05 - 729-49861722 - EL CAMPANARIO CAMPANARIO.pdf",
+    "provider": "El Campanario",
+    "total_usd": 91.25,
+    "lineas": 7,
+    "ok": 7,
+    "sin_match": 0,
+    "fecha": "2026-04-23 12:45",
+    "pdf_path": "C:\\Users\\diego.pereira\\Desktop\\DOC VERA\\FACTURAS IMPORTACION\\PROVEEDORES\\EL CAMPANARIO\\05 - 729-49861722 - EL CAMPANARIO CAMPANARIO.pdf"
   }
 }
