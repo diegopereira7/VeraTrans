@@ -65,6 +65,30 @@ class AutoParser:
             if not m:
                 continue
             variety = m.group('variety').strip().upper()
+            # Traducir color EN→ES para alinear con catálogo. Mismo
+            # mapping que CondorParser (PREMIUM {color_es}, ANTIQUE
+            # {color_es}). El catálogo tiene PREMIUM BLANCO, ANTIQUE
+            # AZUL, etc.; el parser recibe "PREMIUM WHITE", "ANTIQUE RED".
+            _HYD_COLORS_SF = {
+                'WHITE': 'BLANCO', 'BLUE': 'AZUL', 'LIGHT BLUE': 'AZUL CLARO',
+                'DARK BLUE': 'AZUL OSCURO', 'PINK': 'ROSA',
+                'LIGHT PINK': 'ROSA CLARO', 'DARK PINK': 'ROSA OSCURO',
+                'GREEN': 'VERDE', 'LIGHT GREEN': 'VERDE CLARO',
+                'DARK GREEN': 'VERDE OSCURO', 'LIME GREEN': 'VERDE LIMA',
+                'RED': 'ROJO', 'BURGUNDY': 'GRANATE', 'PEACH': 'MELOCOTON',
+                'MOCCA': 'MOCCA', 'MIX': 'MIXTO', 'MIXED': 'MIXTO',
+                'YELLOW': 'AMARILLO', 'ORANGE': 'NARANJA',
+                'LILAC': 'LILA', 'PURPLE': 'LILA',
+            }
+            # variedad = "<grade> <color>"; traducir el color final.
+            parts = variety.split()
+            if len(parts) >= 2:
+                # Probar 2-word color primero (LIGHT BLUE, DARK GREEN...)
+                two_color = ' '.join(parts[-2:])
+                if two_color in _HYD_COLORS_SF:
+                    variety = ' '.join(parts[:-2] + [_HYD_COLORS_SF[two_color]])
+                elif parts[-1] in _HYD_COLORS_SF:
+                    variety = ' '.join(parts[:-1] + [_HYD_COLORS_SF[parts[-1]]])
             stems = int(m.group('total_stems'))
             # SPB = stems / pcs (bunches). Hydrangeas normalmente 1 stem per bunch.
             pack = int(m.group('pack'))

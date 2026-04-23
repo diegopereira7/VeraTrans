@@ -184,7 +184,7 @@ PROVIDERS = {
     'native_blooms': {'id': 12898, 'name': 'Native Blooms',          'fmt': 'auto_native', 'patterns': ['NATIVE BLOOMS', 'NATIVEFARM']},
     'natuflor':      {'id': 2628,  'name': 'Natuflor',               'fmt': 'auto_natuflor', 'patterns': ['natuflor.com', 'NATUFLOR']},
     'qualisa':       {'id': 90052, 'name': 'Qualisa',                'fmt': 'auto_qualisa', 'patterns': ['collectings@qualisa', 'qualisa.com', 'QUALISA']},
-    'san_francisco': {'id': 90053, 'name': 'San Francisco Gardens',  'fmt': 'auto_sanfrancisco', 'patterns': ['SAN FRANCISCO GARDENS', 'CI SAN FRANCISCO']},
+    'san_francisco': {'id': 90053, 'name': 'San Francisco Gardens',  'fmt': 'auto_sanfrancisco', 'patterns': ['SAN FRANCISCO GARDENS', 'CI SAN FRANCISCO'], 'catalog_brands': ['SF GARDENS']},
     'san_jorge':     {'id': 90054, 'name': 'San Jorge',              'fmt': 'auto_sanjorge', 'patterns': ['SAN JORGE']},
     'zorro':         {'id': 90055, 'name': 'Flores El Zorro',        'fmt': 'auto_zorro', 'patterns': ['FLORES EL ZORRO', 'floreselzorro']},
 }

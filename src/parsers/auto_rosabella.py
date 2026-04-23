@@ -80,7 +80,8 @@ class AutoParser:
                 species='ROSES',
                 variety=variety,
                 origin='EC',
-                size=0,       # ROSABELLA no expone CM en texto plano
+                size=50,      # default rosas EC; ROSABELLA no expone CM
+                              # en texto plano, 50cm es el más común.
                 stems_per_bunch=spb,
                 bunches=total_bunch,
                 stems=stems,

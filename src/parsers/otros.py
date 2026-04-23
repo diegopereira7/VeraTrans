@@ -2719,7 +2719,9 @@ class PremiumColParser:
             if not pm:
                 continue
             boxes = int(pm.group(1)); box_type = pm.group(2)
-            unit_box = int(pm.group(3)); spb_raw = int(pm.group(4))
+            stems_box = int(pm.group(3)); bunches_box = int(pm.group(4))
+            # spb = stems_per_box / bunches_per_box (no bunches_per_box directo).
+            spb_raw = stems_box // bunches_box if bunches_box else 25
             desc = pm.group(5).strip(); stems = int(pm.group(6)); price = float(pm.group(7))
             # Total en siguiente línea
             total = 0.0
@@ -2735,8 +2737,18 @@ class PremiumColParser:
             desc = re.sub(r'\s+\w*VERALEZA\w*', '', desc, flags=re.I)  # quitar label
             desc = re.sub(r'\s+SHORT\b', '', desc, flags=re.I)
             var = desc.strip().upper()
+            # Si la variety es solo tokens de color (RED RED, WHITE WHITE,
+            # YELLOW, etc.), traducir a ES y de-duplicar. Estos claveles
+            # genéricos indexan por color en catálogo (CLAVEL COL FANCY
+            # ROJO 70CM 20U).
+            from src.config import CARNATION_COLOR_MAP
+            var_tokens = var.split()
+            if var_tokens and all(t.rstrip('.') in CARNATION_COLOR_MAP for t in var_tokens):
+                # Usar primer token (normalmente todos son iguales o duplicado OCR)
+                first = var_tokens[0].rstrip('.')
+                var = CARNATION_COLOR_MAP.get(first, first)
             sz_m = re.search(r'(\d{2})\s*CM', pm.group(5), re.I)
-            sz = int(sz_m.group(1)) if sz_m else 55  # default carnation 55cm
+            sz = int(sz_m.group(1)) if sz_m else 70  # default clavel COL 70cm
             il = InvoiceLine(raw_description=ln, species='CARNATIONS', variety=var, origin='COL',
                              size=sz, stems_per_bunch=spb_raw, stems=stems,
                              price_per_stem=price, line_total=total, box_type=box_type)

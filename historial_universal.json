@@ -10148,13 +10148,14 @@
     "fecha": "2026-03-30 17:05"
   },
   "1971": {
-    "pdf": "SEMANA_8_075-6767_9813_(139)_PREMIUM.pdf",
+    "pdf": "05 - 075-67679813 - PREMIUM FLOWERS PREMIUM.pdf",
     "provider": "Premium Flowers Boyacá",
     "total_usd": 584.0,
     "lineas": 7,
-    "ok": 1,
-    "sin_match": 4,
-    "fecha": "2026-03-30 17:05"
+    "ok": 3,
+    "sin_match": 1,
+    "fecha": "2026-04-23 15:54",
+    "pdf_path": "C:\\Users\\diego.pereira\\Desktop\\DOC VERA\\FACTURAS IMPORTACION\\PROVEEDORES\\PREMIUM FLOWERS\\05 - 075-67679813 - PREMIUM FLOWERS PREMIUM.pdf"
   },
   "INV-008374": {
     "pdf": "SEMANA_8_075-6767_9813_(139)_VUELVEN.pdf",
@@ -10547,13 +10548,14 @@
     "fecha": "2026-03-30 17:07"
   },
   "1993": {
-    "pdf": "SEMANA_9_729-4588_9966_(132)_PREMIUM.pdf",
+    "pdf": "04 - 729-45889966 - PREMIUM FLOWERS PREMIUM.pdf",
     "provider": "Premium Flowers Boyacá",
     "total_usd": 584.0,
     "lineas": 7,
-    "ok": 1,
-    "sin_match": 4,
-    "fecha": "2026-03-30 17:07"
+    "ok": 3,
+    "sin_match": 1,
+    "fecha": "2026-04-23 15:54",
+    "pdf_path": "C:\\Users\\diego.pereira\\Desktop\\DOC VERA\\FACTURAS IMPORTACION\\PROVEEDORES\\PREMIUM FLOWERS\\04 - 729-45889966 - PREMIUM FLOWERS PREMIUM.pdf"
   },
   "INV-008669": {
     "pdf": "SEMANA_9_729-4588_9966_(132)_VUELVEN.pdf",
@@ -11359,22 +11361,24 @@
     "fecha": "2026-03-30 17:10"
   },
   "2070": {
-    "pdf": "PREMIUM .pdf",
+    "pdf": "02 - 075-67682230 - PREMIUM FLOWERS PREMIUM .pdf",
     "provider": "Premium Flowers Boyacá",
     "total_usd": 1125.0,
     "lineas": 9,
-    "ok": 1,
-    "sin_match": 6,
-    "fecha": "2026-03-30 17:10"
+    "ok": 4,
+    "sin_match": 2,
+    "fecha": "2026-04-23 15:54",
+    "pdf_path": "C:\\Users\\diego.pereira\\Desktop\\DOC VERA\\FACTURAS IMPORTACION\\PROVEEDORES\\PREMIUM FLOWERS\\02 - 075-67682230 - PREMIUM FLOWERS PREMIUM .pdf"
   },
   "2016": {
-    "pdf": "PREMIUM.pdf",
+    "pdf": "03 - 075-67680104 - PREMIUM FLOWERS PREMIUM.pdf",
     "provider": "Premium Flowers Boyacá",
     "total_usd": 584.0,
     "lineas": 7,
-    "ok": 1,
-    "sin_match": 4,
-    "fecha": "2026-03-30 17:10"
+    "ok": 3,
+    "sin_match": 1,
+    "fecha": "2026-04-23 15:54",
+    "pdf_path": "C:\\Users\\diego.pereira\\Desktop\\DOC VERA\\FACTURAS IMPORTACION\\PROVEEDORES\\PREMIUM FLOWERS\\03 - 075-67680104 - PREMIUM FLOWERS PREMIUM.pdf"
   },
   "00000393436": {
     "pdf": "ROSADEX.pdf",
@@ -11974,13 +11978,14 @@
     "fecha": "2026-03-30 09:58"
   },
   "2092": {
-    "pdf": "SEMANA_13_996-1425_5161_REAL_PREMIUM.pdf",
+    "pdf": "01 - 996-14255161 - PREMIUM FLOWERS PREMIUM.pdf",
     "provider": "Premium Flowers Boyacá",
     "total_usd": 280.0,
     "lineas": 3,
-    "ok": 0,
-    "sin_match": 2,
-    "fecha": "2026-03-30 17:13"
+    "ok": 1,
+    "sin_match": 0,
+    "fecha": "2026-04-23 15:54",
+    "pdf_path": "C:\\Users\\diego.pereira\\Desktop\\DOC VERA\\FACTURAS IMPORTACION\\PROVEEDORES\\PREMIUM FLOWERS\\01 - 996-14255161 - PREMIUM FLOWERS PREMIUM.pdf"
   },
   "INV-009593": {
     "pdf": "01 - 996-14255161 - VUELVEN VUELVEN.pdf",
@@ -15863,14 +15868,14 @@
     "pdf_path": "C:\\verabuy-traductor\\web\\uploads\\1776252441_GLAMOUR_231597.pdf"
   },
   "755": {
-    "pdf": "1776252553_ROSABELLA.pdf",
+    "pdf": "01 - 369-94362306 - ROSABELLA ROSABELLA.pdf",
     "provider": "Rosabella",
     "total_usd": 112.0,
     "lineas": 1,
-    "ok": 1,
-    "sin_match": 0,
-    "fecha": "2026-04-15 13:29",
-    "pdf_path": "C:\\verabuy-traductor\\web\\uploads\\1776252553_ROSABELLA.pdf"
+    "ok": 0,
+    "sin_match": 1,
+    "fecha": "2026-04-23 15:54",
+    "pdf_path": "C:\\Users\\diego.pereira\\Desktop\\DOC VERA\\FACTURAS IMPORTACION\\PROVEEDORES\\ROSABELLA\\01 - 369-94362306 - ROSABELLA ROSABELLA.pdf"
   },
   "FE047941": {
     "pdf": "1776252508_CONEJERA_FE047941.pdf",
@@ -15947,9 +15952,9 @@
     "provider": "The Elite Flower",
     "total_usd": 52.0,
     "lineas": 1,
-    "ok": 0,
-    "sin_match": 1,
-    "fecha": "2026-04-17 09:48",
+    "ok": 1,
+    "sin_match": 0,
+    "fecha": "2026-04-23 15:54",
     "pdf_path": "C:\\Users\\diego.pereira\\Desktop\\DOC VERA\\FACTURAS IMPORTACION\\PROVEEDORES\\ELITE\\01 - 729-45096310 - ELITE ELITE.pdf"
   },
   "1626083": {
@@ -15957,9 +15962,9 @@
     "provider": "The Elite Flower",
     "total_usd": 292.8,
     "lineas": 19,
-    "ok": 8,
-    "sin_match": 11,
-    "fecha": "2026-04-23 13:49",
+    "ok": 12,
+    "sin_match": 7,
+    "fecha": "2026-04-23 15:54",
     "pdf_path": "C:\\Users\\diego.pereira\\Desktop\\DOC VERA\\FACTURAS IMPORTACION\\PROVEEDORES\\ELITE\\01 - 075-6537 6964 (334) - ELITE 1626083.pdf"
   },
   "1633443": {
@@ -15967,9 +15972,9 @@
     "provider": "The Elite Flower",
     "total_usd": 290.4,
     "lineas": 23,
-    "ok": 9,
-    "sin_match": 14,
-    "fecha": "2026-04-17 09:48",
+    "ok": 11,
+    "sin_match": 12,
+    "fecha": "2026-04-23 15:54",
     "pdf_path": "C:\\Users\\diego.pereira\\Desktop\\DOC VERA\\FACTURAS IMPORTACION\\PROVEEDORES\\ELITE\\02 - 729- 4457 1424 (387) - ELITE 1633443.pdf"
   },
   "1811881": {
@@ -15977,19 +15982,19 @@
     "provider": "The Elite Flower",
     "total_usd": 52.0,
     "lineas": 1,
-    "ok": 0,
-    "sin_match": 1,
-    "fecha": "2026-04-17 09:48",
+    "ok": 1,
+    "sin_match": 0,
+    "fecha": "2026-04-23 15:54",
     "pdf_path": "C:\\Users\\diego.pereira\\Desktop\\DOC VERA\\FACTURAS IMPORTACION\\PROVEEDORES\\ELITE\\02 - 729-45096542 - ELITE ELITE.pdf"
   },
   "1805766": {
     "pdf": "03 - 045-10594065 - ELITE ELITE.pdf",
     "provider": "The Elite Flower",
-    "total_usd": 0.0,
+    "total_usd": 204.0,
     "lineas": 1,
     "ok": 0,
-    "sin_match": 0,
-    "fecha": "2026-04-17 09:48",
+    "sin_match": 1,
+    "fecha": "2026-04-23 15:54",
     "pdf_path": "C:\\Users\\diego.pereira\\Desktop\\DOC VERA\\FACTURAS IMPORTACION\\PROVEEDORES\\ELITE\\03 - 045-10594065 - ELITE ELITE.pdf"
   },
   "1804140": {
@@ -15999,7 +16004,7 @@
     "lineas": 1,
     "ok": 0,
     "sin_match": 1,
-    "fecha": "2026-04-17 09:48",
+    "fecha": "2026-04-23 15:54",
     "pdf_path": "C:\\Users\\diego.pereira\\Desktop\\DOC VERA\\FACTURAS IMPORTACION\\PROVEEDORES\\ELITE\\04 - 996-13640631 - ELITE ELITE.pdf"
   },
   "1803503": {
@@ -16007,9 +16012,9 @@
     "provider": "The Elite Flower",
     "total_usd": 190.4,
     "lineas": 12,
-    "ok": 2,
-    "sin_match": 10,
-    "fecha": "2026-04-17 09:48",
+    "ok": 6,
+    "sin_match": 6,
+    "fecha": "2026-04-23 15:54",
     "pdf_path": "C:\\Users\\diego.pereira\\Desktop\\DOC VERA\\FACTURAS IMPORTACION\\PROVEEDORES\\ELITE\\05 - 729-45095761 - ELITE ELITE.pdf"
   },
   "INV26486": {
@@ -16419,7 +16424,7 @@
     "lineas": 11,
     "ok": 8,
     "sin_match": 3,
-    "fecha": "2026-04-23 14:55",
+    "fecha": "2026-04-23 15:54",
     "pdf_path": "C:\\Users\\diego.pereira\\Desktop\\DOC VERA\\FACTURAS IMPORTACION\\PROVEEDORES\\EL CAMPANARIO\\01 - 729-4932 4995 (232) - EL CAMPANARIO 108206.pdf"
   },
   "0000140551": {
@@ -16487,9 +16492,9 @@
     "provider": "El Campanario",
     "total_usd": 248.5,
     "lineas": 11,
-    "ok": 8,
-    "sin_match": 3,
-    "fecha": "2026-04-23 14:55",
+    "ok": 9,
+    "sin_match": 2,
+    "fecha": "2026-04-23 15:55",
     "pdf_path": "C:\\Users\\diego.pereira\\Desktop\\DOC VERA\\FACTURAS IMPORTACION\\PROVEEDORES\\EL CAMPANARIO\\01 - 729-90860991 - EL CAMPANARIO CAMPANARIO.pdf"
   },
   "0000109468": {
@@ -16499,7 +16504,7 @@
     "lineas": 10,
     "ok": 10,
     "sin_match": 0,
-    "fecha": "2026-04-23 14:55",
+    "fecha": "2026-04-23 15:55",
     "pdf_path": "C:\\Users\\diego.pereira\\Desktop\\DOC VERA\\FACTURAS IMPORTACION\\PROVEEDORES\\EL CAMPANARIO\\02 - 729-4932 4122 (194) - EL CAMPANARIO 0000109468.pdf"
   },
   "0000139445": {
@@ -16507,9 +16512,9 @@
     "provider": "El Campanario",
     "total_usd": 77.5,
     "lineas": 5,
-    "ok": 3,
-    "sin_match": 2,
-    "fecha": "2026-04-23 14:55",
+    "ok": 4,
+    "sin_match": 1,
+    "fecha": "2026-04-23 15:55",
     "pdf_path": "C:\\Users\\diego.pereira\\Desktop\\DOC VERA\\FACTURAS IMPORTACION\\PROVEEDORES\\EL CAMPANARIO\\02 - 729-90860965 - EL CAMPANARIO EL CAMPANARIO.pdf"
   },
   "0000138129": {
@@ -16517,9 +16522,9 @@
     "provider": "El Campanario",
     "total_usd": 158.25,
     "lineas": 12,
-    "ok": 8,
-    "sin_match": 4,
-    "fecha": "2026-04-23 14:55",
+    "ok": 9,
+    "sin_match": 3,
+    "fecha": "2026-04-23 15:55",
     "pdf_path": "C:\\Users\\diego.pereira\\Desktop\\DOC VERA\\FACTURAS IMPORTACION\\PROVEEDORES\\EL CAMPANARIO\\03 - 075-66257660 - EL CAMPANARIO CAMPANARIO.pdf"
   },
   "0000137212": {
@@ -16527,9 +16532,9 @@
     "provider": "El Campanario",
     "total_usd": 267.0,
     "lineas": 14,
-    "ok": 10,
-    "sin_match": 4,
-    "fecha": "2026-04-23 14:55",
+    "ok": 11,
+    "sin_match": 3,
+    "fecha": "2026-04-23 15:55",
     "pdf_path": "C:\\Users\\diego.pereira\\Desktop\\DOC VERA\\FACTURAS IMPORTACION\\PROVEEDORES\\EL CAMPANARIO\\04 - 729-49861755 - EL CAMPANARIO CAMPANARIO.pdf"
   },
   "0000136622": {
@@ -16539,7 +16544,7 @@
     "lineas": 7,
     "ok": 7,
     "sin_match": 0,
-    "fecha": "2026-04-23 14:55",
+    "fecha": "2026-04-23 15:55",
     "pdf_path": "C:\\Users\\diego.pereira\\Desktop\\DOC VERA\\FACTURAS IMPORTACION\\PROVEEDORES\\EL CAMPANARIO\\05 - 729-49861722 - EL CAMPANARIO CAMPANARIO.pdf"
   },
   "FE047942": {
@@ -16621,5 +16626,155 @@
     "sin_match": 2,
     "fecha": "2026-04-23 14:39",
     "pdf_path": "C:\\Users\\diego.pereira\\Desktop\\DOC VERA\\FACTURAS IMPORTACION\\PROVEEDORES\\MALIMA\\02 - 729-4932 4995 (232) - MALIMA 5086685.pdf"
+  },
+  "640": {
+    "pdf": "01 - 075-6645 1873 (88) - PREMIUM.pdf",
+    "provider": "Premium Flowers Boyacá",
+    "total_usd": 240.0,
+    "lineas": 4,
+    "ok": 1,
+    "sin_match": 1,
+    "fecha": "2026-04-23 15:54",
+    "pdf_path": "C:\\Users\\diego.pereira\\Desktop\\DOC VERA\\FACTURAS IMPORTACION\\PROVEEDORES\\PREMIUM FLOWERS\\01 - 075-6645 1873 (88) - PREMIUM.pdf"
+  },
+  "626": {
+    "pdf": "02 - 729-4509 5396 (195) - PREMIUM.pdf",
+    "provider": "Premium Flowers Boyacá",
+    "total_usd": 492.0,
+    "lineas": 6,
+    "ok": 4,
+    "sin_match": 1,
+    "fecha": "2026-04-23 15:54",
+    "pdf_path": "C:\\Users\\diego.pereira\\Desktop\\DOC VERA\\FACTURAS IMPORTACION\\PROVEEDORES\\PREMIUM FLOWERS\\02 - 729-4509 5396 (195) - PREMIUM.pdf"
+  },
+  "001": {
+    "pdf": "01 - 2. 729-4932 5146 (191) - ROSABELLA 001.pdf",
+    "provider": "Rosabella",
+    "total_usd": 132.0,
+    "lineas": 1,
+    "ok": 0,
+    "sin_match": 0,
+    "fecha": "2026-04-23 15:54",
+    "pdf_path": "C:\\Users\\diego.pereira\\Desktop\\DOC VERA\\FACTURAS IMPORTACION\\PROVEEDORES\\ROSABELLA\\01 - 2. 729-4932 5146 (191) - ROSABELLA 001.pdf"
+  },
+  "749": {
+    "pdf": "02 - 369-94361901 - ROSABELLA ROSABELLA.pdf",
+    "provider": "Rosabella",
+    "total_usd": 112.0,
+    "lineas": 1,
+    "ok": 0,
+    "sin_match": 1,
+    "fecha": "2026-04-23 15:54",
+    "pdf_path": "C:\\Users\\diego.pereira\\Desktop\\DOC VERA\\FACTURAS IMPORTACION\\PROVEEDORES\\ROSABELLA\\02 - 369-94361901 - ROSABELLA ROSABELLA.pdf"
+  },
+  "013": {
+    "pdf": "02 - 8. 729-4932 5264 (169) - ROSABELLA 013.pdf",
+    "provider": "Rosabella",
+    "total_usd": 77.0,
+    "lineas": 1,
+    "ok": 0,
+    "sin_match": 1,
+    "fecha": "2026-04-23 15:54",
+    "pdf_path": "C:\\Users\\diego.pereira\\Desktop\\DOC VERA\\FACTURAS IMPORTACION\\PROVEEDORES\\ROSABELLA\\02 - 8. 729-4932 5264 (169) - ROSABELLA 013.pdf"
+  },
+  "729": {
+    "pdf": "03 - 369-94355461 - ROSABELLA ROSABELLA 729.pdf",
+    "provider": "Rosabella",
+    "total_usd": 32.0,
+    "lineas": 1,
+    "ok": 0,
+    "sin_match": 1,
+    "fecha": "2026-04-23 15:54",
+    "pdf_path": "C:\\Users\\diego.pereira\\Desktop\\DOC VERA\\FACTURAS IMPORTACION\\PROVEEDORES\\ROSABELLA\\03 - 369-94355461 - ROSABELLA ROSABELLA 729.pdf"
+  },
+  "704": {
+    "pdf": "04 - 369-94354691 - ROSABELLA ROSABELLA.pdf",
+    "provider": "Rosabella",
+    "total_usd": 32.0,
+    "lineas": 1,
+    "ok": 0,
+    "sin_match": 1,
+    "fecha": "2026-04-23 15:54",
+    "pdf_path": "C:\\Users\\diego.pereira\\Desktop\\DOC VERA\\FACTURAS IMPORTACION\\PROVEEDORES\\ROSABELLA\\04 - 369-94354691 - ROSABELLA ROSABELLA.pdf"
+  },
+  "695": {
+    "pdf": "05 - 729-90928261 - ROSABELLA ROSABELLA EXPL.pdf",
+    "provider": "Rosabella",
+    "total_usd": 112.0,
+    "lineas": 1,
+    "ok": 0,
+    "sin_match": 1,
+    "fecha": "2026-04-23 15:54",
+    "pdf_path": "C:\\Users\\diego.pereira\\Desktop\\DOC VERA\\FACTURAS IMPORTACION\\PROVEEDORES\\ROSABELLA\\05 - 729-90928261 - ROSABELLA ROSABELLA EXPL.pdf"
+  },
+  "114788": {
+    "pdf": "01 - 729-4457 1785 - SAN FRANCISCO.pdf",
+    "provider": "San Francisco Gardens",
+    "total_usd": 450.0,
+    "lineas": 1,
+    "ok": 0,
+    "sin_match": 1,
+    "fecha": "2026-04-23 16:03",
+    "pdf_path": "C:\\Users\\diego.pereira\\Desktop\\DOC VERA\\FACTURAS IMPORTACION\\PROVEEDORES\\SAN FRANCISCO\\01 - 729-4457 1785 - SAN FRANCISCO.pdf"
+  },
+  "123587": {
+    "pdf": "01 - 729-45096343 - SAN FRANCISCO SAN FRANCISCO.pdf",
+    "provider": "San Francisco Gardens",
+    "total_usd": 510.0,
+    "lineas": 1,
+    "ok": 0,
+    "sin_match": 1,
+    "fecha": "2026-04-23 16:03",
+    "pdf_path": "C:\\Users\\diego.pereira\\Desktop\\DOC VERA\\FACTURAS IMPORTACION\\PROVEEDORES\\SAN FRANCISCO\\01 - 729-45096343 - SAN FRANCISCO SAN FRANCISCO.pdf"
+  },
+  "114980": {
+    "pdf": "02 - 729-4465 5494 (414) - SAN FRANCISCO 114980.pdf",
+    "provider": "San Francisco Gardens",
+    "total_usd": 440.0,
+    "lineas": 2,
+    "ok": 0,
+    "sin_match": 1,
+    "fecha": "2026-04-23 16:03",
+    "pdf_path": "C:\\Users\\diego.pereira\\Desktop\\DOC VERA\\FACTURAS IMPORTACION\\PROVEEDORES\\SAN FRANCISCO\\02 - 729-4465 5494 (414) - SAN FRANCISCO 114980.pdf"
+  },
+  "119494": {
+    "pdf": "02 - 729-44941514 - SAN FRANCISCO SAN FRANCISCO.pdf",
+    "provider": "San Francisco Gardens",
+    "total_usd": 396.0,
+    "lineas": 2,
+    "ok": 1,
+    "sin_match": 1,
+    "fecha": "2026-04-23 16:03",
+    "pdf_path": "C:\\Users\\diego.pereira\\Desktop\\DOC VERA\\FACTURAS IMPORTACION\\PROVEEDORES\\SAN FRANCISCO\\02 - 729-44941514 - SAN FRANCISCO SAN FRANCISCO.pdf"
+  },
+  "119319": {
+    "pdf": "03 - 729-44941245 - SAN FRANCISCO SAN FRANCISCO.pdf",
+    "provider": "San Francisco Gardens",
+    "total_usd": 372.0,
+    "lineas": 1,
+    "ok": 0,
+    "sin_match": 1,
+    "fecha": "2026-04-23 16:03",
+    "pdf_path": "C:\\Users\\diego.pereira\\Desktop\\DOC VERA\\FACTURAS IMPORTACION\\PROVEEDORES\\SAN FRANCISCO\\03 - 729-44941245 - SAN FRANCISCO SAN FRANCISCO.pdf"
+  },
+  "118428": {
+    "pdf": "04 - 996-13214390 - SAN FRANCISCO SAN FRANCISCO.pdf",
+    "provider": "San Francisco Gardens",
+    "total_usd": 624.0,
+    "lineas": 1,
+    "ok": 0,
+    "sin_match": 1,
+    "fecha": "2026-04-23 16:03",
+    "pdf_path": "C:\\Users\\diego.pereira\\Desktop\\DOC VERA\\FACTURAS IMPORTACION\\PROVEEDORES\\SAN FRANCISCO\\04 - 996-13214390 - SAN FRANCISCO SAN FRANCISCO.pdf"
+  },
+  "118244": {
+    "pdf": "05 - 729-44941396 - SAN FRANCISCO SAN FRANCISCO.pdf",
+    "provider": "San Francisco Gardens",
+    "total_usd": 744.0,
+    "lineas": 1,
+    "ok": 0,
+    "sin_match": 1,
+    "fecha": "2026-04-23 16:03",
+    "pdf_path": "C:\\Users\\diego.pereira\\Desktop\\DOC VERA\\FACTURAS IMPORTACION\\PROVEEDORES\\SAN FRANCISCO\\05 - 729-44941396 - SAN FRANCISCO SAN FRANCISCO.pdf"
   }
 }

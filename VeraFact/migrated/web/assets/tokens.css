@@ -1,0 +1,75 @@
+/* ─────────────────────────────────────────────────────────────
+   VeraFact Design Tokens — Paleta Veraleza refinada
+   Carga ANTES de style.css en index.php
+   ───────────────────────────────────────────────────────────── */
+:root {
+  /* Paleta principal */
+  --olive-50:  #faf8e8;
+  --olive-100: #f2efd0;
+  --olive-200: #e5e2a3;
+  --olive-300: #d5d27b;
+  --olive-500: #8e8b30;
+  --olive-600: #7c792b;
+  --olive-700: #656327;
+  --olive-800: #4d4b1e;
+
+  --cream-50:  #f6f3ec;
+  --cream-100: #eeeadf;
+  --cream-200: #e5e2dc;
+  --cream-300: #d8d4cb;
+
+  --earth-400: #a09584;
+  --earth-500: #85725e;
+  --earth-700: #5d4f3f;
+
+  --ink-400:   #a0998d;
+  --ink-500:   #73685a;
+  --ink-600:   #3e3827;
+  --ink-700:   #1e1b10;
+
+  /* Semánticos */
+  --primary:       var(--olive-500);
+  --primary-dark:  var(--olive-600);
+  --primary-soft:  var(--olive-100);
+
+  --ok-50:   #eaf5ec;
+  --ok-100:  #d5ecd9;
+  --ok-500:  #5a9466;
+  --ok-700:  #3f6e49;
+
+  --warn-50:  #fff5dc;
+  --warn-100: #fceec1;
+  --warn-500: #c88f2a;
+  --warn-700: #8a5f13;
+
+  --danger-50:  #fbe8e3;
+  --danger-100: #f4cfc4;
+  --danger-500: #c04a38;
+  --danger-700: #8a3023;
+
+  /* Superficie */
+  --bg:             #eeeadf;
+  --surface:        #ffffff;
+  --surface-alt:    #faf8f4;
+  --text:           var(--ink-700);
+  --text-muted:     var(--ink-500);
+  --border:         #dcd6c7;
+  --border-strong:  #c7bfa8;
+
+  /* Tipografía */
+  --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-mono: 'JetBrains Mono', 'SF Mono', Menlo, Consolas, monospace;
+
+  /* Radios / sombras / transiciones */
+  --r-sm: 6px;
+  --r-md: 10px;
+  --r-lg: 14px;
+  --radius: 8px;
+
+  --sh-1: 0 1px 2px rgba(30, 27, 16, 0.04);
+  --sh-2: 0 2px 8px rgba(30, 27, 16, 0.06);
+  --sh-3: 0 8px 24px rgba(30, 27, 16, 0.10);
+
+  --t-fast: 140ms cubic-bezier(.4,0,.2,1);
+  --t-med:  220ms cubic-bezier(.4,0,.2,1);
+}
