@@ -92,13 +92,13 @@
                 </div>
 
                 <div id="resultSection" class="hidden">
-                    <!-- Cabecera de factura (llenada por app.js) -->
+                    <!-- Cabecera v2: stat-cards + banner atención + búsqueda + tabs -->
                     <div class="result-header" id="invoiceHeader"></div>
 
-                    <!-- Estadísticas -->
+                    <!-- Legacy (app.js lo deja vacío pero conservamos el hueco) -->
                     <div class="stats-bar" id="statsBar"></div>
 
-                    <!-- Tabla de líneas -->
+                    <!-- Tabla de líneas v2 (numeración, progress bars, badges OR./EST., tree mixed, id_erp) -->
                     <div class="table-wrap">
                         <div class="table-scroll">
                             <table class="t" id="linesTable">

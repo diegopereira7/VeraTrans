@@ -26,7 +26,9 @@ require_once __DIR__ . '/api.extras.php';
 // Batch status y download son GET; el resto POST
 $action = $_GET['action'] ?? 'process';
 
-if (in_array($action, ['batch_status', 'batch_download', 'learned_parsers', 'pending_review', 'lookup_article'])) {
+if (in_array($action, ['batch_status', 'batch_download', 'learned_parsers', 'pending_review', 'lookup_article',
+                        // v4: aliases y acciones nuevas que llegan vía GET
+                        'learned', 'get_synonyms', 'history', 'history_detail'])) {
     if ($_SERVER['REQUEST_METHOD'] !== 'GET') {
         http_response_code(405);
         echo json_encode(['ok' => false, 'error' => 'Método no permitido']);
@@ -42,13 +44,21 @@ if (in_array($action, ['batch_status', 'batch_download', 'learned_parsers', 'pen
 
 switch ($action) {
     case 'process':
+    case 'process_pdf':         // v4 alias
         handleProcess();
         break;
     case 'synonyms':
+    case 'get_synonyms':        // v4 alias
         handleSynonyms();
         break;
     case 'history':
         handleHistory();
+        break;
+    case 'history_detail':      // v4 — detalle HTML de una factura
+        handleHistoryDetail();
+        break;
+    case 'learned':             // v4 alias de learned_parsers
+        handleLearnedParsers();
         break;
     case 'save_synonym':
         handleSaveSynonym();
@@ -103,6 +113,122 @@ switch ($action) {
 /**
  * Procesar un PDF subido
  */
+
+/**
+ * v4: página HTML sencilla con la cabecera de historial + líneas de
+ * una factura. Se invoca desde el link "Ver →" de la tabla de
+ * historial (target="_blank"), por eso devuelve HTML, no JSON.
+ */
+function handleHistoryDetail(): void
+{
+    $invoiceKey = trim($_GET['invoice_key'] ?? '');
+    $db = get_db();
+
+    // Cambia el content-type: esta acción no es JSON.
+    if (!headers_sent()) {
+        header_remove('Content-Type');
+        header('Content-Type: text/html; charset=utf-8');
+    }
+
+    $esc = fn($s) => htmlspecialchars((string)$s, ENT_QUOTES, 'UTF-8');
+
+    if ($invoiceKey === '' || !$db) {
+        http_response_code(400);
+        echo "<!doctype html><meta charset='utf-8'><title>Factura no disponible</title>"
+             . "<body style='font-family:system-ui;padding:40px;color:#555'>"
+             . "<h1>Factura no disponible</h1><p>Falta <code>invoice_key</code> o la DB no responde.</p></body>";
+        return;
+    }
+
+    $stmt = $db->prepare("SELECT numero_factura, pdf_nombre, proveedor, id_proveedor,
+                                  total_usd, lineas, ok_count, sin_match, fecha_proceso
+                           FROM historial WHERE numero_factura = ? LIMIT 1");
+    $stmt->bind_param('s', $invoiceKey);
+    $stmt->execute();
+    $h = $stmt->get_result()->fetch_assoc();
+    $stmt->close();
+
+    if (!$h) {
+        http_response_code(404);
+        echo "<!doctype html><meta charset='utf-8'><title>404</title>"
+             . "<body style='font-family:system-ui;padding:40px;color:#555'>"
+             . "<h1>Factura no encontrada</h1><p><code>" . $esc($invoiceKey) . "</code></p></body>";
+        return;
+    }
+
+    $stmt = $db->prepare("SELECT raw_description, especie, variedad, grado, talla,
+                                  stems_per_bunch, stems, precio_stem, total_linea,
+                                  label, box_type, id_articulo, nombre_articulo,
+                                  match_status, match_method
+                           FROM facturas_lineas
+                           WHERE numero_factura = ?
+                           ORDER BY id");
+    $stmt->bind_param('s', $invoiceKey);
+    $stmt->execute();
+    $lines = $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
+    $stmt->close();
+
+    $statusBadge = function(string $st) use ($esc): string {
+        $color = match ($st) {
+            'ok'               => '#1a7a3e',
+            'ambiguous_match'  => '#a56c00',
+            'sin_match'        => '#a51f1f',
+            default            => '#666',
+        };
+        return "<span style='background:" . $color . "1a;color:" . $color
+             . ";padding:2px 8px;border-radius:10px;font-size:11px;font-weight:600'>"
+             . $esc($st) . "</span>";
+    };
+
+    echo "<!doctype html><html lang='es'><head><meta charset='utf-8'>"
+       . "<title>" . $esc($h['numero_factura']) . " — " . $esc($h['proveedor']) . "</title>"
+       . "<style>"
+       . "body{font-family:system-ui,-apple-system,Segoe UI,Roboto;margin:0;padding:24px 32px;"
+       . "background:#f6f3ea;color:#222}"
+       . ".meta{background:#fff;border:1px solid #e2dfd5;border-radius:8px;padding:16px 20px;"
+       . "margin-bottom:16px;display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px}"
+       . ".meta div{font-size:12px;color:#888}.meta strong{display:block;font-size:15px;color:#222}"
+       . "table{width:100%;border-collapse:collapse;background:#fff;border:1px solid #e2dfd5;border-radius:8px;overflow:hidden}"
+       . "th,td{padding:8px 10px;border-bottom:1px solid #efeadc;text-align:left;font-size:12.5px;vertical-align:top}"
+       . "th{background:#eeeadf;font-weight:600;text-transform:uppercase;letter-spacing:.5px;font-size:10.5px;color:#666}"
+       . ".num{text-align:right;font-variant-numeric:tabular-nums}"
+       . "tr:last-child td{border-bottom:0}"
+       . "</style></head><body>"
+       . "<h1 style='margin:0 0 12px'>" . $esc($h['numero_factura']) . "</h1>"
+       . "<div class='meta'>"
+       . "<div>Proveedor<strong>" . $esc($h['proveedor']) . "</strong></div>"
+       . "<div>PDF<strong>" . $esc($h['pdf_nombre']) . "</strong></div>"
+       . "<div>Fecha<strong>" . $esc($h['fecha_proceso']) . "</strong></div>"
+       . "<div>Total USD<strong>$" . number_format((float)$h['total_usd'], 2) . "</strong></div>"
+       . "<div>Líneas<strong>" . (int)$h['lineas'] . " · " . (int)$h['ok_count']
+            . " ok · " . (int)$h['sin_match'] . " sin match</strong></div>"
+       . "</div>"
+       . "<table><thead><tr>"
+       . "<th style='width:28px'>#</th><th>Descripción</th><th>Especie</th><th>Variedad</th>"
+       . "<th class='num'>Talla</th><th class='num'>SPB</th><th class='num'>Tallos</th>"
+       . "<th class='num'>Precio</th><th class='num'>Total</th>"
+       . "<th>Artículo VeraBuy</th><th>Match</th></tr></thead><tbody>";
+
+    foreach ($lines as $i => $l) {
+        echo "<tr>"
+           . "<td>" . ($i + 1) . "</td>"
+           . "<td style='max-width:260px;color:#666'>" . $esc($l['raw_description']) . "</td>"
+           . "<td>" . $esc($l['especie']) . "</td>"
+           . "<td><strong>" . $esc($l['variedad']) . "</strong></td>"
+           . "<td class='num'>" . (int)$l['talla'] . "</td>"
+           . "<td class='num'>" . (int)$l['stems_per_bunch'] . "</td>"
+           . "<td class='num'>" . (int)$l['stems'] . "</td>"
+           . "<td class='num'>" . number_format((float)$l['precio_stem'], 3) . "</td>"
+           . "<td class='num'>" . number_format((float)$l['total_linea'], 2) . "</td>"
+           . "<td>" . ($l['id_articulo']
+               ? "<strong>#" . (int)$l['id_articulo'] . "</strong> " . $esc($l['nombre_articulo'])
+               : "<em style='color:#888'>—</em>") . "</td>"
+           . "<td>" . $statusBadge($l['match_status'] ?? '') . "</td>"
+           . "</tr>";
+    }
+    echo "</tbody></table></body></html>";
+}
+
 /**
  * Limpia PDFs subidos con más de N días de antigüedad.
  */
@@ -215,7 +341,51 @@ function handleProcess(): void
         _shadowLogProposals($parsed, $dest);
     }
 
-    // El procesador devuelve JSON directamente
+    // v4: el app.js nuevo lee campos del header en la raíz (provider,
+    // invoice_key, provider_id, fecha, total) y nombres distintos en las
+    // líneas (total_line, confidence). El procesador Python emite el
+    // formato histórico (header anidado + line_total + match_confidence).
+    // Aquí añadimos aliases — aditivo, no pisa los originales.
+    if (is_array($parsed) && !empty($parsed['ok'])) {
+        $h = $parsed['header'] ?? [];
+        $parsed['provider']    = $parsed['provider']    ?? ($h['provider_name']  ?? '');
+        $parsed['provider_id'] = $parsed['provider_id'] ?? ($h['provider_id']    ?? 0);
+        $parsed['invoice_key'] = $parsed['invoice_key'] ?? ($h['invoice_number'] ?? '');
+        $parsed['fecha']       = $parsed['fecha']       ?? ($h['date']           ?? '');
+        $parsed['total']       = $parsed['total']       ?? ($h['total']          ?? 0);
+        $parsed['pdf']         = $parsed['pdf']         ?? basename($dest);
+
+        if (isset($parsed['lines']) && is_array($parsed['lines'])) {
+            foreach ($parsed['lines'] as &$line) {
+                // Línea normal o mixed_parent — mapear campos que app.js v4
+                // espera con otro nombre.
+                if (isset($line['line_total']) && !isset($line['total_line'])) {
+                    $line['total_line'] = $line['line_total'];
+                }
+                if (isset($line['match_confidence']) && !isset($line['confidence'])) {
+                    $line['confidence'] = $line['match_confidence'];
+                }
+                // mixed_parent tiene children[]; aplica recursivo
+                if (isset($line['children']) && is_array($line['children'])) {
+                    foreach ($line['children'] as &$child) {
+                        if (isset($child['line_total']) && !isset($child['total_line'])) {
+                            $child['total_line'] = $child['line_total'];
+                        }
+                        if (isset($child['match_confidence']) && !isset($child['confidence'])) {
+                            $child['confidence'] = $child['match_confidence'];
+                        }
+                    }
+                    unset($child);
+                }
+            }
+            unset($line);
+        }
+
+        echo json_encode($parsed, JSON_UNESCAPED_UNICODE);
+        return;
+    }
+
+    // Sin parsing (ok=false, error, etc.) — devolvemos el output crudo.
     echo $output;
 }
 

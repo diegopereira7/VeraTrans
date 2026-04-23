@@ -139,14 +139,6 @@ a:hover { text-decoration: underline; }
     display: grid; place-items: center; margin: 0 auto 14px;
 }
 .upload-zone .upload-icon svg { width: 26px; height: 26px; }
-/* Aplica el mismo tamaño al icono del drop-zone de Importación masiva
-   (usa clase .batch-drop-zone, no .upload-zone) */
-.batch-drop-zone .upload-icon {
-    width: 60px; height: 60px; border-radius: 50%;
-    background: var(--brand-soft); color: var(--brand);
-    display: grid; place-items: center; margin: 0 auto 14px;
-}
-.batch-drop-zone .upload-icon svg { width: 26px; height: 26px; }
 .upload-title { font-size: 17px; font-weight: 700; color: var(--ink); margin-bottom: 6px; }
 .upload-zone p { margin-bottom: 18px; }
 .spinner {
@@ -300,10 +292,7 @@ a:hover { text-decoration: underline; }
     border-collapse: separate;
     border-spacing: 0;
     font-size: 13px;
-    /* min-width bajo para que la tabla use todo el ancho disponible en
-       pantallas grandes; solo aparece scroll cuando el viewport es
-       realmente estrecho. */
-    min-width: 100%;
+    min-width: 900px;
 }
 .t thead th {
     position: sticky; top: 0; z-index: 2;
@@ -328,11 +317,7 @@ a:hover { text-decoration: underline; }
 .t tbody tr { transition: background .08s; }
 .t tbody tr:hover { background: var(--surface-2); }
 .t tbody tr.is-clickable { cursor: pointer; }
-.t tbody tr.batch-expandable { cursor: pointer; }
 .t tbody tr.is-selected { background: var(--brand-soft); }
-/* Las filas expandidas del detalle del batch NO hacen hover highlight
-   (así la sub-tabla no "parpadea" cuando pasas el ratón sobre ella) */
-.t tbody tr.batch-lines-row:hover { background: transparent; }
 .t .num { text-align: right; }
 .t .mono { font-family: var(--font-mono); font-size: 12.5px; }
 .t .muted { color: var(--ink-faint); }
@@ -818,99 +803,4 @@ a:hover { text-decoration: underline; }
     .main { padding: 16px; }
     .syn-workspace { grid-template-columns: 1fr; }
     .syn-detail { position: static; }
-}
-
-/* ══════════════════════════════════════════════════════════════
-   OVERRIDES v4 — paleta clara del mockup de referencia
-     · sidebar crema, fondo crema, acentos oliva cálido
-     · logo grande (wordmark) + "VeraFact" debajo como sub-brand
-     · ancho completo, sin max-width restrictivo
-   Bloque final: anula lo que el v4 pintaba en verde oscuro sin
-   tocar la estructura CSS del paquete. Para volver atrás, borrar
-   todo este bloque.
-   ══════════════════════════════════════════════════════════════ */
-
-/* ── Fondo global crema ─────────────────────────────────────── */
-body { background: var(--cream-100); color: var(--ink); }
-
-/* ── Marca principal: el "verde" del proyecto ahora es oliva
-      cálido. Esto propaga a botones, stat-cards primary, progress
-      bars, upload-icon bg, etc. sin tocar cada regla. ──────── */
-:root {
-    --brand:        var(--olive-500);
-    --brand-strong: var(--olive-700);
-    --brand-hover:  var(--olive-600);
-    --brand-soft:   var(--olive-100);
-    --brand-soft-2: var(--olive-200);
-    --conf-high:    var(--olive-600);
-}
-
-/* ── Main ocupa todo el ancho disponible ──────────────────── */
-.main {
-    max-width: none;
-    padding: 28px 36px 60px;
-}
-
-/* ── Sidebar: crema muy clara con borde derecho sutil ─────── */
-.sidebar {
-    background: var(--cream-50);
-    color: var(--ink);
-    border-right: 1px solid var(--cream-200);
-    padding: 22px 16px;
-}
-
-/* Brand block: logo grande + texto "VeraFact" debajo */
-.sidebar__brand {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 6px;
-    padding: 4px 4px 20px;
-    border-bottom-color: var(--cream-200);
-    margin-bottom: 10px;
-}
-.sidebar__brand img {
-    background: transparent;
-    padding: 0;
-    width: auto;
-    height: 48px;          /* logo wordmark a tamaño decente */
-    max-width: 100%;
-    object-fit: contain;
-    object-position: left center;
-    border-radius: 0;
-}
-.sidebar__brand .brand-text { display: none; }     /* el logo ya dice "veraleza" — VeraFact redundante */
-
-/* ── Nav sections ─────────────────────────────────────────── */
-.nav-section {
-    color: var(--ink-muted);
-    font-size: 10.5px;
-    letter-spacing: 0.12em;
-    padding: 16px 10px 6px;
-}
-.nav-btn {
-    color: var(--ink-2);
-    font-weight: 500;
-    padding: 10px 12px;
-    font-size: 14px;
-}
-.nav-btn:hover {
-    background: var(--cream-100);
-    color: var(--ink);
-}
-.nav-btn.is-active {
-    background: var(--olive-200);   /* oliva claro del mockup */
-    color: var(--ink);
-    font-weight: 700;
-}
-.nav-btn.is-active .ic svg { color: var(--olive-700); }
-
-/* ── Foot ─────────────────────────────────────────────────── */
-.sidebar__foot {
-    color: var(--ink-muted);
-    border-top-color: var(--cream-200);
-    font-size: 12px;
-}
-.status-dot {
-    background: var(--ok);
-    box-shadow: 0 0 0 3px var(--ok-soft);
 }
