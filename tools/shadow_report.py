@@ -19,6 +19,7 @@ Uso:
     python tools/shadow_report.py --since 2026-04-01
     python tools/shadow_report.py --provider BRISSAS
     python tools/shadow_report.py --top-errors 20
+    python tools/shadow_report.py --top-missing-articles 30
 """
 from __future__ import annotations
 
@@ -238,6 +239,126 @@ def _print_pending_review(propuestas: list[dict], matched: list[dict],
               f'propuso={p.get("proposed_articulo_id",0)}')
 
 
+def _print_top_missing_articles(propuestas: list[dict],
+                                 matched: list[dict],
+                                 top: int) -> None:
+    """Lista priorizada de artículos a dar de alta en el ERP.
+
+    Combina tres señales, todas sobre (provider, variety, size, spb):
+
+    1. **Rescates** — decisiones donde el operador asignó un artículo
+       tras un `sin_match` del matcher (`proposed_articulo_id=0`). El
+       matcher no encontró nada y el humano tuvo que buscar → o no
+       había artículo en catálogo, o el que existe es un branded ajeno
+       que no sirve. Alta prioridad.
+
+    2. **Shadow `sin_match` sin decisión** — el matcher tampoco propuso
+       pero el operador aún no se ha pronunciado. Backlog pendiente.
+
+    3. **Ambiguous con foreign_brand en top1** — el mejor candidato del
+       pool lleva marca ajena al proveedor. Señal de que falta un
+       branded propio equivalente en el catálogo.
+
+    Salida: frecuencia acumulada de cada (provider, variety, sz, spb).
+    Los administrativos usan esta lista para priorizar altas en el ERP.
+    """
+    print()
+    print('=' * 70)
+    print(f'Artículos a dar de alta en ERP — top {top} por frecuencia')
+    print('=' * 70)
+
+    buckets: dict[tuple, dict] = defaultdict(lambda: {
+        'rescues': 0, 'sin_match_pending': 0, 'foreign_only': 0,
+        'last_proposed_name': '',
+    })
+
+    # Keys con decisión ya tomada (para excluir del backlog).
+    decided_keys = {m['decision'].get('synonym_key') for m in matched
+                    if m['decision'].get('synonym_key')}
+
+    # (1) Rescates.
+    for m in matched:
+        d = m['decision']
+        if d.get('action') != 'correct':
+            continue
+        if int(d.get('proposed_articulo_id') or 0) != 0:
+            continue
+        p = m['proposal'] or d
+        key = (
+            (p.get('provider_name') or '').strip(),
+            (p.get('variety') or '').strip().upper(),
+            int(p.get('size') or 0),
+            int(p.get('stems_per_bunch') or 0),
+        )
+        buckets[key]['rescues'] += 1
+
+    # (2) Shadow sin_match + (3) ambiguous con foreign_brand pendientes.
+    for p in propuestas:
+        if p.get('synonym_key') in decided_keys:
+            continue
+        status = p.get('match_status', '')
+        key = (
+            (p.get('provider_name') or '').strip(),
+            (p.get('variety') or '').strip().upper(),
+            int(p.get('size') or 0),
+            int(p.get('stems_per_bunch') or 0),
+        )
+        if status == 'sin_match':
+            buckets[key]['sin_match_pending'] += 1
+        elif status == 'ambiguous_match':
+            # Solo cuenta si el top1 tiene foreign_brand penalty (señal
+            # clara de que no hay branded propio en el pool).
+            pens = p.get('penalties') or []
+            if any(str(x).startswith('foreign_brand') for x in pens):
+                buckets[key]['foreign_only'] += 1
+        proposed_name = p.get('proposed_articulo_name') or ''
+        if proposed_name and not buckets[key]['last_proposed_name']:
+            buckets[key]['last_proposed_name'] = proposed_name
+
+    if not buckets:
+        print('(sin datos — shadow_log.jsonl vacío o sin casos que cumplan'
+              ' los criterios)')
+        return
+
+    # Score: pesa más los rescates (confirmados por operador) que el
+    # backlog (pendiente) y el foreign_only (inferido del matcher).
+    scored = []
+    for key, stats in buckets.items():
+        score = stats['rescues'] * 3 + stats['sin_match_pending'] * 1 \
+            + stats['foreign_only'] * 1
+        scored.append((score, key, stats))
+    scored.sort(key=lambda x: -x[0])
+
+    header = (
+        f'{"Proveedor":<20s} {"Variedad":<28s} '
+        f'{"sz":>4} {"spb":>4} '
+        f'{"resc":>5} {"pend":>5} {"frgn":>5}   sugerencia'
+    )
+    print(header)
+    print('-' * len(header))
+    for score, (prov, variety, sz, spb), stats in scored[:top]:
+        sug = stats['last_proposed_name'] or ''
+        print(
+            f'{prov[:20]:<20s} {variety[:28]:<28s} '
+            f'{sz:>4} {spb:>4} '
+            f'{stats["rescues"]:>5} {stats["sin_match_pending"]:>5} '
+            f'{stats["foreign_only"]:>5}   {sug[:40]}'
+        )
+
+    shown_rescues = sum(s['rescues'] for _, _, s in scored[:top])
+    shown_pending = sum(s['sin_match_pending'] for _, _, s in scored[:top])
+    shown_foreign = sum(s['foreign_only'] for _, _, s in scored[:top])
+    total_rescues = sum(s['rescues'] for _, _, s in scored)
+    total_pending = sum(s['sin_match_pending'] for _, _, s in scored)
+    total_foreign = sum(s['foreign_only'] for _, _, s in scored)
+    print()
+    print(f'Mostrados: rescates {shown_rescues}/{total_rescues}  '
+          f'pendientes {shown_pending}/{total_pending}  '
+          f'foreign_only {shown_foreign}/{total_foreign}')
+    print('Score = 3×rescates + pendientes + foreign_only. '
+          'Rescates pesan más (confirma acción humana).')
+
+
 def main():
     ap = argparse.ArgumentParser(description=__doc__)
     ap.add_argument('--since', default='',
@@ -246,6 +367,10 @@ def main():
                     help='Filtrar por nombre de proveedor (substring)')
     ap.add_argument('--top-errors', type=int, default=10,
                     help='Cuántos patrones de error mostrar')
+    ap.add_argument('--top-missing-articles', type=int, default=0,
+                    help='Lista priorizada de variedades a dar de alta '
+                         'en ERP (rescates + sin_match pendientes + '
+                         'ambiguous con foreign_brand). 0 = no mostrar.')
     args = ap.parse_args()
 
     since = None
@@ -263,6 +388,9 @@ def main():
     _print_by_provider(matched)
     _print_top_errors(matched, args.top_errors)
     _print_pending_review(propuestas, matched)
+    if args.top_missing_articles > 0:
+        _print_top_missing_articles(propuestas, matched,
+                                     args.top_missing_articles)
 
 
 if __name__ == '__main__':
