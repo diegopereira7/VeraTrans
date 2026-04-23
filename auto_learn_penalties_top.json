@@ -2,11 +2,11 @@
   "top": [
     [
       "weak_synonym",
-      261
+      279
     ],
     [
       "variety_no_overlap",
-      174
+      158
     ],
     [
       "foreign_brand",
@@ -14,15 +14,19 @@
     ],
     [
       "tie_top2_margin",
-      94
+      85
     ],
     [
       "low_evidence",
-      63
+      55
     ],
     [
       "color_modifier_extra",
       47
+    ],
+    [
+      "foreign_brand_soft",
+      18
     ],
     [
       "size_off",
@@ -33,5 +37,5 @@
       10
     ]
   ],
-  "total_penalties": 818
+  "total_penalties": 821
 }

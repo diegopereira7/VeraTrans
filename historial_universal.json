@@ -9333,14 +9333,14 @@
     "fecha": "2026-03-30 17:02"
   },
   "002005": {
-    "pdf": "01 - 075-6689 0143 (188) - LAILA 002005 00004763.pdf",
+    "pdf": "05 - 075-67645373 - LAILA LAILA.pdf",
     "provider": "Laila Flowers",
-    "total_usd": 202.0,
-    "lineas": 6,
-    "ok": 5,
-    "sin_match": 1,
-    "fecha": "2026-04-23 12:42",
-    "pdf_path": "C:\\Users\\diego.pereira\\Desktop\\DOC VERA\\FACTURAS IMPORTACION\\PROVEEDORES\\LAILA\\01 - 075-6689 0143 (188) - LAILA 002005 00004763.pdf"
+    "total_usd": 28.0,
+    "lineas": 1,
+    "ok": 1,
+    "sin_match": 0,
+    "fecha": "2026-04-23 14:12",
+    "pdf_path": "C:\\Users\\diego.pereira\\Desktop\\DOC VERA\\FACTURAS IMPORTACION\\PROVEEDORES\\LAILA\\05 - 075-67645373 - LAILA LAILA.pdf"
   },
   "000004684": {
     "pdf": "SEMANA_5_369-9830_7753_(200)_ROSALEDA.pdf",
@@ -10243,13 +10243,14 @@
     "fecha": "2026-03-30 17:06"
   },
   "160813": {
-    "pdf": "SEMANA_8_369-9900_8420_(245)_UTOPIA.pdf",
+    "pdf": "01 - 369-99008420 - UTOPIA UTOPIA.pdf",
     "provider": "Utopia Farms",
     "total_usd": 312.0,
     "lineas": 1,
-    "ok": 1,
-    "sin_match": 0,
-    "fecha": "2026-03-30 17:06"
+    "ok": 0,
+    "sin_match": 1,
+    "fecha": "2026-04-23 13:58",
+    "pdf_path": "C:\\Users\\diego.pereira\\Desktop\\DOC VERA\\FACTURAS IMPORTACION\\PROVEEDORES\\UTOPIA\\01 - 369-99008420 - UTOPIA UTOPIA.pdf"
   },
   "INV-008625": {
     "pdf": "SEMANA_8_729-4588_9793_(179)_MILONGA.pdf",
@@ -15949,7 +15950,7 @@
     "lineas": 19,
     "ok": 8,
     "sin_match": 11,
-    "fecha": "2026-04-23 12:42",
+    "fecha": "2026-04-23 13:49",
     "pdf_path": "C:\\Users\\diego.pereira\\Desktop\\DOC VERA\\FACTURAS IMPORTACION\\PROVEEDORES\\ELITE\\01 - 075-6537 6964 (334) - ELITE 1626083.pdf"
   },
   "1633443": {

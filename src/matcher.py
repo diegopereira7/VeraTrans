@@ -200,6 +200,51 @@ def _own_brands_norm(pkey: str, provider_id: int,
     return brands
 
 
+def _detect_soft_foreign_brand(
+    nombre: str,
+    pkey: str,
+    own_brands_norm: set,
+    art_loader,
+) -> Optional[str]:
+    """Detección suave de marca ajena usando `brands_by_provider`.
+
+    Dispara cuando el último token del nombre está registrado como
+    marca propia de OTRO proveedor en el catálogo pero no aparece en el
+    registry hard-coded (`_known_brands`). Caso típico: WAYUU en
+    ALSTROMERIA WINTERFELL ... WAYUU cuando el proveedor actual es
+    ELITE (sin marcas propias).
+
+    Penalty ligero (-0.06) para minimizar regresiones. Solo sirve
+    como desempate cuando los candidatos están realmente empatados.
+    """
+    if art_loader is None:
+        return None
+    tokens = _normalize(nombre).split()
+    if not tokens:
+        return None
+    # Descartar sólo tokens tipo "25U", "70CM" (número + unidad); palabras
+    # que coincidentalmente acaban en U o CM (WAYUU, LUNACM) son marcas válidas.
+    last_tokens = {
+        t for t in tokens[-2:]
+        if len(t) >= 4 and not re.fullmatch(r'\d+(?:U|CM)', t)
+    }
+    if not last_tokens:
+        return None
+    brands_index = getattr(art_loader, '_brands_norm_cache', None)
+    if brands_index is None:
+        brands_index = set()
+        for brands in getattr(art_loader, 'brands_by_provider', {}).values():
+            for b in brands:
+                if len(b) >= 4:
+                    brands_index.add(_normalize(b))
+        art_loader._brands_norm_cache = brands_index
+    pkey_norm = _normalize(pkey or '')
+    for tok in last_tokens:
+        if tok in brands_index and tok != pkey_norm and tok not in own_brands_norm:
+            return tok
+    return None
+
+
 def _detect_foreign_brand(nombre: str, pkey: str, art_loader=None) -> Optional[str]:
     """Busca una marca conocida en el nombre del artículo que NO sea pkey.
 
@@ -215,7 +260,12 @@ def _detect_foreign_brand(nombre: str, pkey: str, art_loader=None) -> Optional[s
         return None
     # Buscar entre las últimas 2 palabras (las marcas suelen ir al final).
     # Umbral 3 para cubrir marcas cortas como EQR; con 4 se escapaba.
-    last_tokens = {t for t in tokens[-2:] if len(t) >= 3 and not t.endswith(('CM', 'U'))}
+    # Descartar sólo tokens tipo "25U", "70CM" (número + unidad); palabras
+    # que coincidentalmente acaban en U/CM son marcas válidas.
+    last_tokens = {
+        t for t in tokens[-2:]
+        if len(t) >= 3 and not re.fullmatch(r'\d+(?:U|CM)', t)
+    }
     known = {_normalize(b) for b in _known_brands()}
     pkey_norm = _normalize(pkey or '')
     for tok in last_tokens:
@@ -384,7 +434,7 @@ def _score_candidate(line: InvoiceLine, cand: Candidate,
             score -= 0.12
             penalties.append(f'color_modifier_extra({"/".join(sorted(extra_mods))})')
     elif line.variety:
-        # Excepción: un sinónimo de alto trust (manual_confirmado o
+        # Excepción 1: un sinónimo de alto trust (manual_confirmado o
         # aprendido_confirmado) ES prueba explícita de que la traducción
         # tokens→artículo es válida aunque no haya overlap literal
         # (ej: GYPSOPHILA XL NATURAL WHITE → PANICULATA XLENCE BLANCO).
@@ -394,11 +444,22 @@ def _score_candidate(line: InvoiceLine, cand: Candidate,
         # 0.98*0.25=0.245 en el score, que es proporcional al hecho.
         trust_exempts = (cand.source == 'synonym'
                          and (cand.trust or 0) >= 0.85)
-        if not trust_exempts:
+        # Excepción 2: typo comercial — cuando el fuzzy hint del
+        # candidato es ≥0.82, la variedad es casi la misma (LIMONADE
+        # vs LEMONADE, TIFFANNY vs TIFFANY, STAR PLATINIUM vs
+        # STAR PLATINUM). Penalizar por no-overlap literal sobre-
+        # castiga y el variety_match no dispara porque los tokens
+        # están cerca pero no son iguales. Dejar el fuzzy prior
+        # (+0.12 máx) como única señal.
+        fuzzy_typo = (cand.method_hint or '').startswith('fuzzy') \
+                     and (cand.hint_score or 0) >= 0.82
+        if trust_exempts:
+            reasons.append('synonym_overrides_variety')
+        elif fuzzy_typo:
+            reasons.append('fuzzy_typo_overrides_variety')
+        else:
             penalties.append('variety_no_overlap')
             score -= 0.10
-        else:
-            reasons.append('synonym_overrides_variety')
 
     # — Talla
     sz_art = _infer_article_size(art)
@@ -453,17 +514,38 @@ def _score_candidate(line: InvoiceLine, cand: Candidate,
         if foreign_brand and _normalize(foreign_brand) not in own_brands_norm:
             score -= 0.25
             penalties.append(f'foreign_brand({foreign_brand})')
-        elif has_own_branded_peer and own_brands_norm:
-            # Genérico (ROSA EC / ROSA COL sin marca ni foreign) cuando
-            # en el pool existe otro candidato con marca propia del
-            # proveedor. Sin esta penalty, un sinónimo `aprendido_en_prueba`
-            # heredado que apuntaba al genérico (trust 0.55 + method_prior
-            # 0.10 = +0.24) derrotaba al branded propio (+0.25 brand). La
-            # regla de negocio es "marca propia > genérico > marca ajena";
-            # simetrizamos con -0.15 (menor que foreign -0.25, pero
-            # suficiente para cerrar el gap de 0.24).
-            score -= 0.15
-            penalties.append('generic_vs_own_brand')
+        else:
+            # Penalty suave cuando el último token del nombre es marca
+            # propia de OTRO proveedor según el catálogo
+            # (`brands_by_provider`) pero no está en el registry hard-coded
+            # (WAYUU, etc.). Permite desempatar cuando un proveedor sin
+            # marca propia elige entre su genérico COL y un branded ajeno
+            # sin que el genérico reciba el shock de -0.25. -0.06 es
+            # menor que el +0.10 de variety_full para no derrotar a
+            # matches correctos.
+            soft_foreign = _detect_soft_foreign_brand(
+                nombre, pkey, own_brands_norm, art_loader
+            )
+            # Solo aplicar si el score ya está en zona OK (>=0.80): el
+            # penalty sirve como desempate entre un COL genérico y un
+            # branded ajeno cuando ambos están empatados. Si el ganador
+            # estaba ya al borde del umbral low_evidence (~0.70), el
+            # penalty lo arrastra a ambiguous sin ganancia.
+            if soft_foreign and score >= 0.80:
+                score -= 0.04
+                penalties.append(f'foreign_brand_soft({soft_foreign})')
+            elif has_own_branded_peer and own_brands_norm:
+                # Genérico (ROSA EC / ROSA COL sin marca ni foreign)
+                # cuando en el pool existe otro candidato con marca
+                # propia del proveedor. Sin esta penalty, un sinónimo
+                # `aprendido_en_prueba` heredado que apuntaba al
+                # genérico (trust 0.55 + method_prior 0.10 = +0.24)
+                # derrotaba al branded propio (+0.25 brand). La regla
+                # de negocio es "marca propia > genérico > marca
+                # ajena"; simetrizamos con -0.15 (menor que foreign
+                # -0.25, pero suficiente para cerrar el gap de 0.24).
+                score -= 0.15
+                penalties.append('generic_vs_own_brand')
 
     # — Histórico del proveedor con este artículo
     if syn_store and provider_id and art.get('id'):
