@@ -100,6 +100,11 @@ def _split_code_variety(rest: str) -> tuple[str, str]:
             code_end = i + 1
             i += 1
             continue
+        # Si el siguiente token contiene guión (X-PRESSION, O'HARA),
+        # el actual es la primera palabra de una variedad compuesta
+        # (SUNSET X-PRESSION, CANDY X-PRESSION).
+        if '-' in tokens[i + 1] and len(tokens[i + 1]) >= 5:
+            break
         if _CODE_TOKEN_RE.match(t) and tokens[i + 1] not in _KNOWN_VARIETY_FIRST \
                 and len(tokens) - (i + 1) >= 1:
             code_end = i + 1

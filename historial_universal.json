@@ -310,7 +310,7 @@
     "lineas": 11,
     "ok": 5,
     "sin_match": 5,
-    "fecha": "2026-04-23 12:42",
+    "fecha": "2026-04-23 15:11",
     "pdf_path": "C:\\Users\\diego.pereira\\Desktop\\DOC VERA\\FACTURAS IMPORTACION\\PROVEEDORES\\VUELVEN\\01 - 075-6537 6964 (334) - VUELVEN 49630.pdf"
   },
   "7.149": {
@@ -7241,13 +7241,14 @@
     "fecha": "2026-03-30 17:12"
   },
   "5117466": {
-    "pdf": "SEMANA_11_369-9902_0515_(210)_MALIMA.pdf",
+    "pdf": "04 - 369-99020515 - MALIMA MALIMA.pdf",
     "provider": "Starflowers (Malima)",
     "total_usd": 2551.5,
     "lineas": 2,
     "ok": 2,
     "sin_match": 0,
-    "fecha": "2026-03-30 17:12"
+    "fecha": "2026-04-23 14:39",
+    "pdf_path": "C:\\Users\\diego.pereira\\Desktop\\DOC VERA\\FACTURAS IMPORTACION\\PROVEEDORES\\MALIMA\\04 - 369-99020515 - MALIMA MALIMA.pdf"
   },
   "000093660": {
     "pdf": "SEMANA_11_369-9902_0515_(210)_MONTEROSA.pdf",
@@ -7268,13 +7269,14 @@
     "fecha": "2026-03-30 17:12"
   },
   "5117280": {
-    "pdf": "SEMANA_11_592-3128_0395_(65)_MALIMA.pdf",
+    "pdf": "05 - 592-31280395 - MALIMA MALIMA.pdf",
     "provider": "Starflowers (Malima)",
     "total_usd": 885.5,
     "lineas": 2,
     "ok": 2,
     "sin_match": 0,
-    "fecha": "2026-03-30 17:12"
+    "fecha": "2026-04-23 14:39",
+    "pdf_path": "C:\\Users\\diego.pereira\\Desktop\\DOC VERA\\FACTURAS IMPORTACION\\PROVEEDORES\\MALIMA\\05 - 592-31280395 - MALIMA MALIMA.pdf"
   },
   "000093439": {
     "pdf": "SEMANA_11_592-3128_0395_(65)_MONTEROSA.pdf",
@@ -7557,13 +7559,14 @@
     "fecha": "2026-03-30 17:12"
   },
   "5117651": {
-    "pdf": "SEMANA_12_✈️_075-6771_1210_ALLIANZA_MALIMA.pdf",
+    "pdf": "03 - 075-67711210 - MALIMA MALIMA.pdf",
     "provider": "Starflowers (Malima)",
     "total_usd": 885.5,
     "lineas": 2,
     "ok": 2,
     "sin_match": 0,
-    "fecha": "2026-03-30 17:12"
+    "fecha": "2026-04-23 14:39",
+    "pdf_path": "C:\\Users\\diego.pereira\\Desktop\\DOC VERA\\FACTURAS IMPORTACION\\PROVEEDORES\\MALIMA\\03 - 075-67711210 - MALIMA MALIMA.pdf"
   },
   "000094004": {
     "pdf": "SEMANA_12_✈️_075-6771_1210_ALLIANZA_MONTEROSA.pdf",
@@ -7820,13 +7823,14 @@
     "fecha": "2026-03-30 17:12"
   },
   "5117786": {
-    "pdf": "SEMANA_12_✈️_369-9902_2674_ALLIANZA_MALIMA.pdf",
+    "pdf": "02 - 369-99022674 - MALIMA MALIMA.pdf",
     "provider": "Starflowers (Malima)",
     "total_usd": 3461.5,
     "lineas": 3,
     "ok": 3,
     "sin_match": 0,
-    "fecha": "2026-03-30 17:12"
+    "fecha": "2026-04-23 14:39",
+    "pdf_path": "C:\\Users\\diego.pereira\\Desktop\\DOC VERA\\FACTURAS IMPORTACION\\PROVEEDORES\\MALIMA\\02 - 369-99022674 - MALIMA MALIMA.pdf"
   },
   "000094263": {
     "pdf": "SEMANA_12_✈️_369-9902_2674_ALLIANZA_MONTEROSA 2.pdf",
@@ -8029,7 +8033,7 @@
     "lineas": 2,
     "ok": 2,
     "sin_match": 0,
-    "fecha": "2026-04-23 12:42",
+    "fecha": "2026-04-23 14:39",
     "pdf_path": "C:\\Users\\diego.pereira\\Desktop\\DOC VERA\\FACTURAS IMPORTACION\\PROVEEDORES\\MALIMA\\01 - 075-67712271 - MALIMA MALIMA.pdf"
   },
   "000094588": {
@@ -11728,13 +11732,14 @@
     "fecha": "2026-03-30 17:12"
   },
   "INV-009201": {
-    "pdf": "SEMANA_11_729-4593_7275_(306)_VUELVEN.pdf",
+    "pdf": "05 - 729-45937275 - VUELVEN VUELVEN.pdf",
     "provider": "Vuelven",
     "total_usd": 150.0,
     "lineas": 3,
     "ok": 1,
     "sin_match": 0,
-    "fecha": "2026-03-30 17:12"
+    "fecha": "2026-04-23 14:37",
+    "pdf_path": "C:\\Users\\diego.pereira\\Desktop\\DOC VERA\\FACTURAS IMPORTACION\\PROVEEDORES\\VUELVEN\\05 - 729-45937275 - VUELVEN VUELVEN.pdf"
   },
   "INV-009439": {
     "pdf": "SEMANA_12_✈️_075-6768_2230_REAL_JUEVE_CIRCASIA.pdf",
@@ -11746,13 +11751,14 @@
     "fecha": "2026-03-30 17:12"
   },
   "INV-009438": {
-    "pdf": "SEMANA_12_✈️_075-6768_2230_REAL_JUEVE_VUELVEN.pdf",
+    "pdf": "02 - 075-67682230 - VUELVEN VUELVEN.pdf",
     "provider": "Vuelven",
     "total_usd": 467.0,
     "lineas": 11,
-    "ok": 5,
+    "ok": 6,
     "sin_match": 2,
-    "fecha": "2026-03-30 17:12"
+    "fecha": "2026-04-23 14:37",
+    "pdf_path": "C:\\Users\\diego.pereira\\Desktop\\DOC VERA\\FACTURAS IMPORTACION\\PROVEEDORES\\VUELVEN\\02 - 075-67682230 - VUELVEN VUELVEN.pdf"
   },
   "001101496": {
     "pdf": "SEMANA_12_✈️_075-6771_1000_SAFTEC_AROMA.pdf",
@@ -11920,13 +11926,14 @@
     "fecha": "2026-03-30 17:12"
   },
   "INV-009458": {
-    "pdf": "SEMANA_12_✈️_729-45937522_REAL_VUELVEN.pdf",
+    "pdf": "03 - 729-45937522 - VUELVEN VUELVEN.pdf",
     "provider": "Vuelven",
     "total_usd": 375.0,
     "lineas": 3,
     "ok": 1,
     "sin_match": 0,
-    "fecha": "2026-03-30 17:12"
+    "fecha": "2026-04-23 14:37",
+    "pdf_path": "C:\\Users\\diego.pereira\\Desktop\\DOC VERA\\FACTURAS IMPORTACION\\PROVEEDORES\\VUELVEN\\03 - 729-45937522 - VUELVEN VUELVEN.pdf"
   },
   "INV-008916": {
     "pdf": "02 - 729-45937360 - MILONGA FLOWERS MILONGA.pdf",
@@ -11939,13 +11946,14 @@
     "pdf_path": "C:\\Users\\diego.pereira\\Desktop\\DOC VERA\\FACTURAS IMPORTACION\\PROVEEDORES\\MILONGA FLOWERS\\02 - 729-45937360 - MILONGA FLOWERS MILONGA.pdf"
   },
   "INV-009358": {
-    "pdf": "SEMANA_12_✈️_729-4593_7360_COLOMBIA_VUELVEN.pdf",
+    "pdf": "04 - 729-45937360 - VUELVEN VUELVEN.pdf",
     "provider": "Vuelven",
     "total_usd": 300.0,
     "lineas": 4,
     "ok": 3,
     "sin_match": 0,
-    "fecha": "2026-03-30 17:12"
+    "fecha": "2026-04-23 14:37",
+    "pdf_path": "C:\\Users\\diego.pereira\\Desktop\\DOC VERA\\FACTURAS IMPORTACION\\PROVEEDORES\\VUELVEN\\04 - 729-45937360 - VUELVEN VUELVEN.pdf"
   },
   "001101784": {
     "pdf": "SEMANA_13_075-6771_4570_SAFTEC_completr_brissass_AROMA.pdf",
@@ -11975,13 +11983,14 @@
     "fecha": "2026-03-30 17:13"
   },
   "INV-009593": {
-    "pdf": "SEMANA_13_996-1425_5161_REAL_VUELVEN.pdf",
+    "pdf": "01 - 996-14255161 - VUELVEN VUELVEN.pdf",
     "provider": "Vuelven",
     "total_usd": 300.0,
     "lineas": 4,
     "ok": 3,
     "sin_match": 0,
-    "fecha": "2026-03-30 17:13"
+    "fecha": "2026-04-23 14:37",
+    "pdf_path": "C:\\Users\\diego.pereira\\Desktop\\DOC VERA\\FACTURAS IMPORTACION\\PROVEEDORES\\VUELVEN\\01 - 996-14255161 - VUELVEN VUELVEN.pdf"
   },
   "0000077619": {
     "pdf": "SEMANA_2_075-6764_1523_(101)_ECOFLOR.pdf",
@@ -15900,7 +15909,7 @@
     "lineas": 3,
     "ok": 1,
     "sin_match": 0,
-    "fecha": "2026-04-23 12:42",
+    "fecha": "2026-04-23 14:37",
     "pdf_path": "C:\\Users\\diego.pereira\\Desktop\\DOC VERA\\FACTURAS IMPORTACION\\PROVEEDORES\\CONEJERA\\01 - 729-4509 6004 (415) - CONEJERA.pdf"
   },
   "486": {
@@ -16390,7 +16399,7 @@
     "lineas": 1,
     "ok": 0,
     "sin_match": 1,
-    "fecha": "2026-04-23 12:42",
+    "fecha": "2026-04-23 15:11",
     "pdf_path": "C:\\Users\\diego.pereira\\Desktop\\DOC VERA\\FACTURAS IMPORTACION\\PROVEEDORES\\CONDOR ANDINO\\01 - 729-4477 1683 (553) - CONDOR.pdf"
   },
   "0000109469": {
@@ -16410,7 +16419,7 @@
     "lineas": 11,
     "ok": 8,
     "sin_match": 3,
-    "fecha": "2026-04-23 12:44",
+    "fecha": "2026-04-23 14:55",
     "pdf_path": "C:\\Users\\diego.pereira\\Desktop\\DOC VERA\\FACTURAS IMPORTACION\\PROVEEDORES\\EL CAMPANARIO\\01 - 729-4932 4995 (232) - EL CAMPANARIO 108206.pdf"
   },
   "0000140551": {
@@ -16478,9 +16487,9 @@
     "provider": "El Campanario",
     "total_usd": 248.5,
     "lineas": 11,
-    "ok": 7,
-    "sin_match": 4,
-    "fecha": "2026-04-23 12:44",
+    "ok": 8,
+    "sin_match": 3,
+    "fecha": "2026-04-23 14:55",
     "pdf_path": "C:\\Users\\diego.pereira\\Desktop\\DOC VERA\\FACTURAS IMPORTACION\\PROVEEDORES\\EL CAMPANARIO\\01 - 729-90860991 - EL CAMPANARIO CAMPANARIO.pdf"
   },
   "0000109468": {
@@ -16490,7 +16499,7 @@
     "lineas": 10,
     "ok": 10,
     "sin_match": 0,
-    "fecha": "2026-04-23 12:45",
+    "fecha": "2026-04-23 14:55",
     "pdf_path": "C:\\Users\\diego.pereira\\Desktop\\DOC VERA\\FACTURAS IMPORTACION\\PROVEEDORES\\EL CAMPANARIO\\02 - 729-4932 4122 (194) - EL CAMPANARIO 0000109468.pdf"
   },
   "0000139445": {
@@ -16500,7 +16509,7 @@
     "lineas": 5,
     "ok": 3,
     "sin_match": 2,
-    "fecha": "2026-04-23 12:45",
+    "fecha": "2026-04-23 14:55",
     "pdf_path": "C:\\Users\\diego.pereira\\Desktop\\DOC VERA\\FACTURAS IMPORTACION\\PROVEEDORES\\EL CAMPANARIO\\02 - 729-90860965 - EL CAMPANARIO EL CAMPANARIO.pdf"
   },
   "0000138129": {
@@ -16510,7 +16519,7 @@
     "lineas": 12,
     "ok": 8,
     "sin_match": 4,
-    "fecha": "2026-04-23 12:45",
+    "fecha": "2026-04-23 14:55",
     "pdf_path": "C:\\Users\\diego.pereira\\Desktop\\DOC VERA\\FACTURAS IMPORTACION\\PROVEEDORES\\EL CAMPANARIO\\03 - 075-66257660 - EL CAMPANARIO CAMPANARIO.pdf"
   },
   "0000137212": {
@@ -16520,7 +16529,7 @@
     "lineas": 14,
     "ok": 10,
     "sin_match": 4,
-    "fecha": "2026-04-23 12:45",
+    "fecha": "2026-04-23 14:55",
     "pdf_path": "C:\\Users\\diego.pereira\\Desktop\\DOC VERA\\FACTURAS IMPORTACION\\PROVEEDORES\\EL CAMPANARIO\\04 - 729-49861755 - EL CAMPANARIO CAMPANARIO.pdf"
   },
   "0000136622": {
@@ -16530,7 +16539,87 @@
     "lineas": 7,
     "ok": 7,
     "sin_match": 0,
-    "fecha": "2026-04-23 12:45",
+    "fecha": "2026-04-23 14:55",
     "pdf_path": "C:\\Users\\diego.pereira\\Desktop\\DOC VERA\\FACTURAS IMPORTACION\\PROVEEDORES\\EL CAMPANARIO\\05 - 729-49861722 - EL CAMPANARIO CAMPANARIO.pdf"
+  },
+  "FE047942": {
+    "pdf": "01 - 729-45487886 - CONEJERA CONEJERA FE047942.pdf",
+    "provider": "Flores La Conejera",
+    "total_usd": 40.0,
+    "lineas": 2,
+    "ok": 0,
+    "sin_match": 1,
+    "fecha": "2026-04-23 14:37",
+    "pdf_path": "C:\\Users\\diego.pereira\\Desktop\\DOC VERA\\FACTURAS IMPORTACION\\PROVEEDORES\\CONEJERA\\01 - 729-45487886 - CONEJERA CONEJERA FE047942.pdf"
+  },
+  "FE042373": {
+    "pdf": "02 - 729-4509 5654 (524) - CONEJERA.pdf",
+    "provider": "Flores La Conejera",
+    "total_usd": 40.0,
+    "lineas": 3,
+    "ok": 1,
+    "sin_match": 0,
+    "fecha": "2026-04-23 14:37",
+    "pdf_path": "C:\\Users\\diego.pereira\\Desktop\\DOC VERA\\FACTURAS IMPORTACION\\PROVEEDORES\\CONEJERA\\02 - 729-4509 5654 (524) - CONEJERA.pdf"
+  },
+  "FE047707": {
+    "pdf": "02 - 729-45488645 - CONEJERA CONEJERA FE047707.pdf",
+    "provider": "Flores La Conejera",
+    "total_usd": 238.0,
+    "lineas": 8,
+    "ok": 1,
+    "sin_match": 5,
+    "fecha": "2026-04-23 14:37",
+    "pdf_path": "C:\\Users\\diego.pereira\\Desktop\\DOC VERA\\FACTURAS IMPORTACION\\PROVEEDORES\\CONEJERA\\02 - 729-45488645 - CONEJERA CONEJERA FE047707.pdf"
+  },
+  "FE047450": {
+    "pdf": "03 - 729-45488564 - CONEJERA CONEJERA FE047450.pdf",
+    "provider": "Flores La Conejera",
+    "total_usd": 160.0,
+    "lineas": 5,
+    "ok": 1,
+    "sin_match": 3,
+    "fecha": "2026-04-23 14:38",
+    "pdf_path": "C:\\Users\\diego.pereira\\Desktop\\DOC VERA\\FACTURAS IMPORTACION\\PROVEEDORES\\CONEJERA\\03 - 729-45488564 - CONEJERA CONEJERA FE047450.pdf"
+  },
+  "FE047219": {
+    "pdf": "04 - 729-45488155 - CONEJERA CONEJERA FE047219.pdf",
+    "provider": "Flores La Conejera",
+    "total_usd": 240.0,
+    "lineas": 7,
+    "ok": 1,
+    "sin_match": 5,
+    "fecha": "2026-04-23 14:38",
+    "pdf_path": "C:\\Users\\diego.pereira\\Desktop\\DOC VERA\\FACTURAS IMPORTACION\\PROVEEDORES\\CONEJERA\\04 - 729-45488155 - CONEJERA CONEJERA FE047219.pdf"
+  },
+  "FE046974": {
+    "pdf": "05 - 729-45488100 - CONEJERA CONEJERA FE046974.pdf",
+    "provider": "Flores La Conejera",
+    "total_usd": 240.0,
+    "lineas": 7,
+    "ok": 1,
+    "sin_match": 5,
+    "fecha": "2026-04-23 14:38",
+    "pdf_path": "C:\\Users\\diego.pereira\\Desktop\\DOC VERA\\FACTURAS IMPORTACION\\PROVEEDORES\\CONEJERA\\05 - 729-45488100 - CONEJERA CONEJERA FE046974.pdf"
+  },
+  "5086654": {
+    "pdf": "01 - 729-4932 4995 (232) - MALIMA 5086654.pdf",
+    "provider": "Starflowers (Malima)",
+    "total_usd": 1960.0,
+    "lineas": 1,
+    "ok": 1,
+    "sin_match": 0,
+    "fecha": "2026-04-23 14:39",
+    "pdf_path": "C:\\Users\\diego.pereira\\Desktop\\DOC VERA\\FACTURAS IMPORTACION\\PROVEEDORES\\MALIMA\\01 - 729-4932 4995 (232) - MALIMA 5086654.pdf"
+  },
+  "5086685": {
+    "pdf": "02 - 729-4932 4995 (232) - MALIMA 5086685.pdf",
+    "provider": "Starflowers (Malima)",
+    "total_usd": 236.75,
+    "lineas": 22,
+    "ok": 20,
+    "sin_match": 2,
+    "fecha": "2026-04-23 14:39",
+    "pdf_path": "C:\\Users\\diego.pereira\\Desktop\\DOC VERA\\FACTURAS IMPORTACION\\PROVEEDORES\\MALIMA\\02 - 729-4932 4995 (232) - MALIMA 5086685.pdf"
   }
 }

@@ -1125,12 +1125,34 @@ class CondorParser:
             if not pm: continue
             btype=pm.group(1).upper(); desc=pm.group(2).strip().upper()
             var=re.sub(r'^HYD\s+','',desc).strip()
+            # Traducir colores EN→ES y reordenar a formato catálogo
+            # "WHITE PREMIUM" → "PREMIUM BLANCO", "BLUE" → "PREMIUM AZUL".
+            # El catálogo CONDOR usa "HYDRANGEA PREMIUM <color_es>".
+            _HYD_COLORS = {
+                'WHITE': 'BLANCO', 'BLUE': 'AZUL', 'LIGHT BLUE': 'AZUL CLARO',
+                'DARK BLUE': 'AZUL OSCURO', 'PINK': 'ROSA',
+                'LIGHT PINK': 'ROSA CLARO', 'DARK PINK': 'ROSA OSCURO',
+                'GREEN': 'VERDE', 'LIGHT GREEN': 'VERDE CLARO',
+                'DARK GREEN': 'VERDE OSCURO', 'LIME GREEN': 'VERDE LIMA',
+                'RED': 'ROJO', 'BURGUNDY': 'GRANATE', 'PEACH': 'MELOCOTON',
+                'MOCCA': 'MOCCA', 'MIX': 'MIXTO', 'MIXED': 'MIXTO',
+            }
+            v_up = var
+            # Reordenar "COLOR PREMIUM" → "PREMIUM COLOR"
+            m_rev = re.match(r'^(.+)\s+PREMIUM$', v_up)
+            if m_rev:
+                color_en = m_rev.group(1).strip()
+                color_es = _HYD_COLORS.get(color_en, color_en)
+                var = f'PREMIUM {color_es}'
+            elif v_up in _HYD_COLORS:
+                var = f'PREMIUM {_HYD_COLORS[v_up]}'
             try:
                 stems=int(pm.group(3))
                 price=float(pm.group(4).replace(',','.'))
                 total=float(pm.group(5).replace(',','.'))
             except: stems=0; price=0.0; total=0.0
             il=InvoiceLine(raw_description=ln,species='HYDRANGEAS',variety=var,origin='COL',
+                           size=60,  # hydrangeas colombianas = 60cm por default
                            stems_per_bunch=1,bunches=stems,stems=stems,
                            price_per_stem=price,line_total=total,box_type=btype)
             lines.append(il)
@@ -1201,6 +1223,19 @@ class MalimaParser:
                 variety = re.sub(r'\s*-\s*(XL|MI)\s*$', '', variety)
                 variety = re.sub(r'\s+', ' ', variety).strip()
                 if not variety: continue
+                # Normalizar a canónico catálogo ES (sesión 10u):
+                # "XLENCE TINT GREEN" → "PANICULATA XLENCE TEÑIDA VERDE"
+                # Mismo tratamiento que FlorsaniParser._build_variety.
+                m_tint = re.match(r'^XLENCE\s+TINT\s+(.+)$', variety)
+                if m_tint:
+                    color_es = _translate_florsani_color(m_tint.group(1))
+                    variety = f'PANICULATA XLENCE TEÑIDA {color_es}'
+                elif variety.startswith('XLENCE'):
+                    # "XLENCE" solo o "XLENCE 80CM" (sin tint) → blanco natural
+                    rest = variety[len('XLENCE'):].strip()
+                    variety = f'PANICULATA XLENCE {rest}'.strip() if rest else 'PANICULATA XLENCE BLANCO'
+                elif variety.startswith('MILLION STARS'):
+                    variety = f'PANICULATA {variety}'
                 bunches=int(pm2.group(2))
                 ppb=self._num_us(pm2.group(3))
                 stems=int(pm2.group(4))
