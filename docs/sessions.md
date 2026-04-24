@@ -8,6 +8,58 @@ aquí y se quita de CLAUDE.md.
 Para el estado actual del proyecto, ver [`CLAUDE.md`](../CLAUDE.md) (raíz).
 Para lecciones transversales reutilizables, ver [`lessons.md`](lessons.md).
 
+### 2026-04-23 — sesión 10t: parser auto_campanario spb + route codes (autoapprove 94.3% → 94.9%)
+
+Al analizar los 114 `ambiguous_match` restantes (ejercicio igual
+que 10s), dos buckets dominaban con fix fácil:
+
+1. **GREENGROWERS — 11 amb por `stems_per_bunch=0`**: el parser
+   `auto_campanario` dejaba spb=0 con comentario "se derivará por
+   species default", pero ese default nunca se aplicaba y el
+   matcher no podía distinguir `ROSA EC MONDIAL 50CM 20U` de
+   `ROSA EC MONDIAL 50CM 25U`. Fix en
+   [`src/parsers/auto_campanario.py`](../src/parsers/auto_campanario.py):
+   `spb = stems // bunches` si la división es exacta, fallback 25
+   (convención rosas EC). 3 amb de GREENGROWERS → 0 en el primer
+   sample.
+
+2. **EL CAMPANARIO — 7 amb por `ZAIRA` metido en la variedad**:
+   parser emitía `ZAIRA ABSOLUT IN PINK` cuando ZAIRA era un
+   código de ruta/destino. El `_split_code_variety` tenía ZAIRA
+   en `_KNOWN_VARIETY_FIRST` (bug) y la condición
+   `tokens[i+1] not in _KNOWN_VARIETY_FIRST` impedía el avance
+   cuando el token siguiente a ZAIRA era una variety conocida.
+   Fix aditivo: nuevo set `_KNOWN_ROUTE_CODES = {ZAIRA, JOVI,
+   VERALEZA}` que siempre se trata como código; ZAIRA salió de
+   `_KNOWN_VARIETY_FIRST`; `if t in _KNOWN_VARIETY_FIRST: break`
+   al principio del loop para limpiar la lógica.
+
+**Intento fallido (revertido)**: ampliar `_detect_foreign_brand`
+con `art_loader.brands_by_provider` para detectar WAYUU, SCARLET
+y similares que no están en PROVIDERS keys. Dio +4 regresiones en
+golden (candidatos branded legítimos recibieron −0.25 indebido
+por coincidencia parcial con una brand registrada de otro
+proveedor). Revertido; ELITE (12 amb) queda pendiente — requiere
+otro enfoque (penalty suave o brand indexado por sufijo exacto).
+
+**Re-anotación golden VALTHO**: 4 líneas con `size=40` apuntando
+a articulos `50CM` (`ROSEBERRY`, `HOT MERENGUE` × 2) — el matcher
+mejorado de 10s las detectó como "wrong". Corregidas a sus ids
+40CM correctos (36917, 35006). Golden 976 → 980/997.
+
+**Métricas**:
+- Autoapprove global: 94.3% → **94.9%** (+0.6pp, récord).
+- Ambiguous: 114 → **107** (−7). ok 3235 → 3258 (+23).
+- `tie_top2_margin`: 99 → 94. `low_evidence`: 65 → 63.
+- **Golden 980/997 (98.3%) intacto** tras re-anotación VALTHO.
+
+**Lección**: ampliar `_detect_foreign_brand` con el catálogo
+entero es tentador pero peligroso — muchos sufijos que parecen
+brand (WAYUU, SCARLET) se solapan con tokens legítimos de
+artículos que el proveedor sí comparte. La detección de brand
+ajena requiere un oracle externo (provider registry curado) más
+que tokens del catálogo. Pendiente.
+
 ### 2026-04-23 — sesión 10s: Florsani paniculata teñida (autoapprove 94.0% → 94.3%)
 
 Diego pidió auditar por qué el matcher detectaba mal las variedades

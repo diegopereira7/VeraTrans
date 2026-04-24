@@ -11,6 +11,7 @@ from __future__ import annotations
 import argparse
 import json
 import os
+import re
 import shutil
 import sys
 import tempfile
@@ -433,10 +434,23 @@ def run_batch(folder: Path, batch_id: str | None = None, output: Path | None = N
     ]
 
     def _should_skip(name: str) -> str | None:
-        """Retorna el patrón detectado si el archivo debe omitirse, o None."""
+        """Retorna el patrón detectado si el archivo debe omitirse, o None.
+
+        El skip se aplica solo si el patrón es el primer token
+        alfanumérico del nombre (ignorando prefijos separadores tipo
+        `_ - . space`). Así no falseamos archivos como
+        `18383._Veraleza-20-Abril_2026-Saftec.pdf` — factura real de
+        UMA con SAFTEC solo como sufijo por ser la agencia de carga.
+        Si el nombre arranca con dígitos (número de factura típico),
+        nunca se skipea.
+        """
         upper = name.upper()
+        stem = upper.rsplit('.', 1)[0] if '.' in upper else upper
+        core = re.sub(r'^[^A-Z0-9]+', '', stem)
+        if not core or core[0].isdigit():
+            return None
         for pat in SKIP_PATTERNS:
-            if pat in upper:
+            if core.startswith(pat):
                 return pat
         return None
 

@@ -1,6 +1,6 @@
 # CLAUDE.md — Guía operativa para el agente
 
-**Última actualización:** 2026-04-24 (sesión 11b — shadow_report `--verify-current`)
+**Última actualización:** 2026-04-24 (sesión 11c — skip pattern falso positivo bloqueaba UMA 18383)
 **Estado:** **96.1% autoapprove** (récord) · Golden 980/997 (98.3%). Ronda de 4 sesiones atacando bucket por bucket los `ambiguous_match`: inicio 114 → **50** (−56%). ok 3235 → 3327 (+92). Fixes: matcher ganó `foreign_brand_soft` (detecta WAYUU via `brands_by_provider`), `fuzzy_typo_overrides_variety` (LIMONADE↔LEMONADE, TIFFANNY↔TIFFANY) y bug fix unit-suffix. Parsers ganaron traducciones EN→ES (MALIMA tint, CONDOR hydrangea, SAN FRANCISCO hydrangea), route-codes separados de variety (EL CAMPANARIO ZAIRA/JOVI/VERALEZA), variedades compuestas (`SUNSET X-PRESSION`), defaults de size para parsers sin CM explícito (ROSABELLA 50, CONDOR 60, PREMIUM 70), y color-split de CONEJERA clavel. 17 mismatches del golden siguen siendo branded nuevos del catálogo — re-anotar cuando toque.
 
 ---
@@ -833,6 +833,43 @@ Comandos con flags (`--provider`, `--max-samples`, `--verbose`,
 Solo las 2 últimas sesiones. Todas las anteriores en
 [`docs/sessions.md`](docs/sessions.md).
 
+### 2026-04-24 — sesión 11c: skip pattern falso positivo bloqueaba UMA 18383
+
+Ángel reportó que una factura UMA real (`18383._Veraleza-20-Abril_
+2026-Saftec.pdf`) "se quedaba cargando todo el rato" al procesarla
+desde la UI. Inspección del `batch_status/*.json`: la factura caía
+en `omitidos_detalle` con motivo `"Omitido: documento no es factura
+(SAFTEC)"`. El bug: [`batch_process.py`](batch_process.py) tenía
+`SKIP_PATTERNS = [..., 'SAFTEC', ...]` y `_should_skip` hacía
+`if pat in upper:` — match por substring en cualquier posición
+del nombre. El archivo contenía la palabra "Saftec" solo como
+sufijo (la agencia de carga) y se confundía con una factura de
+SAFTEC.
+
+**Cambio**: nuevo `_should_skip` más estricto. Normaliza el nombre
+(sin extensión, quitando prefijos no-alnum) y skipea solo si el
+primer token alfanumérico del nombre coincide con un patrón de la
+lista. Si arranca con dígitos (número de factura típico), nunca
+skipea. Tabla de 12 casos de test pasa: `SAFTEC.pdf`,
+`SAFTEC_VERALEZA.pdf`, `DUA_34342.pdf`, `FESO_CARGO.pdf` skipean;
+`18383._Veraleza-...-Saftec.pdf`, `UMA SAFTEC.pdf` (UMA legítimo
+en historial), `ECOFLOR-...-Saftec.pdf`, `123-DUA.pdf` pasan.
+
+**Parser UMA — fix descartado**: el PDF 18383 trae 2 líneas con
+variety `GYPSOPHILA XLENCE NATURAL WHITE` que caen a `fuzzy 53%`
+ambig porque el sinónimo manual_confirmado existente usa la forma
+corta `GYPSOPHILA XL NATURAL WHITE` (Uma mezcla ambas formas en
+el mismo PDF). Intenté canonicalizar `XLENCE → XL` en
+`UmaParser` pero rompió 7 líneas del benchmark (otras facturas
+emiten `GYPSOPHILA XLENCE` *sin* más tokens y matcheaban el
+sinónimo XLENCE puro). Revertido. El flujo operativo normal
+resuelve esto: Ángel corrige las 2 ambig desde la UI, el
+`register_match_hit` (10g) promociona tras 2 usos.
+
+**Resultado en UMA 18383**: antes: omitido como SAFTEC. Ahora:
+3 líneas parseadas, header $2,754 cuadra, 1 ok + 2 ambig (las
+NATURAL WHITE — dentro del flujo operativo normal).
+
 ### 2026-04-24 — sesión 11b: shadow_report `--verify-current` (filtra shadow stale)
 
 Diagnóstico del backlog shadow tras 10u-10x. El reporte marcaba 88
@@ -872,58 +909,6 @@ sin generar evento explícito — para que el reporte siga siendo
 útil, hay que re-simular el matcher contra las entries pendientes.
 El patrón aplica a cualquier sistema que loguee "estado propuesto"
 antes de que el operador actúe.
-
-### 2026-04-23 — sesión 10t: parser auto_campanario spb + route codes (autoapprove 94.3% → 94.9%)
-
-Al analizar los 114 `ambiguous_match` restantes (ejercicio igual
-que 10s), dos buckets dominaban con fix fácil:
-
-1. **GREENGROWERS — 11 amb por `stems_per_bunch=0`**: el parser
-   `auto_campanario` dejaba spb=0 con comentario "se derivará por
-   species default", pero ese default nunca se aplicaba y el
-   matcher no podía distinguir `ROSA EC MONDIAL 50CM 20U` de
-   `ROSA EC MONDIAL 50CM 25U`. Fix en
-   [`src/parsers/auto_campanario.py`](src/parsers/auto_campanario.py):
-   `spb = stems // bunches` si la división es exacta, fallback 25
-   (convención rosas EC). 3 amb de GREENGROWERS → 0 en el primer
-   sample.
-
-2. **EL CAMPANARIO — 7 amb por `ZAIRA` metido en la variedad**:
-   parser emitía `ZAIRA ABSOLUT IN PINK` cuando ZAIRA era un
-   código de ruta/destino. El `_split_code_variety` tenía ZAIRA
-   en `_KNOWN_VARIETY_FIRST` (bug) y la condición
-   `tokens[i+1] not in _KNOWN_VARIETY_FIRST` impedía el avance
-   cuando el token siguiente a ZAIRA era una variety conocida.
-   Fix aditivo: nuevo set `_KNOWN_ROUTE_CODES = {ZAIRA, JOVI,
-   VERALEZA}` que siempre se trata como código; ZAIRA salió de
-   `_KNOWN_VARIETY_FIRST`; `if t in _KNOWN_VARIETY_FIRST: break`
-   al principio del loop para limpiar la lógica.
-
-**Intento fallido (revertido)**: ampliar `_detect_foreign_brand`
-con `art_loader.brands_by_provider` para detectar WAYUU, SCARLET
-y similares que no están en PROVIDERS keys. Dio +4 regresiones en
-golden (candidatos branded legítimos recibieron −0.25 indebido
-por coincidencia parcial con una brand registrada de otro
-proveedor). Revertido; ELITE (12 amb) queda pendiente — requiere
-otro enfoque (penalty suave o brand indexado por sufijo exacto).
-
-**Re-anotación golden VALTHO**: 4 líneas con `size=40` apuntando
-a articulos `50CM` (`ROSEBERRY`, `HOT MERENGUE` × 2) — el matcher
-mejorado de 10s las detectó como "wrong". Corregidas a sus ids
-40CM correctos (36917, 35006). Golden 976 → 980/997.
-
-**Métricas**:
-- Autoapprove global: 94.3% → **94.9%** (+0.6pp, récord).
-- Ambiguous: 114 → **107** (−7). ok 3235 → 3258 (+23).
-- `tie_top2_margin`: 99 → 94. `low_evidence`: 65 → 63.
-- **Golden 980/997 (98.3%) intacto** tras re-anotación VALTHO.
-
-**Lección**: ampliar `_detect_foreign_brand` con el catálogo
-entero es tentador pero peligroso — muchos sufijos que parecen
-brand (WAYUU, SCARLET) se solapan con tokens legítimos de
-artículos que el proveedor sí comparte. La detección de brand
-ajena requiere un oracle externo (provider registry curado) más
-que tokens del catálogo. Pendiente.
 
 ---
 
