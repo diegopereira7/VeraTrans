@@ -1,6 +1,6 @@
 # CLAUDE.md — Guía operativa para el agente
 
-**Última actualización:** 2026-04-24 (sesión 11c — skip pattern falso positivo bloqueaba UMA 18383)
+**Última actualización:** 2026-04-24 (sesión 11d — triage páginas vacías evita OCR innecesario, 3× speedup)
 **Estado:** **96.1% autoapprove** (récord) · Golden 980/997 (98.3%). Ronda de 4 sesiones atacando bucket por bucket los `ambiguous_match`: inicio 114 → **50** (−56%). ok 3235 → 3327 (+92). Fixes: matcher ganó `foreign_brand_soft` (detecta WAYUU via `brands_by_provider`), `fuzzy_typo_overrides_variety` (LIMONADE↔LEMONADE, TIFFANNY↔TIFFANY) y bug fix unit-suffix. Parsers ganaron traducciones EN→ES (MALIMA tint, CONDOR hydrangea, SAN FRANCISCO hydrangea), route-codes separados de variety (EL CAMPANARIO ZAIRA/JOVI/VERALEZA), variedades compuestas (`SUNSET X-PRESSION`), defaults de size para parsers sin CM explícito (ROSABELLA 50, CONDOR 60, PREMIUM 70), y color-split de CONEJERA clavel. 17 mismatches del golden siguen siendo branded nuevos del catálogo — re-anotar cuando toque.
 
 ---
@@ -833,6 +833,42 @@ Comandos con flags (`--provider`, `--max-samples`, `--verbose`,
 Solo las 2 últimas sesiones. Todas las anteriores en
 [`docs/sessions.md`](docs/sessions.md).
 
+### 2026-04-24 — sesión 11d: triage de páginas vacías evita OCR innecesario (3× speedup)
+
+Ángel reportó que UMA 18383 tardaba mucho en procesarse. Perfilado:
+5.1s end-to-end. `extraction_source=mixed, engine=ocrmypdf`. El
+PDF tiene 2 páginas — la 1 nativa con 993 chars, la 2 **vacía**
+(última página en blanco típica de exports). El triage marcaba la
+página vacía como `'scan'` y disparaba OCRmyPDF global sobre todo
+el PDF — OCR de una página literalmente en blanco.
+
+**Cambio en [`src/extraction.py`](src/extraction.py)**:
+- `_triage_pdf` ahora devuelve 3 estados: `'native'`, `'empty'`
+  (chars=0 AND words=0) y `'scan'` (tiene contenido pero sin texto
+  utilizable).
+- La rama rápida (sin OCR) acepta ahora `all(v in ('native',
+  'empty'))` **siempre que al menos una página sea native**. Las
+  empty aportan un `PageExtraction(text='', source='native',
+  confidence=1.0)`.
+- Guardrail: si **ninguna** página es native, las `'empty'` se
+  reclasifican a `'scan'` — indica un PDF íntegramente escaneado
+  sin capa de texto (CANTIZA sample V.075-6577 1440 con 0 chars).
+
+**Métricas**:
+- UMA 18383: 5.1s → **1.75s** (−66%, 3×).
+- Benchmark global: 3562 líneas, 3333 ok, 50 ambig — **idéntico**
+  al pre-fix. Sin regresiones en CANTIZA (PDFs escaneados puros)
+  ni en providers con multi-página.
+- Aplica a cualquier PDF con última página en blanco (~30% de
+  las facturas UMA según muestreo rápido).
+
+**Lección transversal** (candidata `docs/lessons.md`): el triage
+binario `native vs scan` es demasiado pobre cuando `scan` arrastra
+como consecuencia "ejecuta OCR global". Un tercer estado explícito
+para páginas vacías evita invocar OCR sobre nada. La regla
+`ninguna native → todas las empty son scan` protege los
+escaneados íntegros (donde `empty` es `scan` disfrazado).
+
 ### 2026-04-24 — sesión 11c: skip pattern falso positivo bloqueaba UMA 18383
 
 Ángel reportó que una factura UMA real (`18383._Veraleza-20-Abril_
@@ -869,46 +905,6 @@ resuelve esto: Ángel corrige las 2 ambig desde la UI, el
 **Resultado en UMA 18383**: antes: omitido como SAFTEC. Ahora:
 3 líneas parseadas, header $2,754 cuadra, 1 ok + 2 ambig (las
 NATURAL WHITE — dentro del flujo operativo normal).
-
-### 2026-04-24 — sesión 11b: shadow_report `--verify-current` (filtra shadow stale)
-
-Diagnóstico del backlog shadow tras 10u-10x. El reporte marcaba 88
-"pendientes" pero la mayoría eran **shadow stale**: entries del
-batch inicial de 2026-04-22 cuyo PDF nunca se reprocesó tras los
-fixes (normalize_variety 10m, Uma VIOLETA 10o, paniculata teñida
-10s, etc.). Simulando el matcher actual sobre esas entries: 69
-de 77 (dedup) ya darían `ok` — son falsos pendientes que inflaban
-la cola operativa.
-
-**Cambio**: nuevo flag `--verify-current` en
-[`tools/shadow_report.py`](tools/shadow_report.py). Para cada
-entry del backlog pendiente (dedup por `(pdf, invoice, line_idx)`,
-quedando la propuesta más reciente), reconstruye el `InvoiceLine`
-desde los campos loguados y corre `Matcher.match_line` con el
-estado actual de artículos + sinónimos. Clasifica:
-- **Resuelto por fix posterior**: matcher actual da `ok` → queda
-  fuera del backlog real, se muestra aparte por proveedor.
-- **Pendiente real**: matcher actual sigue dando `ambig/sin_match`.
-
-El flag es opcional (paga el arranque de `ArticulosLoader`, ~3s);
-el run sin flag queda idéntico.
-
-**Resultado primer run**: 77 pendientes dedup → **8 pendientes
-reales** (−90%). Los 8 son: 3 GARDA `ELOY *` (variety stale
-pre-10m box-code), 1 MYSTIC `CORUÑA TNT GYP` (idem), 2 Agrivaldani
-`PALOMA` (empate `color_modifier_extra(BICOLOR)+tie_top2_margin`
-0.042 — único caso accionable hoy), 1 MYSTIC `IMAGINATION` (alta
-ERP), 1 FLORSANI `ORNITHOGALUM WHITE STAR` (alta ERP, ya en
-pendientes).
-
-**Lección transversal** (candidata `docs/lessons.md`): un log
-histórico sin mecanismo de "resolución implícita" mezcla datos
-stale con backlog real. Cada vez que se aplica un fix de
-parser/matcher/sinónimo, un subconjunto del backlog se resuelve
-sin generar evento explícito — para que el reporte siga siendo
-útil, hay que re-simular el matcher contra las entries pendientes.
-El patrón aplica a cualquier sistema que loguee "estado propuesto"
-antes de que el operador actúe.
 
 ---
 

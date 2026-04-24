@@ -8,6 +8,46 @@ aquí y se quita de CLAUDE.md.
 Para el estado actual del proyecto, ver [`CLAUDE.md`](../CLAUDE.md) (raíz).
 Para lecciones transversales reutilizables, ver [`lessons.md`](lessons.md).
 
+### 2026-04-24 — sesión 11b: shadow_report `--verify-current` (filtra shadow stale)
+
+Diagnóstico del backlog shadow tras 10u-10x. El reporte marcaba 88
+"pendientes" pero la mayoría eran **shadow stale**: entries del
+batch inicial de 2026-04-22 cuyo PDF nunca se reprocesó tras los
+fixes (normalize_variety 10m, Uma VIOLETA 10o, paniculata teñida
+10s, etc.). Simulando el matcher actual sobre esas entries: 69
+de 77 (dedup) ya darían `ok` — son falsos pendientes que inflaban
+la cola operativa.
+
+**Cambio**: nuevo flag `--verify-current` en
+[`tools/shadow_report.py`](../tools/shadow_report.py). Para cada
+entry del backlog pendiente (dedup por `(pdf, invoice, line_idx)`,
+quedando la propuesta más reciente), reconstruye el `InvoiceLine`
+desde los campos loguados y corre `Matcher.match_line` con el
+estado actual de artículos + sinónimos. Clasifica:
+- **Resuelto por fix posterior**: matcher actual da `ok` → queda
+  fuera del backlog real, se muestra aparte por proveedor.
+- **Pendiente real**: matcher actual sigue dando `ambig/sin_match`.
+
+El flag es opcional (paga el arranque de `ArticulosLoader`, ~3s);
+el run sin flag queda idéntico.
+
+**Resultado primer run**: 77 pendientes dedup → **8 pendientes
+reales** (−90%). Los 8 son: 3 GARDA `ELOY *` (variety stale
+pre-10m box-code), 1 MYSTIC `CORUÑA TNT GYP` (idem), 2 Agrivaldani
+`PALOMA` (empate `color_modifier_extra(BICOLOR)+tie_top2_margin`
+0.042 — único caso accionable hoy), 1 MYSTIC `IMAGINATION` (alta
+ERP), 1 FLORSANI `ORNITHOGALUM WHITE STAR` (alta ERP, ya en
+pendientes).
+
+**Lección transversal** (candidata `docs/lessons.md`): un log
+histórico sin mecanismo de "resolución implícita" mezcla datos
+stale con backlog real. Cada vez que se aplica un fix de
+parser/matcher/sinónimo, un subconjunto del backlog se resuelve
+sin generar evento explícito — para que el reporte siga siendo
+útil, hay que re-simular el matcher contra las entries pendientes.
+El patrón aplica a cualquier sistema que loguee "estado propuesto"
+antes de que el operador actúe.
+
 ### 2026-04-23 — sesión 10t: parser auto_campanario spb + route codes (autoapprove 94.3% → 94.9%)
 
 Al analizar los 114 `ambiguous_match` restantes (ejercicio igual

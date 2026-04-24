@@ -146,12 +146,16 @@ _MIN_NATIVE_WORDS = 15
 
 
 def _triage_pdf(path: str) -> list[str]:
-    """Clasifica cada página como ``'native'`` o ``'scan'``.
+    """Clasifica cada página como ``'native'``, ``'empty'`` o ``'scan'``.
 
-    Usa pdfplumber si está disponible para sacar el texto de cada página;
-    si la página devuelve texto "razonable" la marca nativa, en caso
-    contrario la marca para OCR. Si pdfplumber no está (o falla) devuelve
-    una lista vacía → el caller fuerza OCR global.
+    - ``native``: texto nativo utilizable (cumple umbrales de chars/words).
+    - ``empty``:  página 100% vacía (chars=0 y words=0) — típica última
+      página en blanco de exports Excel/Word. OCRizarla no aporta nada.
+    - ``scan``:   página con contenido pero sin texto nativo utilizable
+      (imagen de factura escaneada, forma a OCR).
+
+    Si pdfplumber no está (o falla) devuelve una lista vacía → el caller
+    fuerza OCR global.
     """
     if not HAS_PDFPLUMBER:
         return []
@@ -164,8 +168,19 @@ def _triage_pdf(path: str) -> list[str]:
                     n_words = len(pg.extract_words() or [])
                 except Exception:
                     n_words = 0
-                verdict.append(
-                    'native' if _page_is_useful_native(txt, n_words) else 'scan')
+                if _page_is_useful_native(txt, n_words):
+                    verdict.append('native')
+                elif len(txt) == 0 and n_words == 0:
+                    verdict.append('empty')
+                else:
+                    verdict.append('scan')
+        # Si NINGUNA página es nativa, el PDF es probablemente un
+        # escaneado completo — las 'empty' no son páginas en blanco sino
+        # imágenes sin capa de texto. Reclasificar a 'scan' para que el
+        # caller haga OCR. Solo cuando hay al menos una página native
+        # confiamos en que las 'empty' son realmente páginas en blanco.
+        if verdict and not any(v == 'native' for v in verdict):
+            verdict = ['scan' if v == 'empty' else v for v in verdict]
         return verdict
     except Exception as e:
         logger.debug("Triage pdfplumber falló en %s: %s", path, e)
@@ -440,11 +455,18 @@ def extract(path: str) -> ExtractionResult:
     pages: list[PageExtraction] = []
     ocr_engine = ''
 
-    # 1) Todas nativas → camino rápido
-    if verdict and all(v == 'native' for v in verdict):
+    # 1) Todas nativas o empty (páginas vacías no requieren OCR) → rápido
+    if verdict and all(v in ('native', 'empty') for v in verdict) \
+       and any(v == 'native' for v in verdict):
         try:
             with pdfplumber.open(path) as p:
-                for pg in p.pages:
+                for i, pg in enumerate(p.pages):
+                    if i < len(verdict) and verdict[i] == 'empty':
+                        pages.append(PageExtraction(
+                            text='', source='native',
+                            confidence=1.0, char_count=0,
+                        ))
+                        continue
                     txt = pg.extract_text() or ''
                     pages.append(PageExtraction(
                         text=txt, source='native',
