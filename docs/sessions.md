@@ -8,6 +8,90 @@ aquí y se quita de CLAUDE.md.
 Para el estado actual del proyecto, ver [`CLAUDE.md`](../CLAUDE.md) (raíz).
 Para lecciones transversales reutilizables, ver [`lessons.md`](lessons.md).
 
+### 2026-04-23 — sesión 10s: Florsani paniculata teñida (autoapprove 94.0% → 94.3%)
+
+Diego pidió auditar por qué el matcher detectaba mal las variedades
+de paniculata Florsani si el catálogo tiene un artículo por cada
+color. La auditoría reveló tres problemas encadenados — parser,
+catálogo, matcher — que resolvían distintas capas del mismo
+síntoma.
+
+**Diagnóstico en el catálogo**: 68 artículos Florsani tenían
+`nombre = 'PANICULATA XLENCE TE'` (export phpMyAdmin cortó en la
+Ñ de "TEÑIDA"). Los campos estructurados (`color`, `marca`,
+`variedad`, `tamano`, `paquete`) estaban intactos en la BD, solo
+el `nombre` visible quedó truncado. 45 colores distintos del
+paniculata XLENCE TEÑIDA (LAVANDA, ROSA CLARO, VERDE MANZANA,
+RAINBOW PASTEL, CORAL, TIE DYE, SAL Y PIMIENTA, etc.) estaban
+inaccesibles para el matcher porque todos tenían el mismo nombre.
+
+**Diagnóstico en el parser**: el parser emitía
+`GYPSOPHILA XLENCE TINTED LIGHT PINK` — los tokens del catálogo
+español (`PANICULATA XLENCE TEÑIDA ROSA CLARO`) no solapan excepto
+en `XLENCE`. El matcher caía a fuzzy con scores empatados.
+
+**Diagnóstico en el matcher**: cuando ambos candidatos (p.ej.
+AZUL vs AZUL CLARO) tienen `variety_full`, no hay tiebreak —
+el fuzzy prior decidía. Y el `variety_full` aportaba solo +0.03,
+insuficiente para contrarrestar +0.09 de fuzzy prior.
+
+**Cambios (todos aditivos)**:
+
+1. **`src/articulos.py`** — `load_from_db` añade `color`, `marca`,
+   `variedad` al SELECT. Nuevo helper `_reconstruct_truncated_name`
+   detecta `nombre` terminado en `' TE'`/`' TEÑ'` y lo reconstruye
+   como "{familia} TEÑIDA {color} {tamano} {paquete}U {marca}".
+   `_parse_row` para dumps SQL también captura los campos nuevos
+   (índices 4, 6, 14). Efecto: 68 "PANICULATA XLENCE TE" → 45
+   nombres canónicos únicos con su color.
+
+2. **`src/parsers/otros.py` (FlorsaniParser)** — nuevo
+   `_FLORSANI_COLOR_MAP` (≈45 entries: RED→ROJO, LAVANDER→LAVANDA,
+   APPLE GREEN→VERDE MANZANA, DARK RAINBOW→RAINBOW OSCURO,
+   PASTEL RAINBOW→RAINBOW PASTEL, BABY BLUE→AZUL CLARO, ...).
+   Nuevo helper `_translate_florsani_color` con orden por longitud
+   descendente (multi-word gana a single-word). Nuevo método
+   `_build_variety` que emite:
+   - "Xlence Tinted Light Pink" → "PANICULATA XLENCE TEÑIDA ROSA CLARO"
+   - "Xlence NINGUNO" → "PANICULATA XLENCE BLANCO"
+   - Limonium / Ornithogalum → sin cambios.
+
+3. **`src/matcher.py`** — tres fixes aditivos:
+   - Bonus `variety_full` sube de **+0.03 a +0.10**: cubre el
+     +0.09 del fuzzy prior que candidatos inferiores acumulan con
+     matches casuales por tokens de familia (PANICULATA/XLENCE/
+     TEÑIDA, que están en TODOS los paniculata).
+   - Nuevo penalty **`color_modifier_extra`**: si el nombre del
+     artículo contiene OSCURO/CLARO/LIGHT/DARK/PASTEL/NEON que la
+     variedad no pide, −0.12. Distingue `AZUL` (correcto) de
+     `AZUL CLARO` (color distinto).
+   - **Tiebreak simétrico + `tiebreak_color_modifier`**: si en
+     tie cualitativo top2 tiene `variety_full` o `size_exact` y
+     top1 no, swap. Si top2 tiene `color_modifier_extra` y top1
+     no, top1 gana. Antes el tiebreak solo miraba si top1 tenía
+     la ventaja — ahora es bidireccional.
+
+**Métricas**:
+- **FLORSANI2.pdf paniculata teñida: 19/54 ok → 54/54 ok (100%)**.
+- **Autoapprove global: 94.0% → 94.3% (+0.3pp, récord)**.
+- Ambiguous 144 → 114 (−30). `low_evidence` 111 → 65 (−46).
+- Nuevo penalty `color_modifier_extra` aparece 48 veces
+  globalmente (benigno, ya resuelto por el tiebreak).
+- **Golden 997/997 intacto** (100% link accuracy).
+- FLORSANI1 (white gypso): 4/4 ok. FLORSANI (ORNITHOGALUM WHITE
+  STAR) queda sin_match: el catálogo solo tiene genérico
+  `ORNITHOGALUM ECUADOR BLANCO 50CM 10U` — requiere decisión
+  semántica (mapa WHITE STAR→BLANCO) en otra sesión.
+
+**Lección transversal** (candidata para `docs/lessons.md`):
+cuando un `variety_match` parcial dispara por tokens de familia
+repetidos en todos los candidatos (PANICULATA/XLENCE/TEÑIDA),
+el tokens de color es el único discriminante. `variety_full`
+tiene que pesar lo suficiente para ganar +0.09 del fuzzy prior
+que los rivales sin variety_full acumulan. Un penalty simétrico
+para modificadores de color (OSCURO/CLARO) resuelve empates
+entre color base y su variante.
+
 ### 2026-04-23 — sesión 10q: reimport catálogo + migración a id_erp estable
 
 Diego importó un dump SQL actualizado del catálogo (`articulos

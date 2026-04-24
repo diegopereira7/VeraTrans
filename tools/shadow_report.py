@@ -20,6 +20,7 @@ Uso:
     python tools/shadow_report.py --provider BRISSAS
     python tools/shadow_report.py --top-errors 20
     python tools/shadow_report.py --top-missing-articles 30
+    python tools/shadow_report.py --verify-current
 """
 from __future__ import annotations
 
@@ -203,12 +204,80 @@ def _print_top_errors(matched: list[dict], top: int) -> None:
         print(f'       correcto: {decided_name!r}')
 
 
+def _build_matcher():
+    """Carga artículos + sinónimos + matcher. Import diferido porque
+    solo se usa con --verify-current (evita pagar el arranque de MySQL
+    en runs normales)."""
+    # Path fix para que src.* se importe desde la raíz del repo.
+    sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
+    from src.articulos import ArticulosLoader
+    from src.sinonimos import SynonymStore
+    from src.matcher import Matcher
+    loader = ArticulosLoader()
+    loader.load_from_db()
+    syn = SynonymStore('sinonimos_universal.json')
+    return Matcher(loader, syn)
+
+
+def _verify_current(pending: list[dict]) -> list[dict]:
+    """Re-corre el matcher actual sobre cada entry pendiente y anota el
+    resultado. Añade al dict del shadow:
+      - `current_status`: el match_status que daría hoy el matcher
+      - `current_art_id` / `current_art_name`
+      - `current_link` / `current_margin`
+      - `resolved_now`: bool — True si el matcher actual da `ok`
+    """
+    if not pending:
+        return pending
+    matcher = _build_matcher()
+    # Import tras tener path configurado.
+    from src.models import InvoiceLine
+
+    for p in pending:
+        try:
+            pid = int(p.get('provider_id') or 0)
+        except (TypeError, ValueError):
+            pid = 0
+        if not pid:
+            p['current_status'] = '(sin provider_id)'
+            p['resolved_now'] = False
+            continue
+        line = InvoiceLine(
+            raw_description=p.get('variety', '') or '',
+            species=p.get('species', '') or 'ROSES',
+            variety=(p.get('variety') or '').upper(),
+            size=int(p.get('size') or 0),
+            stems_per_bunch=int(p.get('stems_per_bunch') or 0),
+            grade=p.get('grade', '') or '',
+        )
+        try:
+            matcher.match_line(pid, line)
+        except Exception as exc:
+            p['current_status'] = f'(error: {exc.__class__.__name__})'
+            p['resolved_now'] = False
+            continue
+        p['current_status'] = line.match_status or ''
+        p['current_art_id'] = line.articulo_id or 0
+        p['current_art_name'] = line.articulo_name or ''
+        p['current_link'] = float(line.link_confidence or 0.0)
+        p['current_margin'] = float(line.candidate_margin or 0.0)
+        p['resolved_now'] = (line.match_status == 'ok')
+    return pending
+
+
 def _print_pending_review(propuestas: list[dict], matched: list[dict],
-                           top: int = 15) -> None:
+                           top: int = 15,
+                           verify_current: bool = False) -> None:
     """Líneas `ambiguous_match` o `sin_match` sin decisión humana todavía.
 
     Son el backlog operativo: el matcher las marcó para revisión y el
     operador aún no se ha pronunciado. Útil para priorizar colas.
+
+    Con `verify_current=True` re-corremos el matcher actual sobre cada
+    pendiente — si ya daría `ok`, lo marcamos como "resuelto por fix
+    posterior" y queda fuera del backlog real. Esto evita que fixes
+    ya aplicados (parser/matcher/sinónimo) sigan inflando el backlog
+    con shadow entries viejas que nunca se reprocesaron.
     """
     print()
     print('='*70)
@@ -219,24 +288,64 @@ def _print_pending_review(propuestas: list[dict], matched: list[dict],
     decided_keys = {m['decision'].get('synonym_key') for m in matched
                     if m['decision'].get('synonym_key')}
 
-    pending = [p for p in propuestas
-               if p.get('match_status') in ('ambiguous_match', 'sin_match')
-               and p.get('synonym_key') not in decided_keys]
+    # Dedup: nos quedamos con la propuesta más reciente por
+    # (pdf, invoice, line_idx). Una misma línea puede aparecer N veces
+    # si se reprocesó el PDF; solo el último intento refleja el estado
+    # tras el que el operador todavía no decidió.
+    latest_by_loc: dict[tuple, dict] = {}
+    for p in propuestas:
+        if p.get('match_status') not in ('ambiguous_match', 'sin_match'):
+            continue
+        if p.get('synonym_key') in decided_keys:
+            continue
+        loc = (p.get('pdf', ''), p.get('invoice', ''),
+               int(p.get('line_idx') or -1))
+        prev = latest_by_loc.get(loc)
+        if prev is None or p.get('ts', '') > prev.get('ts', ''):
+            latest_by_loc[loc] = p
+    pending = list(latest_by_loc.values())
+
+    if verify_current:
+        print('(re-corriendo matcher actual sobre pendientes...)')
+        _verify_current(pending)
+        resolved = [p for p in pending if p.get('resolved_now')]
+        real_pending = [p for p in pending if not p.get('resolved_now')]
+        print(f'Total pendientes (dedup):     {len(pending)}')
+        print(f'  Resueltos por fix posterior: {len(resolved)}  '
+              f'(matcher actual daría ok)')
+        print(f'  Pendientes reales:           {len(real_pending)}')
+        if resolved:
+            print()
+            print('Resueltos (shadow stale — siguen aquí porque el lote que'
+                  ' los generó nunca se reprocesó):')
+            by_prov_res = Counter(p.get('provider_name', '') for p in resolved)
+            for prov, n in by_prov_res.most_common(10):
+                print(f'  {prov[:30]:<30s} {n}')
+
+        pending = real_pending
+        print()
+        print(f'=== Pendientes reales (matcher actual sigue ambig/sin_match) ===')
 
     by_prov = Counter(p.get('provider_name', '') for p in pending)
-    print(f'Total pendientes: {len(pending)}')
+    print(f'Total: {len(pending)}')
     for prov, n in by_prov.most_common(10):
         print(f'  {prov[:30]:<30s} {n}')
 
     print()
     print('Muestra (las N más recientes):')
     for p in sorted(pending, key=lambda x: x.get('ts', ''), reverse=True)[:top]:
-        print(f'  [{p.get("provider_name","")[:18]:18s}] '
-              f'var={p.get("variety",""):<20s} '
-              f'sz={p.get("size",0)} '
-              f'sp={p.get("species","")[:3]} '
-              f'status={p.get("match_status","")}  '
-              f'propuso={p.get("proposed_articulo_id",0)}')
+        base = (f'  [{p.get("provider_name","")[:18]:18s}] '
+                f'var={p.get("variety","")[:22]:<22s} '
+                f'sz={p.get("size",0)} '
+                f'sp={p.get("species","")[:3]} '
+                f'status={p.get("match_status","")}  '
+                f'propuso={p.get("proposed_articulo_id",0)}')
+        if verify_current:
+            cs = p.get('current_status') or '?'
+            cid = p.get('current_art_id', 0)
+            cl = p.get('current_link', 0.0)
+            base += f'   ->  hoy: {cs} art={cid} link={cl:.2f}'
+        print(base)
 
 
 def _print_top_missing_articles(propuestas: list[dict],
@@ -371,6 +480,11 @@ def main():
                     help='Lista priorizada de variedades a dar de alta '
                          'en ERP (rescates + sin_match pendientes + '
                          'ambiguous con foreign_brand). 0 = no mostrar.')
+    ap.add_argument('--verify-current', action='store_true',
+                    help='Re-corre el matcher actual sobre el backlog '
+                         'pendiente y marca como "resuelto" las entries '
+                         'que hoy darían ok (shadow stale vs pendiente '
+                         'real). Paga arranque de ArticulosLoader.')
     args = ap.parse_args()
 
     since = None
@@ -387,7 +501,8 @@ def main():
     _print_global(propuestas, decisiones, matched)
     _print_by_provider(matched)
     _print_top_errors(matched, args.top_errors)
-    _print_pending_review(propuestas, matched)
+    _print_pending_review(propuestas, matched,
+                          verify_current=args.verify_current)
     if args.top_missing_articles > 0:
         _print_top_missing_articles(propuestas, matched,
                                      args.top_missing_articles)

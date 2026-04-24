@@ -1,6 +1,6 @@
 # CLAUDE.md — Guía operativa para el agente
 
-**Última actualización:** 2026-04-23 (sesiones 10u–10x — ronda profunda de parsers + matcher)
+**Última actualización:** 2026-04-24 (sesión 11b — shadow_report `--verify-current`)
 **Estado:** **96.1% autoapprove** (récord) · Golden 980/997 (98.3%). Ronda de 4 sesiones atacando bucket por bucket los `ambiguous_match`: inicio 114 → **50** (−56%). ok 3235 → 3327 (+92). Fixes: matcher ganó `foreign_brand_soft` (detecta WAYUU via `brands_by_provider`), `fuzzy_typo_overrides_variety` (LIMONADE↔LEMONADE, TIFFANNY↔TIFFANY) y bug fix unit-suffix. Parsers ganaron traducciones EN→ES (MALIMA tint, CONDOR hydrangea, SAN FRANCISCO hydrangea), route-codes separados de variety (EL CAMPANARIO ZAIRA/JOVI/VERALEZA), variedades compuestas (`SUNSET X-PRESSION`), defaults de size para parsers sin CM explícito (ROSABELLA 50, CONDOR 60, PREMIUM 70), y color-split de CONEJERA clavel. 17 mismatches del golden siguen siendo branded nuevos del catálogo — re-anotar cuando toque.
 
 ---
@@ -812,6 +812,7 @@ python tools/evaluate_golden.py
 # Shadow mode (Fase 10) — agrega shadow_log.jsonl
 python tools/shadow_report.py
 python tools/shadow_report.py --since 2026-04-01 --provider BRISSAS
+python tools/shadow_report.py --verify-current   # filtra shadow stale
 
 # Aprender parser nuevo
 python tools/auto_learn_parsers.py validate <key> <carpeta>
@@ -832,89 +833,45 @@ Comandos con flags (`--provider`, `--max-samples`, `--verbose`,
 Solo las 2 últimas sesiones. Todas las anteriores en
 [`docs/sessions.md`](docs/sessions.md).
 
-### 2026-04-23 — sesión 10s: Florsani paniculata teñida (autoapprove 94.0% → 94.3%)
+### 2026-04-24 — sesión 11b: shadow_report `--verify-current` (filtra shadow stale)
 
-Diego pidió auditar por qué el matcher detectaba mal las variedades
-de paniculata Florsani si el catálogo tiene un artículo por cada
-color. La auditoría reveló tres problemas encadenados — parser,
-catálogo, matcher — que resolvían distintas capas del mismo
-síntoma.
+Diagnóstico del backlog shadow tras 10u-10x. El reporte marcaba 88
+"pendientes" pero la mayoría eran **shadow stale**: entries del
+batch inicial de 2026-04-22 cuyo PDF nunca se reprocesó tras los
+fixes (normalize_variety 10m, Uma VIOLETA 10o, paniculata teñida
+10s, etc.). Simulando el matcher actual sobre esas entries: 69
+de 77 (dedup) ya darían `ok` — son falsos pendientes que inflaban
+la cola operativa.
 
-**Diagnóstico en el catálogo**: 68 artículos Florsani tenían
-`nombre = 'PANICULATA XLENCE TE'` (export phpMyAdmin cortó en la
-Ñ de "TEÑIDA"). Los campos estructurados (`color`, `marca`,
-`variedad`, `tamano`, `paquete`) estaban intactos en la BD, solo
-el `nombre` visible quedó truncado. 45 colores distintos del
-paniculata XLENCE TEÑIDA (LAVANDA, ROSA CLARO, VERDE MANZANA,
-RAINBOW PASTEL, CORAL, TIE DYE, SAL Y PIMIENTA, etc.) estaban
-inaccesibles para el matcher porque todos tenían el mismo nombre.
+**Cambio**: nuevo flag `--verify-current` en
+[`tools/shadow_report.py`](tools/shadow_report.py). Para cada
+entry del backlog pendiente (dedup por `(pdf, invoice, line_idx)`,
+quedando la propuesta más reciente), reconstruye el `InvoiceLine`
+desde los campos loguados y corre `Matcher.match_line` con el
+estado actual de artículos + sinónimos. Clasifica:
+- **Resuelto por fix posterior**: matcher actual da `ok` → queda
+  fuera del backlog real, se muestra aparte por proveedor.
+- **Pendiente real**: matcher actual sigue dando `ambig/sin_match`.
 
-**Diagnóstico en el parser**: el parser emitía
-`GYPSOPHILA XLENCE TINTED LIGHT PINK` — los tokens del catálogo
-español (`PANICULATA XLENCE TEÑIDA ROSA CLARO`) no solapan excepto
-en `XLENCE`. El matcher caía a fuzzy con scores empatados.
+El flag es opcional (paga el arranque de `ArticulosLoader`, ~3s);
+el run sin flag queda idéntico.
 
-**Diagnóstico en el matcher**: cuando ambos candidatos (p.ej.
-AZUL vs AZUL CLARO) tienen `variety_full`, no hay tiebreak —
-el fuzzy prior decidía. Y el `variety_full` aportaba solo +0.03,
-insuficiente para contrarrestar +0.09 de fuzzy prior.
+**Resultado primer run**: 77 pendientes dedup → **8 pendientes
+reales** (−90%). Los 8 son: 3 GARDA `ELOY *` (variety stale
+pre-10m box-code), 1 MYSTIC `CORUÑA TNT GYP` (idem), 2 Agrivaldani
+`PALOMA` (empate `color_modifier_extra(BICOLOR)+tie_top2_margin`
+0.042 — único caso accionable hoy), 1 MYSTIC `IMAGINATION` (alta
+ERP), 1 FLORSANI `ORNITHOGALUM WHITE STAR` (alta ERP, ya en
+pendientes).
 
-**Cambios (todos aditivos)**:
-
-1. **`src/articulos.py`** — `load_from_db` añade `color`, `marca`,
-   `variedad` al SELECT. Nuevo helper `_reconstruct_truncated_name`
-   detecta `nombre` terminado en `' TE'`/`' TEÑ'` y lo reconstruye
-   como "{familia} TEÑIDA {color} {tamano} {paquete}U {marca}".
-   `_parse_row` para dumps SQL también captura los campos nuevos
-   (índices 4, 6, 14). Efecto: 68 "PANICULATA XLENCE TE" → 45
-   nombres canónicos únicos con su color.
-
-2. **`src/parsers/otros.py` (FlorsaniParser)** — nuevo
-   `_FLORSANI_COLOR_MAP` (≈45 entries: RED→ROJO, LAVANDER→LAVANDA,
-   APPLE GREEN→VERDE MANZANA, DARK RAINBOW→RAINBOW OSCURO,
-   PASTEL RAINBOW→RAINBOW PASTEL, BABY BLUE→AZUL CLARO, ...).
-   Nuevo helper `_translate_florsani_color` con orden por longitud
-   descendente (multi-word gana a single-word). Nuevo método
-   `_build_variety` que emite:
-   - "Xlence Tinted Light Pink" → "PANICULATA XLENCE TEÑIDA ROSA CLARO"
-   - "Xlence NINGUNO" → "PANICULATA XLENCE BLANCO"
-   - Limonium / Ornithogalum → sin cambios.
-
-3. **`src/matcher.py`** — tres fixes aditivos:
-   - Bonus `variety_full` sube de **+0.03 a +0.10**: cubre el
-     +0.09 del fuzzy prior que candidatos inferiores acumulan con
-     matches casuales por tokens de familia (PANICULATA/XLENCE/
-     TEÑIDA, que están en TODOS los paniculata).
-   - Nuevo penalty **`color_modifier_extra`**: si el nombre del
-     artículo contiene OSCURO/CLARO/LIGHT/DARK/PASTEL/NEON que la
-     variedad no pide, −0.12. Distingue `AZUL` (correcto) de
-     `AZUL CLARO` (color distinto).
-   - **Tiebreak simétrico + `tiebreak_color_modifier`**: si en
-     tie cualitativo top2 tiene `variety_full` o `size_exact` y
-     top1 no, swap. Si top2 tiene `color_modifier_extra` y top1
-     no, top1 gana. Antes el tiebreak solo miraba si top1 tenía
-     la ventaja — ahora es bidireccional.
-
-**Métricas**:
-- **FLORSANI2.pdf paniculata teñida: 19/54 ok → 54/54 ok (100%)**.
-- **Autoapprove global: 94.0% → 94.3% (+0.3pp, récord)**.
-- Ambiguous 144 → 114 (−30). `low_evidence` 111 → 65 (−46).
-- Nuevo penalty `color_modifier_extra` aparece 48 veces
-  globalmente (benigno, ya resuelto por el tiebreak).
-- **Golden 997/997 intacto** (100% link accuracy).
-- FLORSANI1 (white gypso): 4/4 ok. FLORSANI (ORNITHOGALUM WHITE
-  STAR) queda sin_match: el catálogo solo tiene genérico
-  `ORNITHOGALUM ECUADOR BLANCO 50CM 10U` — requiere decisión
-  semántica (mapa WHITE STAR→BLANCO) en otra sesión.
-
-**Lección transversal** (candidata para `docs/lessons.md`):
-cuando un `variety_match` parcial dispara por tokens de familia
-repetidos en todos los candidatos (PANICULATA/XLENCE/TEÑIDA),
-el tokens de color es el único discriminante. `variety_full`
-tiene que pesar lo suficiente para ganar +0.09 del fuzzy prior
-que los rivales sin variety_full acumulan. Un penalty simétrico
-para modificadores de color (OSCURO/CLARO) resuelve empates
-entre color base y su variante.
+**Lección transversal** (candidata `docs/lessons.md`): un log
+histórico sin mecanismo de "resolución implícita" mezcla datos
+stale con backlog real. Cada vez que se aplica un fix de
+parser/matcher/sinónimo, un subconjunto del backlog se resuelve
+sin generar evento explícito — para que el reporte siga siendo
+útil, hay que re-simular el matcher contra las entries pendientes.
+El patrón aplica a cualquier sistema que loguee "estado propuesto"
+antes de que el operador actúe.
 
 ### 2026-04-23 — sesión 10t: parser auto_campanario spb + route codes (autoapprove 94.3% → 94.9%)
 
