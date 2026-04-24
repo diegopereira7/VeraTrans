@@ -48,6 +48,41 @@
             return 'or';
         };
 
+        // Recalcula ok_count / sin_match / needs_review del invoice a
+        // partir de sus líneas. Espejo de lo que _patchBatchLine hace
+        // server-side tras persistir. Para que el summary de Parcial/OK
+        // se actualice sin esperar a un refresh.
+        function _recomputeInvoiceStats(inv) {
+            if (!inv || !Array.isArray(inv.lines)) return;
+            let ok = 0, sin = 0, needs = 0;
+            const flagged = new Set([
+                'ambiguous_match', 'sin_match', 'sin_parser',
+                'mixed_box', 'llm_extraido', 'pendiente',
+            ]);
+            for (const l of inv.lines) {
+                const st   = l.match_status || '';
+                const conf = Number(l.confidence ?? l.match_confidence ?? 0);
+                const errs = l.validation_errors || [];
+                if (st === 'ok')        ok++;
+                else if (st === 'sin_match') sin++;
+                // Una línea cuenta como "revisar" sólo si:
+                //   - el status no es ok, o
+                //   - tiene errores de validación abiertos, o
+                //   - la confianza del vínculo es baja (<90%).
+                // No usamos review_lane como fuente aquí porque Python
+                // marca `quick` por criterios de extracción (margen,
+                // OCR) que no son bloqueantes una vez que el operador
+                // ha confirmado el artículo en la UI.
+                const needsRow = flagged.has(st)
+                    || (Array.isArray(errs) && errs.length > 0)
+                    || conf < 0.90;
+                if (needsRow) needs++;
+            }
+            inv.ok_count     = ok;
+            inv.sin_match    = sin;
+            inv.needs_review = needs;
+        }
+
         // ── Referencias DOM ────────────────────────────────────────────
         const batchDropZone    = document.getElementById('batchDropZone');
         const batchZipInput    = document.getElementById('batchZipInput');
@@ -57,9 +92,20 @@
         const batchProgress    = document.getElementById('batch-progress');
         const batchResults     = document.getElementById('batch-results');
 
+        const BATCH_STORAGE_KEY = 'verafact.lastBatchId';
         let batchId = null;
         let batchPollingTimer = null;
         let batchAllResults = [];
+
+        function _saveBatchId(id) {
+            try { if (id) localStorage.setItem(BATCH_STORAGE_KEY, id); } catch (e) {}
+        }
+        function _clearBatchId() {
+            try { localStorage.removeItem(BATCH_STORAGE_KEY); } catch (e) {}
+        }
+        function _loadBatchId() {
+            try { return localStorage.getItem(BATCH_STORAGE_KEY) || null; } catch (e) { return null; }
+        }
 
         // ── Drag & drop ────────────────────────────────────────────────
         batchDropZone.addEventListener('dragover', e => {
@@ -127,6 +173,7 @@
                 const data = await res.json();
                 if (!data.ok) { alert('Error: ' + data.error); batchReset(); return; }
                 batchId = data.batch_id;
+                _saveBatchId(batchId);
                 document.getElementById('batch-status-text').textContent = 'Procesando...';
                 document.getElementById('batch-progress-count').textContent = `0 / ${data.total_pdfs}`;
                 batchPollingTimer = setInterval(batchPollStatus, 2000);
@@ -155,6 +202,7 @@
                 const data = await res.json();
                 if (!data.ok) { alert('Error: ' + data.error); batchReset(); return; }
                 batchId = data.batch_id;
+                _saveBatchId(batchId);
                 document.getElementById('batch-status-text').textContent = 'Procesando...';
                 document.getElementById('batch-progress-count').textContent = `0 / ${data.total_pdfs}`;
                 batchPollingTimer = setInterval(batchPollStatus, 2000);
@@ -215,6 +263,13 @@
                     l.idx = flat.length;            // idx global
                     l._batchInvoiceIdx = invIdx;
                     l._batchLineIdx    = lineIdx;
+                    // Provider_id por línea (cada factura del batch tiene
+                    // el suyo). Sin esto, las correcciones desde el drawer
+                    // usaban STATE.provider_id que en batch es null → el
+                    // sinónimo se guardaba con provider_id=0 y nunca
+                    // matcheaba al re-procesar (Uma 18383 GYPSOPHILA
+                    // XLENCE NATURAL WHITE: 2+ correcciones huérfanas).
+                    l._providerId = inv.provider_id || 0;
                     // Alias compatibles con normalizeLines del v4
                     l.total      = l.total      ?? l.total_line ?? l.line_total ?? l.total_linea;
                     l.confidence = l.confidence ?? l.match_confidence;
@@ -235,24 +290,51 @@
             const r = data.resumen || {};
             batchAllResults = data.resultados || [];
             _populateFlatLines();
+            // Recalcular stats de cada factura con la lógica unificada
+            // (sin depender de lo que haya escrito Python en su run
+            // original). Así needs_review y la pill Parcial/OK reflejan
+            // el estado ACTUAL de las líneas tras correcciones.
+            batchAllResults.forEach(inv => _recomputeInvoiceStats(inv));
 
+            // 4 stat-cards limpias al estilo del mockup (sin backgrounds
+            // vivos — solo el color del número diferencia). Se consolidan
+            // las múltiples métricas parciales en subtítulos.
             const tNeeds    = r.total_needs_review || 0;
             const tAnom     = r.total_anomalies    || 0;
             const tNoCuadra = r.total_no_cuadra    || 0;
             const tOmit     = r.omitidos           || 0;
+            const facturasOk      = r.procesadas_ok || 0;
+            const facturasErr     = (r.con_error || 0) + (tOmit > 0 ? 0 : 0);
+            const facturasParcial = Math.max(0, (r.total_facturas || 0) - facturasOk - (r.con_error || 0));
+            const matchRate = r.total_lineas > 0 ? Math.round((r.total_ok / r.total_lineas) * 100) : 0;
+            const subArchivos = [
+                `${facturasOk} OK`,
+                facturasParcial > 0 ? `${facturasParcial} parciales` : null,
+                (r.con_error || 0) > 0 ? `${r.con_error} errores` : null,
+            ].filter(Boolean).join(' · ');
+
             const summary = document.getElementById('batchSummary');
             if (summary) summary.innerHTML = `
-                <div class="stat-card"><div class="stat-card__label">Facturas</div><div class="stat-card__value">${r.total_facturas || 0}</div></div>
-                <div class="stat-card stat-card--ok"><div class="stat-card__label">Procesadas</div><div class="stat-card__value">${r.procesadas_ok || 0}</div></div>
-                ${r.con_error > 0 ? `<div class="stat-card stat-card--err"><div class="stat-card__label">Con error</div><div class="stat-card__value">${r.con_error}</div></div>` : ''}
-                ${tOmit > 0 ? `<div class="stat-card stat-card--warn"><div class="stat-card__label">Omitidos</div><div class="stat-card__value">${tOmit}</div></div>` : ''}
-                <div class="stat-card stat-card--primary"><div class="stat-card__label">Líneas</div><div class="stat-card__value">${r.total_lineas || 0}</div></div>
-                <div class="stat-card stat-card--ok"><div class="stat-card__label">Matcheadas</div><div class="stat-card__value">${r.total_ok || 0}</div></div>
-                ${r.total_sin_match > 0 ? `<div class="stat-card stat-card--err"><div class="stat-card__label">Sin match</div><div class="stat-card__value">${r.total_sin_match}</div></div>` : ''}
-                <div class="stat-card ${tNeeds > 0 ? 'stat-card--warn' : 'stat-card--ok'}"><div class="stat-card__label">A revisar</div><div class="stat-card__value">${tNeeds}</div></div>
-                ${tNoCuadra > 0 ? `<div class="stat-card stat-card--err"><div class="stat-card__label">No cuadran</div><div class="stat-card__value">${tNoCuadra}</div></div>` : ''}
-                ${tAnom > 0 ? `<div class="stat-card stat-card--err"><div class="stat-card__label">Precio anómalo</div><div class="stat-card__value">${tAnom}</div></div>` : ''}
-                <div class="stat-card stat-card--primary"><div class="stat-card__label">Total USD</div><div class="stat-card__value">$${Number(r.total_usd || 0).toLocaleString('en-US', { minimumFractionDigits: 2 })}</div></div>
+                <div class="stat-card batch-stat">
+                    <div class="stat-card__label">Archivos</div>
+                    <div class="stat-card__value">${r.total_facturas || 0}</div>
+                    <div class="stat-card__sub">${subArchivos || '—'}</div>
+                </div>
+                <div class="stat-card batch-stat">
+                    <div class="stat-card__label">Match rate</div>
+                    <div class="stat-card__value batch-stat__value--olive">${matchRate}%</div>
+                    <div class="stat-card__sub">${r.total_ok || 0} de ${r.total_lineas || 0} líneas</div>
+                </div>
+                <div class="stat-card batch-stat">
+                    <div class="stat-card__label">A revisar</div>
+                    <div class="stat-card__value ${tNeeds > 0 ? 'batch-stat__value--warn' : 'batch-stat__value--olive'}">${tNeeds}</div>
+                    <div class="stat-card__sub">líneas con confianza baja</div>
+                </div>
+                <div class="stat-card batch-stat">
+                    <div class="stat-card__label">Total lote</div>
+                    <div class="stat-card__value">$${Number(r.total_usd || 0).toLocaleString('en-US', { minimumFractionDigits: 2 })}</div>
+                    <div class="stat-card__sub">USD · ${r.total_facturas || 0} facturas</div>
+                </div>
             `;
 
             const skippedDetails = document.getElementById('batchSkippedDetails');
@@ -295,35 +377,38 @@
             if (!tbody) return;
             tbody.innerHTML = list.map((r, i) => {
                 const needsRev = r.needs_review || 0;
-                const val = r.validation || {};
-                const rec = r.reconciliation || {};
-                const noCuadra = val.header_ok === false;
-                const anomalies = rec.anomalies || 0;
-                let status, statusClass;
-                if (!r.ok)                                             { status = 'ERROR';   statusClass = 'badge badge-sin-match'; }
-                else if (r.sin_match > 0 || needsRev > 0 || noCuadra || anomalies > 0) { status = 'REVISAR'; statusClass = 'badge badge-fuzzy'; }
-                else                                                   { status = 'OK';      statusClass = 'badge badge-ok'; }
+                // Pill de estado: solo refleja el estado de matching
+                // (sin_match / needs_review). Los desajustes de totales
+                // (validation.header_ok) y anomalías de precio son
+                // informativos y se muestran en sus propias tarjetas
+                // globales, pero no deben mantener la factura en
+                // "Parcial" cuando el operador ya ha vinculado todas
+                // las líneas correctamente.
+                let status, pillCls, parentCls = '';
+                if (!r.ok)                                    { status = 'Error';   pillCls = 'batch-pill batch-pill--err'; parentCls = 'batch-row--err'; }
+                else if (r.sin_match > 0 || needsRev > 0)     { status = 'Parcial'; pillCls = 'batch-pill batch-pill--warn'; parentCls = 'batch-row--warn'; }
+                else                                          { status = 'OK';      pillCls = 'batch-pill batch-pill--ok'; }
 
                 const hasLines = r.ok && r.lines && r.lines.length > 0;
                 const rowId = `batch-lines-${i}`;
 
-                let parentCls = '';
-                if (!r.ok) parentCls = 'row-sin-match';
-                else if (status === 'REVISAR') parentCls = 'row-low-conf';
+                const errNote = !r.ok && r.error
+                    ? `<div class="batch-row__err-reason">${esc(r.error)}</div>` : '';
 
+                // Numeración 01/02... y fila con accent bar lateral cuando toca
                 let html = `
                     <tr class="${parentCls} ${hasLines ? 'batch-expandable' : ''}" data-target="${rowId}">
-                        <td>${i + 1}</td>
-                        <td>${hasLines ? '<span class="expand-arrow">&#9654;</span> ' : ''}${esc(r.pdf)}</td>
-                        <td>${esc(r.provider || '-')}</td>
-                        <td>${esc(r.invoice || '-')}</td>
-                        <td>${esc(r.date || '-')}</td>
-                        <td>${r.lineas || 0}</td>
-                        <td>${r.ok_count || 0}</td>
-                        <td>${r.sin_match || 0}</td>
-                        <td>${needsRev > 0 ? `<strong style="color:#d97706">${needsRev}</strong>` : '0'}</td>
-                        <td>$${num(r.total_usd || 0)}</td>
-                        <td><span class="${statusClass}">${status}</span>${!r.ok ? `<br><small>${esc(r.error)}</small>` : ''}</td>
+                        <td><span class="line-num">${String(i + 1).padStart(2, '0')}</span></td>
+                        <td class="mono">${hasLines ? '<span class="expand-arrow">&#9654;</span> ' : ''}${esc(r.pdf)}</td>
+                        <td>${esc(r.provider || '—')}</td>
+                        <td class="mono">${esc(r.invoice || '—')}</td>
+                        <td class="mono">${esc(r.date || '—')}</td>
+                        <td class="num">${r.lineas || 0}</td>
+                        <td class="num batch-stat__value--olive" style="font-weight:600">${r.ok_count || 0}</td>
+                        <td class="num">${r.sin_match > 0 ? r.sin_match : '—'}</td>
+                        <td class="num">${needsRev > 0 ? `<span class="batch-pill batch-pill--warn">${needsRev}</span>` : '—'}</td>
+                        <td class="num" style="font-weight:600">$${num(r.total_usd || 0)}</td>
+                        <td><span class="${pillCls}">${status}</span>${errNote}</td>
                     </tr>`;
 
                 if (hasLines) {
@@ -425,9 +510,18 @@
                     ${l.raw ? `<div class="desc-raw" title="${esc(l.raw)}">${esc(l.raw)}</div>` : ''}
                 </div>`;
 
-            const erpInput = `<input type="text" class="erp-input" data-row-idx="${l.idx}"
-                value="${esc(l.articulo_id_erp || l.id_erp || '')}" placeholder="id_erp…"
-                aria-label="id_erp fila ${rowNum}">`;
+            const erpInput = `
+                <div class="erp-actions">
+                    <input type="text" class="erp-input" data-row-idx="${l.idx}"
+                        value="${esc(l.articulo_id_erp || l.id_erp || '')}" placeholder="id_erp…"
+                        aria-label="id_erp fila ${rowNum}">
+                    <button class="icon-btn icon-btn--ok line-save" data-row-idx="${l.idx}" title="Confirmar y guardar">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+                    </button>
+                    <button class="icon-btn icon-btn--err line-delete" data-row-idx="${l.idx}" title="Eliminar línea">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                    </button>
+                </div>`;
 
             return `
                 <tr class="is-clickable" data-row-idx="${l.idx}">
@@ -463,8 +557,15 @@
             scope.querySelectorAll('tr.is-clickable').forEach(tr => {
                 if (tr.__bound) return;
                 tr.__bound = true;
+                let mouseDownInInteractive = false;
+                tr.addEventListener('mousedown', e => {
+                    mouseDownInInteractive = !!e.target.closest('input, button, a, .erp-actions');
+                });
                 tr.addEventListener('click', e => {
-                    if (e.target.closest('input, button, a')) return;
+                    if (mouseDownInInteractive) { mouseDownInInteractive = false; return; }
+                    if (e.target.closest('input, button, a, .erp-actions')) return;
+                    const sel = window.getSelection && window.getSelection();
+                    if (sel && !sel.isCollapsed && sel.toString().length > 0) return;
                     const idx = Number(tr.dataset.rowIdx);
                     if (window.VeraFact && typeof window.VeraFact.openDrawer === 'function') {
                         window.VeraFact.openDrawer(idx);
@@ -475,41 +576,104 @@
             scope.querySelectorAll('.erp-input').forEach(inp => {
                 if (inp.__bound) return;
                 inp.__bound = true;
-                inp.addEventListener('change', async () => {
-                    const idx = Number(inp.dataset.rowIdx);
-                    const val = inp.value.trim();
+                inp.__lastSavedVal = (inp.value || '').trim();
+
+                const persistFromInput = async () => {
+                    const idx   = Number(inp.dataset.rowIdx);
                     const lines = window.VeraFact && window.VeraFact.STATE && window.VeraFact.STATE.lines;
-                    const line = lines && lines[idx];
+                    const line  = lines && lines[idx];
                     if (!line) return;
+                    const val = (inp.value || '').trim();
+                    if (val === inp.__lastSavedVal) return;
                     if (!val) {
                         line.articulo_id_erp = '';
-                        line.articulo_id = 0;
-                        line.articulo_name = '';
-                        line.match_status = 'sin_match';
+                        line.articulo_id     = 0;
+                        line.articulo_name   = '';
+                        line.match_status    = 'sin_match';
+                        inp.__lastSavedVal   = '';
                         _rerenderBatchPreservingOpen();
                         return;
                     }
-                    try {
-                        const r = await fetch(`api.php?action=lookup_article&id_erp=${encodeURIComponent(val)}`).then(x => x.json());
-                        const art = r && r.ok && (r.articulo || r);   // algunos handlers devuelven los campos en raíz
-                        if (r && r.ok && (art.id || art.articulo_id || art.nombre)) {
-                            line.articulo_id     = art.id || art.articulo_id || 0;
-                            line.articulo_id_erp = art.id_erp || val;
-                            line.articulo_name   = art.nombre || art.name || '';
-                            line.articulo_ref    = art.referencia || '';
-                            line.match_status    = 'ok';
-                            line.match_method    = 'manual-erp';
-                            line.confidence      = 1.0;
-                            line.origin          = 'OR';
+                    inp.__lastSavedVal = val;
+                    const invIdx     = line._batchInvoiceIdx;
+                    const providerId = (batchAllResults[invIdx] && batchAllResults[invIdx].provider_id) || 0;
+                    if (window.VeraFact && typeof window.VeraFact.saveLineArticle === 'function') {
+                        const ok = await window.VeraFact.saveLineArticle(line, val, providerId, inp);
+                        if (ok) {
+                            _recomputeInvoiceStats(batchAllResults[invIdx]);
                             _rerenderBatchPreservingOpen();
                         } else {
                             inp.style.borderColor = 'var(--err)';
                             setTimeout(() => inp.style.borderColor = '', 1200);
                         }
-                    } catch (err) {
-                        inp.style.borderColor = 'var(--err)';
-                        setTimeout(() => inp.style.borderColor = '', 1200);
                     }
+                };
+                inp.addEventListener('change', persistFromInput);
+                inp.addEventListener('keydown', e => {
+                    if (e.key === 'Enter') {
+                        e.preventDefault();
+                        inp.blur();   // dispara change
+                    }
+                });
+            });
+
+            // ✓ Guardar sinónimo — usa el helper público saveLineArticle
+            // del app.js. Deriva provider_id desde la factura padre.
+            scope.querySelectorAll('.line-save').forEach(btn => {
+                if (btn.__bound) return;
+                btn.__bound = true;
+                btn.addEventListener('click', async e => {
+                    e.stopPropagation();
+                    const idx = Number(btn.dataset.rowIdx);
+                    const lines = window.VeraFact && window.VeraFact.STATE && window.VeraFact.STATE.lines;
+                    const line = lines && lines[idx];
+                    if (!line) return;
+                    const tr = btn.closest('tr');
+                    const input = tr.querySelector('.erp-input');
+                    let val = (input?.value || '').trim();
+                    // ✓ sin texto + línea ya matcheada → confirmar match.
+                    if (!val) {
+                        if (line.articulo_id_erp) {
+                            val = String(line.articulo_id_erp);
+                        } else {
+                            alert('Introduce un id_erp o referencia');
+                            return;
+                        }
+                    }
+                    const invIdx = line._batchInvoiceIdx;
+                    const providerId = (batchAllResults[invIdx] && batchAllResults[invIdx].provider_id) || 0;
+                    if (window.VeraFact && typeof window.VeraFact.saveLineArticle === 'function') {
+                        const ok = await window.VeraFact.saveLineArticle(line, val, providerId, btn);
+                        if (ok) {
+                            // Recalcular stats del invoice padre para que la pill
+                            // "Parcial/OK" del summary se actualice sin refresh.
+                            _recomputeInvoiceStats(batchAllResults[invIdx]);
+                            _rerenderBatchPreservingOpen();
+                        }
+                    }
+                });
+            });
+
+            // ✕ Eliminar línea (marcado local + recalcular contadores padre)
+            scope.querySelectorAll('.line-delete').forEach(btn => {
+                if (btn.__bound) return;
+                btn.__bound = true;
+                btn.addEventListener('click', e => {
+                    e.stopPropagation();
+                    const idx = Number(btn.dataset.rowIdx);
+                    const lines = window.VeraFact && window.VeraFact.STATE && window.VeraFact.STATE.lines;
+                    const line = lines && lines[idx];
+                    if (!line) return;
+                    if (!confirm(`¿Eliminar la línea "${line.variety || (line.raw || '').slice(0, 30) || ''}"?`)) return;
+                    line._deleted = true;
+                    const invIdx = line._batchInvoiceIdx;
+                    const inv = batchAllResults[invIdx];
+                    if (inv && inv.lines) {
+                        inv.lines = inv.lines.filter(l => !l._deleted);
+                        inv.lineas = inv.lines.length;
+                        _recomputeInvoiceStats(inv);
+                    }
+                    _rerenderBatchPreservingOpen();
                 });
             });
         }
@@ -582,6 +746,7 @@
 
         function batchReset() {
             batchId = null;
+            _clearBatchId();
             if (batchPollingTimer) clearInterval(batchPollingTimer);
             batchPollingTimer = null;
             batchAllResults = [];
@@ -590,6 +755,54 @@
             batchResults.classList.add('hidden');
             if (batchZipInput) batchZipInput.value = '';
         }
+
+        // ── Restaurar último batch en disco ─────────────────────────────
+        // Si había un batch en curso/completado antes del refresh, repoblar
+        // batchAllResults sin forzar al operador a re-subir los PDFs. El
+        // backend mantiene batch_status/{id}.json hasta cleanup explícito.
+        async function _restoreLastBatch() {
+            const saved = _loadBatchId();
+            if (!saved) return;
+            try {
+                const res = await fetch(`api.php?action=batch_status&batch_id=${saved}`);
+                const data = await res.json();
+                if (!data || !data.ok) { _clearBatchId(); return; }
+                if (data.estado === 'completado') {
+                    batchId = saved;
+                    // Mostrar sección batch sin forzar cambio de pestaña —
+                    // dejamos que el usuario navegue a Importación masiva
+                    // si quiere verlo, pero el estado ya está listo.
+                    batchUploadZone.classList.add('hidden');
+                    batchShowResults(data);
+                } else if (data.estado === 'procesando' || data.estado === 'iniciando'
+                        || data.estado === 'cargando_datos' || data.estado === 'generando_excel') {
+                    // Batch aún en progreso — reanudar polling.
+                    batchId = saved;
+                    batchUploadZone.classList.add('hidden');
+                    batchProgress.classList.remove('hidden');
+                    batchResults.classList.add('hidden');
+                    batchPollingTimer = setInterval(batchPollStatus, 2000);
+                } else {
+                    _clearBatchId();
+                }
+            } catch (e) {
+                // 404 / error de red → limpiar referencia para que el
+                // próximo refresh arranque en estado limpio.
+                _clearBatchId();
+            }
+        }
+        _restoreLastBatch();
+
+        // Exponer hook para que app.js pueda refrescar la tabla del batch
+        // tras acciones del drawer (buscador, etc.) sin duplicar lógica.
+        window.VeraFact = window.VeraFact || {};
+        window.VeraFact.refreshBatchAfterLineChange = function (line) {
+            if (!line || line._batchInvoiceIdx === undefined) return;
+            const inv = batchAllResults[line._batchInvoiceIdx];
+            if (!inv) return;
+            _recomputeInvoiceStats(inv);
+            _rerenderBatchPreservingOpen();
+        };
     }
 
     if (document.readyState === 'loading') {

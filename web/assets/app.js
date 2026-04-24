@@ -59,22 +59,32 @@ async function apiPost(action, body) {
 // ══════════════════════════════════════════════════════════════════════
 // Tabs / navegación
 // ══════════════════════════════════════════════════════════════════════
+const TAB_STORAGE_KEY = 'verafact.activeTab';
+
+function activateTab(tab) {
+    const validTabs = ['upload', 'batch', 'history', 'synonyms', 'learned'];
+    if (!validTabs.includes(tab)) tab = 'upload';
+    $$('.nav-btn').forEach(b => b.classList.toggle('is-active', b.dataset.tab === tab));
+    $$('.tab').forEach(s => {
+        const isActive = s.id === `tab-${tab}`;
+        s.classList.toggle('active', isActive);
+        s.classList.toggle('hidden', !isActive);
+    });
+    try { localStorage.setItem(TAB_STORAGE_KEY, tab); } catch (e) {}
+    // Lazy load
+    if (tab === 'history')  loadHistory();
+    if (tab === 'synonyms') loadSynonyms();
+    if (tab === 'learned')  loadLearned();
+}
+
 function initTabs() {
     $$('.nav-btn').forEach(btn => {
-        btn.addEventListener('click', () => {
-            const tab = btn.dataset.tab;
-            $$('.nav-btn').forEach(b => b.classList.toggle('is-active', b === btn));
-            $$('.tab').forEach(s => {
-                const isActive = s.id === `tab-${tab}`;
-                s.classList.toggle('active', isActive);
-                s.classList.toggle('hidden', !isActive);
-            });
-            // Lazy load
-            if (tab === 'history')  loadHistory();
-            if (tab === 'synonyms') loadSynonyms();
-            if (tab === 'learned')  loadLearned();
-        });
+        btn.addEventListener('click', () => activateTab(btn.dataset.tab));
     });
+    // Restore last tab on page load.
+    let saved = 'upload';
+    try { saved = localStorage.getItem(TAB_STORAGE_KEY) || 'upload'; } catch (e) {}
+    activateTab(saved);
 }
 
 // ══════════════════════════════════════════════════════════════════════
@@ -190,8 +200,11 @@ function computeStatus(line) {
 }
 function needsReview(line) {
     const st = computeStatus(line);
-    if (st === 'sin_match') return true;
-    if (st === 'revisar')   return true;
+    // Regla alineada con computeStats: cualquier status que NO sea
+    // `ok` confiable es review (cubre sin_match, revisar/pendiente,
+    // ambiguous_match, llm_extraido, sin_parser, etc.). Para `ok` el
+    // gate es la confianza.
+    if (st !== 'ok') return true;
     if (line.confidence != null && line.confidence < 0.90) return true;
     return false;
 }
@@ -212,47 +225,57 @@ function renderHeader() {
 
     const header = $('#invoiceHeader');
     header.innerHTML = `
-        <div class="result-header__top">
-            <div class="result-header__title">
-                <div class="provider-name">${esc(provider)}</div>
-                <div class="invoice-meta">
-                    <span>Factura <strong>${esc(invoice)}</strong></span>
-                    ${fecha ? `<span>Fecha <strong>${esc(fecha)}</strong></span>` : ''}
-                    ${r.pdf ? `<span>PDF <strong>${esc(r.pdf)}</strong></span>` : ''}
+        <div class="invoice-strip">
+            <div class="invoice-strip__icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="8" y1="13" x2="16" y2="13"/><line x1="8" y1="17" x2="13" y2="17"/></svg>
+            </div>
+            <div class="invoice-strip__fields">
+                <div class="invoice-strip__field">
+                    <span class="invoice-strip__label">Proveedor</span>
+                    <strong>${esc(provider)}</strong>
                 </div>
+                <div class="invoice-strip__field">
+                    <span class="invoice-strip__label">Nº Factura</span>
+                    <strong>${esc(invoice)}</strong>
+                </div>
+                <div class="invoice-strip__field">
+                    <span class="invoice-strip__label">Fecha</span>
+                    <strong>${esc(fecha || '—')}</strong>
+                </div>
+                <div class="invoice-strip__field">
+                    <span class="invoice-strip__label">Divisa</span>
+                    <strong>USD</strong>
+                </div>
+                ${r.pdf ? `<div class="invoice-strip__field">
+                    <span class="invoice-strip__label">PDF</span>
+                    <strong>${esc(r.pdf)}</strong>
+                </div>` : ''}
             </div>
-            <div class="result-header__actions">
-                ${pdfUrl ? `<a id="viewPdfBtn" class="btn btn-secondary" href="${esc(pdfUrl)}" target="_blank" rel="noopener">
-                    <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
-                    Ver PDF</a>` : ''}
-            </div>
+            ${pdfUrl ? `<a id="viewPdfBtn" class="invoice-strip__action" href="${esc(pdfUrl)}" target="_blank" rel="noopener">
+                <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                Ver PDF</a>` : ''}
         </div>
 
-        <div class="stats-grid">
-            <div class="stat-card stat-card--primary">
-                <div class="stat-card__label">Líneas</div>
-                <div class="stat-card__value">${stats.total}</div>
-                <div class="stat-card__sub">en la factura</div>
+        <div class="stats-strip">
+            <div class="stats-strip__cell">
+                <div class="stats-strip__label">Líneas</div>
+                <div class="stats-strip__value">${stats.total}</div>
             </div>
-            <div class="stat-card stat-card--ok">
-                <div class="stat-card__label">Match OK</div>
-                <div class="stat-card__value">${stats.ok}</div>
-                <div class="stat-card__sub">${stats.total ? Math.round(stats.ok/stats.total*100) : 0}% del total</div>
+            <div class="stats-strip__cell">
+                <div class="stats-strip__label">Match OK</div>
+                <div class="stats-strip__value stats-strip__value--ok">${stats.ok}</div>
             </div>
-            <div class="stat-card stat-card--warn">
-                <div class="stat-card__label">Revisar</div>
-                <div class="stat-card__value">${stats.review}</div>
-                <div class="stat-card__sub">confianza &lt; 90%</div>
+            <div class="stats-strip__cell">
+                <div class="stats-strip__label">Revisar</div>
+                <div class="stats-strip__value stats-strip__value--warn">${stats.review}</div>
             </div>
-            <div class="stat-card stat-card--err">
-                <div class="stat-card__label">Sin match</div>
-                <div class="stat-card__value">${stats.sin}</div>
-                <div class="stat-card__sub">requieren acción</div>
+            <div class="stats-strip__cell">
+                <div class="stats-strip__label">Sin match</div>
+                <div class="stats-strip__value stats-strip__value--err">${stats.sin}</div>
             </div>
-            <div class="stat-card">
-                <div class="stat-card__label">Total USD</div>
-                <div class="stat-card__value">${fmt$(stats.total_usd)}</div>
-                <div class="stat-card__sub">${fmtInt(stats.stems)} tallos</div>
+            <div class="stats-strip__cell">
+                <div class="stats-strip__label">Total factura</div>
+                <div class="stats-strip__value">${fmt$(stats.total_usd)}</div>
             </div>
         </div>
 
@@ -417,10 +440,19 @@ function renderLineRow(l, rowNum) {
             ${l.raw ? `<div class="desc-raw" title="${esc(l.raw)}">${esc(l.raw)}</div>` : ''}
         </div>`;
 
-    // Input id_erp editable
-    const erpInput = `<input type="text" class="erp-input" data-row-idx="${l.idx}"
-        value="${esc(l.articulo_id_erp || '')}" placeholder="id_erp…"
-        aria-label="id_erp fila ${rowNum}">`;
+    // Input id_erp editable + ✓ guardar sinónimo / ✕ eliminar línea
+    const erpInput = `
+        <div class="erp-actions">
+            <input type="text" class="erp-input" data-row-idx="${l.idx}"
+                value="${esc(l.articulo_id_erp || '')}" placeholder="id_erp…"
+                aria-label="id_erp fila ${rowNum}">
+            <button class="icon-btn icon-btn--ok line-save" data-row-idx="${l.idx}" title="Confirmar y guardar">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+            </button>
+            <button class="icon-btn icon-btn--err line-delete" data-row-idx="${l.idx}" title="Eliminar línea">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+            </button>
+        </div>`;
 
     return `
         <tr class="is-clickable" data-row-idx="${l.idx}">
@@ -449,9 +481,6 @@ function renderLineRow(l, rowNum) {
                     <button class="icon-btn" data-action="drawer" data-row-idx="${l.idx}" title="Ver detalle">
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
                     </button>
-                    <button class="icon-btn" data-action="candidates" data-row-idx="${l.idx}" title="Ver candidatos">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
-                    </button>
                 </div>
             </td>
         </tr>`;
@@ -462,9 +491,19 @@ function wireTableEvents() {
     if (!tbody) return;
 
     tbody.querySelectorAll('tr.is-clickable').forEach(tr => {
+        // Track si el mousedown arrancó dentro de un input/botón/enlace.
+        // Si sí, el click subsiguiente (que puede caer fuera del input
+        // por drag-select) NO debe abrir el drawer.
+        let mouseDownInInteractive = false;
+        tr.addEventListener('mousedown', e => {
+            mouseDownInInteractive = !!e.target.closest('input, button, a, .erp-actions');
+        });
         tr.addEventListener('click', e => {
-            // Clicks en input / botones no abren drawer
-            if (e.target.closest('input, button, a')) return;
+            if (mouseDownInInteractive) { mouseDownInInteractive = false; return; }
+            if (e.target.closest('input, button, a, .erp-actions')) return;
+            // Si hay texto seleccionado (drag-select), no abrir drawer.
+            const sel = window.getSelection && window.getSelection();
+            if (sel && !sel.isCollapsed && sel.toString().length > 0) return;
             const idx = Number(tr.dataset.rowIdx);
             openDrawer(idx);
         });
@@ -477,41 +516,180 @@ function wireTableEvents() {
         });
     });
     tbody.querySelectorAll('.erp-input').forEach(inp => {
-        inp.addEventListener('change', async e => {
-            const idx = Number(inp.dataset.rowIdx);
-            const val = inp.value.trim();
+        // Guarda en cada blur/Enter si el valor cambió respecto al que
+        // ya tiene la línea. Usar saveLineArticle persiste (confirm /
+        // correct / save_synonym según el estado previo) y patchea
+        // batch_status. Previene que el operador teclee y refresque
+        // pensando que basta con el blur.
+        inp.__lastSavedVal = (inp.value || '').trim();
+
+        const persistFromInput = async () => {
+            const idx  = Number(inp.dataset.rowIdx);
             const line = STATE.lines[idx];
             if (!line) return;
-            // Resolver id_erp → articulo_id vía lookup_article
+            const val = (inp.value || '').trim();
+            if (val === inp.__lastSavedVal) return;
+            // Vacío: limpia vínculo localmente. No persistimos "borrado"
+            // porque no hay endpoint para desvincular un sinónimo desde
+            // la UI de línea; se hace con la ✕.
             if (!val) {
                 line.articulo_id_erp = '';
-                line.articulo_id = 0;
-                line.articulo_name = '';
+                line.articulo_id     = 0;
+                line.articulo_name   = '';
+                inp.__lastSavedVal   = '';
                 renderResult();
                 return;
             }
-            try {
-                const r = await apiGet('lookup_article', { id_erp: val });
-                if (r.ok && r.articulo) {
-                    line.articulo_id     = r.articulo.id || r.articulo.articulo_id || 0;
-                    line.articulo_id_erp = r.articulo.id_erp || val;
-                    line.articulo_name   = r.articulo.nombre || r.articulo.name || '';
-                    line.articulo_ref    = r.articulo.referencia || '';
-                    line.match_status    = 'ok';
-                    line.match_method    = 'manual-erp';
-                    line.confidence      = 1.0;
-                    line.origin          = 'OR';
-                    renderResult();
-                } else {
-                    inp.style.borderColor = 'var(--err)';
-                    setTimeout(() => inp.style.borderColor = '', 1200);
-                }
-            } catch (err) {
+            inp.__lastSavedVal = val;
+            const ok = await saveLineArticle(line, val, (line._providerId || STATE.provider_id || 0), inp);
+            if (!ok) {
                 inp.style.borderColor = 'var(--err)';
                 setTimeout(() => inp.style.borderColor = '', 1200);
             }
+        };
+        inp.addEventListener('change', persistFromInput);
+        inp.addEventListener('keydown', e => {
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                inp.blur();   // dispara change
+            }
         });
     });
+
+    // ✓ Guardar sinónimo (tick verde)
+    tbody.querySelectorAll('.line-save').forEach(btn => {
+        btn.addEventListener('click', async e => {
+            e.stopPropagation();
+            const idx = Number(btn.dataset.rowIdx);
+            const line = STATE.lines[idx];
+            if (!line) return;
+            const input = btn.closest('tr').querySelector('.erp-input');
+            let val = (input?.value || '').trim();
+            // Si el operador pulsa ✓ sin escribir nada pero la línea ya
+            // tiene un artículo matcheado, confirmamos ese match (el
+            // helper detectará old_id_erp == new_id_erp → confirm_match).
+            if (!val) {
+                if (line.articulo_id_erp) {
+                    val = String(line.articulo_id_erp);
+                } else {
+                    alert('Introduce un id_erp o referencia');
+                    return;
+                }
+            }
+            await saveLineArticle(line, val, (line._providerId || STATE.provider_id || 0), btn);
+        });
+    });
+
+    // ✕ Eliminar línea (marcado local, re-render)
+    tbody.querySelectorAll('.line-delete').forEach(btn => {
+        btn.addEventListener('click', e => {
+            e.stopPropagation();
+            const idx = Number(btn.dataset.rowIdx);
+            const line = STATE.lines[idx];
+            if (!line) return;
+            if (!confirm(`¿Eliminar la línea "${line.variety || line.raw?.slice(0, 30) || ''}"?`)) return;
+            line._deleted = true;
+            STATE.lines = STATE.lines.filter(l => !l._deleted);
+            renderResult();
+        });
+    });
+}
+
+// Helper común usado por app.js y app.extras.js. Resuelve el id_erp
+// introducido por el operador, elige el action correcto (confirm /
+// correct / save) según el estado previo de la línea, y actualiza la
+// línea in-place. btnForFeedback es opcional — si se pasa, se pinta
+// un flash verde al éxito.
+async function saveLineArticle(line, userQuery, providerId, btnForFeedback) {
+    const oldArtId    = line.articulo_id || 0;
+    const oldArtIdErp = line.articulo_id_erp || '';
+    try {
+        const r = await apiGet('lookup_article', { q: userQuery });
+        const art = r && r.ok && (r.articulo || r);
+        if (!r || !r.ok || !(art && (art.id || art.articulo_id || art.nombre))) {
+            alert(r?.error || 'Artículo no encontrado');
+            return false;
+        }
+        const newArtId    = art.id || art.articulo_id || 0;
+        const newArtIdErp = art.id_erp || userQuery;
+        const name        = art.nombre || art.name || '';
+        const synKey      = `${providerId}|${line.species || ''}|${_normalizeVariety(line.variety)}|${line.size || 0}|${line.spb || line.stems_per_bunch || 0}|${(line.grade || '').toUpperCase()}`;
+
+        let action, body;
+        if (oldArtIdErp && oldArtIdErp === newArtIdErp) {
+            action = 'confirm_match';
+            body = { key: synKey, articulo_id: newArtId, articulo_id_erp: newArtIdErp };
+        } else if (oldArtId > 0) {
+            action = 'correct_match';
+            body = {
+                key: synKey, provider_id: providerId,
+                species: line.species || '', variety: line.variety || '',
+                size: line.size || 0,
+                stems_per_bunch: line.spb || line.stems_per_bunch || 0,
+                grade: line.grade || '',
+                old_articulo_id: oldArtId,
+                new_articulo_id: newArtId,
+                new_articulo_id_erp: newArtIdErp,
+                new_articulo_name: name,
+            };
+        } else {
+            action = 'save_synonym';
+            body = {
+                key: synKey, provider_id: providerId,
+                species: line.species || '', variety: line.variety || '',
+                size: line.size || 0,
+                stems_per_bunch: line.spb || line.stems_per_bunch || 0,
+                grade: line.grade || '',
+                articulo_id: newArtId,
+                articulo_id_erp: newArtIdErp,
+                articulo_name: name,
+            };
+        }
+
+        // Contexto del batch (si la línea proviene de una factura batch):
+        // el backend patchea batch_status/{id}.json para que al refrescar
+        // la página se recupere el estado corregido, no el original del
+        // pipeline Python.
+        let batchId = null;
+        try { batchId = localStorage.getItem('verafact.lastBatchId'); } catch (e) {}
+        if (batchId && line._batchInvoiceIdx !== undefined && line._batchLineIdx !== undefined) {
+            body.batch_id     = batchId;
+            body.invoice_idx  = line._batchInvoiceIdx;
+            body.line_idx     = line._batchLineIdx;
+        }
+
+        const resp = await apiPost(action, body);
+        if (resp && resp.ok) {
+            line.articulo_id       = newArtId;
+            line.articulo_id_erp   = newArtIdErp;
+            line.articulo_name     = name;
+            line.match_status      = 'ok';
+            line.match_method      = action === 'confirm_match' ? 'sinónimo' : 'manual-web';
+            line.match_confidence  = 1.0;
+            line.confidence        = 1.0;
+            line.link_confidence   = 1.0;
+            line.origin            = 'OR';
+            line.review_lane       = 'auto';
+            line.validation_errors = [];
+            if (btnForFeedback) {
+                const orig = btnForFeedback.innerHTML;
+                btnForFeedback.style.color = 'var(--ok)';
+                setTimeout(() => { btnForFeedback.style.color = ''; renderResult(); }, 500);
+            } else {
+                renderResult();
+            }
+            return true;
+        }
+        alert('Error: ' + (resp?.error || 'desconocido'));
+        return false;
+    } catch (err) {
+        alert('Error de conexión: ' + err.message);
+        return false;
+    }
+}
+
+function _normalizeVariety(v) {
+    return String(v ?? '').toUpperCase().replace(/[^A-Z0-9 ]+/g, ' ').replace(/\s+/g, ' ').trim();
 }
 
 // ══════════════════════════════════════════════════════════════════════
@@ -628,7 +806,22 @@ function renderDrawerBody(line) {
             `}
         </div>
 
-        <!-- Sección 3: Candidatos sugeridos -->
+        <!-- Sección 3a: Buscar artículo en el catálogo -->
+        <div class="drawer-section" id="searchSection">
+            <div class="drawer-section__head">
+                <h3>Buscar en catálogo</h3>
+                <span class="drawer-section__badge" id="searchBadge">—</span>
+            </div>
+            <div class="article-search">
+                <input type="text" id="articleSearchInput"
+                       class="article-search__input"
+                       placeholder="Nombre, id_erp o referencia…"
+                       autocomplete="off" spellcheck="false">
+                <div class="article-search__results" id="articleSearchResults"></div>
+            </div>
+        </div>
+
+        <!-- Sección 3b: Candidatos sugeridos -->
         <div class="drawer-section" id="candidatesSection">
             <div class="drawer-section__head">
                 <h3>Candidatos sugeridos</h3>
@@ -661,6 +854,9 @@ function renderDrawerActions(line) {
 }
 
 function wireDrawerEvents(line) {
+    // Buscador de artículos en el catálogo.
+    wireArticleSearch(line);
+
     $('#drawerActIgnore')?.addEventListener('click', async () => {
         line.match_status = 'ignored';
         closeDrawer();
@@ -701,6 +897,107 @@ function wireDrawerEvents(line) {
     });
 }
 
+// ══════════════════════════════════════════════════════════════════════
+// Buscador de artículos (drawer) — debounced, pega contra search_articulos
+// ══════════════════════════════════════════════════════════════════════
+let _searchDebounce = null;
+function wireArticleSearch(line) {
+    const input   = $('#articleSearchInput');
+    const results = $('#articleSearchResults');
+    const badge   = $('#searchBadge');
+    if (!input || !results) return;
+    input.focus();
+
+    const doSearch = async (q) => {
+        q = q.trim();
+        if (q.length < 2) {
+            results.innerHTML = '';
+            if (badge) badge.textContent = '—';
+            return;
+        }
+        if (badge) badge.textContent = '…';
+        try {
+            const r = await apiGet('search_articulos', { q, limit: 500 });
+            if (!r.ok) {
+                results.innerHTML = `<div class="drawer-empty">${esc(r.error || 'Error')}</div>`;
+                if (badge) badge.textContent = 'err';
+                return;
+            }
+            const list = r.results || [];
+            if (!list.length) {
+                results.innerHTML = `<div class="drawer-empty">Sin coincidencias</div>`;
+                if (badge) badge.textContent = '0';
+                return;
+            }
+            if (badge) badge.textContent = list.length;
+            results.innerHTML = list.map(a => {
+                const meta = [
+                    a.tamano ? a.tamano + 'cm' : null,
+                    a.paquete ? a.paquete + 'U' : null,
+                    a.marca || null,
+                    a.familia || null,
+                ].filter(Boolean).join(' · ');
+                const code = a.id_erp || a.referencia || ('#' + a.id);
+                return `
+                    <div class="search-result" data-id="${a.id}" data-erp="${esc(a.id_erp || '')}"
+                         data-ref="${esc(a.referencia || '')}" data-name="${esc(a.nombre)}">
+                        <div class="search-result__main">
+                            <div class="search-result__name" title="${esc(a.nombre)}">${esc(a.nombre)}</div>
+                            <div class="search-result__meta">
+                                <span class="mono">${esc(code)}</span>
+                                ${a.referencia && a.referencia !== code ? `<span class="mono">${esc(a.referencia)}</span>` : ''}
+                                ${meta ? `<span>${esc(meta)}</span>` : ''}
+                            </div>
+                        </div>
+                        <button class="search-result__use" title="Asignar este artículo">
+                            <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+                        </button>
+                    </div>`;
+            }).join('');
+
+            results.querySelectorAll('.search-result').forEach(el => {
+                el.addEventListener('click', async () => {
+                    const idErp = el.dataset.erp;
+                    const ref   = el.dataset.ref;
+                    const query = idErp || ref || el.dataset.id;
+                    if (!query) return;
+                    // Persistir vía saveLineArticle: decide confirm/correct/save
+                    // y patchea batch_status si corresponde.
+                    const providerId = (line._providerId || STATE.provider_id || 0);
+                    const ok = await saveLineArticle(line, query, providerId, el);
+                    if (ok) {
+                        // Refrescar secciones del drawer con la nueva info.
+                        $('#drawerBody').innerHTML = renderDrawerBody(line);
+                        wireDrawerEvents(line);
+                        loadCandidatesInDrawer(line);
+                        loadPriceTimelineInDrawer(line);
+                        // Si la línea viene de un batch, refrescar también la
+                        // tabla del lote (pill Parcial/OK, contadores).
+                        if (window.VeraFact && typeof window.VeraFact.refreshBatchAfterLineChange === 'function') {
+                            window.VeraFact.refreshBatchAfterLineChange(line);
+                        }
+                    }
+                });
+            });
+        } catch (e) {
+            results.innerHTML = `<div class="drawer-empty">Error de red</div>`;
+            if (badge) badge.textContent = 'err';
+        }
+    };
+
+    input.addEventListener('input', () => {
+        clearTimeout(_searchDebounce);
+        const q = input.value;
+        _searchDebounce = setTimeout(() => doSearch(q), 220);
+    });
+    input.addEventListener('keydown', e => {
+        if (e.key === 'Enter') {
+            clearTimeout(_searchDebounce);
+            doSearch(input.value);
+        }
+    });
+}
+
 async function loadCandidatesInDrawer(line) {
     const list = $('#candidatesList');
     const badge = $('#candidatesBadge');
@@ -711,7 +1008,7 @@ async function loadCandidatesInDrawer(line) {
             variety: line.variety || '',
             size:    line.size || 0,
             spb:     line.spb || 0,
-            provider_id: STATE.provider_id || 0,
+            provider_id: (line._providerId || STATE.provider_id || 0),
             limit:   5
         });
         if (!r.ok) {
@@ -745,21 +1042,27 @@ async function loadCandidatesInDrawer(line) {
             </div>
         `).join('');
         list.querySelectorAll('.candidate__use').forEach(btn => {
-            btn.addEventListener('click', () => {
-                line.articulo_id     = Number(btn.dataset.candId) || 0;
-                line.articulo_id_erp = btn.dataset.candErp || '';
-                line.articulo_name   = btn.dataset.candName || '';
-                line.articulo_ref    = btn.dataset.candRef || '';
-                line.match_status    = 'ok';
-                line.match_method    = 'candidate';
-                line.confidence      = 0.95;
-                line.origin          = 'OR';
-                // Refrescar drawer body (sección vinculado)
-                $('#drawerBody').innerHTML = renderDrawerBody(line);
-                wireDrawerEvents(line);
-                loadCandidatesInDrawer(line);
-                loadPriceTimelineInDrawer(line);
-                renderTable();
+            btn.addEventListener('click', async () => {
+                const erp = btn.dataset.candErp || '';
+                const ref = btn.dataset.candRef || '';
+                const id  = btn.dataset.candId  || '';
+                // Persistir vía id_erp/ref (política 10q/10r). Si no
+                // tenemos ninguno de los dos, usamos el id local como
+                // último recurso — lookup_article lo rechazará y se
+                // verá el error arriba.
+                const query = erp || ref || id;
+                if (!query) return;
+                const providerId = (line._providerId || STATE.provider_id || 0);
+                const ok = await saveLineArticle(line, query, providerId, btn);
+                if (ok) {
+                    $('#drawerBody').innerHTML = renderDrawerBody(line);
+                    wireDrawerEvents(line);
+                    loadCandidatesInDrawer(line);
+                    loadPriceTimelineInDrawer(line);
+                    if (window.VeraFact && typeof window.VeraFact.refreshBatchAfterLineChange === 'function') {
+                        window.VeraFact.refreshBatchAfterLineChange(line);
+                    }
+                }
             });
         });
     } catch (e) {
@@ -989,6 +1292,6 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 // Expose para app.extras.js / debug
-window.VeraFact = { STATE, renderResult, openDrawer, closeDrawer, apiGet, apiPost };
+window.VeraFact = { STATE, renderResult, openDrawer, closeDrawer, apiGet, apiPost, saveLineArticle, activateTab };
 
 })();
