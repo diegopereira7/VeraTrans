@@ -1,6 +1,6 @@
 # CLAUDE.md — Guía operativa para el agente
 
-**Última actualización:** 2026-04-24 (sesión 11d — triage páginas vacías evita OCR innecesario, 3× speedup)
+**Última actualización:** 2026-04-24 (sesión 11e — parser Life acepta R-14 como box_code, +4 líneas)
 **Estado:** **96.1% autoapprove** (récord) · Golden 980/997 (98.3%). Ronda de 4 sesiones atacando bucket por bucket los `ambiguous_match`: inicio 114 → **50** (−56%). ok 3235 → 3327 (+92). Fixes: matcher ganó `foreign_brand_soft` (detecta WAYUU via `brands_by_provider`), `fuzzy_typo_overrides_variety` (LIMONADE↔LEMONADE, TIFFANNY↔TIFFANY) y bug fix unit-suffix. Parsers ganaron traducciones EN→ES (MALIMA tint, CONDOR hydrangea, SAN FRANCISCO hydrangea), route-codes separados de variety (EL CAMPANARIO ZAIRA/JOVI/VERALEZA), variedades compuestas (`SUNSET X-PRESSION`), defaults de size para parsers sin CM explícito (ROSABELLA 50, CONDOR 60, PREMIUM 70), y color-split de CONEJERA clavel. 17 mismatches del golden siguen siendo branded nuevos del catálogo — re-anotar cuando toque.
 
 ---
@@ -833,6 +833,30 @@ Comandos con flags (`--provider`, `--max-samples`, `--verbose`,
 Solo las 2 últimas sesiones. Todas las anteriores en
 [`docs/sessions.md`](docs/sessions.md).
 
+### 2026-04-24 — sesión 11e: parser Life box_code acepta `R-14` (+4 líneas recuperadas)
+
+Ángel reportó que LIFE2.pdf marcaba 3 líneas como `(NO PARSEADO)`.
+Muestra: `HB 1 0.50 R-14 Mondial 50CM 25 12 300 0.29 87.00`. El
+regex del box_code en `LifeParser` exigía `[A-Z]{3,}` (3+ letras
+mayúsculas como MARL), así que `R-14` no matcheaba como code. Y
+el char class del variety era `[a-zA-Z\s.\-/&]` (sin dígitos), así
+que `R-14 Mondial` tampoco encajaba ahí. La línea caía al rescue
+como `NO PARSEADO`.
+
+**Fix en [`src/parsers/life.py`](src/parsers/life.py)**: ampliar el
+box_code regex a `[A-Z]{3,}|[A-Z]-?\d+`. Captura `MARL` (letras) y
+`R-14`, `R-16`, `R-18`, `R15` (letra + dígitos). Aplicado a ambos
+patrones (Type 1 — línea box principal; Type 2 — continuación).
+Scan de los 5 samples reales confirma que solo aparecen `MARL` y
+`R-\d+` como códigos; no se observa ruido con el nuevo patrón.
+
+**Métricas**:
+- LIFE FLOWERS bench: 45 → **49 ok** (+4 líneas recuperadas).
+- Global: 3562 → **3566 líneas**, 3333 → **3337 ok**, 50 amb
+  estable.
+- LIFE2.pdf: 3/3 ok, `label='R-14'` separado del variety
+  (`MONDIAL`, `EXPLORER`).
+
 ### 2026-04-24 — sesión 11d: triage de páginas vacías evita OCR innecesario (3× speedup)
 
 Ángel reportó que UMA 18383 tardaba mucho en procesarse. Perfilado:
@@ -868,43 +892,6 @@ como consecuencia "ejecuta OCR global". Un tercer estado explícito
 para páginas vacías evita invocar OCR sobre nada. La regla
 `ninguna native → todas las empty son scan` protege los
 escaneados íntegros (donde `empty` es `scan` disfrazado).
-
-### 2026-04-24 — sesión 11c: skip pattern falso positivo bloqueaba UMA 18383
-
-Ángel reportó que una factura UMA real (`18383._Veraleza-20-Abril_
-2026-Saftec.pdf`) "se quedaba cargando todo el rato" al procesarla
-desde la UI. Inspección del `batch_status/*.json`: la factura caía
-en `omitidos_detalle` con motivo `"Omitido: documento no es factura
-(SAFTEC)"`. El bug: [`batch_process.py`](batch_process.py) tenía
-`SKIP_PATTERNS = [..., 'SAFTEC', ...]` y `_should_skip` hacía
-`if pat in upper:` — match por substring en cualquier posición
-del nombre. El archivo contenía la palabra "Saftec" solo como
-sufijo (la agencia de carga) y se confundía con una factura de
-SAFTEC.
-
-**Cambio**: nuevo `_should_skip` más estricto. Normaliza el nombre
-(sin extensión, quitando prefijos no-alnum) y skipea solo si el
-primer token alfanumérico del nombre coincide con un patrón de la
-lista. Si arranca con dígitos (número de factura típico), nunca
-skipea. Tabla de 12 casos de test pasa: `SAFTEC.pdf`,
-`SAFTEC_VERALEZA.pdf`, `DUA_34342.pdf`, `FESO_CARGO.pdf` skipean;
-`18383._Veraleza-...-Saftec.pdf`, `UMA SAFTEC.pdf` (UMA legítimo
-en historial), `ECOFLOR-...-Saftec.pdf`, `123-DUA.pdf` pasan.
-
-**Parser UMA — fix descartado**: el PDF 18383 trae 2 líneas con
-variety `GYPSOPHILA XLENCE NATURAL WHITE` que caen a `fuzzy 53%`
-ambig porque el sinónimo manual_confirmado existente usa la forma
-corta `GYPSOPHILA XL NATURAL WHITE` (Uma mezcla ambas formas en
-el mismo PDF). Intenté canonicalizar `XLENCE → XL` en
-`UmaParser` pero rompió 7 líneas del benchmark (otras facturas
-emiten `GYPSOPHILA XLENCE` *sin* más tokens y matcheaban el
-sinónimo XLENCE puro). Revertido. El flujo operativo normal
-resuelve esto: Ángel corrige las 2 ambig desde la UI, el
-`register_match_hit` (10g) promociona tras 2 usos.
-
-**Resultado en UMA 18383**: antes: omitido como SAFTEC. Ahora:
-3 líneas parseadas, header $2,754 cuadra, 1 ok + 2 ambig (las
-NATURAL WHITE — dentro del flujo operativo normal).
 
 ---
 

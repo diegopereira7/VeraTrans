@@ -8,6 +8,43 @@ aquí y se quita de CLAUDE.md.
 Para el estado actual del proyecto, ver [`CLAUDE.md`](../CLAUDE.md) (raíz).
 Para lecciones transversales reutilizables, ver [`lessons.md`](lessons.md).
 
+### 2026-04-24 — sesión 11c: skip pattern falso positivo bloqueaba UMA 18383
+
+Ángel reportó que una factura UMA real (`18383._Veraleza-20-Abril_
+2026-Saftec.pdf`) "se quedaba cargando todo el rato" al procesarla
+desde la UI. Inspección del `batch_status/*.json`: la factura caía
+en `omitidos_detalle` con motivo `"Omitido: documento no es factura
+(SAFTEC)"`. El bug: [`batch_process.py`](../batch_process.py) tenía
+`SKIP_PATTERNS = [..., 'SAFTEC', ...]` y `_should_skip` hacía
+`if pat in upper:` — match por substring en cualquier posición
+del nombre. El archivo contenía la palabra "Saftec" solo como
+sufijo (la agencia de carga) y se confundía con una factura de
+SAFTEC.
+
+**Cambio**: nuevo `_should_skip` más estricto. Normaliza el nombre
+(sin extensión, quitando prefijos no-alnum) y skipea solo si el
+primer token alfanumérico del nombre coincide con un patrón de la
+lista. Si arranca con dígitos (número de factura típico), nunca
+skipea. Tabla de 12 casos de test pasa: `SAFTEC.pdf`,
+`SAFTEC_VERALEZA.pdf`, `DUA_34342.pdf`, `FESO_CARGO.pdf` skipean;
+`18383._Veraleza-...-Saftec.pdf`, `UMA SAFTEC.pdf` (UMA legítimo
+en historial), `ECOFLOR-...-Saftec.pdf`, `123-DUA.pdf` pasan.
+
+**Parser UMA — fix descartado**: el PDF 18383 trae 2 líneas con
+variety `GYPSOPHILA XLENCE NATURAL WHITE` que caen a `fuzzy 53%`
+ambig porque el sinónimo manual_confirmado existente usa la forma
+corta `GYPSOPHILA XL NATURAL WHITE` (Uma mezcla ambas formas en
+el mismo PDF). Intenté canonicalizar `XLENCE → XL` en
+`UmaParser` pero rompió 7 líneas del benchmark (otras facturas
+emiten `GYPSOPHILA XLENCE` *sin* más tokens y matcheaban el
+sinónimo XLENCE puro). Revertido. El flujo operativo normal
+resuelve esto: Ángel corrige las 2 ambig desde la UI, el
+`register_match_hit` (10g) promociona tras 2 usos.
+
+**Resultado en UMA 18383**: antes: omitido como SAFTEC. Ahora:
+3 líneas parseadas, header $2,754 cuadra, 1 ok + 2 ambig (las
+NATURAL WHITE — dentro del flujo operativo normal).
+
 ### 2026-04-24 — sesión 11b: shadow_report `--verify-current` (filtra shadow stale)
 
 Diagnóstico del backlog shadow tras 10u-10x. El reporte marcaba 88

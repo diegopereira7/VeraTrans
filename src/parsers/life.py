@@ -25,21 +25,22 @@ class LifeParser:
             raw = ln.strip()
             if not raw:
                 continue
-            # Type 1: Box line. Captura opcionalmente el box_code (palabra
-            # en MAYÚSCULAS, 3+ letras — MARL, CRISTIAN, MERCO) como
-            # label separado del variety. Un token `[A-Z]{3,}` no casa
-            # con nombres Capitalize (Explorer, Mondial) ni con
-            # multi-palabra como "Pink Floyd", así que el code queda
-            # claramente distinto del variety.
+            # Type 1: Box line. Captura opcionalmente el box_code como
+            # label separado del variety. Formas observadas:
+            #   - MARL, CRISTIAN, MERCO   → 3+ letras mayúsculas
+            #   - R-14, R-16, R-18, R15   → letra + dígitos (fila/ruta)
+            # Un Capitalize (Explorer, Mondial) nunca empieza por digitos
+            # ni es solo MAYÚSCULAS, así que el code queda distinto del
+            # variety.
             # "HB 1 0.50 MARL Explorer 50CM 20 16 320 0.28 89.60"
-            #                  ^^^^ code         ^^^^^^^^ variety
+            # "HB 1 0.50 R-14 Mondial 50CM 25 12 300 0.29 87.00"
             pm = re.search(
-                r'(?:HB|QB)\s+\d+\s+[\d.]+\s+'       # box_type + count + FBE
-                r'(?:([A-Z]{3,})\s+)?'                # box_code opcional
-                r'([A-Z][a-zA-Z\s.\-/&]+?)\s+'        # variety (Capitalize)
-                r'(\d{2,3})CM\s+'                     # size
-                r'(\d+)\s+(\d+)\s+(\d+)\s+'           # SPB, bunches, stems
-                r'([\d.]+)',                          # price
+                r'(?:HB|QB)\s+\d+\s+[\d.]+\s+'                # box_type + count + FBE
+                r'(?:((?:[A-Z]{3,}|[A-Z]-?\d+))\s+)?'          # box_code opcional
+                r'([A-Z][a-zA-Z\s.\-/&]+?)\s+'                 # variety (Capitalize)
+                r'(\d{2,3})CM\s+'                              # size
+                r'(\d+)\s+(\d+)\s+(\d+)\s+'                    # SPB, bunches, stems
+                r'([\d.]+)',                                   # price
                 raw)
             if pm:
                 label = (pm.group(1) or '').upper()
@@ -57,13 +58,14 @@ class LifeParser:
 
             # Type 2: Continuation line — code opcional al inicio si
             # aparece: "MARL Pink Floyd 50CM 20 8 160 0.28 44.80"
+            # o "R-14 Pink Floyd 50CM 20 8 160 0.28 44.80"
             # o sin code: "Pink Floyd 50CM 20 8 160 0.28 44.80"
             pm2 = re.search(
-                r'^(?:([A-Z]{3,})\s+)?'              # box_code opcional
-                r'([A-Z][a-zA-Z\s.\-/&]+?)\s+'       # variety
-                r'(\d{2,3})CM\s+'                    # size
-                r'(\d+)\s+(\d+)\s+(\d+)\s+'          # SPB, bunches, stems
-                r'([\d.]+)',                         # price
+                r'^(?:((?:[A-Z]{3,}|[A-Z]-?\d+))\s+)?'   # box_code opcional
+                r'([A-Z][a-zA-Z\s.\-/&]+?)\s+'            # variety
+                r'(\d{2,3})CM\s+'                         # size
+                r'(\d+)\s+(\d+)\s+(\d+)\s+'               # SPB, bunches, stems
+                r'([\d.]+)',                              # price
                 raw)
             if pm2:
                 label = (pm2.group(1) or '').upper()
