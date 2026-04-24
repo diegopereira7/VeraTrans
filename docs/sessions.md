@@ -8,6 +8,30 @@ aquí y se quita de CLAUDE.md.
 Para el estado actual del proyecto, ver [`CLAUDE.md`](../CLAUDE.md) (raíz).
 Para lecciones transversales reutilizables, ver [`lessons.md`](lessons.md).
 
+### 2026-04-24 — sesión 11e: parser Life box_code acepta `R-14` (+4 líneas recuperadas)
+
+Ángel reportó que LIFE2.pdf marcaba 3 líneas como `(NO PARSEADO)`.
+Muestra: `HB 1 0.50 R-14 Mondial 50CM 25 12 300 0.29 87.00`. El
+regex del box_code en `LifeParser` exigía `[A-Z]{3,}` (3+ letras
+mayúsculas como MARL), así que `R-14` no matcheaba como code. Y
+el char class del variety era `[a-zA-Z\s.\-/&]` (sin dígitos), así
+que `R-14 Mondial` tampoco encajaba ahí. La línea caía al rescue
+como `NO PARSEADO`.
+
+**Fix en [`src/parsers/life.py`](../src/parsers/life.py)**: ampliar el
+box_code regex a `[A-Z]{3,}|[A-Z]-?\d+`. Captura `MARL` (letras) y
+`R-14`, `R-16`, `R-18`, `R15` (letra + dígitos). Aplicado a ambos
+patrones (Type 1 — línea box principal; Type 2 — continuación).
+Scan de los 5 samples reales confirma que solo aparecen `MARL` y
+`R-\d+` como códigos; no se observa ruido con el nuevo patrón.
+
+**Métricas**:
+- LIFE FLOWERS bench: 45 → **49 ok** (+4 líneas recuperadas).
+- Global: 3562 → **3566 líneas**, 3333 → **3337 ok**, 50 amb
+  estable.
+- LIFE2.pdf: 3/3 ok, `label='R-14'` separado del variety
+  (`MONDIAL`, `EXPLORER`).
+
 ### 2026-04-24 — sesión 11d: triage de páginas vacías evita OCR innecesario (3× speedup)
 
 Ángel reportó que UMA 18383 tardaba mucho en procesarse. Perfilado:

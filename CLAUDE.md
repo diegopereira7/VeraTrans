@@ -1,6 +1,6 @@
 # CLAUDE.md — Guía operativa para el agente
 
-**Última actualización:** 2026-04-24 (sesión 11f — matcher solo considera artículos F* del catálogo)
+**Última actualización:** 2026-04-24 (sesión 12a — fix provider_id=0 en correcciones batch, +18 líneas)
 **Estado:** **96.1% autoapprove** (récord) · Golden 980/997 (98.3%). Ronda de 4 sesiones atacando bucket por bucket los `ambiguous_match`: inicio 114 → **50** (−56%). ok 3235 → 3327 (+92). Fixes: matcher ganó `foreign_brand_soft` (detecta WAYUU via `brands_by_provider`), `fuzzy_typo_overrides_variety` (LIMONADE↔LEMONADE, TIFFANNY↔TIFFANY) y bug fix unit-suffix. Parsers ganaron traducciones EN→ES (MALIMA tint, CONDOR hydrangea, SAN FRANCISCO hydrangea), route-codes separados de variety (EL CAMPANARIO ZAIRA/JOVI/VERALEZA), variedades compuestas (`SUNSET X-PRESSION`), defaults de size para parsers sin CM explícito (ROSABELLA 50, CONDOR 60, PREMIUM 70), y color-split de CONEJERA clavel. 17 mismatches del golden siguen siendo branded nuevos del catálogo — re-anotar cuando toque.
 
 ---
@@ -833,6 +833,82 @@ Comandos con flags (`--provider`, `--max-samples`, `--verbose`,
 Solo las 2 últimas sesiones. Todas las anteriores en
 [`docs/sessions.md`](docs/sessions.md).
 
+### 2026-04-24 — sesión 12a: fix `provider_id=0` en correcciones batch + migración de huérfanos
+
+Ángel reportó que líneas de Uma GYPSOPHILA XLENCE NATURAL WHITE
+seguían apareciendo como `ambiguous_match` en cada batch nuevo a
+pesar de haberlas corregido varias veces desde la UI. Diagnóstico
+cruzando shadow log y `sinonimos_universal.json`: las decisiones
+`action=correct` se registraban con `synonym_key='0|GYPSOPHILA|...'`
+en lugar de `'440|GYPSOPHILA|...'` (Uma). El sinónimo quedaba
+huérfano bajo provider_id=0 y el matcher del siguiente batch (que
+busca con pid=440) nunca lo encontraba.
+
+**Causa raíz** (frontend batch mode):
+- [`web/assets/app.js:131`](web/assets/app.js) setea
+  `STATE.provider_id` solo en single-PDF flow.
+- En batch, cada factura del lote tiene su propio `provider_id`,
+  pero nunca se propaga a STATE.
+- Las 4 llamadas a `saveLineArticle` desde app.js usaban
+  `STATE.provider_id || 0` → en batch vale 0.
+- `saveLineArticle` componía `synKey = ${providerId}|...` → `'0|...'`.
+
+**Fix**:
+1. [`web/assets/app.extras.js`](web/assets/app.extras.js)
+   `_populateFlatLines` añade `l._providerId = inv.provider_id`
+   para cada línea del batch (cada factura aporta su pid).
+2. [`web/assets/app.js`](web/assets/app.js) 4 call sites usan
+   `(line._providerId || STATE.provider_id || 0)` como fallback
+   chain — batch primero, single-PDF después, 0 como último recurso.
+
+**Migración one-shot** en
+[`tools/migrate_orphan_provider0_synonyms.py`](tools/migrate_orphan_provider0_synonyms.py):
+para cada entry con key `0|...`, lee el `articulo_id` al que apunta,
+consulta `id_proveedor` en catálogo, re-emite la key como
+`{pid}|...` y mergea conflictos preservando el status más fuerte
+(`manual_confirmado > aprendido_confirmado > aprendido_en_prueba >
+ambiguo`). **16 sinónimos migrados** (provider pids: Uma 440,
+Colibri 313, Life 4471, Maxi 281, Olimpo 430, Milonga 12082,
+TV 9591, EQR 2229, Brissas 373, Prestige 11391). Backup JSON con
+timestamp.
+
+**Métricas**:
+- Benchmark global: ok **3337 → 3355** (+18 líneas), ambig 50
+  estable. Las 18 son las correcciones huérfanas ahora
+  re-aprovechadas.
+- UMA 18383 sample: antes 1 ok + 2 ambig → **3/3 ok** (las dos
+  `GYPSOPHILA XLENCE NATURAL WHITE` matchean a 28398/28396 ahora).
+
+**Errores sin cerrar (siguiente sesión)**:
+Detectados al procesar el batch de 32 facturas de Ángel —
+2 proveedores tienen plantillas nuevas que sus parsers actuales no
+capturan:
+- **ECOFLOR**: ECOFLOR GROUPCHILE cambió plantilla de factura. Antes
+  `BOX TB Box codeVARIETY CAN BUNCHES LENGT STEMS PRICE TOTAL` (parser
+  `mystic` resolvía). Ahora `Box N° Box Type Box code VARIETY Length
+  Qty Stems Total Stems Price/Stem TOTAL` con box_type (HBS/QB/HBXL)
+  en línea propia y dimensiones `(110.0*30.0*30.0)` en otra. El
+  parser mystic no maneja stateful per-box y falla → 0 líneas
+  extraídas. Fix: enhancement a `MysticParser` (o nuevo
+  `EcoflorParser`) con regex que capture variety en orden
+  `length-qty-stems-total_stems-price-total` y estado de btype
+  previo.
+- **MAXI2 proforma**: layout PROFORMA distinto al MAXI regular.
+  Single-línea estilo `SPR RGARDEN BELLALINDA SWEETY 50 Cm 1 50 50
+  .500 25.00`. Parser `maxi` no lo reconoce → 0 líneas. Fix: añadir
+  regex variante en `MaxiParser` para formato PROFORMA.
+
+**Pendientes shadow (post-12a)**:
+- 22 decisiones con `provider_id=None` (action=correct antiguas) —
+  ya migradas sus keys. Quedan los logs antiguos en shadow_log.jsonl
+  pero no afectan al backlog real.
+- Accuracy del matcher cuando propuso: 61.7% (29/47 sobre 63
+  decisiones totales en shadow_log).
+- Correcciones dominantes: Maxiflores propone branded NATUFLORA
+  (marca ajena) en lugar de genérico → `foreign_brand` no registrada
+  para maxi. Fix posible: añadir NATUFLORA como marca ajena en
+  PROVIDERS['maxi'].
+
 ### 2026-04-24 — sesión 11f: matcher solo considera artículos F* (flor de corte)
 
 Política que Diego pidió explícitamente: las facturas de flor solo
@@ -879,30 +955,6 @@ pool del matcher por prefijo evita que una "ROSA" deprecated
 sorprenda como top-1 sobre una variedad menos frecuente del mismo
 catálogo. Índices separados para lookup (UI) vs matching (pipeline)
 preservan utilidad sin contaminación.
-
-### 2026-04-24 — sesión 11e: parser Life box_code acepta `R-14` (+4 líneas recuperadas)
-
-Ángel reportó que LIFE2.pdf marcaba 3 líneas como `(NO PARSEADO)`.
-Muestra: `HB 1 0.50 R-14 Mondial 50CM 25 12 300 0.29 87.00`. El
-regex del box_code en `LifeParser` exigía `[A-Z]{3,}` (3+ letras
-mayúsculas como MARL), así que `R-14` no matcheaba como code. Y
-el char class del variety era `[a-zA-Z\s.\-/&]` (sin dígitos), así
-que `R-14 Mondial` tampoco encajaba ahí. La línea caía al rescue
-como `NO PARSEADO`.
-
-**Fix en [`src/parsers/life.py`](src/parsers/life.py)**: ampliar el
-box_code regex a `[A-Z]{3,}|[A-Z]-?\d+`. Captura `MARL` (letras) y
-`R-14`, `R-16`, `R-18`, `R15` (letra + dígitos). Aplicado a ambos
-patrones (Type 1 — línea box principal; Type 2 — continuación).
-Scan de los 5 samples reales confirma que solo aparecen `MARL` y
-`R-\d+` como códigos; no se observa ruido con el nuevo patrón.
-
-**Métricas**:
-- LIFE FLOWERS bench: 45 → **49 ok** (+4 líneas recuperadas).
-- Global: 3562 → **3566 líneas**, 3333 → **3337 ok**, 50 amb
-  estable.
-- LIFE2.pdf: 3/3 ok, `label='R-14'` separado del variety
-  (`MONDIAL`, `EXPLORER`).
 
 ---
 
