@@ -247,6 +247,22 @@ class ArticulosLoader:
             bits.append(marca)
         art['nombre'] = ' '.join(bits)
 
+    @staticmethod
+    def _is_matchable(art: dict) -> bool:
+        """True si el artículo entra al pool de candidatos del matcher.
+
+        Política: solo artículos con `referencia` que empieza por `F*`
+        son considerados — son los de flor de corte. Prefijos `A*`
+        (artículos inactivos/viejos) y `P*` (plantas en maceta —
+        ABELIA, etc.) se excluyen del matching aunque algunos tengan
+        nombre de flor (P000... ALSTROEMERIA en maceta, A... ROSA
+        deprecated). Los A/P siguen en `articulos` / `by_id_erp` /
+        `by_referencia` para lookup directo desde la UI, pero no
+        aparecen como candidatos en `match_line`.
+        """
+        ref = (art.get('referencia') or '').strip().upper()
+        return ref.startswith('F')
+
     def _register_article(self, art: dict) -> None:
         """Registra un artículo en los índices internos (compartido SQL/DB)."""
         self.articulos[art['id']] = art
@@ -259,6 +275,11 @@ class ArticulosLoader:
         ref = (art.get('referencia') or '').strip().upper()
         if ref:
             self.by_referencia[ref] = art
+        # Índices de matching (by_name/by_species) solo para F* — el
+        # resto queda accesible por id_erp/referencia desde la UI pero
+        # nunca aparece como candidato del matcher.
+        if not self._is_matchable(art):
+            return
         nombre = art['nombre']
         if nombre:
             self.by_name[nombre.upper()] = art['id']
@@ -452,6 +473,11 @@ class ArticulosLoader:
         """Calcula el sufijo de marca más frecuente por proveedor."""
         prov_suffixes: Dict[int, list] = {}
         for a in self.articulos.values():
+            # Solo F* contribuyen a la detección de marca. Los A*/P* no
+            # son candidatos del matcher y no deben sesgar los sufijos
+            # propios del proveedor.
+            if not self._is_matchable(a):
+                continue
             pid = a.get('id_proveedor', 0)
             if not pid:
                 continue
@@ -494,6 +520,9 @@ class ArticulosLoader:
         )
 
         for art in self.articulos.values():
+            # Solo F* entran al índice de variedad (política sesión 11f).
+            if not self._is_matchable(art):
+                continue
             nombre = _normalize(art['nombre'])
             if not nombre:
                 continue

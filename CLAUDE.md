@@ -1,6 +1,6 @@
 # CLAUDE.md — Guía operativa para el agente
 
-**Última actualización:** 2026-04-24 (sesión 11e — parser Life acepta R-14 como box_code, +4 líneas)
+**Última actualización:** 2026-04-24 (sesión 11f — matcher solo considera artículos F* del catálogo)
 **Estado:** **96.1% autoapprove** (récord) · Golden 980/997 (98.3%). Ronda de 4 sesiones atacando bucket por bucket los `ambiguous_match`: inicio 114 → **50** (−56%). ok 3235 → 3327 (+92). Fixes: matcher ganó `foreign_brand_soft` (detecta WAYUU via `brands_by_provider`), `fuzzy_typo_overrides_variety` (LIMONADE↔LEMONADE, TIFFANNY↔TIFFANY) y bug fix unit-suffix. Parsers ganaron traducciones EN→ES (MALIMA tint, CONDOR hydrangea, SAN FRANCISCO hydrangea), route-codes separados de variety (EL CAMPANARIO ZAIRA/JOVI/VERALEZA), variedades compuestas (`SUNSET X-PRESSION`), defaults de size para parsers sin CM explícito (ROSABELLA 50, CONDOR 60, PREMIUM 70), y color-split de CONEJERA clavel. 17 mismatches del golden siguen siendo branded nuevos del catálogo — re-anotar cuando toque.
 
 ---
@@ -833,6 +833,53 @@ Comandos con flags (`--provider`, `--max-samples`, `--verbose`,
 Solo las 2 últimas sesiones. Todas las anteriores en
 [`docs/sessions.md`](docs/sessions.md).
 
+### 2026-04-24 — sesión 11f: matcher solo considera artículos F* (flor de corte)
+
+Política que Diego pidió explícitamente: las facturas de flor solo
+deben enlazarse a artículos con `referencia` que empieza por `F*`
+(flor de corte). Los `A*` (rosas/minis viejas sin nombre,
+deprecated) y `P*` (plantas en maceta — ABELIA, etc., con algunas
+ALSTROEMERIA/GERBERA/ROSA planta) no deben aparecer como candidatos
+del matcher aunque el nombre coincida.
+
+Distribución del catálogo (44,751 arts):
+- **F**: 15,342 — flor de corte (6,418 ROSA, 558 CLAVEL, 632
+  CRISANTEMO, 146 PANICULATA, 66 MINI, etc.)
+- **A**: 14,346 — deprecated (125 ROSA, 2 MINI con nombre; el
+  resto sin nombre)
+- **P**: 14,884 — plantas (12 ALSTROEMERIA, 12 GERBERA, 1 ROSA,
+  2 PANICULATA en maceta; resto ABELIA, etc.)
+
+**Cambio en [`src/articulos.py`](src/articulos.py)**:
+- Nuevo helper `_is_matchable(art) → bool` — True si ref empieza
+  por `F`.
+- `_register_article`: siempre indexa en `articulos` /
+  `by_id_erp` / `by_referencia` (lookup UI preservado), pero
+  `by_name` / `_index_species` solo para matchable.
+- `_build_variety_index` y `_build_brand_index`: iteran sólo
+  sobre matchable — `by_variety`, `by_variety_size` y
+  `brand_by_provider` no incluyen A/P.
+
+**Métricas**:
+- Benchmark global: 3566 líneas, **3337 ok, 50 ambig** — idéntico
+  a pre-filtro. UMA 95/95, TIERRA VERDE 66/66, ROSALEDA 134/134,
+  LA ALEGRIA 69/69 intactos.
+- `by_variety[MONDIAL]`: 178 arts, todos F* (verificado).
+- `by_name`: 30k+ → 16,663 (baja correcta: solo F* con nombre
+  indexado).
+- A/P siguen accesibles por id_erp/referencia desde la UI — el
+  operador puede consultar lookup directo si hace falta, pero el
+  matcher no los propondrá.
+
+**Lección transversal** (candidata `docs/lessons.md`): los ID
+auto-increment + nombre no bastan para distinguir "¿es esto un
+artículo de mi dominio?". La referencia con prefijo semántico
+(F=flor, P=planta, A=inactivo) es la señal limpia — filtrar el
+pool del matcher por prefijo evita que una "ROSA" deprecated
+sorprenda como top-1 sobre una variedad menos frecuente del mismo
+catálogo. Índices separados para lookup (UI) vs matching (pipeline)
+preservan utilidad sin contaminación.
+
 ### 2026-04-24 — sesión 11e: parser Life box_code acepta `R-14` (+4 líneas recuperadas)
 
 Ángel reportó que LIFE2.pdf marcaba 3 líneas como `(NO PARSEADO)`.
@@ -856,42 +903,6 @@ Scan de los 5 samples reales confirma que solo aparecen `MARL` y
   estable.
 - LIFE2.pdf: 3/3 ok, `label='R-14'` separado del variety
   (`MONDIAL`, `EXPLORER`).
-
-### 2026-04-24 — sesión 11d: triage de páginas vacías evita OCR innecesario (3× speedup)
-
-Ángel reportó que UMA 18383 tardaba mucho en procesarse. Perfilado:
-5.1s end-to-end. `extraction_source=mixed, engine=ocrmypdf`. El
-PDF tiene 2 páginas — la 1 nativa con 993 chars, la 2 **vacía**
-(última página en blanco típica de exports). El triage marcaba la
-página vacía como `'scan'` y disparaba OCRmyPDF global sobre todo
-el PDF — OCR de una página literalmente en blanco.
-
-**Cambio en [`src/extraction.py`](src/extraction.py)**:
-- `_triage_pdf` ahora devuelve 3 estados: `'native'`, `'empty'`
-  (chars=0 AND words=0) y `'scan'` (tiene contenido pero sin texto
-  utilizable).
-- La rama rápida (sin OCR) acepta ahora `all(v in ('native',
-  'empty'))` **siempre que al menos una página sea native**. Las
-  empty aportan un `PageExtraction(text='', source='native',
-  confidence=1.0)`.
-- Guardrail: si **ninguna** página es native, las `'empty'` se
-  reclasifican a `'scan'` — indica un PDF íntegramente escaneado
-  sin capa de texto (CANTIZA sample V.075-6577 1440 con 0 chars).
-
-**Métricas**:
-- UMA 18383: 5.1s → **1.75s** (−66%, 3×).
-- Benchmark global: 3562 líneas, 3333 ok, 50 ambig — **idéntico**
-  al pre-fix. Sin regresiones en CANTIZA (PDFs escaneados puros)
-  ni en providers con multi-página.
-- Aplica a cualquier PDF con última página en blanco (~30% de
-  las facturas UMA según muestreo rápido).
-
-**Lección transversal** (candidata `docs/lessons.md`): el triage
-binario `native vs scan` es demasiado pobre cuando `scan` arrastra
-como consecuencia "ejecuta OCR global". Un tercer estado explícito
-para páginas vacías evita invocar OCR sobre nada. La regla
-`ninguna native → todas las empty son scan` protege los
-escaneados íntegros (donde `empty` es `scan` disfrazado).
 
 ---
 

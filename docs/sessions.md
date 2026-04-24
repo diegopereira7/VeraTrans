@@ -8,6 +8,42 @@ aquí y se quita de CLAUDE.md.
 Para el estado actual del proyecto, ver [`CLAUDE.md`](../CLAUDE.md) (raíz).
 Para lecciones transversales reutilizables, ver [`lessons.md`](lessons.md).
 
+### 2026-04-24 — sesión 11d: triage de páginas vacías evita OCR innecesario (3× speedup)
+
+Ángel reportó que UMA 18383 tardaba mucho en procesarse. Perfilado:
+5.1s end-to-end. `extraction_source=mixed, engine=ocrmypdf`. El
+PDF tiene 2 páginas — la 1 nativa con 993 chars, la 2 **vacía**
+(última página en blanco típica de exports). El triage marcaba la
+página vacía como `'scan'` y disparaba OCRmyPDF global sobre todo
+el PDF — OCR de una página literalmente en blanco.
+
+**Cambio en [`src/extraction.py`](../src/extraction.py)**:
+- `_triage_pdf` ahora devuelve 3 estados: `'native'`, `'empty'`
+  (chars=0 AND words=0) y `'scan'` (tiene contenido pero sin texto
+  utilizable).
+- La rama rápida (sin OCR) acepta ahora `all(v in ('native',
+  'empty'))` **siempre que al menos una página sea native**. Las
+  empty aportan un `PageExtraction(text='', source='native',
+  confidence=1.0)`.
+- Guardrail: si **ninguna** página es native, las `'empty'` se
+  reclasifican a `'scan'` — indica un PDF íntegramente escaneado
+  sin capa de texto (CANTIZA sample V.075-6577 1440 con 0 chars).
+
+**Métricas**:
+- UMA 18383: 5.1s → **1.75s** (−66%, 3×).
+- Benchmark global: 3562 líneas, 3333 ok, 50 ambig — **idéntico**
+  al pre-fix. Sin regresiones en CANTIZA (PDFs escaneados puros)
+  ni en providers con multi-página.
+- Aplica a cualquier PDF con última página en blanco (~30% de
+  las facturas UMA según muestreo rápido).
+
+**Lección transversal** (candidata `docs/lessons.md`): el triage
+binario `native vs scan` es demasiado pobre cuando `scan` arrastra
+como consecuencia "ejecuta OCR global". Un tercer estado explícito
+para páginas vacías evita invocar OCR sobre nada. La regla
+`ninguna native → todas las empty son scan` protege los
+escaneados íntegros (donde `empty` es `scan` disfrazado).
+
 ### 2026-04-24 — sesión 11c: skip pattern falso positivo bloqueaba UMA 18383
 
 Ángel reportó que una factura UMA real (`18383._Veraleza-20-Abril_
