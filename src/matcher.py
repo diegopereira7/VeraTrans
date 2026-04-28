@@ -1066,6 +1066,17 @@ class Matcher:
         `candidate_count`, `match_reasons`, `match_penalties`,
         `top_candidates` para trazabilidad.
         """
+        # Líneas rescatadas con variety='(NO PARSEADO)' (placeholder de
+        # `rescue_unparsed_lines`) no tienen variedad real para matchear.
+        # El matcher fuzzy producía resultados aleatorios tipo
+        # "ROSA TEÑIDA RAINBOW" cuando el placeholder coincidía
+        # parcialmente con algún token (RAINBOW). Saltarlo: queda como
+        # `sin_parser` y la UI lo pinta como "rescatado pendiente".
+        if (line.match_status == 'sin_parser'
+                or line.variety.strip().upper() == '(NO PARSEADO)'):
+            line.match_status = 'sin_parser'
+            line.review_lane = 'full'
+            return line
         pkey = getattr(line, 'provider_key', '') or ''
         # Fallback: algunos parsers no rellenan provider_key. Lo derivamos
         # del provider_id para que brand_in_name/foreign_brand/brand_boost

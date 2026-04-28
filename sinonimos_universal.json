@@ -32712,8 +32712,8 @@
     "times_used": 0,
     "times_confirmed": 1,
     "times_corrected": 0,
-    "first_seen_at": "2026-04-28T15:34:59",
-    "last_confirmed_at": "2026-04-28T15:34:59"
+    "first_seen_at": "2026-04-28T15:54:02",
+    "last_confirmed_at": "2026-04-28T15:54:02"
   },
   "90007|ROSES|BRIGHTON|50|25|": {
     "articulo_id": 32234,
@@ -33587,7 +33587,7 @@
     "raw": "5 H Rose Freedom X 10 - 50 47806- 50 GONZA x 10 0603.11.00.00 200 1000 ST 0.32 320.00",
     "invoice": "",
     "status": "ambiguo",
-    "times_corrected": 130,
+    "times_corrected": 131,
     "articulo_id_erp": "12607"
   },
   "90012|ROSES|TIFFANY|60|25|": {
@@ -40987,7 +40987,7 @@
     "invoice": "",
     "times_used": 0,
     "times_confirmed": 2,
-    "times_corrected": 15,
+    "times_corrected": 16,
     "first_seen_at": "2026-04-15T17:06:11",
     "last_confirmed_at": "2026-04-22T09:15:41",
     "articulo_id_erp": "15541"
@@ -44256,7 +44256,7 @@
     "stems_per_bunch": 10,
     "grade": "",
     "status": "ambiguo",
-    "times_corrected": 3
+    "times_corrected": 9
   },
   "90038|ROSES|MONDIAL|40|25|": {
     "articulo_id": 35919,
@@ -45116,8 +45116,8 @@
     "times_used": 0,
     "times_confirmed": 1,
     "times_corrected": 0,
-    "first_seen_at": "2026-04-28T15:43:44",
-    "last_confirmed_at": "2026-04-28T15:43:44"
+    "first_seen_at": "2026-04-28T15:54:04",
+    "last_confirmed_at": "2026-04-28T15:54:04"
   },
   "435|ROSES|VENDELA|40|25|": {
     "articulo_id": 38088,
@@ -46774,7 +46774,7 @@
     "invoice": "",
     "times_used": 0,
     "times_confirmed": 2,
-    "times_corrected": 15,
+    "times_corrected": 16,
     "first_seen_at": "2026-04-16T16:00:33",
     "last_confirmed_at": "2026-04-22T09:15:40",
     "articulo_id_erp": "28985"
@@ -46796,7 +46796,7 @@
     "times_used": 0,
     "times_confirmed": 0,
     "times_corrected": 0,
-    "first_seen_at": "2026-04-28T15:36:00",
+    "first_seen_at": "2026-04-28T15:55:02",
     "last_confirmed_at": ""
   },
   "90012|ROSES|FREEDOM|50|10|": {
@@ -48679,7 +48679,7 @@
     "invoice": "",
     "times_used": 0,
     "times_confirmed": 2,
-    "times_corrected": 15,
+    "times_corrected": 16,
     "first_seen_at": "2026-04-23T11:14:16",
     "last_confirmed_at": "2026-04-23T11:21:16"
   },
@@ -53178,8 +53178,8 @@
     "times_used": 0,
     "times_confirmed": 1,
     "times_corrected": 0,
-    "first_seen_at": "2026-04-28T15:43:44",
-    "last_confirmed_at": "2026-04-28T15:43:44"
+    "first_seen_at": "2026-04-28T15:54:04",
+    "last_confirmed_at": "2026-04-28T15:54:04"
   },
   "90046|ROSES|VIOLET HILL|60|0|": {
     "articulo_id": 33963,
@@ -59112,7 +59112,7 @@
     "invoice": "",
     "times_used": 0,
     "times_confirmed": 2,
-    "times_corrected": 15,
+    "times_corrected": 16,
     "first_seen_at": "2026-04-27T08:56:13",
     "last_confirmed_at": "2026-04-27T09:04:56"
   },
