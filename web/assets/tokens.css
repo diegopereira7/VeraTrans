@@ -73,11 +73,14 @@
     --main-pad-x: 32px;
     --gap: 16px;
 
-    /* ── Paleta "clara" (override v2) — match del mockup de referencia ── */
-    --cream-50:   #FAF7ED;   /* sidebar (muy claro, casi blanco-crema) */
-    --cream-100:  #F4F0E6;   /* body bg */
-    --cream-200:  #E8E4D4;   /* borders sutiles */
-    --cream-300:  #D4CFBE;   /* borders fuertes / dashed upload */
+    /* ── Paleta "clara" (override v2) — tono casi blanco con apenas
+       un soplo de calidez. Sidebar un punto más tibio que el body
+       para que exista diferencia visible pero sin sensación "amarilla".
+       ──────────────────────────────────────────────────────────── */
+    --cream-50:   #FCFBF7;   /* body bg — casi blanco */
+    --cream-100:  #F5F2E8;   /* sidebar bg — crema muy suave */
+    --cream-200:  #EBE7D9;   /* borders sutiles / hover nav */
+    --cream-300:  #D8D3C2;   /* borders fuertes / dashed upload */
     --olive-700:  #6A6B27;
     --olive-600:  #7A7B2E;
     --olive-500:  #848635;   /* brand — botón primary, stats primary */

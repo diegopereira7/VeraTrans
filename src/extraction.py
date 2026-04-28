@@ -189,13 +189,15 @@ def _triage_pdf(path: str) -> list[str]:
 
 # ───────────────────────────── OCR: OCRmyPDF + Tesseract ─────────────────────────────
 
-def _ocr_with_ocrmypdf(src: str) -> Optional[str]:
+def _ocr_with_ocrmypdf(src: str, force: bool = False) -> Optional[str]:
     """Pasa el PDF por OCRmyPDF → devuelve el texto de la capa OCR resultante.
 
     Devuelve ``None`` si OCRmyPDF no está disponible o falla. Tras el OCR
     relee el PDF intermedio con pdfplumber (la capa OCR queda como texto
-    nativo). Usa ``--skip-text`` para no reOCRizar páginas que ya tengan
-    texto bueno y ``--output-type pdf`` para mantener el PDF ligero.
+    nativo). Por defecto usa ``--skip-text`` para no reOCRizar páginas que
+    ya traen texto. Si ``force=True`` usa ``--force-ocr`` que re-OCRiza
+    aunque haya capa de texto — necesario para PDFs con CMap roto cuyo
+    texto nativo es basura aunque la imagen sea legible (caso MILONGA).
     """
     if not _has_ocrmypdf():
         return None
@@ -204,7 +206,7 @@ def _ocr_with_ocrmypdf(src: str) -> Optional[str]:
             tmp_path = tmp.name
         cmd = [
             'ocrmypdf',
-            '--skip-text',           # no reOCRiza páginas que ya traen texto
+            '--force-ocr' if force else '--skip-text',
             '--output-type', 'pdf',
             '--language', 'eng+spa',
             '--optimize', '0',       # más rápido, no nos importa el tamaño
@@ -232,21 +234,22 @@ def _ocr_with_ocrmypdf(src: str) -> Optional[str]:
 
 
 def _ocr_page_tesseract(img_bytes: bytes) -> tuple[str, float]:
-    """OCR de una página usando Tesseract directamente (pytesseract).
+    """OCR de una página usando Tesseract.
 
-    Devuelve ``(texto, confianza_0_1)``. La confianza viene del promedio
-    de ``conf`` por palabra que Tesseract expone vía ``image_to_data``;
-    valores <0 significan "sin confianza disponible" y se descartan.
+    Vía ``pytesseract`` si el módulo Python está disponible (devuelve
+    confianza por palabra). Si no, vía subprocess al binario ``tesseract``
+    pasando la imagen por stdin (funciona en entornos donde solo está
+    instalado el binario, p.ej. Windows con Tesseract-OCR sin extras
+    Python). En el modo subprocess la confianza es heurística: 0.85 si el
+    texto extraído pasa un sanity check de longitud, 0.5 si parece OCR
+    pobre.
     """
+    if not _has_tesseract():
+        return '', 0.0
     try:
         import pytesseract
         from PIL import Image
         import io
-    except ImportError:
-        return '', 0.0
-    if not _has_tesseract():
-        return '', 0.0
-    try:
         img = Image.open(io.BytesIO(img_bytes))
         data = pytesseract.image_to_data(
             img, lang='eng+spa', output_type=pytesseract.Output.DICT)
@@ -265,9 +268,28 @@ def _ocr_page_tesseract(img_bytes: bytes) -> tuple[str, float]:
         text = ' '.join(words)
         conf_avg = sum(confs) / len(confs) if confs else 0.5
         return text, conf_avg
+    except ImportError:
+        pass
     except Exception as e:
-        logger.debug("Tesseract falló: %s", e)
-        return '', 0.0
+        logger.debug("Tesseract (pytesseract) falló: %s", e)
+    # Fallback: binario tesseract por stdin/stdout
+    try:
+        r = subprocess.run(
+            ['tesseract', 'stdin', 'stdout', '-l', 'eng+spa', '--psm', '6'],
+            input=img_bytes, capture_output=True, timeout=60,
+        )
+        if r.returncode == 0 and r.stdout:
+            text = r.stdout.decode('utf-8', errors='replace').strip()
+            if text:
+                # Confianza heurística: si hay >= 50 chars y >= 5 palabras
+                # consideramos OCR razonable; si no, baja.
+                conf = 0.85 if len(text) >= 50 and len(text.split()) >= 5 else 0.55
+                return text, conf
+    except (FileNotFoundError, subprocess.TimeoutExpired) as e:
+        logger.debug("Tesseract subprocess falló: %s", e)
+    except Exception as e:
+        logger.debug("Tesseract subprocess error: %s", e)
+    return '', 0.0
 
 
 # ───────────────────────────── OCR: EasyOCR (fallback) ─────────────────────────────
@@ -366,20 +388,33 @@ def _ocr_page_easyocr(img_bytes: bytes) -> tuple[str, float]:
 # ───────────────────────────── Router ─────────────────────────────
 
 def _render_page(path: str, page_num: int, dpi: int = 300) -> Optional[bytes]:
-    if not HAS_PYMUPDF:
-        return None
-    try:
-        doc = fitz.open(path)
-        pix = doc[page_num].get_pixmap(dpi=dpi)
-        img = pix.tobytes('png')
-        doc.close()
-        return img
-    except Exception as e:
-        logger.debug("render_page falló página %d: %s", page_num, e)
-        return None
+    if HAS_PYMUPDF:
+        try:
+            doc = fitz.open(path)
+            pix = doc[page_num].get_pixmap(dpi=dpi)
+            img = pix.tobytes('png')
+            doc.close()
+            return img
+        except Exception as e:
+            logger.debug("render_page (PyMuPDF) falló página %d: %s", page_num, e)
+    # Fallback con pdfplumber.to_image() — más lento pero independiente
+    # de PyMuPDF (que no siempre está instalado en el entorno Windows).
+    if HAS_PDFPLUMBER:
+        try:
+            import io
+            with pdfplumber.open(path) as p:
+                if page_num >= len(p.pages):
+                    return None
+                pim = p.pages[page_num].to_image(resolution=dpi)
+                buf = io.BytesIO()
+                pim.save(buf, format='PNG')
+                return buf.getvalue()
+        except Exception as e:
+            logger.debug("render_page (pdfplumber) falló página %d: %s", page_num, e)
+    return None
 
 
-def _ocr_page_best(path: str, page_num: int) -> PageExtraction:
+def _ocr_page_best(path: str, page_num: int, dpi: int = 300) -> PageExtraction:
     """OCR de una página con la mejor rama disponible.
 
     Preferencia:
@@ -388,8 +423,12 @@ def _ocr_page_best(path: str, page_num: int) -> PageExtraction:
 
     La rama OCRmyPDF "PDF→PDF" se usa a nivel documento antes de entrar
     aquí; este helper solo es el fallback per-page.
+
+    El DPI se sube a 400 para ``force_ocr`` (PDFs con CMap roto donde la
+    extracción nativa es basura): a 300 dpi tesseract confunde dígitos
+    sutiles (3↔8, 7↔1) en facturas con totales que importan.
     """
-    img = _render_page(path, page_num)
+    img = _render_page(path, page_num, dpi=dpi)
     if img is None:
         return PageExtraction(text='', source='empty', confidence=0.0)
 
@@ -433,7 +472,7 @@ def _aggregate_confidence(pages: list[PageExtraction]) -> float:
     return round(acc / total_w, 3) if total_w else 0.0
 
 
-def extract(path: str) -> ExtractionResult:
+def extract(path: str, force_ocr: bool = False) -> ExtractionResult:
     """Extrae el texto del PDF eligiendo estrategia por página.
 
     Orden de decisión:
@@ -448,10 +487,21 @@ def extract(path: str) -> ExtractionResult:
           (Tesseract → EasyOCR).
     4. Si pdfplumber no está disponible, cae a OCR global per-page directo.
 
+    Si ``force_ocr=True`` el triage nativo se ignora y todas las páginas se
+    tratan como ``scan`` — útil para proveedores cuyo PDF nativo tiene
+    glifos mal mapeados (CMap roto), donde el OCR sobre la imagen
+    renderizada da texto mucho más limpio que el embedido. El caller
+    (típicamente ``detect_provider`` en ``src/pdf.py``) lo activa cuando
+    el proveedor detectado declara ``force_ocr: True`` en config.
+
     Nunca lanza; si todo falla devuelve :class:`ExtractionResult` con
     ``text=''`` y ``confidence=0``.
     """
     verdict = _triage_pdf(path)
+    if force_ocr and verdict:
+        # Forzamos toda la pipeline al carril OCR: aplanamos a 'scan'
+        # respetando 'empty' (páginas en blanco siguen sin merecer OCR).
+        verdict = ['scan' if v != 'empty' else v for v in verdict]
     pages: list[PageExtraction] = []
     ocr_engine = ''
 
@@ -484,9 +534,14 @@ def extract(path: str) -> ExtractionResult:
         )
         return result
 
-    # 2) Hay scans → intentar OCRmyPDF global antes que OCR per-page
-    if verdict and any(v == 'scan' for v in verdict):
-        merged_text = _ocr_with_ocrmypdf(path)
+    # 2) Hay scans → intentar OCRmyPDF global antes que OCR per-page.
+    # Si force_ocr está activo, saltamos OCRmyPDF — re-OCRiza pero al
+    # mezclar la capa nueva con la original puede reordenar columnas
+    # (ej. MILONGA: "Rose Fink Mondial X 25 - 50" sale como
+    # "Rose Fink MonX d25 i-a 5l0"). Per-page tesseract directo da
+    # texto más limpio aunque sea más lento.
+    if verdict and any(v == 'scan' for v in verdict) and not force_ocr:
+        merged_text = _ocr_with_ocrmypdf(path, force=force_ocr)
         if merged_text and merged_text.strip():
             # Re-clasifico por página con el PDF ya OCRizado
             try:
@@ -540,13 +595,21 @@ def extract(path: str) -> ExtractionResult:
             )
 
     # 3) OCR per-page (sin OCRmyPDF o sin triage)
-    if HAS_PYMUPDF:
-        try:
-            doc = fitz.open(path)
-            npages = len(doc)
-            doc.close()
-        except Exception:
-            npages = 0
+    if HAS_PYMUPDF or HAS_PDFPLUMBER:
+        npages = 0
+        if HAS_PYMUPDF:
+            try:
+                doc = fitz.open(path)
+                npages = len(doc)
+                doc.close()
+            except Exception:
+                npages = 0
+        if not npages and HAS_PDFPLUMBER:
+            try:
+                with pdfplumber.open(path) as p:
+                    npages = len(p.pages)
+            except Exception:
+                npages = 0
         if verdict and npages == len(verdict):
             # Usa triage página a página: nativa → pdfplumber, scan → OCR
             with pdfplumber.open(path) as p:

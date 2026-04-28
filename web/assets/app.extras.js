@@ -32,12 +32,21 @@
             if (s === 'revisar' || s === 'pendiente' || s === 'review')     return 'revisar';
             return s || 'revisar';
         };
+        const _isFuzzyOrigin = l => {
+            const m = String(l.match_method || '').toUpperCase();
+            const o = String(l.origin       || '').toUpperCase();
+            return /\bFUZZY\b|\bESTIMATE\b|\bEST\b|AUTO-FUZZY/.test(m + ' ' + o);
+        };
         const needsReview = l => {
             const st = computeStatus(l);
             if (st === 'sin_match') return true;
             if (st === 'revisar')   return true;
             const conf = l.confidence != null ? l.confidence : l.match_confidence;
-            if (conf != null && conf < 0.90) return true;
+            // Umbral 0.85: aprendido_confirmado da conf ~0.846 con ≥2
+            // hits coherentes. 0.90 dejaba esas líneas como Revisar
+            // aunque ya tenían evidencia operativa.
+            if (conf != null && conf < 0.84) return true;
+            if (_isFuzzyOrigin(l))  return true;
             return false;
         };
         const computeOriginBadge = l => {
@@ -65,22 +74,38 @@
                 const errs = l.validation_errors || [];
                 if (st === 'ok')        ok++;
                 else if (st === 'sin_match') sin++;
-                // Una línea cuenta como "revisar" sólo si:
+                // Una línea cuenta como "revisar" si:
                 //   - el status no es ok, o
                 //   - tiene errores de validación abiertos, o
-                //   - la confianza del vínculo es baja (<90%).
-                // No usamos review_lane como fuente aquí porque Python
-                // marca `quick` por criterios de extracción (margen,
-                // OCR) que no son bloqueantes una vez que el operador
-                // ha confirmado el artículo en la UI.
+                //   - la confianza del vínculo es baja (<90%), o
+                //   - viene de un match estimado (fuzzy/EST) — aunque
+                //     el matcher lo haya marcado ok, la evidencia es
+                //     indirecta y necesita confirmación del operador.
+                // No usamos review_lane porque Python marca `quick` por
+                // criterios de extracción que no bloquean una vez
+                // confirmado el artículo.
                 const needsRow = flagged.has(st)
                     || (Array.isArray(errs) && errs.length > 0)
-                    || conf < 0.90;
+                    || conf < 0.84
+                    || _isFuzzyOrigin(l);
                 if (needsRow) needs++;
             }
             inv.ok_count     = ok;
             inv.sin_match    = sin;
             inv.needs_review = needs;
+
+            // Total de la factura = suma de line_total (alias total_line/total).
+            // Se recalcula tras cualquier edición de stems/price/total para
+            // que la columna "Total USD" del outer table refleje el cambio
+            // sin esperar refresh del backend.
+            let totalSum = 0;
+            for (const l of inv.lines) {
+                if (l.is_mixed_child) continue;
+                const t = Number(l.total_line ?? l.line_total ?? l.total ?? 0);
+                if (isFinite(t)) totalSum += t;
+            }
+            inv.total_usd = +totalSum.toFixed(2);
+            inv.lineas    = inv.lines.length;
         }
 
         // ── Referencias DOM ────────────────────────────────────────────
@@ -427,8 +452,9 @@
                                             <th class="num" style="width:52px">Talla</th>
                                             <th class="num" style="width:42px">SPB</th>
                                             <th class="num" style="width:56px">Tallos</th>
-                                            <th class="num" style="width:68px">Precio</th>
-                                            <th class="num" style="width:78px">Total</th>
+                                            <th class="num" style="width:88px">Precio</th>
+                                            <th class="num" style="width:92px">Total</th>
+                                            <th style="width:90px">Destino</th>
                                             <th>Artículo VeraBuy</th>
                                             <th style="width:110px">Match</th>
                                         </tr></thead>
@@ -527,13 +553,36 @@
                 <tr class="is-clickable" data-row-idx="${l.idx}">
                     <td><span class="line-num">${String(rowNum).padStart(2, '0')}</span></td>
                     <td>${descHtml}</td>
-                    <td>${esc(l.species || l.especie || '—')}</td>
+                    <td>${esc(l.species || l.especie || '—')}${l.grade ? ` <span class="grade-pill">${esc(l.grade)}</span>` : ''}</td>
                     <td>${esc(l.variety || l.variedad || '—')}</td>
                     <td class="num">${size ?? '—'}</td>
                     <td class="num">${spb ?? '—'}</td>
-                    <td class="num">${fmtInt(stems)}</td>
-                    <td class="num">${fmtPrice(price)}</td>
-                    <td class="num">${fmt$(total)}</td>
+                    <td class="num">
+                        <input type="number" class="num-input line-stems" data-row-idx="${l.idx}"
+                               value="${stems ?? ''}" step="1" min="0" inputmode="numeric"
+                               aria-label="Tallos fila ${rowNum}">
+                    </td>
+                    <td class="num">
+                        <div class="money-cell">
+                            <span class="money-prefix">$</span>
+                            <input type="number" class="num-input line-price" data-row-idx="${l.idx}"
+                                   value="${price ?? ''}" step="0.0001" min="0" inputmode="decimal"
+                                   aria-label="Precio fila ${rowNum}">
+                        </div>
+                    </td>
+                    <td class="num">
+                        <div class="money-cell">
+                            <span class="money-prefix">$</span>
+                            <input type="number" class="num-input line-total" data-row-idx="${l.idx}"
+                                   value="${total ?? ''}" step="0.01" min="0" inputmode="decimal"
+                                   aria-label="Total fila ${rowNum}">
+                        </div>
+                    </td>
+                    <td class="dest-cell">
+                        <input type="text" class="text-input line-label" data-row-idx="${l.idx}"
+                               value="${esc(l.label || '')}" maxlength="64"
+                               aria-label="Destino fila ${rowNum}" placeholder="—">
+                    </td>
                     <td>
                         <div style="display:flex;align-items:center;gap:8px">
                             ${badgeHtml}
@@ -615,6 +664,21 @@
                         inp.blur();   // dispara change
                     }
                 });
+                // Auto-guardado debounced: si el operador deja de escribir
+                // 800ms con un valor distinto al guardado, persistimos sin
+                // esperar a Enter/blur. Evita que screenshots o navegación
+                // accidental pierdan correcciones (problema reportado:
+                // BG-106379 líneas ALSTROEMERIA ROSA con id_erp tipeado
+                // pero sin Enter → desaparecía al refresh).
+                let _typingTimer = null;
+                inp.addEventListener('input', () => {
+                    if (_typingTimer) clearTimeout(_typingTimer);
+                    _typingTimer = setTimeout(() => {
+                        if ((inp.value || '').trim() !== inp.__lastSavedVal) {
+                            persistFromInput();
+                        }
+                    }, 800);
+                });
             });
 
             // ✓ Guardar sinónimo — usa el helper público saveLineArticle
@@ -675,6 +739,141 @@
                     }
                     _rerenderBatchPreservingOpen();
                 });
+            });
+
+            // Editables: tallos / precio / total — persisten contra
+            // batch_status para que sobrevivan refresh.
+            _wireBatchNumericEditor(scope, '.line-stems', 'stems');
+            _wireBatchNumericEditor(scope, '.line-price', 'price');
+            _wireBatchNumericEditor(scope, '.line-total', 'total');
+            _wireBatchTextEditor(scope, '.line-label', 'label');
+        }
+
+        function _wireBatchTextEditor(scope, selector, fieldKey) {
+            scope.querySelectorAll(selector).forEach(inp => {
+                if (inp.__bound) return;
+                inp.__bound = true;
+                inp.__lastVal = inp.value;
+                const persist = async () => {
+                    const idx   = Number(inp.dataset.rowIdx);
+                    const lines = window.VeraFact && window.VeraFact.STATE && window.VeraFact.STATE.lines;
+                    const line  = lines && lines[idx];
+                    if (!line) return;
+                    const cleaned = (inp.value || '').trim().toUpperCase().slice(0, 64);
+                    if (inp.value !== cleaned) inp.value = cleaned;
+                    if (cleaned === inp.__lastVal) return;
+                    inp.__lastVal = cleaned;
+                    line[fieldKey] = cleaned;
+                    if (batchId && line._batchInvoiceIdx !== undefined && line._batchLineIdx !== undefined) {
+                        try {
+                            await fetch('api.php?action=update_line_fields', {
+                                method: 'POST',
+                                headers: { 'Content-Type': 'application/json' },
+                                body: JSON.stringify({
+                                    batch_id:    batchId,
+                                    invoice_idx: line._batchInvoiceIdx,
+                                    line_idx:    line._batchLineIdx,
+                                    fields: { [fieldKey]: cleaned },
+                                }),
+                            });
+                        } catch (err) {
+                            inp.style.borderColor = 'var(--err)';
+                            setTimeout(() => inp.style.borderColor = '', 1200);
+                        }
+                    }
+                };
+                inp.addEventListener('change', persist);
+                inp.addEventListener('keydown', e => {
+                    if (e.key === 'Enter') { e.preventDefault(); inp.blur(); }
+                });
+                inp.addEventListener('click', e => e.stopPropagation());
+            });
+        }
+
+        function _wireBatchNumericEditor(scope, selector, fieldKey) {
+            scope.querySelectorAll(selector).forEach(inp => {
+                if (inp.__bound) return;
+                inp.__bound = true;
+                inp.__lastVal = inp.value;
+                const persist = async () => {
+                    const idx   = Number(inp.dataset.rowIdx);
+                    const lines = window.VeraFact && window.VeraFact.STATE && window.VeraFact.STATE.lines;
+                    const line  = lines && lines[idx];
+                    if (!line) return;
+                    if (inp.value === inp.__lastVal) return;
+                    inp.__lastVal = inp.value;
+                    const num = inp.value === '' ? null : Number(inp.value);
+                    if (num !== null && !isFinite(num)) {
+                        inp.style.borderColor = 'var(--err)';
+                        setTimeout(() => inp.style.borderColor = '', 1200);
+                        return;
+                    }
+                    line[fieldKey] = num;
+                    if (fieldKey === 'price') {
+                        line.price_per_stem = num;
+                    } else if (fieldKey === 'total') {
+                        line.line_total = num;
+                        line.total_line = num;
+                    } else if (fieldKey === 'stems') {
+                        line.stems = num;
+                    }
+                    // Auto-recalcular line_total cuando cambia precio o tallos
+                    // (salvo cuando el operador edita total directamente).
+                    if (fieldKey === 'price' || fieldKey === 'stems') {
+                        const stemsN = Number(line.stems || 0);
+                        const priceN = Number(line.price ?? line.price_per_stem ?? 0);
+                        if (stemsN > 0 && priceN >= 0) {
+                            const newTotal  = +(stemsN * priceN).toFixed(2);
+                            line.total      = newTotal;
+                            line.line_total = newTotal;
+                            line.total_line = newTotal;
+                            const tr = inp.closest('tr');
+                            const totalInp = tr && tr.querySelector('.line-total');
+                            if (totalInp) {
+                                totalInp.value = newTotal;
+                                totalInp.__lastVal = String(newTotal);
+                            }
+                        }
+                    }
+                    if (batchId && line._batchInvoiceIdx !== undefined && line._batchLineIdx !== undefined) {
+                        try {
+                            await fetch('api.php?action=update_line_fields', {
+                                method: 'POST',
+                                headers: { 'Content-Type': 'application/json' },
+                                body: JSON.stringify({
+                                    batch_id:    batchId,
+                                    invoice_idx: line._batchInvoiceIdx,
+                                    line_idx:    line._batchLineIdx,
+                                    fields: {
+                                        stems:          line.stems,
+                                        price:          line.price,
+                                        line_total:     line.line_total,
+                                        total_line:     line.line_total,
+                                        total:          line.line_total,
+                                        price_per_stem: line.price,
+                                    },
+                                }),
+                            });
+                        } catch (err) {
+                            inp.style.borderColor = 'var(--err)';
+                            setTimeout(() => inp.style.borderColor = '', 1200);
+                        }
+                    }
+                    // Recalcular stats del invoice (total_usd / ok_count) y
+                    // re-renderizar el batch preservando expansiones para
+                    // que la columna "Total USD" del outer table refleje
+                    // el cambio.
+                    const invIdx = line._batchInvoiceIdx;
+                    if (invIdx !== undefined && batchAllResults[invIdx]) {
+                        _recomputeInvoiceStats(batchAllResults[invIdx]);
+                        _rerenderBatchPreservingOpen();
+                    }
+                };
+                inp.addEventListener('change', persist);
+                inp.addEventListener('keydown', e => {
+                    if (e.key === 'Enter') { e.preventDefault(); inp.blur(); }
+                });
+                inp.addEventListener('click', e => e.stopPropagation());
             });
         }
 
@@ -743,6 +942,53 @@
             if (batchId) window.location.href = `api.php?action=batch_download&batch_id=${batchId}`;
         });
         document.getElementById('btnBatchNew')?.addEventListener('click', () => batchReset());
+
+        // Re-procesar matches: re-ejecuta el matcher sobre las líneas
+        // del JSON del batch, sin volver a parsear los PDFs. Útil cuando
+        // cambian reglas del matcher (regla spray, foreign_brand, etc.)
+        // y queremos aplicarlas a un lote ya procesado.
+        document.getElementById('btnBatchRematch')?.addEventListener('click', async () => {
+            if (!batchId) { alert('No hay batch activo'); return; }
+            const btn = document.getElementById('btnBatchRematch');
+            const msg = document.getElementById('batchActionMsg');
+            const orig = btn.textContent;
+            btn.disabled = true;
+            btn.textContent = 'Re-procesando…';
+            if (msg) msg.textContent = '';
+            try {
+                const res = await fetch('api.php?action=rematch_batch', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ batch_id: batchId }),
+                });
+                const data = await res.json();
+                if (!data.ok) {
+                    if (msg) {
+                        msg.textContent = 'Error: ' + (data.error || 'desconocido');
+                        msg.className = 'page-actions__msg is-err';
+                    }
+                    return;
+                }
+                if (msg) {
+                    msg.textContent = `✓ ${data.facturas} facturas, ${data.lineas} líneas, ${data.cambios} cambios`;
+                    msg.className = 'page-actions__msg is-ok';
+                }
+                // Recargar el batch desde el JSON ya actualizado.
+                const r = await fetch(`api.php?action=batch_status&batch_id=${batchId}`);
+                const fresh = await r.json();
+                if (fresh && fresh.ok) {
+                    batchShowResults(fresh);
+                }
+            } catch (err) {
+                if (msg) {
+                    msg.textContent = 'Error de red: ' + err.message;
+                    msg.className = 'page-actions__msg is-err';
+                }
+            } finally {
+                btn.disabled = false;
+                btn.textContent = orig;
+            }
+        });
 
         function batchReset() {
             batchId = null;

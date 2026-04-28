@@ -28,7 +28,7 @@ $action = $_GET['action'] ?? 'process';
 
 if (in_array($action, ['batch_status', 'batch_download', 'learned_parsers', 'pending_review', 'lookup_article',
                         // v4: aliases y acciones nuevas que llegan vía GET
-                        'learned', 'get_synonyms', 'history', 'history_detail'])) {
+                        'learned', 'get_synonyms', 'history', 'history_detail', 'search_articulos'])) {
     if ($_SERVER['REQUEST_METHOD'] !== 'GET') {
         http_response_code(405);
         echo json_encode(['ok' => false, 'error' => 'Método no permitido']);
@@ -74,6 +74,12 @@ switch ($action) {
         break;
     case 'lookup_article':
         handleLookupArticle();
+        break;
+    case 'update_line_fields':
+        handleUpdateLineFields();
+        break;
+    case 'rematch_batch':
+        handleRematchBatch();
         break;
     case 'delete_synonym':
         handleDeleteSynonym();
@@ -180,21 +186,29 @@ function handleHistoryDetail(): void
              . $esc($st) . "</span>";
     };
 
+    // Paleta alineada con la del UI principal (v4 override):
+    //   body #FCFBF7 (casi blanco), cards #FFFFFF, borders #EBE7D9,
+    //   header crema #F5F2E8, olive acentos #848635.
     echo "<!doctype html><html lang='es'><head><meta charset='utf-8'>"
        . "<title>" . $esc($h['numero_factura']) . " — " . $esc($h['proveedor']) . "</title>"
        . "<style>"
-       . "body{font-family:system-ui,-apple-system,Segoe UI,Roboto;margin:0;padding:24px 32px;"
-       . "background:#f6f3ea;color:#222}"
-       . ".meta{background:#fff;border:1px solid #e2dfd5;border-radius:8px;padding:16px 20px;"
-       . "margin-bottom:16px;display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px}"
-       . ".meta div{font-size:12px;color:#888}.meta strong{display:block;font-size:15px;color:#222}"
-       . "table{width:100%;border-collapse:collapse;background:#fff;border:1px solid #e2dfd5;border-radius:8px;overflow:hidden}"
-       . "th,td{padding:8px 10px;border-bottom:1px solid #efeadc;text-align:left;font-size:12.5px;vertical-align:top}"
-       . "th{background:#eeeadf;font-weight:600;text-transform:uppercase;letter-spacing:.5px;font-size:10.5px;color:#666}"
-       . ".num{text-align:right;font-variant-numeric:tabular-nums}"
+       . "body{font-family:'Inter',system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;margin:0;padding:28px 32px;"
+       . "background:#FCFBF7;color:#10221C;-webkit-font-smoothing:antialiased}"
+       . "h1{margin:0 0 16px;font-size:24px;font-weight:700;letter-spacing:-0.01em}"
+       . ".meta{background:#FFF;border:1px solid #EBE7D9;border-radius:12px;padding:16px 20px;"
+       . "margin-bottom:16px;display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;"
+       . "box-shadow:0 1px 2px rgba(16,34,28,.04)}"
+       . ".meta div{font-size:11px;color:#5E6B65;text-transform:uppercase;letter-spacing:.08em}"
+       . ".meta strong{display:block;font-size:14px;color:#10221C;margin-top:4px;font-weight:600;text-transform:none;letter-spacing:normal}"
+       . "table{width:100%;border-collapse:separate;border-spacing:0;background:#FFF;border:1px solid #EBE7D9;border-radius:12px;overflow:hidden;box-shadow:0 1px 2px rgba(16,34,28,.04)}"
+       . "th,td{padding:10px 12px;border-bottom:1px solid #EBE7D9;text-align:left;font-size:13px;vertical-align:top}"
+       . "th{background:#F5F2E8;font-weight:600;text-transform:uppercase;letter-spacing:.08em;font-size:10.5px;color:#5E6B65}"
+       . ".num{text-align:right;font-variant-numeric:tabular-nums;font-family:'JetBrains Mono',ui-monospace,Menlo,Consolas,monospace;font-size:12.5px}"
        . "tr:last-child td{border-bottom:0}"
+       . ".empty-state{background:#FFF;border:1px solid #EBE7D9;border-radius:12px;padding:40px 24px;text-align:center;color:#5E6B65;box-shadow:0 1px 2px rgba(16,34,28,.04)}"
+       . ".empty-state strong{display:block;font-size:16px;color:#10221C;margin-bottom:6px}"
        . "</style></head><body>"
-       . "<h1 style='margin:0 0 12px'>" . $esc($h['numero_factura']) . "</h1>"
+       . "<h1>" . $esc($h['numero_factura']) . "</h1>"
        . "<div class='meta'>"
        . "<div>Proveedor<strong>" . $esc($h['proveedor']) . "</strong></div>"
        . "<div>PDF<strong>" . $esc($h['pdf_nombre']) . "</strong></div>"
@@ -202,17 +216,30 @@ function handleHistoryDetail(): void
        . "<div>Total USD<strong>$" . number_format((float)$h['total_usd'], 2) . "</strong></div>"
        . "<div>Líneas<strong>" . (int)$h['lineas'] . " · " . (int)$h['ok_count']
             . " ok · " . (int)$h['sin_match'] . " sin match</strong></div>"
-       . "</div>"
-       . "<table><thead><tr>"
+       . "</div>";
+
+    if (empty($lines)) {
+        // facturas_lineas está vacía para este numero_factura (el
+        // pipeline actual solo guarda la cabecera en `historial`, las
+        // líneas no se persisten aún). Mensaje explícito en lugar de
+        // tabla fantasma con columnas vacías.
+        echo "<div class='empty-state'>"
+           . "<strong>Las líneas de esta factura no están disponibles</strong>"
+           . "Procesada antes de activar la persistencia en la tabla <code>facturas_lineas</code>.<br>"
+           . "Reprocesa el PDF desde la pestaña <em>Procesar factura</em> para ver el detalle."
+           . "</div></body></html>";
+        return;
+    }
+
+    echo "<table><thead><tr>"
        . "<th style='width:28px'>#</th><th>Descripción</th><th>Especie</th><th>Variedad</th>"
        . "<th class='num'>Talla</th><th class='num'>SPB</th><th class='num'>Tallos</th>"
        . "<th class='num'>Precio</th><th class='num'>Total</th>"
        . "<th>Artículo VeraBuy</th><th>Match</th></tr></thead><tbody>";
-
     foreach ($lines as $i => $l) {
         echo "<tr>"
            . "<td>" . ($i + 1) . "</td>"
-           . "<td style='max-width:260px;color:#666'>" . $esc($l['raw_description']) . "</td>"
+           . "<td style='max-width:260px;color:#5E6B65;font-size:12px'>" . $esc($l['raw_description']) . "</td>"
            . "<td>" . $esc($l['especie']) . "</td>"
            . "<td><strong>" . $esc($l['variedad']) . "</strong></td>"
            . "<td class='num'>" . (int)$l['talla'] . "</td>"
@@ -222,7 +249,7 @@ function handleHistoryDetail(): void
            . "<td class='num'>" . number_format((float)$l['total_linea'], 2) . "</td>"
            . "<td>" . ($l['id_articulo']
                ? "<strong>#" . (int)$l['id_articulo'] . "</strong> " . $esc($l['nombre_articulo'])
-               : "<em style='color:#888'>—</em>") . "</td>"
+               : "<em style='color:#8B9892'>—</em>") . "</td>"
            . "<td>" . $statusBadge($l['match_status'] ?? '') . "</td>"
            . "</tr>";
     }
@@ -356,29 +383,7 @@ function handleProcess(): void
         $parsed['pdf']         = $parsed['pdf']         ?? basename($dest);
 
         if (isset($parsed['lines']) && is_array($parsed['lines'])) {
-            foreach ($parsed['lines'] as &$line) {
-                // Línea normal o mixed_parent — mapear campos que app.js v4
-                // espera con otro nombre.
-                if (isset($line['line_total']) && !isset($line['total_line'])) {
-                    $line['total_line'] = $line['line_total'];
-                }
-                if (isset($line['match_confidence']) && !isset($line['confidence'])) {
-                    $line['confidence'] = $line['match_confidence'];
-                }
-                // mixed_parent tiene children[]; aplica recursivo
-                if (isset($line['children']) && is_array($line['children'])) {
-                    foreach ($line['children'] as &$child) {
-                        if (isset($child['line_total']) && !isset($child['total_line'])) {
-                            $child['total_line'] = $child['line_total'];
-                        }
-                        if (isset($child['match_confidence']) && !isset($child['confidence'])) {
-                            $child['confidence'] = $child['match_confidence'];
-                        }
-                    }
-                    unset($child);
-                }
-            }
-            unset($line);
+            _v4AdaptLines($parsed['lines']);
         }
 
         echo json_encode($parsed, JSON_UNESCAPED_UNICODE);
@@ -597,6 +602,21 @@ function handleSaveSynonym(): void
     ];
     _shadowLogDecision('correct', $shadowInput, 0, $artId, $artName);
 
+    _patchBatchLine(
+        $input['batch_id']    ?? null,
+        $input['invoice_idx'] ?? null,
+        $input['line_idx']    ?? null,
+        [
+            'articulo_id'      => $artId,
+            'articulo_id_erp'  => $artIdErp,
+            'articulo_name'    => $artName,
+            'match_status'     => 'ok',
+            'match_method'     => 'manual-web',
+            'match_confidence' => 1.0,
+            'confidence'       => 1.0,
+        ]
+    );
+
     echo json_encode(['ok' => true, 'message' => 'Sinónimo guardado']);
 }
 
@@ -612,55 +632,237 @@ function handleConfirmMatch(): void
         echo json_encode(['ok' => false, 'error' => 'Datos incompletos']);
         return;
     }
-    $key = $input['key'];
-    $artId = (int)($input['articulo_id'] ?? 0);
+    $key      = $input['key'];
+    $artId    = (int)($input['articulo_id'] ?? 0);
+    $artIdErp = trim((string)($input['articulo_id_erp'] ?? ''));
+
+    // Política 10q/10r: la identidad del artículo SIEMPRE viaja por
+    // id_erp (o referencia). El id autoincrement es volátil entre
+    // reimports. Si el cliente no envió id_erp pero sí el id local,
+    // hidratarlo desde la BBDD — si no conseguimos id_erp, rechazamos
+    // porque no podemos tomar una decisión estable.
+    $db = get_db();
+    if ($artIdErp === '' && $artId > 0 && $db) {
+        $artIdErp = _getArtIdErp($db, $artId);
+    }
+    if ($artIdErp === '') {
+        echo json_encode(['ok' => false, 'error' => 'Falta articulo_id_erp (identidad estable requerida)']);
+        return;
+    }
+
+    // Resolver el artículo canónico desde id_erp para poder reasignar
+    // con nombre correcto si resulta ser una corrección implícita.
+    $artRow = _lookupArticleByErpOrRef($db, $artIdErp);
+    if (!$artRow) {
+        echo json_encode([
+            'ok'    => false,
+            'error' => "Artículo id_erp «$artIdErp» no existe en el catálogo",
+        ]);
+        return;
+    }
+    $artId    = (int)$artRow['id'];
+    $artIdErp = (string)($artRow['id_erp'] ?? $artIdErp);
+    $artName  = (string)($artRow['nombre'] ?? ($input['articulo_name'] ?? ''));
 
     $data = [];
     if (file_exists(SYNONYMS_FILE)) {
         $data = json_decode(file_get_contents(SYNONYMS_FILE), true) ?? [];
     }
+    // Si la entry no existe aún (caso típico: el matcher propuso el
+    // artículo pero con confianza baja → ambiguous/revisar → Python no
+    // guardó sinónimo), crearla ahora como manual_confirmado. El tick
+    // del operador es evidencia suficientemente fuerte.
     if (!isset($data[$key])) {
-        echo json_encode(['ok' => false, 'error' => 'Sinónimo no encontrado']);
+        $parts   = explode('|', $key);
+        $provId  = isset($parts[0]) ? (int)$parts[0] : 0;
+        $especie = $parts[1] ?? '';
+        $variety = $parts[2] ?? '';
+        $talla   = isset($parts[3]) ? (int)$parts[3] : 0;
+        $spb     = isset($parts[4]) ? (int)$parts[4] : 0;
+        $grado   = $parts[5] ?? '';
+        $data[$key] = [
+            'articulo_id'       => $artId,
+            'articulo_id_erp'   => $artIdErp,
+            'articulo_name'     => $artName,
+            'origen'            => 'manual-web',
+            'provider_id'       => $provId,
+            'species'           => $especie,
+            'variety'           => $variety,
+            'size'              => $talla,
+            'stems_per_bunch'   => $spb,
+            'grade'             => $grado,
+            'status'            => 'manual_confirmado',
+            'times_confirmed'   => 1,
+            'times_corrected'   => 0,
+            'last_confirmed_at' => date('c'),
+        ];
+        // UPSERT MySQL en la creación inicial.
+        if ($db) {
+            $stmt = $db->prepare(
+                "INSERT INTO sinonimos
+                    (clave, id_proveedor, nombre_factura, especie, talla,
+                     stems_per_bunch, grado, id_articulo, nombre_articulo, origen)
+                 VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, 'manual')
+                 ON DUPLICATE KEY UPDATE
+                    id_articulo     = VALUES(id_articulo),
+                    nombre_articulo = VALUES(nombre_articulo),
+                    origen          = 'manual'"
+            );
+            $stmt->bind_param(
+                'sissiisis',
+                $key, $provId, $variety, $especie, $talla,
+                $spb, $grado, $artId, $artName
+            );
+            $stmt->execute();
+        }
+        $json = json_encode($data, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
+        $tmp  = SYNONYMS_FILE . '.tmp';
+        file_put_contents($tmp, $json);
+        rename($tmp, SYNONYMS_FILE);
+
+        _shadowLogDecision('correct', $input, 0, $artId, $artName);
+        _patchBatchLine(
+            $input['batch_id']    ?? null,
+            $input['invoice_idx'] ?? null,
+            $input['line_idx']    ?? null,
+            [
+                'articulo_id'      => $artId,
+                'articulo_id_erp'  => $artIdErp,
+                'articulo_name'    => $artName,
+                'match_status'     => 'ok',
+                'match_method'     => 'manual-web',
+                'match_confidence' => 1.0,
+                'confidence'       => 1.0,
+            ]
+        );
+        echo json_encode([
+            'ok'              => true,
+            'message'         => 'Sinónimo creado y confirmado',
+            'action'          => 'save',
+            'new_status'      => 'manual_confirmado',
+            'articulo_id'     => $artId,
+            'articulo_id_erp' => $artIdErp,
+            'articulo_name'   => $artName,
+            'times_confirmed' => 1,
+        ]);
         return;
     }
     $entry = &$data[$key];
-    // Solo confirmar si el articulo_id coincide
-    if ($artId && (int)($entry['articulo_id'] ?? 0) !== $artId) {
-        echo json_encode(['ok' => false, 'error' => 'articulo_id no coincide con el sinónimo']);
-        return;
-    }
-    $entry['times_confirmed'] = (int)($entry['times_confirmed'] ?? 0) + 1;
-    $entry['last_confirmed_at'] = date('c');
-    // Ascenso de status
-    $status = $entry['status'] ?? 'aprendido_en_prueba';
-    if (in_array($status, ['aprendido_en_prueba', ''], true)) {
-        $entry['status'] = 'aprendido_confirmado';
-    }
-    // Hidratar articulo_id_erp si la entry es vieja y no lo tiene todavía.
-    // Sesión 10q: id_erp es la clave estable para preservar vínculos entre
-    // reimports del dump del catálogo.
-    if (empty($entry['articulo_id_erp']) && $artId > 0) {
-        $db = get_db();
-        $erp = _getArtIdErp($db, $artId);
+
+    // Hidratar id_erp de la entry si falta (legacy pre-10q) para poder
+    // compararlos. Si no se puede hidratar, tratarlo como corrección.
+    $entryErp = trim((string)($entry['articulo_id_erp'] ?? ''));
+    if ($entryErp === '' && !empty($entry['articulo_id']) && $db) {
+        $erp = _getArtIdErp($db, (int)$entry['articulo_id']);
         if ($erp !== '') {
             $entry['articulo_id_erp'] = $erp;
+            $entryErp = $erp;
         }
     }
-    // Persist
+
+    $oldArtId = (int)($entry['articulo_id'] ?? 0);
+
+    if ($entryErp !== '' && $entryErp === $artIdErp) {
+        // Confirmación pura — mismo artículo (aunque el id local pueda
+        // haber cambiado por un reimport). Re-mapear id si es stale y
+        // promover el status. El click ✓ es la señal más fuerte
+        // disponible (operador acepta explícitamente la decisión), así
+        // que promovemos siempre a `manual_confirmado` (trust 0.98)
+        // — no a `aprendido_confirmado` (trust 0.85), que dejaba la
+        // confianza en ~0.846, justo bajo el umbral 0.90 de la UI y
+        // las líneas reaparecían como "Revisar" tras refresh/rematch.
+        if ($artId > 0 && $oldArtId !== $artId) {
+            $entry['articulo_id'] = $artId;
+        }
+        $entry['times_confirmed']   = (int)($entry['times_confirmed'] ?? 0) + 1;
+        $entry['last_confirmed_at'] = date('c');
+        $entry['origen']            = 'manual-web';
+        if (($entry['status'] ?? '') !== 'manual_confirmado') {
+            $entry['status'] = 'manual_confirmado';
+        }
+        $action = 'confirm';
+        $message = 'Match confirmado';
+    } else {
+        // Corrección implícita — el operador confirma un artículo
+        // distinto al almacenado. Reasignar la entry al nuevo artículo
+        // con estado manual_confirmado. Se registra en shadow como
+        // correct (decided != proposed).
+        $entry['articulo_id']       = $artId;
+        $entry['articulo_id_erp']   = $artIdErp;
+        $entry['articulo_name']     = $artName;
+        $entry['origen']            = 'manual-web';
+        $entry['status']            = 'manual_confirmado';
+        $entry['times_confirmed']   = 1;
+        $entry['times_corrected']   = (int)($entry['times_corrected'] ?? 0) + 1;
+        $entry['last_confirmed_at'] = date('c');
+        $action = 'correct';
+        $message = 'Sinónimo reasignado al artículo confirmado';
+
+        // Reflejar también en MySQL (UPSERT al id_articulo nuevo).
+        $parts   = explode('|', $key);
+        $provId  = isset($parts[0]) ? (int)$parts[0] : 0;
+        $especie = $parts[1] ?? '';
+        $variety = $parts[2] ?? '';
+        $talla   = isset($parts[3]) ? (int)$parts[3] : 0;
+        $spb     = isset($parts[4]) ? (int)$parts[4] : 0;
+        $grado   = $parts[5] ?? '';
+        if ($db) {
+            $stmt = $db->prepare(
+                "INSERT INTO sinonimos
+                    (clave, id_proveedor, nombre_factura, especie, talla,
+                     stems_per_bunch, grado, id_articulo, nombre_articulo, origen)
+                 VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, 'manual')
+                 ON DUPLICATE KEY UPDATE
+                    id_articulo     = VALUES(id_articulo),
+                    nombre_articulo = VALUES(nombre_articulo),
+                    origen          = 'manual'"
+            );
+            $stmt->bind_param(
+                'sissiisis',
+                $key, $provId, $variety, $especie, $talla,
+                $spb, $grado, $artId, $artName
+            );
+            $stmt->execute();
+        }
+    }
+
+    // Persist JSON
     $json = json_encode($data, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
-    $tmp = SYNONYMS_FILE . '.tmp';
+    $tmp  = SYNONYMS_FILE . '.tmp';
     file_put_contents($tmp, $json);
     rename($tmp, SYNONYMS_FILE);
 
-    // Shadow mode: el operador confirmó la propuesta. Decided = proposed.
-    _shadowLogDecision('confirm', $input, $artId, $artId,
-                       $entry['articulo_name'] ?? '');
+    _shadowLogDecision($action, $input,
+                       $action === 'confirm' ? $artId : $oldArtId,
+                       $artId, $artName);
+
+    // Patchear batch_status/{id}.json si la línea venía de un batch, para
+    // que al refrescar la página la línea siga mostrando el artículo
+    // confirmado (no el original propuesto por Python).
+    _patchBatchLine(
+        $input['batch_id']    ?? null,
+        $input['invoice_idx'] ?? null,
+        $input['line_idx']    ?? null,
+        [
+            'articulo_id'      => $artId,
+            'articulo_id_erp'  => $artIdErp,
+            'articulo_name'    => $artName,
+            'match_status'     => 'ok',
+            'match_method'     => $action === 'confirm' ? 'sinónimo' : 'manual-web',
+            'match_confidence' => 1.0,
+            'confidence'       => 1.0,
+        ]
+    );
 
     echo json_encode([
-        'ok' => true,
-        'message' => 'Match confirmado',
-        'new_status' => $entry['status'],
-        'times_confirmed' => $entry['times_confirmed'],
+        'ok'              => true,
+        'message'         => $message,
+        'action'          => $action,
+        'new_status'      => $entry['status'],
+        'articulo_id'     => $artId,
+        'articulo_id_erp' => $artIdErp,
+        'articulo_name'   => $artName,
+        'times_confirmed' => $entry['times_confirmed'] ?? 0,
     ]);
 }
 
@@ -777,6 +979,21 @@ function handleCorrectMatch(): void
         'grade'           => $grado,
     ]);
     _shadowLogDecision('correct', $shadowInput, $oldArtId, $newArtId, $newArtName);
+
+    _patchBatchLine(
+        $input['batch_id']    ?? null,
+        $input['invoice_idx'] ?? null,
+        $input['line_idx']    ?? null,
+        [
+            'articulo_id'      => $newArtId,
+            'articulo_id_erp'  => $newArtIdErp,
+            'articulo_name'    => $newArtName,
+            'match_status'     => 'ok',
+            'match_method'     => 'manual-web',
+            'match_confidence' => 1.0,
+            'confidence'       => 1.0,
+        ]
+    );
 
     echo json_encode([
         'ok' => true,
@@ -1294,8 +1511,288 @@ function handleBatchStatus(): void
         return;
     }
 
+    // Enriquecer líneas con id_erp + aliases v4 cuando el batch ya ha
+    // terminado (resultados[].lines está poblado por batch_process.py).
+    if (!empty($data['resultados']) && is_array($data['resultados'])) {
+        foreach ($data['resultados'] as &$fac) {
+            if (!empty($fac['lines']) && is_array($fac['lines'])) {
+                _v4AdaptLines($fac['lines']);
+            }
+        }
+        unset($fac);
+    }
+
     $data['ok'] = true;
     echo json_encode($data, JSON_UNESCAPED_UNICODE);
+}
+
+/**
+ * Endpoint: actualizar campos numéricos de una línea de batch
+ * (stems/price/total). El operador los corrige cuando el parser captura
+ * mal algún valor — se persisten en batch_status para que la generación
+ * de orden use los datos correctos. Sólo aplica a líneas con contexto
+ * de batch; las del flujo "procesar factura" se mantienen en memoria.
+ */
+function handleUpdateLineFields(): void
+{
+    $input = json_decode(file_get_contents('php://input'), true);
+    if (!$input || empty($input['batch_id'])) {
+        echo json_encode(['ok' => false, 'error' => 'Datos incompletos (falta batch_id)']);
+        return;
+    }
+    $batchId    = $input['batch_id'];
+    $invoiceIdx = $input['invoice_idx'] ?? null;
+    $lineIdx    = $input['line_idx']    ?? null;
+    $fields     = $input['fields']      ?? [];
+    if ($invoiceIdx === null || $lineIdx === null) {
+        echo json_encode(['ok' => false, 'error' => 'invoice_idx y line_idx requeridos']);
+        return;
+    }
+    if (!is_array($fields) || empty($fields)) {
+        echo json_encode(['ok' => false, 'error' => 'fields vacío']);
+        return;
+    }
+
+    // Whitelist de campos editables. Aceptamos los aliases v4 y los
+    // nombres del pipeline Python para que ambos lados queden coherentes.
+    // 'label' es texto libre (destino/box-id editable por el operador);
+    // los demás son numéricos (stems/price/total).
+    $allowed_num  = ['stems', 'price', 'price_per_stem',
+                     'line_total', 'total_line', 'total'];
+    $allowed_text = ['label'];
+    $updates = [];
+    foreach ($fields as $k => $v) {
+        if (in_array($k, $allowed_text, true)) {
+            // Texto: trim + uppercase (los destinos son códigos como
+            // MARL/ASTURIAS/R15) + límite de longitud para evitar abuso.
+            if ($v === null) {
+                $updates[$k] = '';
+            } else {
+                $s = trim((string)$v);
+                if (mb_strlen($s) > 64) $s = mb_substr($s, 0, 64);
+                $updates[$k] = mb_strtoupper($s, 'UTF-8');
+            }
+        } elseif (in_array($k, $allowed_num, true)) {
+            if ($v === null || $v === '') {
+                $updates[$k] = null;
+            } else {
+                $num = is_numeric($v) ? (float)$v : null;
+                if ($num === null) continue;
+                $updates[$k] = $num;
+            }
+        }
+    }
+    if (empty($updates)) {
+        echo json_encode(['ok' => false, 'error' => 'Ningún campo válido en fields']);
+        return;
+    }
+
+    _patchBatchLine($batchId, $invoiceIdx, $lineIdx, $updates);
+
+    echo json_encode(['ok' => true, 'updated' => $updates]);
+}
+
+/**
+ * Re-ejecuta el matcher sobre un batch ya procesado, sin re-extraer
+ * los PDFs. Llama al script Python ``tools/rematch_batch.py`` que
+ * lee el JSON, reconstruye los InvoiceLine y reescribe los matches.
+ * Útil cuando han cambiado reglas del matcher y se quiere aplicarlas
+ * a un lote en disco sin obligar al operador a re-subir los PDFs.
+ *
+ * Body JSON: { batch_id }
+ */
+function handleRematchBatch(): void
+{
+    $input = json_decode(file_get_contents('php://input'), true) ?: [];
+    $batchId = trim((string)($input['batch_id'] ?? ''));
+    if ($batchId === '' || !preg_match('/^[a-zA-Z0-9_]+$/', $batchId)) {
+        echo json_encode(['ok' => false, 'error' => 'batch_id inválido']);
+        return;
+    }
+    $statusFile = BATCH_STATUS_DIR . '/' . $batchId . '.json';
+    if (!file_exists($statusFile)) {
+        echo json_encode(['ok' => false,
+                          'error' => "batch_status no encontrado: $batchId"]);
+        return;
+    }
+
+    $script = PROJECT_ROOT . '/tools/rematch_batch.py';
+    if (!file_exists($script)) {
+        echo json_encode(['ok' => false,
+                          'error' => 'tools/rematch_batch.py no encontrado']);
+        return;
+    }
+
+    $cmd = '"' . PYTHON_BIN . '" "' . $script . '" '
+         . escapeshellarg($batchId) . ' 2>&1';
+    $output = shell_exec($cmd);
+    if ($output === null) {
+        echo json_encode(['ok' => false,
+                          'error' => 'Error al ejecutar rematch_batch.py']);
+        return;
+    }
+
+    // El script imprime una línea JSON con el resumen.
+    $parsed = null;
+    foreach (preg_split("/\r?\n/", trim($output)) as $line) {
+        if ($line !== '' && $line[0] === '{') {
+            $maybe = json_decode($line, true);
+            if (is_array($maybe)) {
+                $parsed = $maybe;
+                break;
+            }
+        }
+    }
+    if (!$parsed) {
+        echo json_encode(['ok' => false,
+                          'error' => 'No se pudo parsear el resumen',
+                          'output' => substr($output, 0, 500)]);
+        return;
+    }
+    echo json_encode($parsed, JSON_UNESCAPED_UNICODE);
+}
+
+/**
+ * Patchea una línea dentro de batch_status/{id}.json para que las
+ * correcciones del operador (confirm/correct/save vía la UI) persistan
+ * entre refrescos de página. Recalcula ok_count del invoice afectado.
+ * Silencioso en error — nunca rompe la respuesta al cliente.
+ */
+function _patchBatchLine(?string $batchId, $invoiceIdx, $lineIdx, array $updates): void
+{
+    if (!$batchId || $invoiceIdx === null || $lineIdx === null) return;
+    if (!is_string($batchId) || !preg_match('/^[a-zA-Z0-9_]+$/', $batchId)) return;
+    $invIdx  = (int)$invoiceIdx;
+    $lnIdx   = (int)$lineIdx;
+    $file    = BATCH_STATUS_DIR . '/' . $batchId . '.json';
+    if (!file_exists($file)) return;
+
+    $raw = @file_get_contents($file);
+    if ($raw === false) return;
+    $data = json_decode($raw, true);
+    if (!is_array($data) || empty($data['resultados'][$invIdx]['lines'][$lnIdx])) {
+        return;
+    }
+
+    $line = &$data['resultados'][$invIdx]['lines'][$lnIdx];
+    foreach ($updates as $k => $v) {
+        $line[$k] = $v;
+    }
+    // Si el update marcó la línea como ok con confianza plena, limpiar
+    // también review_lane y validation_errors que Python hubiera
+    // establecido en el primer proceso — si no, el invoice sigue
+    // contando la línea como "revisar".
+    if (($line['match_status'] ?? '') === 'ok'
+        && (float)($line['confidence'] ?? 0) >= 0.84) {
+        $line['review_lane']       = 'auto';
+        $line['validation_errors'] = [];
+        $line['candidate_margin']  = max((float)($line['candidate_margin'] ?? 0), 0.1);
+    }
+
+    // Recalcular contadores del invoice tras el cambio. Espejo de
+    // _recomputeInvoiceStats() del frontend.
+    $inv = &$data['resultados'][$invIdx];
+    if (!empty($inv['lines']) && is_array($inv['lines'])) {
+        $ok          = 0;
+        $sin         = 0;
+        $needsReview = 0;
+        foreach ($inv['lines'] as $l) {
+            $st = $l['match_status'] ?? '';
+            if ($st === 'ok')            $ok++;
+            elseif ($st === 'sin_match') $sin++;
+
+            $conf = (float)($l['confidence'] ?? $l['match_confidence'] ?? 0);
+            $errs = $l['validation_errors'] ?? [];
+            $flaggedStatus = in_array($st, [
+                'ambiguous_match', 'sin_match', 'sin_parser',
+                'mixed_box', 'llm_extraido', 'pendiente',
+            ], true);
+            // Match por estimación (fuzzy/EST) — necesita confirmación
+            // del operador aunque el matcher lo haya devuelto ok.
+            $mm  = strtoupper((string)($l['match_method'] ?? ''));
+            $orn = strtoupper((string)($l['origin']       ?? ''));
+            $isFuzzy = (bool)preg_match('/\bFUZZY\b|\bESTIMATE\b|\bEST\b|AUTO-FUZZY/', $mm . ' ' . $orn);
+            // review_lane NO se usa como criterio: Python marca 'quick'
+            // por factores de extracción que no bloquean al operador
+            // una vez el artículo está vinculado.
+            $needsRow = $flaggedStatus
+                     || (!empty($errs) && is_array($errs))
+                     || $conf < 0.84
+                     || $isFuzzy;
+            if ($needsRow) $needsReview++;
+        }
+        $inv['ok_count']     = $ok;
+        $inv['sin_match']    = $sin;
+        $inv['needs_review'] = $needsReview;
+    }
+
+    // Escritura atómica (tmp + rename).
+    $tmp = $file . '.tmp';
+    if (@file_put_contents($tmp, json_encode($data, JSON_UNESCAPED_UNICODE)) !== false) {
+        @rename($tmp, $file);
+    }
+}
+
+/**
+ * Adapta líneas del pipeline Python al contrato que espera app.js v4:
+ *   - alias line_total → total_line
+ *   - alias match_confidence → confidence
+ *   - pobla articulo_id_erp mediante un único SELECT sobre articulos
+ * Aplica también a children[] (mixed_parent). Idempotente.
+ */
+function _v4AdaptLines(array &$lines): void
+{
+    // Recolectar articulo_id únicos para resolver id_erp en un único SELECT.
+    $artIds = [];
+    foreach ($lines as $l) {
+        if (!empty($l['articulo_id'])) {
+            $artIds[(int)$l['articulo_id']] = true;
+        }
+        if (isset($l['children']) && is_array($l['children'])) {
+            foreach ($l['children'] as $c) {
+                if (!empty($c['articulo_id'])) {
+                    $artIds[(int)$c['articulo_id']] = true;
+                }
+            }
+        }
+    }
+    $erpMap = [];
+    if ($artIds && ($db = get_db())) {
+        $in  = implode(',', array_map('intval', array_keys($artIds)));
+        $res = $db->query("SELECT id, id_erp FROM articulos WHERE id IN ($in)");
+        if ($res) {
+            while ($row = $res->fetch_assoc()) {
+                $erpMap[(int)$row['id']] = (string)($row['id_erp'] ?? '');
+            }
+        }
+    }
+
+    foreach ($lines as &$line) {
+        if (isset($line['line_total']) && !isset($line['total_line'])) {
+            $line['total_line'] = $line['line_total'];
+        }
+        if (isset($line['match_confidence']) && !isset($line['confidence'])) {
+            $line['confidence'] = $line['match_confidence'];
+        }
+        if (!empty($line['articulo_id']) && empty($line['articulo_id_erp'])) {
+            $line['articulo_id_erp'] = $erpMap[(int)$line['articulo_id']] ?? '';
+        }
+        if (isset($line['children']) && is_array($line['children'])) {
+            foreach ($line['children'] as &$child) {
+                if (isset($child['line_total']) && !isset($child['total_line'])) {
+                    $child['total_line'] = $child['line_total'];
+                }
+                if (isset($child['match_confidence']) && !isset($child['confidence'])) {
+                    $child['confidence'] = $child['match_confidence'];
+                }
+                if (!empty($child['articulo_id']) && empty($child['articulo_id_erp'])) {
+                    $child['articulo_id_erp'] = $erpMap[(int)$child['articulo_id']] ?? '';
+                }
+            }
+            unset($child);
+        }
+    }
+    unset($line);
 }
 
 /**

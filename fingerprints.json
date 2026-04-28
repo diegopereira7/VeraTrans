@@ -427,17 +427,22 @@
     "timestamp": "2026-04-15T10:48:02.154125"
   },
   "C:\\Users\\diego.pereira\\Desktop\\DOC VERA\\FACTURAS IMPORTACION\\PROVEEDORES\\PONDEROSA\\01 - 075-6537 6964 (334) - PONDEROSA 378.pdf": {
-    "hash_estructura": "97952d6a8df4",
-    "proveedor_candidato": "CLIENTE",
+    "hash_estructura": "01c0ac67474a",
+    "proveedor_candidato": "CLIENTE / CUSTOMER Y",
     "keywords": [
-      "SLU"
+      "FACTURA",
+      "FARM",
+      "FLOWERS",
+      "INVOICE",
+      "ROSE",
+      "SA"
     ],
     "num_paginas": 1,
     "tiene_tablas": false,
     "num_columnas": 0,
     "headers": [],
-    "confianza": 0.2,
-    "timestamp": "2026-04-15T10:48:45.012740"
+    "confianza": 0.7000000000000001,
+    "timestamp": "2026-04-27T10:14:09.518035"
   },
   "C:\\Users\\diego.pereira\\Desktop\\DOC VERA\\FACTURAS IMPORTACION\\PROVEEDORES\\PRESTIGE ROSES\\01 - 7. 729-4477 0843 (303) - PRESTIGE 6193.pdf": {
     "hash_estructura": "97952d6a8df4",

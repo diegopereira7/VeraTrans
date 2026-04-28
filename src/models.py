@@ -163,7 +163,10 @@ class InvoiceLine:
             if 'SPRAY' in v.upper():
                 base = f"CLAVEL SPRAY {g} {color} {sz}CM {u}U" if g else f"CLAVEL SPRAY {color} {sz}CM {u}U"
                 return base.replace('  ', ' ')
-            base = f"CLAVEL COL {g} {color} {sz}CM {u}U" if g else f"CLAVEL COL {color} {sz}CM {u}U"
+            # spb=10 indica mini clavel para cualquier proveedor COL
+            # (catálogo: "MINI CLAVEL COL FANCY/SELECT <COLOR> 70CM 10U").
+            prefix = 'MINI CLAVEL COL' if u == 10 else 'CLAVEL COL'
+            base = f"{prefix} {g} {color} {sz}CM {u}U" if g else f"{prefix} {color} {sz}CM {u}U"
             return base.replace('  ', ' ')
 
         if self.species == 'HYDRANGEAS':

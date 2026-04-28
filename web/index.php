@@ -111,11 +111,11 @@
                                         <th class="num" style="width:52px">Talla</th>
                                         <th class="num" style="width:42px">SPB</th>
                                         <th class="num" style="width:56px">Tallos</th>
-                                        <th class="num" style="width:68px">Precio</th>
-                                        <th class="num" style="width:78px">Total</th>
+                                        <th class="num" style="width:88px">Precio</th>
+                                        <th class="num" style="width:92px">Total</th>
+                                        <th style="width:90px">Destino</th>
                                         <th>Artículo VeraBuy</th>
                                         <th style="width:90px">Match</th>
-                                        <th style="width:160px">Acción</th>
                                     </tr>
                                 </thead>
                                 <tbody></tbody>
@@ -222,7 +222,9 @@
 
                     <div class="page-actions">
                         <button class="btn btn-primary" id="btnBatchExcel">Descargar Excel</button>
+                        <button class="btn btn-secondary" id="btnBatchRematch" title="Vuelve a ejecutar el matcher sobre las líneas del lote (no re-extrae los PDFs). Útil si han cambiado reglas del matcher.">Re-procesar matches</button>
                         <button class="btn btn-secondary" id="btnBatchNew">Nueva importación</button>
+                        <span id="batchActionMsg" class="page-actions__msg"></span>
                     </div>
                 </div>
             </section>
@@ -232,7 +234,7 @@
                 <div class="pageheader">
                     <div class="pageheader__title">
                         <h1>Historial</h1>
-                        <p>Todas las facturas procesadas — click para ver detalle.</p>
+                        <p>Todas las facturas procesadas.</p>
                     </div>
                 </div>
 
@@ -253,7 +255,6 @@
                                     <th class="num">OK</th>
                                     <th class="num">Sin Match</th>
                                     <th class="num">Total USD</th>
-                                    <th>Detalle</th>
                                 </tr>
                             </thead>
                             <tbody></tbody>

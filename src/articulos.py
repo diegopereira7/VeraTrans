@@ -332,28 +332,47 @@ class ArticulosLoader:
         Returns:
             Artículo con marca si existe (ej: 'ROSA MONDIAL 50CM 25U CERES'), None si no.
         """
+        from src.config import PROVIDERS
+        # Detectar strict_brands antes de tocar el auto-detect.
+        strict = False
+        own_pdata: Optional[dict] = None
+        if provider_key:
+            own_pdata = PROVIDERS.get(provider_key)
+        if not own_pdata:
+            for pkey, pdata in PROVIDERS.items():
+                if pdata.get('id') == provider_id:
+                    own_pdata = pdata
+                    if not provider_key:
+                        provider_key = pkey
+                    break
+        if own_pdata and own_pdata.get('strict_brands'):
+            strict = True
+
         brands = set()
-        # Marca del índice SQL (por id_proveedor del artículo)
-        b = self.brand_by_provider.get(provider_id)
-        if b:
-            brands.add(b)
+        if not strict:
+            # Marca del índice SQL (por id_proveedor del artículo)
+            b = self.brand_by_provider.get(provider_id)
+            if b:
+                brands.add(b)
         # Marca de la clave del proveedor en PROVIDERS
         if provider_key:
             brands.add(provider_key.upper())
+        # `catalog_brands` manuales del PROVIDERS entry — siempre se
+        # respetan, incluso con strict_brands.
+        if own_pdata:
+            for b in own_pdata.get('catalog_brands') or []:
+                brands.add(b.upper())
         # Buscar también marcas de otros providers con el mismo fmt (aliases)
-        # Ej: cantiza(2222) y valtho(435) comparten fmt='cantiza'
-        from src.config import PROVIDERS
-        for pkey, pdata in PROVIDERS.items():
-            if pdata.get('id') == provider_id:
-                brands.add(pkey.upper())
-                # Buscar marcas de otros providers con mismo fmt
-                fmt = pdata.get('fmt', '')
-                for pkey2, pdata2 in PROVIDERS.items():
-                    if pdata2.get('fmt') == fmt and pdata2.get('id') != provider_id:
-                        b2 = self.brand_by_provider.get(pdata2['id'])
-                        if b2:
-                            brands.add(b2)
-                break
+        # Ej: cantiza(2222) y valtho(435) comparten fmt='cantiza'.
+        # Esto NO se ve afectado por strict_brands porque mira a OTROS
+        # proveedores que sí pueden tener autodetect válido.
+        if own_pdata:
+            fmt = own_pdata.get('fmt', '')
+            for pkey2, pdata2 in PROVIDERS.items():
+                if pdata2.get('fmt') == fmt and pdata2.get('id') != provider_id:
+                    b2 = self.brand_by_provider.get(pdata2['id'])
+                    if b2:
+                        brands.add(b2)
         if not brands:
             return None
         name = name.upper().strip()
@@ -739,29 +758,50 @@ class ArticulosLoader:
 
         NO mezcla marcas de proveedores que comparten fmt (formato de parser),
         ya que fmt indica formato de factura, no marca comercial.
+
+        Si el PROVIDERS entry tiene `strict_brands=True`, ignora la
+        auto-detección (`brand_by_provider`/`brands_by_provider`). Solo
+        se usan la pkey + `catalog_brands`. Necesario cuando el id de
+        config apunta a un id_proveedor del catálogo que en realidad
+        pertenece a otro proveedor (Maxiflores comparte id 281 con
+        Agrivaldani/Luxus → 77 artículos `marca=NATUFLORA` no son suyos).
         """
+        from src.config import PROVIDERS
+        # Determinar `strict` antes de leer el auto-detect; primero por
+        # provider_key, luego por lookup de provider_id en PROVIDERS.
+        strict = False
+        matched_pdata: Optional[dict] = None
+        if provider_key:
+            matched_pdata = PROVIDERS.get(provider_key)
+        if not matched_pdata:
+            for pkey, pdata in PROVIDERS.items():
+                if pdata.get('id') == provider_id:
+                    matched_pdata = pdata
+                    if not provider_key:
+                        provider_key = pkey
+                    break
+        if matched_pdata and matched_pdata.get('strict_brands'):
+            strict = True
+
         brands = []
-        # Marca detectada del índice SQL (sufijo más frecuente)
-        b = self.brand_by_provider.get(provider_id)
-        if b:
-            brands.append(b)
-        # Marcas secundarias autodetectadas (Uma: UMA + VIOLETA).
-        extra_auto = self.brands_by_provider.get(provider_id)
-        if extra_auto:
-            brands.extend(extra_auto)
+        if not strict:
+            # Marca detectada del índice SQL (sufijo más frecuente)
+            b = self.brand_by_provider.get(provider_id)
+            if b:
+                brands.append(b)
+            # Marcas secundarias autodetectadas (Uma: UMA + VIOLETA).
+            extra_auto = self.brands_by_provider.get(provider_id)
+            if extra_auto:
+                brands.extend(extra_auto)
         # Clave del proveedor en PROVIDERS como posible marca
         if provider_key:
             brands.append(provider_key.upper())
-        # Buscar la clave del proveedor por id + registrar catalog_brands
-        # manuales (marcas multi-palabra que el autodetector no capta o
-        # cuando el id config no coincide con id_proveedor del catálogo).
-        from src.config import PROVIDERS
-        for pkey, pdata in PROVIDERS.items():
-            if pdata.get('id') == provider_id:
-                brands.append(pkey.upper())
-                for b in pdata.get('catalog_brands') or []:
-                    brands.append(b)
-                break
+        # `catalog_brands` manual del PROVIDERS entry (marcas multi-
+        # palabra que el autodetector ignora o cuando los ids no
+        # coinciden entre config y catálogo ERP).
+        if matched_pdata:
+            for b in matched_pdata.get('catalog_brands') or []:
+                brands.append(b)
         return list(dict.fromkeys(_normalize(b) for b in brands if b))
 
     def _has_brand(self, art: dict, brands: List[str]) -> bool:

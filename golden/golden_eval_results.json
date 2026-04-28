@@ -30,26 +30,81 @@
     "invoice": "",
     "pdf": "02 - 729-45641676 - BENCHMARK BENCHMARK GROWERS 103685.pdf",
     "gold_lines": 32,
-    "sys_lines": 32,
-    "matched_pairs": 32,
-    "missing_lines": 0,
-    "extra_lines": 0,
+    "sys_lines": 29,
+    "matched_pairs": 28,
+    "missing_lines": 4,
+    "extra_lines": 1,
     "field_accuracy": {
-      "variety": 1.0,
-      "species": 1.0,
-      "origin": 1.0,
-      "size": 1.0,
-      "stems_per_bunch": 1.0,
-      "stems": 1.0,
-      "line_total": 1.0
+      "variety": 0.812,
+      "species": 0.875,
+      "origin": 0.875,
+      "size": 0.875,
+      "stems_per_bunch": 0.875,
+      "stems": 0.812,
+      "line_total": 0.812
     },
-    "link_accuracy": 1.0,
-    "link_correct": 32,
+    "link_accuracy": 0.719,
+    "link_correct": 23,
     "link_total": 32,
-    "full_line_accuracy": 1.0,
-    "full_correct": 32,
+    "full_line_accuracy": 0.656,
+    "full_correct": 21,
     "full_total": 32,
-    "discrepancies": []
+    "discrepancies": [
+      {
+        "type": "missing_line",
+        "gold_variety": "ROSA",
+        "gold_stems": 250
+      },
+      {
+        "type": "missing_line",
+        "gold_variety": "BLANCO",
+        "gold_stems": 250
+      },
+      {
+        "type": "link_mismatch",
+        "gold_variety": "BLANCO",
+        "gold_articulo": "12113 (CLAVEL FANCY BLANCO 70CM 20U GOLDEN)",
+        "sys_articulo": "12182 (CLAVEL FANCY MIXTO 70CM 20U GOLDEN)"
+      },
+      {
+        "type": "link_mismatch",
+        "gold_variety": "ROJO",
+        "gold_articulo": "12211 (CLAVEL FANCY ROJO 70CM 20U GOLDEN)",
+        "sys_articulo": "12182 (CLAVEL FANCY MIXTO 70CM 20U GOLDEN)"
+      },
+      {
+        "type": "missing_line",
+        "gold_variety": "NOVEDADES",
+        "gold_stems": 250
+      },
+      {
+        "type": "missing_line",
+        "gold_variety": "BICOLOR",
+        "gold_stems": 250
+      },
+      {
+        "type": "link_mismatch",
+        "gold_variety": "MIXTO",
+        "gold_articulo": "12182 (CLAVEL FANCY MIXTO 70CM 20U GOLDEN)",
+        "sys_articulo": "26784 (MINI CLAVEL FANCY MIXTO 70CM 10U GOLDEN)"
+      },
+      {
+        "type": "link_mismatch",
+        "gold_variety": "MIXTO",
+        "gold_articulo": "12182 (CLAVEL FANCY MIXTO 70CM 20U GOLDEN)",
+        "sys_articulo": "26784 (MINI CLAVEL FANCY MIXTO 70CM 10U GOLDEN)"
+      },
+      {
+        "type": "link_mismatch",
+        "gold_variety": "MIXTO",
+        "gold_articulo": "12182 (CLAVEL FANCY MIXTO 70CM 20U GOLDEN)",
+        "sys_articulo": "26784 (MINI CLAVEL FANCY MIXTO 70CM 10U GOLDEN)"
+      },
+      {
+        "type": "extra_system_line",
+        "sys_variety": "MIXTO"
+      }
+    ]
   },
   {
     "provider_key": "brissas",

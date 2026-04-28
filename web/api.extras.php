@@ -231,6 +231,153 @@ if (!defined('VF_EXTRAS_LOADED')) {
     }
 
     // ═══════════════════════════════════════════════════════════════
+    // 2.5) SEARCH ARTICULOS — búsqueda libre por nombre / id_erp / ref
+    //
+    //   GET api.php?action=search_articulos&q=<texto>[&limit=20]
+    //
+    // Prioriza coincidencias exactas de id_erp y referencia, luego
+    // prefijo de referencia y id_erp, luego LIKE sobre el nombre.
+    // Soporta múltiples palabras en el nombre (todas deben aparecer).
+    // ═══════════════════════════════════════════════════════════════
+    if ($VF_ACTION === 'search_articulos') {
+        $q     = trim((string)($_GET['q'] ?? ''));
+        // Sin tope duro por defecto; el cliente puede pedir uno si
+        // quiere acotar. El sistema solo limita artículos cuyo
+        // `referencia` comience por F (artículos de flor) — el resto
+        // del catálogo no interesa para este flujo.
+        $limit = (int)($_GET['limit'] ?? 500);
+        if ($limit < 1)    $limit = 500;
+        if ($limit > 2000) $limit = 2000;
+
+        if ($q === '' || mb_strlen($q) < 2) {
+            $vf_json(['ok' => true, 'results' => []]);
+        }
+
+        $db = get_db();
+        if (!$db) $vf_json(['ok' => false, 'error' => 'DB no disponible', 'results' => []], 503);
+
+        $results   = [];
+        $seen      = [];  // dedup por id
+        // Restricción común a todas las consultas: solo artículos de
+        // flor (referencia empieza por F, case-insensitive).
+        $FLOR_FILTER = "UPPER(referencia) LIKE 'F%'";
+
+        // 1) Match exacto por id_erp
+        $stmt = $db->prepare(
+            "SELECT id, id_erp, nombre, referencia, familia, color, marca, variedad, tamano, paquete
+             FROM articulos WHERE id_erp = ? AND $FLOR_FILTER LIMIT 1"
+        );
+        $stmt->bind_param('s', $q);
+        $stmt->execute();
+        $r = $stmt->get_result();
+        while ($row = $r->fetch_assoc()) {
+            $results[] = $row + ['match_type' => 'id_erp_exact'];
+            $seen[(int)$row['id']] = true;
+        }
+        $stmt->close();
+
+        // 2) Match exacto por referencia (case-insensitive)
+        if (count($results) < $limit) {
+            $refUp = mb_strtoupper($q);
+            $stmt = $db->prepare(
+                "SELECT id, id_erp, nombre, referencia, familia, color, marca, variedad, tamano, paquete
+                 FROM articulos WHERE UPPER(referencia) = ? AND $FLOR_FILTER LIMIT 1"
+            );
+            $stmt->bind_param('s', $refUp);
+            $stmt->execute();
+            $r = $stmt->get_result();
+            while ($row = $r->fetch_assoc()) {
+                if (empty($seen[(int)$row['id']])) {
+                    $results[] = $row + ['match_type' => 'ref_exact'];
+                    $seen[(int)$row['id']] = true;
+                }
+            }
+            $stmt->close();
+        }
+
+        // 3) Prefijo por id_erp o referencia
+        if (count($results) < $limit) {
+            $remaining = $limit - count($results);
+            $prefix    = $q . '%';
+            $prefixUp  = mb_strtoupper($q) . '%';
+            $stmt = $db->prepare(
+                "SELECT id, id_erp, nombre, referencia, familia, color, marca, variedad, tamano, paquete
+                 FROM articulos
+                 WHERE (id_erp LIKE ? OR UPPER(referencia) LIKE ?) AND $FLOR_FILTER
+                 ORDER BY LENGTH(id_erp), LENGTH(referencia)
+                 LIMIT ?"
+            );
+            $stmt->bind_param('ssi', $prefix, $prefixUp, $remaining);
+            $stmt->execute();
+            $r = $stmt->get_result();
+            while ($row = $r->fetch_assoc()) {
+                if (empty($seen[(int)$row['id']])) {
+                    $results[] = $row + ['match_type' => 'code_prefix'];
+                    $seen[(int)$row['id']] = true;
+                }
+            }
+            $stmt->close();
+        }
+
+        // 4) Búsqueda full-text por nombre — todas las palabras deben
+        //    aparecer (AND de LIKE). Prioriza los más cortos (más
+        //    específicos) con ORDER BY LENGTH(nombre).
+        if (count($results) < $limit) {
+            $remaining = $limit - count($results);
+            $words = preg_split('/\s+/', mb_strtoupper($q));
+            $words = array_values(array_filter($words, fn($w) => mb_strlen($w) >= 2));
+            if (!empty($words)) {
+                $conds  = [];
+                $params = [];
+                $types  = '';
+                foreach ($words as $w) {
+                    $conds[]  = "UPPER(nombre) LIKE ?";
+                    $params[] = '%' . $w . '%';
+                    $types   .= 's';
+                }
+                $conds[] = $FLOR_FILTER;
+                $sql = "SELECT id, id_erp, nombre, referencia, familia, color, marca, variedad, tamano, paquete
+                        FROM articulos
+                        WHERE " . implode(' AND ', $conds) . "
+                        ORDER BY LENGTH(nombre)
+                        LIMIT ?";
+                $types   .= 'i';
+                $params[] = $remaining;
+                $stmt = $db->prepare($sql);
+                $stmt->bind_param($types, ...$params);
+                $stmt->execute();
+                $r = $stmt->get_result();
+                while ($row = $r->fetch_assoc()) {
+                    if (empty($seen[(int)$row['id']])) {
+                        $results[] = $row + ['match_type' => 'name_like'];
+                        $seen[(int)$row['id']] = true;
+                    }
+                }
+                $stmt->close();
+            }
+        }
+
+        // Normalizar ints
+        $out = array_map(function($r) {
+            return [
+                'id'         => (int)$r['id'],
+                'id_erp'     => (string)($r['id_erp'] ?? ''),
+                'nombre'     => $r['nombre'],
+                'referencia' => $r['referencia'],
+                'familia'    => $r['familia'],
+                'color'      => $r['color'],
+                'marca'      => $r['marca'],
+                'variedad'   => $r['variedad'],
+                'tamano'     => (int)($r['tamano'] ?? 0),
+                'paquete'    => (int)($r['paquete'] ?? 0),
+                'match_type' => $r['match_type'],
+            ];
+        }, $results);
+
+        $vf_json(['ok' => true, 'results' => $out, 'query' => $q]);
+    }
+
+    // ═══════════════════════════════════════════════════════════════
     // 3) PRICE ANOMALIES TIMELINE — serie histórica de precio_stem
     //    de facturas_lineas cruzada con historial para la fecha
     // ═══════════════════════════════════════════════════════════════

@@ -22,6 +22,7 @@ Se añade:
 from __future__ import annotations
 
 import logging
+import re
 import subprocess
 from typing import Optional
 
@@ -68,19 +69,24 @@ def get_last_extraction() -> Optional[ExtractionResult]:
     return _last_extraction
 
 
-def extract_text(path: str) -> str:
+def extract_text(path: str, force_ocr: bool = False) -> str:
     """Extrae el texto completo de un PDF (API pública, retrocompatible).
 
     Internamente llama a :func:`src.extraction.extract` que elige estrategia
     por página. Si el router no está disponible (p.ej. pdfplumber sin instalar)
     cae al fallback de ``pdftotext``.
 
+    ``force_ocr=True`` salta el texto nativo y va directo al OCR — usado
+    por ``detect_provider`` cuando el proveedor declara este flag en config
+    (p.ej. MILONGA, cuyo PDF nativo tiene CMap de fuente roto y devuelve
+    "Rlse Ank lvbndial" en vez de "Rose Pink Mondial").
+
     Raises:
         RuntimeError: Si no hay ninguna herramienta de extracción disponible.
     """
     global _last_extraction
     try:
-        result = _extract_result(path)
+        result = _extract_result(path, force_ocr=force_ocr)
     except Exception as e:
         logger.warning("Router de extracción falló en %s: %s", path, e)
         result = None
@@ -173,6 +179,21 @@ def detect_provider(path: str) -> Optional[dict]:
                 best_data = pdata
                 break  # un match por proveedor es suficiente
     if best_key is not None:
+        # Detección de CMap roto: algunos proveedores (MILONGA) entregan
+        # PDFs con la fuente mal mapeada → "Rose Pink Mondial" se lee como
+        # "Rlse Ank lvbndial" pero la imagen renderizada es legible. Para
+        # esos casos hay un patrón regex en config (`ocr_if_corrupt`) que
+        # marca la corrupción característica; si aparece, re-extraer con
+        # OCR. El check es por-factura porque dos facturas del mismo
+        # proveedor pueden tener calidad de fuente distinta.
+        ocr_pat = best_data.get('ocr_if_corrupt')
+        force_ocr = bool(best_data.get('force_ocr'))
+        was_native = _last_extraction is None or _last_extraction.source == 'native'
+        if was_native and (force_ocr or (ocr_pat and re.search(ocr_pat, text))):
+            try:
+                text = extract_text(path, force_ocr=True)
+            except (RuntimeError, OSError) as e:
+                logger.warning("force_ocr fallo en %s: %s", path, e)
         return {**best_data, 'key': best_key, 'text': text}
     return None
 

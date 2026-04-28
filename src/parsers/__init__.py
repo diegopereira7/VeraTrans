@@ -6,6 +6,7 @@ from src.parsers.colibri import ColibriParser
 from src.parsers.golden import GoldenParser
 from src.parsers.latin import LatinParser
 from src.parsers.mystic import MysticParser
+from src.parsers.ecoflor import EcoflorParser
 from src.parsers.alegria import AlegriaParser
 from src.parsers.sayonara import SayonaraParser
 from src.parsers.life import LifeParser
@@ -118,6 +119,7 @@ FORMAT_PARSERS = {
     'florsani'   : FlorsaniParser(),
     'maxi'       : MaxiParser(),
     'mystic'     : MysticParser(),
+    'ecoflor'    : EcoflorParser(),
     'prestige'   : PrestigeParser(),
     'rosely'     : RoselyParser(),
     'condor'     : CondorParser(),

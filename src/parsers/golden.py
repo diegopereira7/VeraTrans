@@ -13,7 +13,8 @@ class GoldenParser:
     - Lineas con 2+ colores se dividen en sublineas (50/50)
     - Articulos en BD: "CLAVEL FANCY {COLOR} 70CM 20U GOLDEN"
     """
-    _LABELS = {'PUERTO','ASTURIAS','BARRAL','PYTI','DANI','GIJON','CRISTIAN'}
+    _LABELS = {'PUERTO','ASTURIAS','BARRAL','PYTI','DANI','GIJON','CRISTIAN',
+               'ARCEDIANO','CORUNA','CORUÑA','ELIXIR','ORQUIDEA'}
     _COLOR_MAP = {
         'WH':'BLANCO','WHITE':'BLANCO','BLANCO':'BLANCO',
         'RD':'ROJO','RED':'ROJO','ROJO':'ROJO',
@@ -48,17 +49,45 @@ class GoldenParser:
         if not colors: colors = ['MIXTO']
         return label, colors
 
+    # Colores inline aceptados después de "CARNATION FANCY ..." (sin CONSUMER BUNCH).
+    # Layout secundario de Benchmark/Golden para mini claveles con destino:
+    #   "1 Q 300 300 CARNATION FANCY DARK PINK ARCEDIANO FCY DP S2 DP 0.180 54.00"
+    # El color va inmediatamente después de FANCY/SELEC (puede llevar
+    # modificador DARK/LIGHT) y termina antes del label/destino.
+    _INLINE_COLOR = (
+        r'(?:DARK\s+|LIGHT\s+)?'
+        r'(?:PINK|RED|YELLOW|WHITE|GREEN|ORANGE|BLUE|PURPLE|LILAC'
+        r'|BICOLOR|BICOLORES|MIX|MIXED|ASSORTED|NOVEDADES'
+        r'|CREAM|PEACH|HOTPINK|BURGUNDY)'
+    )
+
+    def _translate_inline_color(self, txt:str) -> str:
+        """Traduce colores inline tipo 'DARK PINK', 'YELLOW', 'BICOLOR' al catálogo."""
+        t = txt.upper().strip()
+        m = re.match(r'^(DARK|LIGHT)\s+(.+)$', t)
+        suffix = ''
+        if m:
+            suffix = ' OSCURO' if m.group(1) == 'DARK' else ' CLARO'
+            t = m.group(2)
+        base = self._COLOR_MAP.get(t, t)
+        return (base + suffix).strip()
+
     def _parse_invoice_line(self, ln:str):
         """Parsea una linea de factura anclando en el campo Item Description fijo.
         FIX: también captura SPIDER, MUM BALL, SUPER MUMS, CONSUMER BUNCH MUM.
+        FIX: layout `CARNATION FANCY <COLOR>` (sin CONSUMER BUNCH) para mini
+        claveles con destino — sesión 12d.
         """
-        desc_m = re.search(
+        pattern = (
             r'(CONSUMER\s+BUNCH\s+CARNATION\s+(?:FANCY|SELEC\w*)'
-            r'|CONSUMER\s+BUNCH\s+MUM\s+BALL\s+\w+'   # CONSUMER BUNCH MUM BALL VERDILUGO
-            r'|SUPER\s+MUMS\s+\w+'                     # SUPER MUMS WHITE
-            r'|MUM\s+BALL\s+\w+'                        # MUM BALL GREEN
-            r'|CREMON\s+\w+'                            # CREMON GREEN/CREAM/ASSORTED
-            r'|MINICARNS\s+ASSORTED|SPIDER\s+\w+|ALSTRO\s+\w+\s+\w+)', ln, re.I)
+            r'|CARNATION\s+(?:FANCY|SELEC\w*)\s+' + self._INLINE_COLOR
+            + r'|CONSUMER\s+BUNCH\s+MUM\s+BALL\s+\w+'
+              r'|SUPER\s+MUMS\s+\w+'
+              r'|MUM\s+BALL\s+\w+'
+              r'|CREMON\s+\w+'
+              r'|MINICARNS\s+ASSORTED|SPIDER\s+\w+|ALSTRO\s+\w+\s+\w+)'
+        )
+        desc_m = re.search(pattern, ln, re.I)
         if not desc_m: return None
         item_desc = desc_m.group(1).upper()
         before = ln[:desc_m.start()].strip()
@@ -75,7 +104,8 @@ class GoldenParser:
             total=float(price_m.group(2).replace(',',''))
         except: return None
         grade_color = after[:price_m.start()].strip()
-        ic_m = re.search(r'\b(CB|MC)\s+\S+\s*$', grade_color, re.I)
+        # Item code: CB/MC al final, o S\d+ \S+ (formato mini-con-destino).
+        ic_m = re.search(r'\b(CB|MC|S\d+)\s+\S+\s*$', grade_color, re.I)
         if ic_m: grade_color = grade_color[:ic_m.start()].strip()
         return {'btype':btype,'upb':upb,'stems':stems,
                 'item_desc':item_desc,'grade_color':grade_color,
@@ -102,6 +132,12 @@ class GoldenParser:
             is_alstro='ALSTRO' in parsed['item_desc']
             is_mum=('MUM' in parsed['item_desc'] or 'CREMON' in parsed['item_desc']) and 'CARNATION' not in parsed['item_desc']
             is_selec='SELEC' in parsed['item_desc'] and 'FANCY' not in parsed['item_desc']
+            # Layout secundario "CARNATION FANCY <COLOR> <LABEL>" (sin CONSUMER
+            # BUNCH) — clavel regular (spb=20) con destino. Solo MINICARNS son
+            # mini clavel; este layout es CLAVEL FANCY normal.
+            is_inline_carn = ('CARNATION' in parsed['item_desc']
+                              and 'CONSUMER' not in parsed['item_desc']
+                              and not is_mini and not is_alstro)
             stems_total=parsed['stems']; total=parsed['total']; price=parsed['price_per_stem']
             btype=parsed['btype']
             if is_alstro:
@@ -147,19 +183,24 @@ class GoldenParser:
                 continue
 
             grade = 'SELECT' if is_selec else 'FANCY'
-            n=len(colors)
-            if n<=1:
-                il=InvoiceLine(raw_description=ln,species=sp,variety=colors[0],grade=grade,origin='COL',
-                               size=70,stems_per_bunch=spb,stems=stems_total,price_per_stem=price,
-                               line_total=total,box_type=btype,label=label,provider_key='golden')
-                lines.append(il)
-            else:
-                base=stems_total//n
-                for i,color in enumerate(colors):
-                    st=base if i<n-1 else stems_total-base*(n-1)
-                    lt=round(st*price,2)
-                    il=InvoiceLine(raw_description=ln,species=sp,variety=color,grade=grade,origin='COL',
-                                   size=70,stems_per_bunch=spb,stems=st,price_per_stem=price,
-                                   line_total=lt,box_type=btype,label=label,provider_key='golden')
-                    lines.append(il)
+            # Cajas multi-color (ej. "R45- MIX WH RD") se mapean a una
+            # única línea con variety='MIXTO'. El operador prefiere ver
+            # un único "Clavel Mixto" antes que dos sublíneas 50/50 con
+            # destinos artificiales — la caja física es una sola.
+            variety = colors[0] if len(colors)==1 else 'MIXTO'
+            # Layout mini-con-destino: el color va inline en el item_desc
+            # ("CARNATION FANCY DARK PINK"). Lo extraemos y traducimos al
+            # catálogo (DARK PINK → ROSA OSCURO). Pisa el `variety` derivado
+            # del grade_color porque ese campo aquí lleva ruido tipo
+            # "ARCEDIANO FCY DP" (label + redundancia).
+            if is_inline_carn:
+                inline_color = re.sub(
+                    r'^CARNATION\s+(?:FANCY|SELEC\w*)\s+',
+                    '', parsed['item_desc']).strip()
+                if inline_color:
+                    variety = self._translate_inline_color(inline_color)
+            il=InvoiceLine(raw_description=ln,species=sp,variety=variety,grade=grade,origin='COL',
+                           size=70,stems_per_bunch=spb,stems=stems_total,price_per_stem=price,
+                           line_total=total,box_type=btype,label=label,provider_key='golden')
+            lines.append(il)
         return h, lines

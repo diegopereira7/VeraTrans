@@ -122,6 +122,30 @@ _COLOR_MODIFIERS = {
     'NEON', 'BICOLOR',
 }
 
+# Tokens demasiado genéricos para servir de discriminador de variedad.
+# Casi todos los nombres de artículos de su especie los contienen, así
+# que `variety_match` dispararía con cualquier candidato (caso real:
+# variedad "GARDEN ROSE GROS" matcheando "ROSA EC DESERT ROSE" sólo
+# por el token compartido "ROSE"). Si tras filtrar estos tokens no
+# queda ninguno discriminante, el matcher trata la variedad como
+# `variety_no_overlap` para evitar `ok` falsos.
+_GENERIC_VARIETY_TOKENS = {
+    # Especies en inglés
+    'ROSE', 'ROSES', 'CARNATION', 'CARNATIONS',
+    'GYPSOPHILA', 'CHRYSANTHEMUM', 'HYDRANGEA',
+    'ALSTROEMERIA', 'ALSTRO', 'ALSTROMERIA',
+    # Especies/familias en español (pueden aparecer si la factura es ES)
+    'ROSA', 'ROSAS', 'CLAVEL', 'CLAVELES',
+    'PANICULATA', 'CRISANTEMO', 'HORTENSIA', 'HORTENSIAS',
+    # Modificadores de tipo, no de variedad
+    'MINI', 'SPRAY', 'GARDEN', 'STANDARD', 'EXTRA',
+    # Colores genéricos en inglés (los varietales suelen ser nombres
+    # propios, no colores planos; "ASSORTED ORANGE" matchearía cualquier
+    # naranja del catálogo). En español la traducción sí es discriminante
+    # cuando es la única señal del color, así que no se filtran ROJO/etc.
+    'COLORS', 'ASSORTED', 'MIX', 'MIXED',
+}
+
 
 _FOREIGN_BRANDS_CACHE: Optional[set[str]] = None
 # Patrón de sufijos que NO son marcas (tamaños, unidades, orígenes)
@@ -148,7 +172,11 @@ def _known_brands() -> set[str]:
             # Añadir variantes hardcodeadas que no se derivan de PROVIDERS
             brands.update({'FIORENTINA', 'MYSTIC', 'STAMPSY', 'CANTIZA',
                            'CERES', 'GOLDEN', 'LATIN', 'AGRIVALDANI',
-                           'SCARLET', 'MONTEROSAS', 'PONDEROSA', 'SANTOS'})
+                           'SCARLET', 'MONTEROSAS', 'PONDEROSA', 'SANTOS',
+                           # Variante con A final usada en el catálogo
+                           # (PROVIDERS key es 'natuflor' sin A → no
+                           # casaba 'NATUFLORA' como foreign brand).
+                           'NATUFLORA', 'NATUFLOR'})
             _FOREIGN_BRANDS_CACHE = brands
         except Exception:
             _FOREIGN_BRANDS_CACHE = set()
@@ -162,13 +190,24 @@ def _own_brands_norm(pkey: str, provider_id: int,
     Se usa tanto en `_score_candidate` (para disparar brand_in_name) como
     en `match_line` (para brand_boost). Centralizar evita divergencia
     si en el futuro se añade una tercera fuente de marca.
+
+    Si el PROVIDERS entry tiene `strict_brands=True`, NO se aplica la
+    auto-detección de marcas por proveedor (`brand_by_provider` /
+    `brands_by_provider`). Útil cuando el `id` de config apunta a una
+    fila del catálogo que pertenece a OTRO proveedor (Maxiflores comparte
+    id 281 con Agrivaldani/Luxus en el catálogo) y la auto-detección
+    contamina las "marcas propias" con artículos ajenos.
     """
     brands: set[str] = set()
+    strict = False
     if pkey:
+        from src.config import PROVIDERS
+        pdata = PROVIDERS.get(pkey) or {}
+        strict = bool(pdata.get('strict_brands'))
         pn = _normalize(pkey)
         if pn:
             brands.add(pn)
-    if art_loader and provider_id:
+    if art_loader and provider_id and not strict:
         # Primary brand (top-1) — retrocompatibilidad.
         catalog_brand = art_loader.brand_by_provider.get(provider_id)
         if catalog_brand:
@@ -318,6 +357,27 @@ def _infer_article_spb(art: dict) -> Optional[int]:
     return int(m.group(1)) if m else None
 
 
+def _is_spray_rose(line: InvoiceLine) -> bool:
+    """Detecta si una línea es rosa spray.
+
+    Criterios (cualquiera dispara):
+      - species=ROSES y stems_per_bunch=10
+      - species=ROSES y la variedad contiene ``\\bSP\\b`` o ``\\bSPRAY\\b``
+
+    Las rosas spray vienen siempre en paquetes de 10 (frente a 25 de la
+    rosa estándar). Algunos proveedores indican ``SP`` o ``SPRAY`` en el
+    texto de la variedad cuando el SPB no se puede extraer del PDF.
+    """
+    if line.species != 'ROSES':
+        return False
+    if line.stems_per_bunch == 10:
+        return True
+    var = (line.variety or '').upper()
+    if re.search(r'\bSP\b|\bSPRAY\b', var):
+        return True
+    return False
+
+
 def _hard_vetoes(line: InvoiceLine, art: dict) -> list[str]:
     """Vetos estructurales: devuelve lista de incompatibilidades.
 
@@ -347,6 +407,13 @@ def _hard_vetoes(line: InvoiceLine, art: dict) -> list[str]:
         sz_art = _infer_article_size(art)
         if sz_art and abs(sz_art - line.size) > _SIZE_TOL_MAX:
             v.append(f'size_mismatch({line.size}→{sz_art})')
+    # Spray rose: el catálogo distingue rosa spray de rosa estándar por
+    # paquete de 10 (las regulares son 25). Una línea spray NUNCA debe
+    # vincularse a un artículo con paquete distinto.
+    if _is_spray_rose(line):
+        spb_art = _infer_article_spb(art)
+        if spb_art is not None and spb_art != 10:
+            v.append(f'spray_spb_mismatch({spb_art})')
     return v
 
 
@@ -385,7 +452,7 @@ def _score_candidate(line: InvoiceLine, cand: Candidate,
     # apareciera en el nombre del artículo. Mantener solo A-Z/0-9/espacios.
     _var_clean = re.sub(r'[^A-Z0-9 ]+', ' ',
                         (line.variety or '').upper())
-    line_var_tokens = {t for t in _var_clean.split() if len(t) >= 3}
+    _all_var_tokens = {t for t in _var_clean.split() if len(t) >= 3}
 
     # Para claveles el catálogo suele indexar por color en español
     # (CLAVEL COL FANCY NARANJA), pero la factura llega con variedad
@@ -395,7 +462,14 @@ def _score_candidate(line: InvoiceLine, cand: Candidate,
         translated = translate_carnation_color(line.variety).upper()
         for t in translated.split():
             if len(t) >= 3:
-                line_var_tokens.add(t)
+                _all_var_tokens.add(t)
+
+    # Filtrar tokens genéricos (ROSE, ROSES, GARDEN, MINI, ...) — no
+    # son discriminantes de variedad. Si TODOS los tokens caen en el
+    # set genérico, mantener el original para no perder fuzzy hint
+    # pero marcar la variedad como genérica para downstream.
+    line_var_tokens = {t for t in _all_var_tokens if t not in _GENERIC_VARIETY_TOKENS}
+    variety_too_generic = bool(_all_var_tokens) and not line_var_tokens
 
     score = 0.0
     reasons: list[str] = []
@@ -726,6 +800,53 @@ class Matcher:
     def __init__(self, art: ArticulosLoader, syn: SynonymStore):
         self.art = art
         self.syn = syn
+
+    # ──────────────── Spray rose helpers ────────────────────────
+
+    def _build_spray_mixto_fallback(self, line: InvoiceLine) -> Optional['Candidate']:
+        """Construye un candidato `ROSA SPRAY MIXTO XCM 10U` para la talla
+        de la línea.
+
+        Se usa cuando la línea es spray (paquete 10) y ningún artículo
+        del catálogo casa exactamente con la variedad. La regla del
+        operador es: en lugar de proponer una variedad similar (fuzzy),
+        caer al genérico SPRAY MIXTO de la talla, marcado como
+        `ambiguous_match` para que el operador confirme manualmente.
+
+        Devuelve ``None`` si no existe ese artículo en el catálogo.
+
+        Importante: ``by_name`` deduplica el sufijo de marca, así que
+        ``ROSA SPRAY MIXTO 50CM 10U`` puede haber sido sobreescrito por
+        un branded (``... FIORENTINA``). Buscamos por nombre EXACTO
+        iterando los artículos para devolver siempre el genérico.
+        """
+        if not line.size:
+            return None
+        target = f'ROSA SPRAY MIXTO {int(line.size)}CM 10U'
+        # Iteración O(n) sobre artículos matchables. Cacheamos el
+        # resultado en `_spray_mixto_cache` del loader para reusarlo.
+        cache = getattr(self.art, '_spray_mixto_cache', None)
+        if cache is None:
+            cache = {}
+            for a in self.art.articulos.values():
+                nombre = (a.get('nombre') or '').upper().strip()
+                if nombre.startswith('ROSA SPRAY MIXTO ') and nombre.endswith('CM 10U'):
+                    # Solo el genérico sin marca al final.
+                    cache[nombre] = a
+            self.art._spray_mixto_cache = cache
+        art = cache.get(target)
+        if not art:
+            return None
+        cand = Candidate(
+            articulo=art,
+            method_hint='spray_mixto_fallback',
+            source='fallback',
+            hint_score=0.55,
+        )
+        cand.score = 0.55
+        cand.reasons = ['spray_mixto_fallback', 'size_exact', 'spb_match']
+        cand.penalties = []
+        return cand
 
     # ──────────────── Generadores de candidatos ────────────────
 
@@ -1085,6 +1206,47 @@ class Matcher:
                     pinned.reasons.append('manual_pin')
 
         viable.sort(key=lambda c: c.score, reverse=True)
+
+        # ── Regla de rosa spray ───────────────────────────────────────
+        # Para líneas spray (paquete 10) la variedad debe casar EXACTA:
+        # todos los tokens de la variedad deben aparecer en el nombre
+        # del artículo. No basta con un token compartido. Si ningún
+        # candidato cumple → se propone `ROSA SPRAY MIXTO XCM 10U` como
+        # fallback `ambiguous_match` para que el operador confirme.
+        # Ejemplo válido (CONSTELLATION 50cm 10spb):
+        #   ROSA EC CONSTELLATION 50CM 10U → variety_full ✓ → ok.
+        # Ejemplo bloqueado (SAHARA SENSATION 50cm 10spb):
+        #   ROSA MAG SENSATION ROJO 50CM 10U → variety_match parcial,
+        #   no variety_full → se descarta y se cae a ROSA SPRAY MIXTO.
+        if _is_spray_rose(line) and viable:
+            # Sinónimo confirmado por el operador anula el fallback: si
+            # el operador ya mapeó esta variedad a un artículo concreto
+            # (ej. CREAM IRISCHKA → ROSA IRISCHKA CREMA, o WEDDING
+            # SENSATION → ROSA SPRAY MIXTO con status manual_confirmado),
+            # reescribirlo cada rematch sería frustrante. Comprobamos el
+            # status del syn_entry directamente — el `trust_score` puede
+            # bajar a 0.83 con times_corrected=1 aunque la última acción
+            # del operador sea confirmar, y eso no debería descartar la
+            # decisión más reciente.
+            confirmed_statuses = ('manual_confirmado', 'aprendido_confirmado')
+            syn_confirmed = (
+                syn_entry is not None
+                and syn_entry.get('status') in confirmed_statuses
+            )
+            confirmed_syn_cands = (
+                [c for c in viable if c.source == 'synonym']
+                if syn_confirmed else []
+            )
+            full_match = [c for c in viable if 'variety_full' in c.reasons]
+            if confirmed_syn_cands:
+                viable = confirmed_syn_cands + [c for c in viable if c not in confirmed_syn_cands]
+            elif full_match:
+                viable = full_match + [c for c in viable if c not in full_match]
+            else:
+                fallback = self._build_spray_mixto_fallback(line)
+                if fallback is not None:
+                    viable = [fallback]
+
         line.candidate_count = len(viable)
         line.top_candidates = [
             {'id': c.articulo.get('id'),
@@ -1259,7 +1421,10 @@ class Matcher:
         # match es plausible por la mera existencia del sinónimo.
         plausible = ('variety_match' in top1.reasons
                      or top1.hint_score >= 0.85
-                     or top1.source == 'synonym')
+                     or top1.source == 'synonym'
+                     # Fallback de rosa spray al genérico MIXTO de la
+                     # talla — siempre es revisable, no descarte.
+                     or 'spray_mixto_fallback' in top1.reasons)
         if top1.score >= 0.50 and plausible:
             line.match_status = 'ambiguous_match'
             line.match_method = top1.method_hint or 'evidencia'

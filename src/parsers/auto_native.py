@@ -54,6 +54,22 @@ _LINE_TROPICAL_RE = re.compile(
     r'\$(?P<total>[\d,.]+)\s*$'
 )
 
+# Layout BOUQUET (NATIVEFARM facturas tropicales 2026):
+#   "HB 1 0,5 Bqt. Sweet 8 6,65 53,20"   ← parent: 1 box × 8 ramos × 6,65 = 53,20 (por caja)
+#   "HB 2 1 Bqt. Intense 8 6,65 53,20"   ← 2 cajas × 8 ramos × 6,65 = 106,40 (line_total = 2×53,20)
+#   "Alpinia A 0603.19.9095 ... Flower 4 0,21 32 6 ,86"  ← componentes (skip)
+# El "total per box" del parent (53,20) se multiplica por boxes para obtener line_total real.
+_LINE_BQT_PARENT_RE = re.compile(
+    r'^(?P<box_type>HB|QB|FB|TB)\s+'
+    r'(?P<boxes>\d+)\s+'
+    r'(?P<eq_full>[\d,.]+)\s+'
+    r'Bqt\.\s+(?P<name>[A-Za-z][A-Za-z0-9\s\-\']*?)\s+'
+    r'(?P<bunches_per_box>\d+)\s+'
+    r'(?P<price>[\d,.]+)\s+'
+    r'(?P<total_per_box>[\d,.]+)\s*$',
+    re.I,
+)
+
 _INVOICE_RE = re.compile(r'CUSTOMER\s+INVOICE\s+(\d+)', re.I)
 _DATE_RE    = re.compile(r'Date\s*:\s*(\d{1,2}/\d{1,2}/\d{4})', re.I)
 _AWB_RE     = re.compile(r'A\.W\.B\.\s*N[°º]?\s*:\s*(\S+)', re.I)
@@ -128,6 +144,38 @@ class AutoParser:
                 if len(variety) < 2 or len(variety) > 40:
                     continue
                 lines.append(self._build_line(s, m, last_box_type, last_farm, provider_data))
+                continue
+
+            # Bouquet parent (NATIVEFARM tropical bouquets)
+            m = _LINE_BQT_PARENT_RE.match(s)
+            if m:
+                name = m.group('name').strip().upper()
+                if not name or len(name) < 2:
+                    continue
+                try:
+                    boxes = int(m.group('boxes'))
+                    bunches_per_box = int(m.group('bunches_per_box'))
+                    price = _num(m.group('price'))
+                    total_per_box = _num(m.group('total_per_box'))
+                except ValueError:
+                    continue
+                total_bouquets = boxes * bunches_per_box
+                line_total = round(boxes * total_per_box, 2)
+                lines.append(InvoiceLine(
+                    raw_description=s[:120],
+                    species='OTHER',
+                    variety=name,
+                    origin='EC',
+                    size=0,
+                    stems_per_bunch=1,
+                    bunches=total_bouquets,
+                    stems=total_bouquets,
+                    price_per_stem=price,
+                    line_total=line_total,
+                    box_type=m.group('box_type').upper(),
+                    grade='BOUQUET',
+                    provider_key=provider_data.get('key', ''),
+                ))
                 continue
 
             # Tropical / foliage (sample boxes)

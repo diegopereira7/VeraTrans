@@ -198,14 +198,33 @@ function computeStatus(line) {
     if (s === 'revisar' || s === 'pendiente' || s === 'review') return 'revisar';
     return s || 'revisar';
 }
+// Una línea procede de un matching estimado (fuzzy / hint) si su
+// match_method u origin contienen 'fuzzy', 'estimate' o 'est'. Estos
+// matches se proponen aunque el solapamiento literal no sea total —
+// el operador debería revisarlos antes de aceptarlos como sinónimo.
+function _isFuzzyOrigin(line) {
+    const m = String(line.match_method || '').toUpperCase();
+    const o = String(line.origin       || '').toUpperCase();
+    const txt = m + ' ' + o;
+    return /\bFUZZY\b|\bESTIMATE\b|\bEST\b|AUTO-FUZZY/.test(txt);
+}
+
 function needsReview(line) {
     const st = computeStatus(line);
     // Regla alineada con computeStats: cualquier status que NO sea
     // `ok` confiable es review (cubre sin_match, revisar/pendiente,
     // ambiguous_match, llm_extraido, sin_parser, etc.). Para `ok` el
-    // gate es la confianza.
+    // gate es la confianza. Umbral 0.85 (no 0.90) para aceptar
+    // sinónimos `aprendido_confirmado` (trust 0.85, conf ~0.846) sin
+    // mandarlos a revisar — sí lo eran sinónimos auto-aprendidos pero
+    // con ≥2 hits independientes confirmando la decisión.
     if (st !== 'ok') return true;
-    if (line.confidence != null && line.confidence < 0.90) return true;
+    if (line.confidence != null && line.confidence < 0.84) return true;
+    // Matches por estimación/fuzzy también deben revisarse aunque
+    // el matcher haya devuelto `ok` con confianza alta — la
+    // evidencia es indirecta. La confirmación del operador (✓) o
+    // del buscador limpia el match_method a 'sinónimo'/'manual-web'.
+    if (_isFuzzyOrigin(line)) return true;
     return false;
 }
 
@@ -458,13 +477,36 @@ function renderLineRow(l, rowNum) {
         <tr class="is-clickable" data-row-idx="${l.idx}">
             <td><span class="line-num">${String(rowNum).padStart(2,'0')}</span></td>
             <td>${descHtml}</td>
-            <td>${esc(l.species || '—')}</td>
+            <td>${esc(l.species || '—')}${l.grade ? ` <span class="grade-pill">${esc(l.grade)}</span>` : ''}</td>
             <td>${esc(l.variety || '—')}</td>
             <td class="num">${l.size ?? '—'}</td>
             <td class="num">${l.spb ?? '—'}</td>
-            <td class="num">${fmtInt(l.stems)}</td>
-            <td class="num">${fmtPrice(l.price)}</td>
-            <td class="num">${fmt$(l.total)}</td>
+            <td class="num">
+                <input type="number" class="num-input line-stems" data-row-idx="${l.idx}"
+                       value="${l.stems ?? ''}" step="1" min="0" inputmode="numeric"
+                       aria-label="Tallos fila ${rowNum}">
+            </td>
+            <td class="num">
+                <div class="money-cell">
+                    <span class="money-prefix">$</span>
+                    <input type="number" class="num-input line-price" data-row-idx="${l.idx}"
+                           value="${l.price ?? ''}" step="0.0001" min="0" inputmode="decimal"
+                           aria-label="Precio fila ${rowNum}">
+                </div>
+            </td>
+            <td class="num">
+                <div class="money-cell">
+                    <span class="money-prefix">$</span>
+                    <input type="number" class="num-input line-total" data-row-idx="${l.idx}"
+                           value="${l.total ?? ''}" step="0.01" min="0" inputmode="decimal"
+                           aria-label="Total fila ${rowNum}">
+                </div>
+            </td>
+            <td class="dest-cell">
+                <input type="text" class="text-input line-label" data-row-idx="${l.idx}"
+                       value="${esc(l.label || '')}" maxlength="64"
+                       aria-label="Destino fila ${rowNum}" placeholder="—">
+            </td>
             <td>
                 <div style="display:flex;align-items:center;gap:8px">
                     ${badgeHtml}
@@ -475,13 +517,6 @@ function renderLineRow(l, rowNum) {
             <td>
                 ${chipHtml}
                 <div style="margin-top:4px">${confHtml}</div>
-            </td>
-            <td>
-                <div class="row-actions">
-                    <button class="icon-btn" data-action="drawer" data-row-idx="${l.idx}" title="Ver detalle">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
-                    </button>
-                </div>
             </td>
         </tr>`;
 }
@@ -505,13 +540,6 @@ function wireTableEvents() {
             const sel = window.getSelection && window.getSelection();
             if (sel && !sel.isCollapsed && sel.toString().length > 0) return;
             const idx = Number(tr.dataset.rowIdx);
-            openDrawer(idx);
-        });
-    });
-    tbody.querySelectorAll('button[data-action]').forEach(btn => {
-        btn.addEventListener('click', e => {
-            e.stopPropagation();
-            const idx = Number(btn.dataset.rowIdx);
             openDrawer(idx);
         });
     });
@@ -554,6 +582,17 @@ function wireTableEvents() {
                 inp.blur();   // dispara change
             }
         });
+        // Auto-save 800ms tras la última pulsación — para que escribir
+        // un id_erp y olvidarse de Enter/blur no descarte la corrección.
+        let _typingTimer = null;
+        inp.addEventListener('input', () => {
+            if (_typingTimer) clearTimeout(_typingTimer);
+            _typingTimer = setTimeout(() => {
+                if ((inp.value || '').trim() !== inp.__lastSavedVal) {
+                    persistFromInput();
+                }
+            }, 800);
+        });
     });
 
     // ✓ Guardar sinónimo (tick verde)
@@ -592,6 +631,147 @@ function wireTableEvents() {
             STATE.lines = STATE.lines.filter(l => !l._deleted);
             renderResult();
         });
+    });
+
+    // Editables: tallos / precio / total. Persisten contra
+    // batch_status si la línea viene de un lote, y siempre actualizan
+    // el modelo en memoria para que la generación de orden use los
+    // valores corregidos por el operador.
+    _wireNumericLineEditor(tbody, '.line-stems', 'stems');
+    _wireNumericLineEditor(tbody, '.line-price', 'price');
+    _wireNumericLineEditor(tbody, '.line-total', 'total');
+    _wireTextLineEditor(tbody, '.line-label', 'label');
+}
+
+function _wireNumericLineEditor(scope, selector, fieldKey) {
+    scope.querySelectorAll(selector).forEach(inp => {
+        inp.__lastVal = inp.value;
+        const persist = async () => {
+            const idx  = Number(inp.dataset.rowIdx);
+            const line = STATE.lines[idx];
+            if (!line) return;
+            if (inp.value === inp.__lastVal) return;
+            inp.__lastVal = inp.value;
+            const num = inp.value === '' ? null : Number(inp.value);
+            if (num !== null && !isFinite(num)) {
+                inp.style.borderColor = 'var(--err)';
+                setTimeout(() => inp.style.borderColor = '', 1200);
+                return;
+            }
+            line[fieldKey] = num;
+            // Mantener sincronizados los aliases que usa el backend /
+            // generación de orden.
+            if (fieldKey === 'price')  { line.price_per_stem = num; }
+            if (fieldKey === 'total')  { line.line_total     = num; line.total_line = num; }
+            if (fieldKey === 'stems')  { line.stems          = num; }
+
+            // Si cambia precio o tallos, recalcular total = precio × tallos
+            // (a menos que el operador haya editado total directamente —
+            // ese carril se respeta porque pasa por fieldKey='total').
+            // El total de cabecera se actualiza vía renderHeader() al final.
+            if (fieldKey === 'price' || fieldKey === 'stems') {
+                const stemsN = Number(line.stems || 0);
+                const priceN = Number(line.price ?? line.price_per_stem ?? 0);
+                if (stemsN > 0 && priceN >= 0) {
+                    const newTotal = +(stemsN * priceN).toFixed(2);
+                    line.total      = newTotal;
+                    line.line_total = newTotal;
+                    line.total_line = newTotal;
+                    // Reflejar en el input de total de la misma fila
+                    const tr = inp.closest('tr');
+                    const totalInp = tr && tr.querySelector('.line-total');
+                    if (totalInp) {
+                        totalInp.value = newTotal;
+                        totalInp.__lastVal = String(newTotal);
+                    }
+                }
+            }
+            // Refrescar el "Total factura" del header tras cualquier
+            // cambio numérico que afecte la suma.
+            if (typeof renderHeader === 'function') {
+                try { renderHeader(); } catch (e) {}
+            }
+
+            // Persistir si la línea proviene de un batch. Sin batch
+            // (procesar factura), el cambio queda en memoria y se
+            // refleja al generar la hoja de orden.
+            let batchId = null;
+            try { batchId = localStorage.getItem('verafact.lastBatchId'); } catch (e) {}
+            if (batchId && line._batchInvoiceIdx !== undefined && line._batchLineIdx !== undefined) {
+                try {
+                    await apiPost('update_line_fields', {
+                        batch_id:    batchId,
+                        invoice_idx: line._batchInvoiceIdx,
+                        line_idx:    line._batchLineIdx,
+                        fields: {
+                            stems:        line.stems,
+                            price:        line.price,
+                            line_total:   line.line_total,
+                            total_line:   line.line_total,
+                            total:        line.line_total,
+                            price_per_stem: line.price,
+                        },
+                    });
+                    if (window.VeraFact && typeof window.VeraFact.refreshBatchAfterLineChange === 'function') {
+                        window.VeraFact.refreshBatchAfterLineChange(line);
+                    }
+                } catch (err) {
+                    inp.style.borderColor = 'var(--err)';
+                    setTimeout(() => inp.style.borderColor = '', 1200);
+                }
+            }
+        };
+        inp.addEventListener('change', persist);
+        inp.addEventListener('keydown', e => {
+            if (e.key === 'Enter') { e.preventDefault(); inp.blur(); }
+        });
+        // El click en el input no debe abrir el drawer.
+        inp.addEventListener('click', e => e.stopPropagation());
+    });
+}
+
+// Editor de texto para campos como `label` (destino/box-id). Mismo
+// patrón que _wireNumericLineEditor pero sin coerción a número:
+// trim + uppercase para mantener el formato del catálogo (MARL,
+// ASTURIAS, R15...). Persiste a batch_status si la línea proviene de
+// un batch.
+function _wireTextLineEditor(scope, selector, fieldKey) {
+    scope.querySelectorAll(selector).forEach(inp => {
+        inp.__lastVal = inp.value;
+        const persist = async () => {
+            const idx  = Number(inp.dataset.rowIdx);
+            const line = STATE.lines[idx];
+            if (!line) return;
+            const cleaned = (inp.value || '').trim().toUpperCase().slice(0, 64);
+            if (inp.value !== cleaned) inp.value = cleaned;
+            if (cleaned === inp.__lastVal) return;
+            inp.__lastVal = cleaned;
+            line[fieldKey] = cleaned;
+
+            let batchId = null;
+            try { batchId = localStorage.getItem('verafact.lastBatchId'); } catch (e) {}
+            if (batchId && line._batchInvoiceIdx !== undefined && line._batchLineIdx !== undefined) {
+                try {
+                    await apiPost('update_line_fields', {
+                        batch_id:    batchId,
+                        invoice_idx: line._batchInvoiceIdx,
+                        line_idx:    line._batchLineIdx,
+                        fields: { [fieldKey]: cleaned },
+                    });
+                    if (window.VeraFact && typeof window.VeraFact.refreshBatchAfterLineChange === 'function') {
+                        window.VeraFact.refreshBatchAfterLineChange(line);
+                    }
+                } catch (err) {
+                    inp.style.borderColor = 'var(--err)';
+                    setTimeout(() => inp.style.borderColor = '', 1200);
+                }
+            }
+        };
+        inp.addEventListener('change', persist);
+        inp.addEventListener('keydown', e => {
+            if (e.key === 'Enter') { e.preventDefault(); inp.blur(); }
+        });
+        inp.addEventListener('click', e => e.stopPropagation());
     });
 }
 
@@ -1135,7 +1315,10 @@ async function generarOrden() {
             provider_id: STATE.provider_id,
             lines: STATE.lines.map(l => ({
                 idx: l.idx, articulo_id: l.articulo_id, articulo_id_erp: l.articulo_id_erp,
-                stems: l.stems, price: l.price, box_type: l.box_type,
+                stems: l.stems, price: l.price,
+                line_total: l.total ?? l.line_total,
+                total: l.total ?? l.line_total,
+                box_type: l.box_type,
             })),
         });
         if (r.ok) {
@@ -1163,7 +1346,7 @@ async function loadHistory() {
         const rows = r.invoices || r.historial || r.history || [];
         $('#historyLoading')?.classList.add('hidden');
         if (!rows.length) {
-            tbody.innerHTML = `<tr><td colspan="9" style="padding:24px;text-align:center;color:var(--ink-muted)">Sin facturas procesadas</td></tr>`;
+            tbody.innerHTML = `<tr><td colspan="8" style="padding:24px;text-align:center;color:var(--ink-muted)">Sin facturas procesadas</td></tr>`;
             return;
         }
         tbody.innerHTML = rows.map(h => `
@@ -1176,7 +1359,6 @@ async function loadHistory() {
                 <td class="num"><span class="chip chip--ok">${fmtInt(h.ok || h.ok_count)}</span></td>
                 <td class="num">${h.sin_match > 0 ? `<span class="chip chip--err">${h.sin_match}</span>` : '—'}</td>
                 <td class="num">${fmt$(h.total_usd)}</td>
-                <td><a class="btn btn-ghost btn-sm" href="${API}?action=history_detail&invoice_key=${encodeURIComponent(h.invoice_key || h.numero_factura || '')}" target="_blank">Ver →</a></td>
             </tr>
         `).join('');
     } catch (e) {

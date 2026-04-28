@@ -8,6 +8,326 @@ aquí y se quita de CLAUDE.md.
 Para el estado actual del proyecto, ver [`CLAUDE.md`](../CLAUDE.md) (raíz).
 Para lecciones transversales reutilizables, ver [`lessons.md`](lessons.md).
 
+### 2026-04-27 — sesión 12d: parsers CONDOR/MAXI/NATIVE rotos en batch real + GOLDEN MIX→MIXTO
+
+Ángel hizo importación masiva de 80+ facturas y reportó 3 parsers
+con error "no extrajo líneas". Diagnóstico y fix por pieza:
+
+(a) **CONDOR — layout 2026 con SPB y CUST_ORD inline**
+[`src/parsers/otros.py`](../src/parsers/otros.py) `CondorParser`. La
+proforma pasó de `15,00 QB HYD WHITE PREMIUM[00001] 350603199010
+525 0,48 252,00` (HTS pegado al SPB) a:
+```
+15,00 QB 35 00001 HYD WHITE PREMIUM 0603199010 525 0,48 252,00
+5,00 QB 35 HYD GREEN PREMIUM 0603199010 175 0,65 113,75   ← sin CUST_ORD
+```
+pdfplumber inserta SPB (`35`) y CUST_ORD opcional (`00001`) entre
+PACK y DESCRIPTION. Añadida regex aditiva que reconoce ambos —
+preserva variantes A/B antiguas. Resultado: 6/6 líneas, suma
+577.50 = `TOTAL USD 577,50` ✓.
+
+(b) **MAXI — layout BOUQUET en proforma**
+[`src/parsers/otros.py`](../src/parsers/otros.py) `MaxiParser`. Las
+proformas FLOR CALIDAD ahora venden RAMOS, no tallos:
+```
+BOUQUET GARDEN WHIMSY 50 CM 4 6 24 9.820 235.68
+BOUQUET A MOTHER'S LUXURY 50 CM 2 2 4 29.130 116.52
+```
+Columnas: `<bouquet> <talla> CM <boxes> <units_per_box>
+<total_units> <price> <total>`. Añadida regex `_pm_b` después de
+ROSE/SPR_RGARDEN, antes de ALSTRO. `species='OTHER'`,
+`grade='BOUQUET'`, `stems_per_bunch=1` (cada "stem" = 1 ramo).
+Resultado: 8/8 ramos, suma 1630.88 = `PAY THIS AMOUNT US $
+1,630.88` ✓.
+
+(c) **NATIVE (NATIVEFARM S.A.) — layout BOUQUET tropical**
+[`src/parsers/auto_native.py`](../src/parsers/auto_native.py)
+`AutoParser`. Layout completamente nuevo respecto al CALINAMA
+original (rosas) o al tropical sample (Heliconia + scientific
+name). Es de ramos compuestos:
+```
+HB 1 0,5 Bqt. Sweet 8 6,65 53,20             ← parent: 1 caja × 8 ramos × 6,65 = 53,20
+Alpinia A 0603.19.9095 0603.19.9090 Flower 4 0,21 32 6 ,86  ← componente (skip)
+HB 2 1 Bqt. Intense 8 6,65 53,20             ← parent: 2 cajas (line_total = 2×53,20 = 106,40)
+```
+Añadido `_LINE_BQT_PARENT_RE` antes del tropical_re. El precio
+total mostrado en el parent es **por caja**; multiplicamos por
+`boxes` para obtener `line_total` real. Componentes se ignoran (el
+matcher trabaja a nivel ramo, no de tallos individuales).
+Resultado: 4/4 ramos, suma 266.00 = `Total ... 266,00` ✓.
+
+(d) **GOLDEN/BENCHMARK — cajas MIX a una sola línea MIXTO**
+[`src/parsers/golden.py`](../src/parsers/golden.py). Petición del
+operador: cuando una caja CB es multi-color (`R45- MIX WH RD`)
+el parser splitting en 2 sublíneas 50/50 con destinos artificiales
+era confuso. Ahora multi-color → variedad `MIXTO` en una sola
+línea preservando stems/total reales. Single-color sigue mapeando
+al color exacto (`BLANCO`, `ROJO`, etc.). Aplica también a 3+
+colores (`MIX WH RD PK` → MIXTO).
+
+**Métricas globales** (post-12d):
+- Benchmark global: **3589 líneas**, ok 3376, ambig 56,
+  autoapprove **96.0% estable**.
+- BASE samples sin regresión: CONDOR 5/5 ✓, MAXIFLORES 5/5 ✓,
+  BENCHMARK 5/5 ✓, GOLDEN 5/5 ✓, NATIVE BLOOMS 4/5 sin cambio.
+- **Golden 997/997 intacto** (link 100%, full_line 99.8%).
+
+**Lección transversal**: los proveedores migran plantillas sin
+avisar. Cuando un parser reportado como "100% OK" empieza a
+fallar de golpe, suele ser plantilla nueva del año fiscal. Antes
+de tocar regex existentes, **diff** muestras viejas vs nuevas
+para identificar el delta de columnas. Solución universal: añadir
+regex aditiva por variante, nunca reescribir la regex base sin
+certeza de que la variante antigua está deprecada.
+
+### 2026-04-27 — sesión 12c: MILONGA OCR condicional para PDFs con CMap roto
+
+Ángel reportó que en una factura MILONGA reciente el variety se
+mostraba como `ANK LVBNDIAL` en lugar de `PINK MONDIAL` (y
+`ANK TVBNDIAL` por `PINK MONDIAL` 60cm). Diagnóstico:
+
+**Causa raíz** (no es escaneado, es font encoding):
+La factura es un PDF "nativo" (no escaneado) pero la fuente embedida
+tiene un CMap roto — los glyphs renderizan correctamente "Rose Pink
+Mondial" pero el texto extraído de la capa textual es
+"Rlse Ank lvbndial". Mapeo aproximado: `Rose→Rlse`,
+`Pi→A` (ligatura), `Mo→lv` (otra ligatura), etc. La imagen
+renderizada con `pdfplumber.to_image()` + `tesseract` da
+"Rose Fink Mondial" — solo 1 char de error (`P→F`) frente a 11.
+
+**Fix multi-pieza**:
+
+(a) **`force_ocr` parameter** en
+[`src/extraction.py`](../src/extraction.py) `extract()`: salta el
+triage nativo, fuerza el carril OCR per-page. Necesario porque
+`_triage_pdf` clasifica las páginas como "native" (tienen capa de
+texto, aunque sea basura).
+
+(b) **Fallback subprocess para tesseract** en
+[`src/extraction.py`](../src/extraction.py) `_ocr_page_tesseract`:
+intenta `pytesseract` primero; si no está, llama al binario
+`tesseract` por subprocess (`stdin → stdout` con `--psm 6`).
+Permite OCR sin dependencias Python adicionales (en este entorno
+sólo está el binario tesseract instalado, ni `pytesseract`, ni
+`pymupdf`, ni `easyocr`).
+
+(c) **Fallback de render** en
+[`src/extraction.py`](../src/extraction.py) `_render_page`:
+PyMuPDF primero, luego `pdfplumber.page.to_image()`. Quita la
+dependencia dura en PyMuPDF.
+
+(d) **`_ocr_with_ocrmypdf` con `force=True`** acepta `--force-ocr`
+en lugar de `--skip-text` para re-OCRizar páginas que ya tienen
+capa de texto (necesario para CMap roto, pero genera columnas
+mezcladas en MILONGA → bypass cuando `force_ocr=True` y se va
+directo al per-page).
+
+(e) **Detección condicional** en
+[`src/pdf.py`](../src/pdf.py) `detect_provider`: nuevo campo
+`ocr_if_corrupt` en `PROVIDERS` (regex). Cuando el proveedor
+detectado lo declara y la regex matchea en el texto nativo,
+re-extrae con `force_ocr=True`. **Solo dispara cuando hace falta**
+— las facturas MILONGA con CMap correcto siguen usando texto
+nativo (más rápido y más exacto en dígitos).
+
+**Config**:
+[`src/config.py`](../src/config.py): MILONGA gana
+`'ocr_if_corrupt': r'\bRlse\b'` — el "Rose" mal extraído como
+"Rlse" es la firma característica del CMap roto en este
+proveedor.
+
+**Migración**: 2 sinónimos huérfanos
+(`90026|ROSES|ANK LVBNDIAL|50|25|` y
+`90026|ROSES|ANK TVBNDIAL|60|25|`) ya tenían equivalentes con la
+clave OCR'd (`FINK MONDIAL|...`) generados por testing previo —
+old keys eliminados, conflictos resueltos preservando los nuevos.
+
+**Métricas**:
+- Benchmark global: 3566 líneas, ok 3355 (vs 3358 en 12b, −3),
+  ambig 54 (vs 47, +7), autoapprove **96.0%** (vs 96.1%, −0.1pp).
+- Golden 997/997 intacto (link 100%, full_line 99.8%).
+- Factura del usuario (web/uploads/1777274515_MILONGA.pdf):
+  9/10 líneas ok, variety ahora muestra `FINK MONDIAL` (en vez
+  de `ANK LVBNDIAL`) — 1 char de OCR vs 11 chars de CMap.
+
+**Lección transversal** (candidata
+[`lessons.md`](lessons.md)): "PDF nativo" no implica
+"texto nativo correcto". Hay tres casos distintos de PDF:
+(1) escaneado;
+(2) nativo limpio (texto y glyphs coinciden);
+(3) **nativo con CMap roto** (texto y glyphs no coinciden — las
+imágenes son legibles, el texto es soup de chars). El flag
+`ocr_if_corrupt` es por-PDF, no por-proveedor: dos facturas
+del mismo proveedor pueden tener calidad de fuente distinta.
+
+### 2026-04-27 — sesión 12b: parsers ECOFLOR (nuevo, dual-layout), MAXI2 PROFORMA y BRISSAS TINTED color-wrap
+
+Cierra el siguiente paso pendiente de la sesión 12a: los 3 parsers
+que el batch real de Ángel descubrió rotos al procesar el lote de
+32 facturas reales.
+
+**Parsers implementados**:
+
+(a) **ECOFLOR — parser propio nuevo**
+[`src/parsers/ecoflor.py`](../src/parsers/ecoflor.py). El proveedor
+estaba en `fmt='mystic'` y MysticParser cubría el layout antiguo
+(`1 H MONDIAL 12 25 50 300 0,290 87,000` — btype letra inline,
+columnas QTY SPB LENGTH STEMS) vía `_LINE_RE_NOCODE`. La plantilla
+2026 cambió a:
+```
+HBS                                    ← btype en línea propia
+1 MONDIAL 50 12 25 300 0,290 87,000   ← LENGTH QTY SPB STEMS
+(110.0*30.0*30.0)                     ← dimensiones (skip)
+```
+Sub-líneas mixed-box omiten el `box_n` y heredan el btype del
+HBS previo (caja 6 con VENDELA 50 11 ramos + VENDELA 60 1 ramo).
+El parser nuevo soporta **ambos layouts** (regex `_LINE_RE_OLD` y
+`_LINE_RE_NEW`); detecta layout viejo primero (más restrictivo:
+exige btype letra inline) y cae al nuevo si no matchea. Decimales
+con coma resueltos por `_num()` con heurística de último separador.
+Coherencia validada: `total_stems ≈ qty × spb` (tolerancia 5% o ±2)
+filtra falsos positivos como cabeceras "Length Qty ...".
+Resultado: 5/5 samples parseados, 58 líneas, 100% autoapprove. Old
+sample 10/10 + New sample 8/8, ambos con `sum_lines == header.total`.
+Config:
+[`src/config.py`](../src/config.py) `'ecoflor'` ahora usa
+`fmt='ecoflor'` (antes `'mystic'`).
+
+(b) **MAXI2 PROFORMA — regex `SPR RGARDEN`** en
+[`src/parsers/otros.py`](../src/parsers/otros.py) `MaxiParser`. La
+factura proforma tenía una sola línea
+`SPR RGARDEN BELLALINDA SWEETY 50 Cm 1 50 50 .500 25.00` que el
+parser ignoraba (los dos regex existentes solo cubrían `ROSE` y
+`ALSTRO`). Añadido un tercer regex aditivo (mismas columnas que
+ROSE: 3 nums finales son stems · price · total) con
+`grade='SPRAY'` y `spb=10` (default para spray rose). MAXI3
+regular (FREEDOM, ALSTRO TSTEM) intacto.
+
+(c) **BRISSAS TINTED — color wrap en celda VARIETIES**
+[`src/parsers/otros.py`](../src/parsers/otros.py) `BrissasParser`.
+La celda VARIETIES contenía `ROSE TINTED ROS TINTED\nRAINBOW` →
+`extract_text` la separaba en dos líneas: la principal de datos
+(numéricos) y una continuación con solo el color (a veces seguido
+de un `0` residual de otra columna que también envuelve, p.ej.
+`RAINBOW 0`). El parser limpiaba `TINTED ROS TINTED` → `TINTED`
+quedando sin color. **Fix**: tras parsear cada línea, si la
+siguiente es solo una palabra MAYUS (con cero residual opcional),
+**y** la variedad anterior es exactamente `TINTED`, **y** la
+palabra no es `ROSES` (para no confundir con el wrap del FARM
+"BYDDA ROSES" que aparece tras lineas EXPLORER), apendizar como
+color. Casos: 3931 y 3949 ambos `TINTED RAINBOW` ✓; 3952
+`TINTED BLUE` (ya funcionaba — color en la misma línea) intacto.
+
+**Métricas globales** (post-12b):
+- Benchmark global: **3566 líneas, ok 3358 (+3 vs 12a), ambig 47
+  (−3), autoapprove 96.1%** (récord stable).
+- ECOFLOR sale del bucket NO_PARSEA: ahora 5/5 parsed, 58/58
+  ok=57 (1 needs_review pendiente sinónimo manual de la nueva
+  variedad).
+- BRISSAS: 5/5 parsed, 171 líneas, 170 ok (1 needs_review =
+  TINTED RAINBOW recién recuperado).
+- MAXIFLORES: 5/5 parsed, 37 líneas, 29 ok (8 review = mezcla
+  de PROFORMA + ALSTRO, normal).
+- **Golden 997/997 intacto** (link 100%, full_line 99.8%).
+- NO_PARSEA queda en 3 (CEAN GLOBAL, NATIVE BLOOMS, SAYONARA);
+  ECOFLOR ya no figura.
+
+**Lección transversal**: el wrap de columnas en PDFs tabulares es
+invisible al `extract_text` lineal. Cuando una celda envuelve a
+varias filas de texto, los datos numéricos pegan a la primera
+fila pero las palabras de continuación quedan en filas siguientes.
+Detectarlas requiere o bien usar `extract_tables()` (rewrite
+invasivo), o un paso de post-proceso que mire la línea siguiente
+cuando ciertos patrones de variedad sugieren que falta info
+(p.ej. `TINTED` desnudo siempre debería llevar color). El
+predicado debe ser muy específico para no contaminar — en
+BRISSAS, "TINTED" exacto y excluyendo el wrap común del FARM
+(`ROSES`).
+
+### 2026-04-24 — sesión 12a: fix `provider_id=0` en correcciones batch + migración de huérfanos
+
+Ángel reportó que líneas de Uma GYPSOPHILA XLENCE NATURAL WHITE
+seguían apareciendo como `ambiguous_match` en cada batch nuevo a
+pesar de haberlas corregido varias veces desde la UI. Diagnóstico
+cruzando shadow log y `sinonimos_universal.json`: las decisiones
+`action=correct` se registraban con `synonym_key='0|GYPSOPHILA|...'`
+en lugar de `'440|GYPSOPHILA|...'` (Uma). El sinónimo quedaba
+huérfano bajo provider_id=0 y el matcher del siguiente batch (que
+busca con pid=440) nunca lo encontraba.
+
+**Causa raíz** (frontend batch mode):
+- [`web/assets/app.js:131`](../web/assets/app.js) setea
+  `STATE.provider_id` solo en single-PDF flow.
+- En batch, cada factura del lote tiene su propio `provider_id`,
+  pero nunca se propaga a STATE.
+- Las 4 llamadas a `saveLineArticle` desde app.js usaban
+  `STATE.provider_id || 0` → en batch vale 0.
+- `saveLineArticle` componía `synKey = ${providerId}|...` → `'0|...'`.
+
+**Fix**:
+1. [`web/assets/app.extras.js`](../web/assets/app.extras.js)
+   `_populateFlatLines` añade `l._providerId = inv.provider_id`
+   para cada línea del batch (cada factura aporta su pid).
+2. [`web/assets/app.js`](../web/assets/app.js) 4 call sites usan
+   `(line._providerId || STATE.provider_id || 0)` como fallback
+   chain — batch primero, single-PDF después, 0 como último recurso.
+
+**Migración one-shot** en
+[`tools/migrate_orphan_provider0_synonyms.py`](../tools/migrate_orphan_provider0_synonyms.py):
+para cada entry con key `0|...`, lee el `articulo_id` al que apunta,
+consulta `id_proveedor` en catálogo, re-emite la key como
+`{pid}|...` y mergea conflictos preservando el status más fuerte
+(`manual_confirmado > aprendido_confirmado > aprendido_en_prueba >
+ambiguo`). **16 sinónimos migrados** (provider pids: Uma 440,
+Colibri 313, Life 4471, Maxi 281, Olimpo 430, Milonga 12082,
+TV 9591, EQR 2229, Brissas 373, Prestige 11391). Backup JSON con
+timestamp.
+
+**Métricas**:
+- Benchmark global: ok **3337 → 3355** (+18 líneas), ambig 50
+  estable. Las 18 son las correcciones huérfanas ahora
+  re-aprovechadas.
+- UMA 18383 sample: antes 1 ok + 2 ambig → **3/3 ok** (las dos
+  `GYPSOPHILA XLENCE NATURAL WHITE` matchean a 28398/28396 ahora).
+
+### 2026-04-24 — sesión 11f: matcher solo considera artículos F* (flor de corte)
+
+Política que Diego pidió explícitamente: las facturas de flor solo
+deben enlazarse a artículos con `referencia` que empieza por `F*`
+(flor de corte). Los `A*` (rosas/minis viejas sin nombre,
+deprecated) y `P*` (plantas en maceta — ABELIA, etc., con algunas
+ALSTROEMERIA/GERBERA/ROSA planta) no deben aparecer como candidatos
+del matcher aunque el nombre coincida.
+
+Distribución del catálogo (44,751 arts):
+- **F**: 15,342 — flor de corte (6,418 ROSA, 558 CLAVEL, 632
+  CRISANTEMO, 146 PANICULATA, 66 MINI, etc.)
+- **A**: 14,346 — deprecated (125 ROSA, 2 MINI con nombre; el
+  resto sin nombre)
+- **P**: 14,884 — plantas (12 ALSTROEMERIA, 12 GERBERA, 1 ROSA,
+  2 PANICULATA en maceta; resto ABELIA, etc.)
+
+**Cambio en [`src/articulos.py`](../src/articulos.py)**:
+- Nuevo helper `_is_matchable(art) → bool` — True si ref empieza
+  por `F`.
+- `_register_article`: siempre indexa en `articulos` /
+  `by_id_erp` / `by_referencia` (lookup UI preservado), pero
+  `by_name` / `_index_species` solo para matchable.
+- `_build_variety_index` y `_build_brand_index`: iteran sólo
+  sobre matchable — `by_variety`, `by_variety_size` y
+  `brand_by_provider` no incluyen A/P.
+
+**Métricas**:
+- Benchmark global: 3566 líneas, **3337 ok, 50 ambig** — idéntico
+  a pre-filtro. UMA 95/95, TIERRA VERDE 66/66, ROSALEDA 134/134,
+  LA ALEGRIA 69/69 intactos.
+- `by_variety[MONDIAL]`: 178 arts, todos F* (verificado).
+- `by_name`: 30k+ → 16,663 (baja correcta: solo F* con nombre
+  indexado).
+- A/P siguen accesibles por id_erp/referencia desde la UI — el
+  operador puede consultar lookup directo si hace falta, pero el
+  matcher no los propondrá.
+
 ### 2026-04-24 — sesión 11e: parser Life box_code acepta `R-14` (+4 líneas recuperadas)
 
 Ángel reportó que LIFE2.pdf marcaba 3 líneas como `(NO PARSEADO)`.
@@ -280,6 +600,33 @@ tiene que pesar lo suficiente para ganar +0.09 del fuzzy prior
 que los rivales sin variety_full acumulan. Un penalty simétrico
 para modificadores de color (OSCURO/CLARO) resuelve empates
 entre color base y su variante.
+
+### 2026-04-23 — sesión 10p: Tierra Verde multi-ID config/catálogo
+
+Tierra Verde es colombiano pero el parser `alegria` usaba default
+`origin='EC'` → artículos `ROSA EC X` ganaban por origin_match
+cuando el correcto era COL. Nuevo campo `country` opcional en
+PROVIDERS y el parser lo lee (`pdata.get('country', 'EC')`).
+
+Config `id=90038` ≠ catálogo `id_proveedor=9591` para Tierra Verde
+→ `brand_by_provider[90038]` vacío, el autodetector nunca registraba
+"TIERRA VERDE" como brand propia. Añadido campo `catalog_brands` en
+PROVIDERS para registrar manualmente brands multi-palabra o cuando
+los IDs no coinciden. `_own_brands_norm` (matcher) y `_get_brands`
+(articulos) ambos lo leen.
+
+Adicional: `_get_brands` ahora incluye `brands_by_provider` (marcas
+secundarias autodetectadas desde 10o — Uma VIOLETA). Antes solo
+miraba `brand_by_provider` top-1.
+
+Sinónimo `90038|ROSES|PINK O HARA|50|25|` corregido de
+`art=32348 status=ambiguo` a `art=35791 (ROSA OHARA ROSA …
+TIERRA VERDE) status=manual_confirmado` — operador ya lo había
+guardado manualmente pero se degradó por el bug de 10o-#3. Además
+TIERRA_VERDE1.pdf 3ok/2amb → **5/5 ok**; BARISTA 50CM 25U bench:
+0.63 (foreign SCARLET) → **1.05 link 1.000** (TIERRA VERDE
+branded). 11 Tierra Verde ambiguous del bench 10o (BARISTA, PRINCESS
+CROWN, SUNNY DAYS, MAGIC TIMES, LOLA, MANDALA) → todos ok automático.
 
 ### 2026-04-23 — sesión 10q: reimport catálogo + migración a id_erp estable
 

@@ -174,11 +174,16 @@ a:hover { text-decoration: underline; }
 }
 .result-header__title { display: flex; flex-direction: column; gap: 4px; min-width: 0; }
 .result-header__title .provider-name {
-    font-size: 20px; font-weight: 700; color: var(--ink);
+    font-size: 26px;                      /* más grande, tipo H1 */
+    font-weight: 800;
+    color: var(--ink);
+    letter-spacing: -0.015em;
+    line-height: 1.1;
+    margin-bottom: 4px;
 }
 .result-header__title .invoice-meta {
     font-size: 13px; color: var(--ink-muted);
-    display: flex; flex-wrap: wrap; gap: 6px 14px;
+    display: flex; flex-wrap: wrap; gap: 4px 18px;
 }
 .result-header__title .invoice-meta strong { color: var(--ink-2); font-weight: 600; }
 .result-header__actions {
@@ -361,6 +366,35 @@ a:hover { text-decoration: underline; }
     box-shadow: 0 0 0 2px rgba(30,117,86,.12);
 }
 
+/* Inputs numéricos editables inline (Tallos / Precio / Total).
+   Se ven como texto plano hasta que el usuario los activa. */
+.num-input {
+    width: 100%; max-width: 86px;
+    padding: 4px 6px;
+    border: 1px solid transparent;
+    border-radius: var(--r-sm);
+    font: inherit; font-size: 13px;
+    font-variant-numeric: tabular-nums;
+    text-align: right;
+    background: transparent;
+    color: var(--ink);
+    transition: border-color .12s, background .12s;
+}
+.num-input:hover {
+    border-color: var(--line);
+    background: var(--surface-2);
+}
+.num-input:focus {
+    outline: none;
+    border-color: var(--brand);
+    background: var(--surface);
+    box-shadow: 0 0 0 2px rgba(30,117,86,.12);
+}
+/* Ocultar las flechitas del spinner en number inputs (Chrome/Safari/Firefox). */
+.num-input::-webkit-outer-spin-button,
+.num-input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+.num-input { -moz-appearance: textfield; }
+
 /* ── Badges circulares OR./EST./STD. ── */
 .origin-badge {
     display: inline-flex; align-items: center; justify-content: center;
@@ -444,6 +478,19 @@ a:hover { text-decoration: underline; }
 .chip--info { background: var(--info-soft); color: var(--info); border-color: #BFD8EC; }
 .chip--neutral { background: var(--surface-3); color: var(--ink-muted); border-color: var(--line); }
 
+/* Badge de grade (FANCY/SELECT/SUPERSELECT) inline en la columna especie. */
+.grade-pill {
+    display: inline-block;
+    padding: 1px 6px; margin-left: 4px;
+    border-radius: var(--r-pill);
+    font-size: 10.5px; font-weight: 600; letter-spacing: .3px;
+    color: var(--ink-muted);
+    background: var(--surface-3);
+    border: 1px solid var(--line);
+    vertical-align: middle;
+    text-transform: uppercase;
+}
+
 /* Acciones compactas en fila */
 .row-actions { display: flex; gap: 4px; flex-wrap: nowrap; }
 .icon-btn {
@@ -454,6 +501,29 @@ a:hover { text-decoration: underline; }
 }
 .icon-btn:hover { background: var(--surface-2); color: var(--ink); border-color: var(--line); }
 .icon-btn svg { width: 15px; height: 15px; }
+
+/* Variantes del icon-btn para acciones tick/X por fila */
+.icon-btn--ok         { color: var(--ok); }
+.icon-btn--ok:hover   { background: var(--ok-soft); color: var(--ok); border-color: var(--ok-soft); }
+.icon-btn--err        { color: var(--err); }
+.icon-btn--err:hover  { background: var(--err-soft); color: var(--err); border-color: var(--err-soft); }
+
+/* Contenedor inline del input id_erp + botones guardar/borrar */
+.erp-actions {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    flex-wrap: nowrap;
+}
+.erp-actions .erp-input {
+    width: 110px;
+    flex-shrink: 0;
+}
+.erp-actions .icon-btn {
+    width: 26px;
+    height: 26px;
+    flex-shrink: 0;
+}
 
 /* Placeholder vacío en descripción */
 .desc-cell { max-width: 360px; }
@@ -473,6 +543,60 @@ a:hover { text-decoration: underline; }
 .art-empty {
     color: var(--ink-faint); font-style: italic; font-size: 12.5px;
 }
+.dest-cell { max-width: 90px; }
+/* Input de texto editable in-line (destino/box-id). Mismo look que
+   .num-input pero alineado a la izquierda y con tipografía mono. */
+.text-input {
+    width: 100%; max-width: 88px;
+    padding: 4px 6px;
+    border: 1px solid transparent;
+    border-radius: var(--r-sm);
+    font: inherit; font-family: var(--font-mono); font-size: 12.5px;
+    text-align: left;
+    background: transparent;
+    color: var(--ink);
+    text-transform: uppercase;
+    transition: border-color .12s, background .12s;
+}
+.text-input:hover { border-color: var(--line); background: var(--surface-2); }
+.text-input:focus {
+    outline: none;
+    border-color: var(--brand);
+    background: var(--surface);
+    box-shadow: 0 0 0 2px rgba(30,117,86,.12);
+}
+.text-input::placeholder { color: var(--ink-faint); text-transform: none; }
+
+/* Wrapper para inputs monetarios: prefijo "$" + input number alineado a la derecha. */
+.money-cell {
+    display: inline-flex; align-items: center; gap: 1px;
+    width: 100%; max-width: 100%;
+    border: 1px solid transparent;
+    border-radius: var(--r-sm);
+    transition: border-color .12s, background .12s;
+}
+.money-cell:hover { border-color: var(--line); background: var(--surface-2); }
+.money-cell:focus-within {
+    border-color: var(--brand);
+    background: var(--surface);
+    box-shadow: 0 0 0 2px rgba(30,117,86,.12);
+}
+.money-cell .money-prefix {
+    color: var(--ink-faint);
+    font-size: 12.5px; padding-left: 4px;
+    flex: 0 0 auto;
+}
+.money-cell .num-input {
+    /* Quitar borde individual: el wrapper lo lleva. */
+    border: 1px solid transparent;
+    background: transparent;
+    box-shadow: none;
+    padding: 4px 6px 4px 2px;
+    flex: 1 1 auto; min-width: 0;
+    max-width: none;
+}
+.money-cell .num-input:hover { border-color: transparent; background: transparent; }
+.money-cell .num-input:focus { border-color: transparent; background: transparent; box-shadow: none; }
 
 /* ══════════════════════════════════════════════════════════════
    PAGE ACTIONS (footer de tablas)
@@ -655,6 +779,66 @@ a:hover { text-decoration: underline; }
     background: var(--surface-2); border-radius: var(--r); font-size: 13px;
 }
 
+/* Sección: Buscador de artículos en catálogo */
+.article-search { display: flex; flex-direction: column; gap: 10px; }
+.article-search__input {
+    width: 100%;
+    padding: 9px 12px;
+    font: inherit; font-size: 13.5px;
+    color: var(--ink); background: var(--surface);
+    border: 1px solid var(--line); border-radius: var(--r);
+    transition: border-color .12s, box-shadow .12s;
+    box-sizing: border-box;
+}
+.article-search__input:focus {
+    outline: 0;
+    border-color: var(--brand);
+    box-shadow: 0 0 0 3px rgba(30,117,86,.10);
+}
+.article-search__results {
+    display: flex; flex-direction: column; gap: 6px;
+    max-height: 320px; overflow-y: auto;
+    overscroll-behavior: contain;
+}
+.article-search__results:empty { display: none; }
+.search-result {
+    display: flex; align-items: center; gap: 10px;
+    padding: 8px 10px;
+    background: var(--surface);
+    border: 1px solid var(--line); border-radius: var(--r-sm);
+    cursor: pointer;
+    transition: border-color .12s, background .12s;
+}
+.search-result:hover {
+    border-color: var(--brand);
+    background: var(--brand-soft);
+}
+.search-result__main { flex: 1; min-width: 0; }
+.search-result__name {
+    font-size: 13px; font-weight: 600; color: var(--ink);
+    margin-bottom: 3px;
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.search-result__meta {
+    font-size: 11.5px; color: var(--ink-muted);
+    display: flex; gap: 10px; flex-wrap: wrap;
+}
+.search-result__meta .mono {
+    font-family: var(--font-mono); color: var(--ink-faint);
+}
+.search-result__use {
+    flex-shrink: 0;
+    width: 28px; height: 28px;
+    display: inline-flex; align-items: center; justify-content: center;
+    border: 0; border-radius: 50%;
+    background: transparent; color: var(--brand);
+    cursor: pointer;
+    transition: background .12s, color .12s;
+}
+.search-result:hover .search-result__use {
+    background: var(--brand); color: #fff;
+}
+
 /* Drawer actions footer */
 .drawer__actions {
     display: flex; gap: 8px; padding: 14px 20px;
@@ -830,8 +1014,8 @@ a:hover { text-decoration: underline; }
    todo este bloque.
    ══════════════════════════════════════════════════════════════ */
 
-/* ── Fondo global crema ─────────────────────────────────────── */
-body { background: var(--cream-100); color: var(--ink); }
+/* ── Fondo global crema (body lavado, sidebar más saturado) ── */
+body { background: var(--cream-50); color: var(--ink); }
 
 /* ── Marca principal: el "verde" del proyecto ahora es oliva
       cálido. Esto propaga a botones, stat-cards primary, progress
@@ -851,9 +1035,9 @@ body { background: var(--cream-100); color: var(--ink); }
     padding: 28px 36px 60px;
 }
 
-/* ── Sidebar: crema muy clara con borde derecho sutil ─────── */
+/* ── Sidebar: blanco puro sobre body crema ───────────────────── */
 .sidebar {
-    background: var(--cream-50);
+    background: var(--surface);          /* #FFFFFF */
     color: var(--ink);
     border-right: 1px solid var(--cream-200);
     padding: 22px 16px;
@@ -894,7 +1078,7 @@ body { background: var(--cream-100); color: var(--ink); }
     font-size: 14px;
 }
 .nav-btn:hover {
-    background: var(--cream-100);
+    background: var(--cream-200);   /* más saturado que el sidebar para destacar */
     color: var(--ink);
 }
 .nav-btn.is-active {
@@ -913,4 +1097,199 @@ body { background: var(--cream-100); color: var(--ink); }
 .status-dot {
     background: var(--ok);
     box-shadow: 0 0 0 3px var(--ok-soft);
+}
+
+/* ══════════════════════════════════════════════════════════════
+   Importación masiva — estilos del mockup
+     · stat-cards planas (fondo blanco, sin variantes coloreadas)
+     · pills de estado con dot (OK / Parcial / Error)
+     · accent bar lateral en filas err / warn
+   ══════════════════════════════════════════════════════════════ */
+
+/* Stat-card específica del batch: nunca usa fondo vivo, solo el
+   color del número da el matiz. */
+.stat-card.batch-stat {
+    background: var(--surface);
+    border: 1px solid var(--line);
+    padding: 16px 18px;
+    gap: 6px;
+}
+.batch-stat .stat-card__value {
+    font-size: 28px;
+    font-weight: 800;
+    color: var(--ink);
+    letter-spacing: -0.01em;
+}
+.batch-stat .stat-card__sub {
+    font-size: 12px;
+    color: var(--ink-muted);
+    margin-top: 2px;
+}
+.batch-stat__value--olive { color: var(--olive-600) !important; }
+.batch-stat__value--warn  { color: var(--warn) !important; }
+
+/* Pills de estado en la tabla (dot + texto) */
+.batch-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 2px 10px;
+    border-radius: 999px;
+    font-size: 12px;
+    font-weight: 600;
+    line-height: 1.5;
+}
+.batch-pill::before {
+    content: '';
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    flex-shrink: 0;
+    background: currentColor;
+}
+.batch-pill--ok   { background: #E8F0DB; color: #4A6B1A; }
+.batch-pill--warn { background: #FBECC8; color: #8A5A0A; }
+.batch-pill--err  { background: #F9DEDA; color: #8A2E22; }
+
+/* Accent bar lateral en filas err / warn */
+.t tbody tr.batch-row--err td:first-child {
+    box-shadow: inset 3px 0 0 var(--err);
+}
+.t tbody tr.batch-row--err td { background: #FDF4F2; }
+.t tbody tr.batch-row--warn td:first-child {
+    box-shadow: inset 3px 0 0 #D4A83A;
+}
+.t tbody tr.batch-row--warn td { background: #FCF7E4; }
+
+/* Motivo del error (segunda línea bajo el pill) */
+.batch-row__err-reason {
+    font-size: 11.5px;
+    color: var(--err);
+    margin-top: 4px;
+}
+
+/* line-num en la tabla del batch (igual estilo que en Procesar factura) */
+#batchTable .line-num {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    color: var(--ink-muted);
+}
+
+/* ══════════════════════════════════════════════════════════════
+   Procesar factura — header strip (layout label/value horizontal)
+   Reemplaza el h1+subtitle por 2 tarjetas planas tipo tabla:
+     1) invoice-strip — Proveedor / Nº Factura / Fecha / Divisa / PDF
+     2) stats-strip   — Líneas / Match OK / Revisar / Sin match / Total
+   ══════════════════════════════════════════════════════════════ */
+
+/* Card 1: metadata strip */
+.invoice-strip {
+    background: var(--surface);
+    border: 1px solid var(--cream-200);
+    border-radius: var(--r-lg);
+    padding: 14px 18px;
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    box-shadow: var(--sh-1);
+}
+.invoice-strip__icon {
+    width: 40px; height: 40px;
+    border-radius: 10px;
+    background: var(--cream-100);
+    color: var(--ink-muted);
+    display: grid; place-items: center;
+    flex-shrink: 0;
+}
+.invoice-strip__icon svg { width: 20px; height: 20px; }
+.invoice-strip__fields {
+    display: flex;
+    flex: 1;
+    gap: 16px;
+    min-width: 0;
+}
+.invoice-strip__field {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    min-width: 0;
+    flex: 1;              /* reparte el ancho equitativamente */
+}
+.invoice-strip__label {
+    font-size: 10.5px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--ink-muted);
+    font-weight: 600;
+}
+.invoice-strip__field strong {
+    font-size: 14px;
+    color: var(--ink);
+    font-weight: 700;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 280px;
+}
+.invoice-strip__action {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 10px;
+    border-radius: var(--r-sm);
+    font-size: 13px;
+    color: var(--ink-muted);
+    text-decoration: none;
+    flex-shrink: 0;
+    transition: color .12s, background .12s;
+}
+.invoice-strip__action:hover {
+    color: var(--ink);
+    background: var(--cream-100);
+    text-decoration: none;
+}
+
+/* Card 2: stats strip (sin sub-text) */
+.stats-strip {
+    background: var(--surface);
+    border: 1px solid var(--cream-200);
+    border-radius: var(--r-lg);
+    padding: 4px 0;
+    margin-bottom: 12px;
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    box-shadow: var(--sh-1);
+}
+.stats-strip__cell {
+    padding: 16px 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    border-right: 1px solid var(--cream-200);
+}
+.stats-strip__cell:last-child { border-right: 0; }
+.stats-strip__label {
+    font-size: 10.5px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--ink-muted);
+    font-weight: 600;
+}
+.stats-strip__value {
+    font-size: 28px;
+    font-weight: 800;
+    color: var(--ink);
+    letter-spacing: -0.01em;
+    line-height: 1;
+    font-variant-numeric: tabular-nums;
+}
+.stats-strip__value--ok   { color: var(--ok); }
+.stats-strip__value--warn { color: var(--warn); }
+.stats-strip__value--err  { color: var(--err); }
+
+/* Responsive: strip se colapsa verticalmente en pantallas estrechas */
+@media (max-width: 900px) {
+    .invoice-strip { flex-direction: column; align-items: flex-start; }
+    .invoice-strip__fields { gap: 14px; }
+    .stats-strip { grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); }
 }

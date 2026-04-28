@@ -105,7 +105,16 @@ PROVIDERS = {
     'latin'      : {'id': 6323,  'name': 'Latin Flowers',          'fmt': 'latin',        'patterns': ['LATIN FLOWERS', 'latinflowers.com.co']},
     'multiflora' : {'id': 8342,  'name': 'Multiflora',             'fmt': 'multiflora',   'patterns': ['MULTIFLORA CORPORATION', 'multiflorasales', 'Multiflora']},
     'florsani'   : {'id': 419,   'name': 'Florsani',               'fmt': 'florsani',     'patterns': ['FLORSANI', 'FLORICOLA SAN ISIDRO', '1792059232001']},
-    'maxi'       : {'id': 281,   'name': 'Maxiflores',             'fmt': 'maxi',         'patterns': ['MAXIFLORES', 'C.I. MAXIFLORES']},
+    'maxi'       : {'id': 281,   'name': 'Maxiflores',             'fmt': 'maxi',         'patterns': ['MAXIFLORES', 'C.I. MAXIFLORES'],
+                    # El id 281 en el catálogo es "Agrivaldani / Luxus" y
+                    # alberga 77 artículos `marca=NATUFLORA` que NO son
+                    # de Maxiflores. `strict_brands` desactiva la auto-
+                    # detección por proveedor: solo cuentan como propias
+                    # `catalog_brands` y la pkey. Sin esto, el matcher
+                    # heredaba NATUFLORA y recomendaba branded ajeno
+                    # sobre los genéricos.
+                    'strict_brands': True,
+                    'catalog_brands': ['MAXIFLORES']},
     'mystic'     : {'id': 442,   'name': 'Mystic Flowers',         'fmt': 'mystic',       'patterns': ['MYSTICFLOWERS']},
     'fiorentina' : {'id': 6916,  'name': 'Fiorentina Flowers',     'fmt': 'mystic',       'patterns': ['FIORENTINA FLOWERS']},
     'stampsy'    : {'id': 2220,  'name': 'Stampsybox',             'fmt': 'mystic',       'patterns': ['STAMPSYBOX']},
@@ -126,13 +135,13 @@ PROVIDERS = {
     'floraroma': {'id': 90014,     'name': 'Floraroma',               'fmt': 'floraroma',    'patterns': ['FLORAROMA']},
     'garda': {'id': 90017,     'name': 'GardaExport',             'fmt': 'garda',        'patterns': ['GARDAEXPORT']},
     'utopia': {'id': 90042,     'name': 'Utopia Farms',            'fmt': 'utopia',       'patterns': ['UTOPIA FARMS']},
-    'ecoflor': {'id': 90012,     'name': 'Ecoflor Groupchile',      'fmt': 'mystic',       'patterns': ['ECOFLOR GROUPCHILE']},
+    'ecoflor': {'id': 90012,     'name': 'Ecoflor Groupchile',      'fmt': 'ecoflor',      'patterns': ['ECOFLOR GROUPCHILE']},
     'florifrut': {'id': 90015,     'name': 'Flores y Frutas Florifrut','fmt': 'mystic',       'patterns': ['FLORIFRUT']},
     'solpacific': {'id': 90036,     'name': 'Sol Pacific',              'fmt': 'valleverde',   'patterns': ['solpacificecuador', 'SOLPACIFIC']},
     'rosaleda'   : {'id': 2226,  'name': 'Floricola La Rosaleda',    'fmt': 'rosaleda',     'patterns': ['FLORICOLA LA ROSALEDA', 'FLORICOLALAROSALEDA', 'LA ROSALEDA']},
     'circasia': {'id': 90008,     'name': 'Agricola Circasia',        'fmt': 'colfarm',      'patterns': ['AGRICOLA CIRCASIA']},
     'vuelven': {'id': 90044,     'name': 'Vuelven',                  'fmt': 'colfarm',      'patterns': ['VUELVEN S.A']},
-    'milonga': {'id': 90026,     'name': 'Flores Milonga',           'fmt': 'colfarm',      'patterns': ['FLORES MILONGA']},
+    'milonga': {'id': 90026,     'name': 'Flores Milonga',           'fmt': 'colfarm',      'patterns': ['FLORES MILONGA'], 'ocr_if_corrupt': r'\bRlse\b'},
     'native': {'id': 90029,     'name': 'Calinama (Native)',        'fmt': 'native',       'patterns': ['CALINAMA CAPITAL']},
     'unique': {'id': 90041,     'name': 'Unique Flowers',           'fmt': 'unique',       'patterns': ['UNIQUE FLOWERS']},
     'unique_export': {'id': 7908, 'name': 'Unique Export SAS',       'fmt': 'unique',       'patterns': ['UNIQUE EXPORT SAS', 'UNIQUE EXPORT', '901398892']},

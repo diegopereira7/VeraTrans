@@ -17,28 +17,35 @@ class BrissasParser:
     Variantes especiales:
       GARDEN ROSE <variety>, SPRAY ROSES SPR <color>, TINTED <color>
     """
-    # Regex: línea principal con ORDER MARK BX BOXTYPE
+    # Regex: línea principal con ORDER MARK BX BOXTYPE.
+    # El prefijo de tipo (GARDEN ROSE / ROSE / SPRAY ROSES / TINTED) es
+    # OPCIONAL — algunas variantes del formato omiten "ROSE" antes del
+    # nombre de la variedad ("EXPLORER 50 ..." en vez de "ROSE EXPLORER 50 ...").
     _MAIN_RE = re.compile(
-        r'(\d+)\s*-\s*\d*\s+'           # ORDER range: "1 - 1", "3 - 4", or "12 - "
+        r'(\d+)\s*-\s*\d*\s+'             # ORDER range: "1 - 1", "3 - 4"
         r'(.+?)\s+'                       # MARK (farm name): "RICC ROSES"
         r'(\d+)\s+(HB|QB|TB)\s+'          # BX count + BOX TYPE
-        r'((?:GARDEN\s+)?ROSE\s+'         # "ROSE " or "GARDEN ROSE "
+        r'((?:GARDEN\s+ROSE\s+'           # "GARDEN ROSE "
         r'|SPRAY\s+ROSES?\s+(?:SPR\s+)?'  # "SPRAY ROSES SPR "
         r'|TINTED\s+'                     # "TINTED "
-        r')'
+        r'|ROSE\s+'                       # "ROSE "
+        r')?)'                            # prefix opcional
         r'(.+?)\s+'                       # VARIETY
         r'(\d{2,3})\s+'                   # CM (talla)
-        r'(\d+)\s+(\d+)\s+'              # STEMS per box, TOTAL STEMS
+        r'(\d+)\s+(\d+)\s+'               # STEMS per box, TOTAL STEMS
         r'([\d.]+)\s+([\d.]+)',           # UNIT PRICE, TOTAL PRICE
         re.I
     )
-    # Regex: línea de continuación (sin ORDER/MARK, empieza con ROSE/GARDEN ROSE/etc.)
+    # Regex: línea de continuación (sin ORDER/MARK).
+    # Prefijo opcional por la misma razón.
     _CONT_RE = re.compile(
-        r'^((?:GARDEN\s+)?ROSE\s+'
+        r'^((?:GARDEN\s+ROSE\s+'
         r'|SPRAY\s+ROSES?\s+(?:SPR\s+)?'
         r'|TINTED\s+'
-        r')'
-        r'(.+?)\s+'
+        r'|ROSE\s+'
+        r')?)'
+        r'([A-Z][A-Z0-9 \-]+?)\s+'        # variedad (anclado en mayúsculas
+                                          # para no devorar texto narrativo)
         r'(\d{2,3})\s+'
         r'(\d+)\s+(\d+)\s+'
         r'([\d.]+)\s+([\d.]+)',
@@ -72,6 +79,28 @@ class BrissasParser:
             # Skip noise lines
             if re.match(r'(?:TOTAL|Forwarder|Box\s+Type|HB\s+\d|QB\s+\d|Thank|Payment|Sub\s+Total|Account|Bank|The\s+Swift)', raw, re.I):
                 continue
+
+            # Wrap del color de variedad TINTED. La celda VARIETIES tiene
+            # "ROSE TINTED ROS TINTED\nRAINBOW" → en extract_text aparece
+            # como una línea adicional con solo el color (a veces seguido
+            # de un "0" residual de otra columna que también envuelve).
+            # El parser limpia "TINTED ROS TINTED" → "TINTED", quedando
+            # sin color. Si la siguiente línea es una palabra MAYUS al
+            # inicio (no "ROSES" para evitar el wrap del FARM) y la
+            # variedad anterior es TINTED escueta, la apendizamos.
+            if lines:
+                wrap_m = re.match(
+                    r'^([A-ZÑÁÉÍÓÚ][A-ZÑÁÉÍÓÚ0-9\-]{2,19})(?:\s+\d+)?\s*$',
+                    raw,
+                )
+                if wrap_m:
+                    color = wrap_m.group(1)
+                    last = lines[-1]
+                    last_var = (last.variety or '').upper()
+                    if last_var == 'TINTED' and color != 'ROSES':
+                        last.variety = f'TINTED {color}'
+                        last.raw_description = f'{last.raw_description} {color}'
+                        continue
 
             # Try main line
             pm = self._MAIN_RE.search(raw)
@@ -374,10 +403,49 @@ class DaflorParser:
         #   '1 QB MARCA DECO - - 200 200 Stems $0.150 $30.00'
         pending_desc = ''
         pending_sp = ''
+        # Línea de datos colgada que aún no tiene grade — el grade
+        # ("Selecto" / "Fancy") aparece en la 3ª línea junto al tariff:
+        #   'Alstroemeria Virginia/Dubai - CO-'
+        #   '1 QB - - 200 200 Stems $0.180 $36.00'
+        #   'Selecto 0603190107'
+        grade_pending_il = None
         for ln in text.split('\n'):
             ln=ln.strip()
             if not ln:
                 continue
+
+            # Si quedó una línea esperando grade (colgada sin grade inline)
+            # y esta línea empieza con Selecto/Fancy/Super, completarla.
+            # Formato típico: "Selecto ASTURIAS 0603190107" — el label
+            # puede ir entre el grade y el tariff numérico.
+            if grade_pending_il is not None:
+                gm = re.match(r'^(Selecto|Select|Fancy|Super\s+Selecto|Super\s+Select)\b\s*(.*)$',
+                              ln, re.I)
+                if gm:
+                    g = gm.group(1).upper()
+                    rest = gm.group(2).strip()
+                    if 'SUPER' in g:
+                        grade_pending_il.grade = 'SUPERSELECT'
+                    elif g.startswith('SELECTO') or g.startswith('SELECT'):
+                        grade_pending_il.grade = 'SELECT'
+                    else:
+                        grade_pending_il.grade = 'FANCY'
+                    # Label entre grade y tariff numérico (ej. "ASTURIAS
+                    # 0603190107"). Solo si la línea pendiente aún no
+                    # tenía label (no pisar el label inline).
+                    if not (grade_pending_il.label or '').strip():
+                        rest_no_tariff = re.sub(r'\b\d{6,}\S*\s*$', '',
+                                                rest).strip()
+                        rest_no_tariff = re.sub(r'^MARCA\s+', '',
+                                                rest_no_tariff,
+                                                flags=re.I).strip()
+                        if rest_no_tariff and re.fullmatch(
+                                r'[A-Za-z][A-Za-z\s\.\-]*', rest_no_tariff):
+                            grade_pending_il.label = rest_no_tariff.upper()
+                    grade_pending_il = None
+                    continue
+                else:
+                    grade_pending_il = None
 
             # Formato cabecera-colgada: descripción en una línea sin números finales.
             hdr_m = re.match(
@@ -399,29 +467,53 @@ class DaflorParser:
             # FIX: usar re.I para mixed-case: "1 QB Alstroemeria Assorted - Fancy"
             # Also allow digits in grade position (for roses where size appears as grade: "- 50").
             # Q alone (1 letra) soportado además de QB/HB.
-            pm=re.search(r'(\d+)\s+(QB?|HB?)\s+([A-Za-z][A-Za-z\s.\-/\u00b4\u2019\']+?)\s*[-\u2013]\s*([A-Za-z0-9]+)',ln_norm,re.I)
             desc = ''
             btype = ''
             grade = ''
+            label = ''
             used_pending = False
-            if pm:
-                btype=pm.group(2).upper(); desc=pm.group(3).strip(); grade=pm.group(4).strip()
-                if len(btype) == 1:
-                    btype = btype + 'B'   # "Q" → "QB", "H" → "HB"
-            else:
-                # Segunda línea del formato colgado: "1 QB ... 200 200 Stems $..."
+            pm = None
+            cont_m = None
+            # Si la línea anterior dejó un pending_desc (formato colgado:
+            # "Alstroemeria Assorted - CO-" → "1 QB MARCA PYTI - - 200 200
+            # Stems $0.170 $34.00"), preferir el regex de continuación
+            # SOLO cuando la propia línea no contiene un nombre de especie
+            # (Alstroemeria/Roses/etc.). Si la línea ya trae su propio
+            # desc completo (ej. "1 QB Alstroemeria Fifi - Fancy MARCA -
+            # - 200 200 Stems $0.16 $32.00"), usar pm normal — no pisar
+            # la variedad real con el pending_desc colgado de antes.
+            line_has_own_species = bool(re.search(
+                r'\b(?:Alstroemeria|Roses?|Carnations?|Hydrangeas?|'
+                r'Chrysanth\w*|Gypsophila)\b',
+                ln_norm, re.I))
+            if pending_desc and not line_has_own_species:
                 cont_m = re.search(
                     r'(\d+)\s+(QB?|HB?)\s+(?:(.+?)\s+)?\d+\s+\d+\s+Stems\s+\$?',
                     ln_norm, re.I)
-                if cont_m and pending_desc:
-                    btype = cont_m.group(2).upper()
+            if cont_m:
+                btype = cont_m.group(2).upper()
+                if len(btype) == 1:
+                    btype = btype + 'B'
+                extra = (cont_m.group(3) or '').strip()
+                desc = pending_desc
+                # Lo que queda entre QB y los números es la ETIQUETA
+                # (destino/marca como "MARCA PYTI", "ASTURIAS", "LUCAS"),
+                # NO el grade. El grade viene en la línea siguiente
+                # (Selecto/Fancy + tariff). Limpiar dashes sobrantes.
+                cleaned = re.sub(r'^-+\s*|\s*-+\s*$|\s*-\s+-\s*', ' ',
+                                 extra).strip()
+                cleaned = re.sub(r'^MARCA\s+', '', cleaned, flags=re.I).strip()
+                if cleaned and not re.match(r'^-+$', cleaned):
+                    label = cleaned.upper()
+                grade = ''  # se rellena vía grade_pending_il en la próxima iteración
+                used_pending = True
+            else:
+                pm = re.search(r'(\d+)\s+(QB?|HB?)\s+([A-Za-z][A-Za-z\s.\-/\u00b4\u2019\']+?)\s*[-\u2013]\s*([A-Za-z0-9]+)',
+                               ln_norm, re.I)
+                if pm:
+                    btype=pm.group(2).upper(); desc=pm.group(3).strip(); grade=pm.group(4).strip()
                     if len(btype) == 1:
-                        btype = btype + 'B'
-                    # Etiqueta/marca entre QB y los números (opcional)
-                    extra = (cont_m.group(3) or '').strip()
-                    desc = pending_desc
-                    grade = extra if extra and not re.match(r'^-+$', extra) else ''
-                    used_pending = True
+                        btype = btype + 'B'   # "Q" → "QB", "H" → "HB"
                 else:
                     pm=re.search(r'(QB?|HB?)\s+([A-Za-z][A-Za-z\s.\-/\u00b4\u2019\']+?)\s*[-\u2013]\s*([A-Za-z0-9]+)',ln_norm,re.I)
                     if not pm:
@@ -429,6 +521,19 @@ class DaflorParser:
                     btype=pm.group(1).upper(); desc=pm.group(2).strip(); grade=pm.group(3).strip()
                     if len(btype) == 1:
                         btype = btype + 'B'
+                # Extraer label inline: lo que va entre el grade y el
+                # bloque de stems. Ej: "1 QB Alstroemeria Assorted - Fancy
+                # MARCA DECO - - 200 200 Stems..." \u2192 label=DECO.
+                tail = ln_norm[pm.end():]
+                stems_start = re.search(r'\d+\s+\d+\s+Stems', tail, re.I)
+                if stems_start:
+                    label_zone = tail[:stems_start.start()].strip()
+                    label_zone = re.sub(r'^-+\s*|\s*-+\s*$|\s*-\s+-\s*', ' ',
+                                        label_zone).strip()
+                    label_zone = re.sub(r'^MARCA\s+', '', label_zone,
+                                        flags=re.I).strip()
+                    if label_zone and not re.match(r'^-+$', label_zone):
+                        label = label_zone.upper()
 
             # Detectar especie
             sp = pending_sp if used_pending and pending_sp else self._detect_species(desc)
@@ -449,9 +554,33 @@ class DaflorParser:
                 except: pass
             # Limpiar nombre de variedad: quitar prefijo de especie
             var_clean = re.sub(r'^(?:Alstroemeria|Roses?|Carnations?|Hydrangeas?)\s+', '', desc, flags=re.I).strip()
-            il=InvoiceLine(raw_description=ln,species=sp,variety=var_clean.upper(),grade=grade.upper(),origin='COL',
-                           size=sz,stems_per_bunch=upb,stems=stems,price_per_stem=price,line_total=total,box_type=btype)
+            variety_up = var_clean.upper()
+            # Cajas mixtas (variedad con "/" o "ASSORTED") → una única
+            # línea MIXTO. Evita que split_mixed_boxes() las divida en
+            # sub-líneas 50/50 con destinos artificiales — el operador
+            # prefiere ver una sola caja mixta.
+            if '/' in variety_up or variety_up == 'ASSORTED':
+                variety_up = 'MIXTO'
+            grade_up = grade.upper()
+            # Normalizar Selecto→SELECT para matching consistente.
+            if grade_up.startswith('SELECTO'):
+                grade_up = 'SELECT'
+            elif grade_up.startswith('SUPER SELECT') or grade_up.startswith('SUPER SELECTO'):
+                grade_up = 'SUPERSELECT'
+            elif grade_up.startswith('FANCY'):
+                grade_up = 'FANCY'
+            elif sp == 'ROSES' and grade_up.isdigit():
+                # Para rosas, el "grade" capturado es realmente el tamaño
+                # ("Roses Pink O'hara - 50"). El size ya se extrajo aparte.
+                grade_up = ''
+            il=InvoiceLine(raw_description=ln,species=sp,variety=variety_up,grade=grade_up,origin='COL',
+                           size=sz,stems_per_bunch=upb,stems=stems,price_per_stem=price,line_total=total,box_type=btype,label=label)
             lines.append(il)
+            # Si vino del formato colgado y NO se capturó grade inline,
+            # la 3ª línea de la entrada lo trae. Marcar el line para
+            # rellenarlo en la siguiente iteración.
+            if used_pending and not grade_up:
+                grade_pending_il = il
             # Reset pending tras consumirlo
             if used_pending:
                 pending_desc = ''
@@ -572,15 +701,35 @@ class EqrParser:
 
 
 class BosqueParser:
-    """Formato: #BOX PRODUCT-VARIETY TARIFF LENGTH BUNCHS STEMS T.STEMS PRICE AMOUNT"""
+    """Formato: #BOX PRODUCT-VARIETY TARIFF LENGTH BUNCHS STEMS T.STEMS PRICE AMOUNT
+
+    Las cajas multi-talla parten un solo box_type en N sub-líneas: la
+    primera lleva ``1 HB R O SAS VARIETY ...``, las siguientes empiezan
+    directamente con ``ROSAS VARIETY ...`` (sin prefijo de caja). Cada
+    sub-línea es una fila independiente del catálogo (talla distinta,
+    stems propios, precio propio); todas comparten el mismo box_type.
+
+    Política: cada caja física es una fila — preservamos cada sub-línea
+    como su propio ``InvoiceLine`` con el ``box_type`` heredado.
+    """
     def parse(self, text:str, pdata:dict):
         h=InvoiceHeader(); h.provider_key=pdata['key']; h.provider_id=pdata['id']; h.provider_name=pdata['name']
         m=re.search(r'No\.:\s*(\S+)',text,re.I); h.invoice_number=m.group(1) if m else ''
         m=re.search(r'(?:MAWB|MAWB No)\s*[:\s]*([\d]+)',text,re.I); h.awb=re.sub(r'\s+','',m.group(1)) if m else ''
+        # Total real impreso en la factura ("TOTALS 750 USD $ 237.50").
+        # Sin esto, derivar h.total de sum(lines) ocultaría siempre las
+        # sublíneas que el parser no logre capturar — la validación
+        # cruzada nunca detectaría el hueco.
+        m=re.search(r'TOTALS?\s+\d+\s+USD\s*\$\s*([\d,]+\.\d{2})', text, re.I)
+        if not m:
+            m=re.search(r'TOTAL\s+USD?\s*\$?\s*([\d,]+\.\d{2})', text, re.I)
+        printed_total = float(m.group(1).replace(',', '')) if m else 0.0
+
         lines=[]
+        last_btype=''  # box_type heredado para sub-líneas de continuación
         for ln in text.split('\n'):
             ln=ln.strip()
-            # Format A (original): "1 HB ROSAS VARIETY 50 ..."
+            # Format A (legacy): "1 HB ROSAS VARIETY 50 ..."
             pm=re.search(r'(?:\d+\s+)?(HB|QB|TB)\s+ROSAS?\s+([A-Z][A-Z\s.\-/]+?)\s+(\d{2})',ln)
             # Format B (OCR/PDF split): "1 HB R O SAS VARIETY 0603... 50 12 25 300 $ 0.2800 $84.00"
             if not pm:
@@ -592,6 +741,7 @@ class BosqueParser:
                     ln)
                 if pm_b:
                     btype=pm_b.group(1); var=pm_b.group(2).strip(); sz=int(pm_b.group(3))
+                    last_btype=btype
                     nm=re.search(r'(\d+)\s+(\d+)\s+\$\s*([\d.]+)\s+\$([\d.]+)',ln)
                     bun=0; stems=0; price=0.0; total=0.0
                     if nm:
@@ -603,8 +753,32 @@ class BosqueParser:
                                    price_per_stem=price,line_total=total,box_type=btype)
                     lines.append(il)
                     continue
+            # Format C (continuación de caja multi-talla): empieza
+            # con "ROSAS VARIETY ..." sin prefijo "N HB/QB/TB". Hereda
+            # box_type de la línea padre anterior.
+            if not pm:
+                pm_c=re.search(
+                    r'^ROSAS?\s+'
+                    r'([A-Z][A-Z\s.\-/]+?)\s+'
+                    r'0603\d+\s+\d+\s+'
+                    r'(\d{2})\s+'
+                    r'(\d+)\s+(\d+)\s+(\d+)\s+'   # bunchs spb stems
+                    r'\$\s*([\d.]+)\s+\$\s*([\d.]+)',
+                    ln)
+                if pm_c and last_btype:
+                    var=pm_c.group(1).strip(); sz=int(pm_c.group(2))
+                    bun=int(pm_c.group(3)); spb_doc=int(pm_c.group(4))
+                    stems=int(pm_c.group(5))
+                    price=float(pm_c.group(6)); total=float(pm_c.group(7))
+                    spb=spb_doc if spb_doc else 25
+                    il=InvoiceLine(raw_description=ln,species='ROSES',variety=var,
+                                   size=sz,stems_per_bunch=spb,bunches=bun,stems=stems,
+                                   price_per_stem=price,line_total=total,box_type=last_btype)
+                    lines.append(il)
+                    continue
             if not pm: continue
             btype=pm.group(1); var=pm.group(2).strip(); sz=int(pm.group(3))
+            last_btype=btype
             nm=re.search(r'(\d+)\s+(\d+)\s+\$\s*([\d.]+)\s+\$([\d.]+)',ln)
             bun=0; stems=0; price=0.0; total=0.0
             if nm:
@@ -615,6 +789,7 @@ class BosqueParser:
                            size=sz,stems_per_bunch=spb,bunches=bun,stems=stems,
                            price_per_stem=price,line_total=total,box_type=btype)
             lines.append(il)
+        h.total = printed_total or sum(l.line_total for l in lines)
         return h, lines
 
 
@@ -999,6 +1174,63 @@ class MaxiParser:
                                price_per_stem=price,line_total=total)
                 lines.append(il)
                 continue
+            # PROFORMA spray garden rose: "SPR RGARDEN BELLALINDA SWEETY 50 Cm 1 50 50 .500 25.00"
+            # Columnas (cabecera PROFORMA): DESCRIPTION | Q/H/F/E/ADJUST | STEMS_PER_BOX |
+            # UNITS_TOTAL | UNIT_PRICE | TOTAL_AMOUNT. Nuestros 3 valores finales son
+            # stems · price · total (mismo orden que ROSE).
+            pm_spr = re.search(
+                r'SPR\s+R?GARDEN\s+([A-Z][A-Z\s.\-/`\']+?)\s+(\d{2})(?:\s*-\s*(\d{2}))?\s*Cm\b',
+                ln, re.I)
+            if pm_spr:
+                after = ln[pm_spr.end():]
+                nums = re.findall(r'[\d,]+\.?\d*|\.\d+', after)
+                if len(nums) >= 3:
+                    var = pm_spr.group(1).strip()
+                    sz = int(pm_spr.group(3)) if pm_spr.group(3) else int(pm_spr.group(2))
+                    try:
+                        stems = int(nums[-3].replace(',', ''))
+                        total = float(nums[-1].replace(',', ''))
+                    except (ValueError, IndexError):
+                        stems = 0
+                        total = 0.0
+                    spb = 10  # spray rose: bunch típico de 10 tallos
+                    price = total / stems if stems else 0.0
+                    il = InvoiceLine(
+                        raw_description=ln, species='ROSES', variety=var, origin='COL',
+                        size=sz, stems_per_bunch=spb, stems=stems,
+                        price_per_stem=price, line_total=total,
+                        grade='SPRAY',
+                    )
+                    lines.append(il)
+                    continue
+            # BOUQUET lines (proforma 2026): "BOUQUET <name> NN CM <boxes> <units_per_box> <total_units> <price> <total>"
+            # Ej: "BOUQUET GARDEN WHIMSY 50 CM 4 6 24 9.820 235.68"
+            #     "BOUQUET A MOTHER'S LUXURY 50 CM 2 2 4 29.130 116.52"
+            # total_units × price = total. stems_per_bunch=1 (cada "stem" = 1 ramo).
+            pm_b = re.search(
+                r"^BOUQUET\s+([A-Z][A-Z\s.\-/`'`]+?)\s+(\d{2})\s*CM\s+"
+                r'(\d+)\s+(\d+)\s+(\d+)\s+([\d,.]+)\s+([\d,.]+)\s*$',
+                ln, re.I)
+            if pm_b:
+                var = pm_b.group(1).strip().upper()
+                sz = int(pm_b.group(2))
+                try:
+                    boxes = int(pm_b.group(3))
+                    upb = int(pm_b.group(4))
+                    total_units = int(pm_b.group(5))
+                    price = float(pm_b.group(6).replace(',', ''))
+                    total = float(pm_b.group(7).replace(',', ''))
+                except (ValueError, IndexError):
+                    continue
+                # Sanity: boxes × upb ≈ total_units (puede haber adjust)
+                il = InvoiceLine(
+                    raw_description=ln, species='OTHER', variety=var, origin='COL',
+                    size=sz, stems_per_bunch=1, bunches=total_units, stems=total_units,
+                    price_per_stem=price, line_total=total,
+                    grade='BOUQUET',
+                )
+                lines.append(il)
+                continue
             # ALSTRO lines: "ALSTRO (TSTEM VARIETY GRADE ... N STEMS_BOX STEMS .PRICE TOTAL"
             pm_a=re.search(
                 r'ALSTRO\s*\(?[A-Z]*\s*'          # "ALSTRO (TSTEM" or "ALSTRO"
@@ -1123,9 +1355,24 @@ class CondorParser:
             #   (HTS pegado al SPB: 350603199010)
             # Variante B: "20,00 QB HYD WHITE PREMIUM 35 0603199010 700 0,58 406,00"
             #   (SPB separado del HTS: 35 0603199010)
-            pm=re.search(r'[\d,]+\s+(QB|HB)\s+(HYD\s+[A-Za-z][A-Za-z\s.\-/]+?)\s*(?:\[[\d]+\])?\s+\d{2,}\s*\d*\s+(\d+)\s+([\d,]+)\s+([\d,]+)',ln,re.I)
-            if not pm: continue
-            btype=pm.group(1).upper(); desc=pm.group(2).strip().upper()
+            # Variante C (proforma 2026): "15,00 QB 35 00001 HYD WHITE PREMIUM 0603199010 525 0,48 252,00"
+            #   pdfplumber inserta SPB y CUST_ORD entre PACK y DESCRIPTION;
+            #   CUST_ORD es opcional (ej. "5,00 QB 35 HYD GREEN PREMIUM ...").
+            pm=re.search(
+                r'^[\d,]+\s+(QB|HB)\s+(\d{2,3})\s+(?:\d{4,6}\s+)?'
+                r'(HYD\s+[A-Za-z][A-Za-z\s.\-/]+?)\s+\d{8,12}\s+'
+                r'(\d+)\s+([\d,.]+)\s+([\d,.]+)\s*$',
+                ln, re.I,
+            )
+            if pm:
+                btype=pm.group(1).upper(); _spb_new=pm.group(2)
+                desc=pm.group(3).strip().upper()
+                stems_g=pm.group(4); price_g=pm.group(5); total_g=pm.group(6)
+            else:
+                pm=re.search(r'[\d,]+\s+(QB|HB)\s+(HYD\s+[A-Za-z][A-Za-z\s.\-/]+?)\s*(?:\[[\d]+\])?\s+\d{2,}\s*\d*\s+(\d+)\s+([\d,]+)\s+([\d,]+)',ln,re.I)
+                if not pm: continue
+                btype=pm.group(1).upper(); desc=pm.group(2).strip().upper()
+                stems_g=pm.group(3); price_g=pm.group(4); total_g=pm.group(5)
             var=re.sub(r'^HYD\s+','',desc).strip()
             # Traducir colores EN→ES y reordenar a formato catálogo
             # "WHITE PREMIUM" → "PREMIUM BLANCO", "BLUE" → "PREMIUM AZUL".
@@ -1149,9 +1396,9 @@ class CondorParser:
             elif v_up in _HYD_COLORS:
                 var = f'PREMIUM {_HYD_COLORS[v_up]}'
             try:
-                stems=int(pm.group(3))
-                price=float(pm.group(4).replace(',','.'))
-                total=float(pm.group(5).replace(',','.'))
+                stems=int(stems_g)
+                price=float(price_g.replace(',','.'))
+                total=float(total_g.replace(',','.'))
             except: stems=0; price=0.0; total=0.0
             il=InvoiceLine(raw_description=ln,species='HYDRANGEAS',variety=var,origin='COL',
                            size=60,  # hydrangeas colombianas = 60cm por default
@@ -1997,6 +2244,16 @@ class ColFarmParser:
             ln = re.sub(r'\s+i\s+ee\s+', ' ', ln)
             # Dígito seguido de '~' o punto basura: "300 1~ " → "300 " (ruido stems_total)
             ln = re.sub(r'(?<=\d)\s*\d+[~\.]\s*(?=ST|SR|Sl)', ' ', ln, flags=re.I)
+            # OCR de MILONGA (force_ocr=True) introduce ruido específico:
+            #   "1 H_ Rose"          → "_" tras H/Q
+            #   "1 Q — Rose"         → em/en-dash entre H/Q y Rose
+            #   "64499:" / "42,000:" → trailing colon en números
+            #   "42,000 ."           → punto huérfano al final
+            #   "64503 > wo 150"     → tokens cortos sueltos entre números
+            ln = re.sub(r'(?<=[HQhq])[_—–\-]+(?=\s)', '', ln)
+            ln = re.sub(r'(?<=\s[HQhq])\s+[—–\-_:>.]+(?=\s)', '', ln)
+            ln = re.sub(r'(?<=\d)[:.](?=\s|$)', '', ln)
+            ln = re.sub(r'(?<=\d)\s+>\s*\w{1,3}\s+(?=\d)', ' ', ln)
             # Normaliza Rose OCR variants antes del regex principal
             ln = re.sub(r'\bR(?:[:]?ise|[:]?lse|lese|\|se)\b', 'Rose', ln, flags=re.I)
             ln = re.sub(r'\s{2,}', ' ', ln).strip()
@@ -2530,7 +2787,10 @@ class UniqueParser:
 class AposentosParser:
     """Formato Flores de Aposentos (claveles colombianos):
     Box Type Stems Description Criterion Grade Brand Tariff No. Unit Price US Dollars
-    Ejemplo: "1 Tabaco 500 CARNATIONS BERNARD NOVELTY DUTY FREE FANCY . CO-0603129000 $0.1700 $85.00"
+    Ejemplos:
+      "1 Tabaco 500 CARNATIONS BERNARD NOVELTY DUTY FREE FANCY . CO-0603129000 $0.1700 $85.00"
+      "1 Tabaco 500 MINICARNATIONS ZUMBA RED DUTY FREE SELECT . CO-0603121000 $0.1800 $90.00"
+      "20 Tabaco 10000 CLAVEL SURTIDO (no pink) DUTY FREE FANCY . CO-0603129000 $0.1700 $1,700.00"
     """
     def parse(self, text: str, pdata: dict):
         h = InvoiceHeader()
@@ -2540,6 +2800,14 @@ class AposentosParser:
         h.date = m.group(1).strip() if m else ''
         m = re.search(r'AWB\s+([\d\-]+)', text, re.I); h.awb = re.sub(r'\s+', '', m.group(1)) if m else ''
         m = re.search(r'HAWB\s+([\d\-]+)', text, re.I); h.hawb = m.group(1) if m else ''
+        # Total real impreso en la factura: "Total Value $3,915.00" (o
+        # "SubTotal Value"). Necesario para que la validación cruzada
+        # detecte si falta alguna línea — antes derivábamos h.total de
+        # sum(lines) y eso ocultaba siempre el gap.
+        m = re.search(r'Total\s+Value\s*\$?\s*([\d,]+\.\d{2})', text, re.I)
+        if not m:
+            m = re.search(r'SubTotal\s+Value\s*\$?\s*([\d,]+\.\d{2})', text, re.I)
+        printed_total = float(m.group(1).replace(',', '')) if m else 0.0
 
         lines = []
         for ln in text.split('\n'):
@@ -2550,34 +2818,52 @@ class AposentosParser:
             #   precedido por ".0" o ".", los precios sin "$" prefix.
             ln_n = re.sub(r'\bC0-', 'CO-', ln)
             ln_n = re.sub(r'\bOUTY\s*FREE?\b', 'DUTYFREE', ln_n, flags=re.I)
-            # "1 Tabaco 500 CARNATIONS BERNARD NOVELTY DUTY FREE FANCY . CO-0603129000 $0.1700 $85.00"
-            # "12 Taba 6000 CARNATIONS ILIAS YELLOW DUTYFREE FANCY 0 CO-0603129000 0.1600 960.00"  (OCR)
+            # Acepta tres variantes de cabecera de línea:
+            #   CARNATIONS         → claveles standard (spb=20)
+            #   MINICARNATIONS     → mini claveles (spb=10)
+            #   CLAVEL SURTIDO     → mezcla en español (spb=20, var=MIXTO)
+            # `desc` es opcional (CLAVEL SURTIDO DUTY FREE FANCY ... viene
+            # sin descripción). El separador entre grade y CO-XXX puede
+            # ser ".", "0", o un label corto tipo "R14".
             pm = re.search(
-                r'(\d+)\s+Taba\w*\s+(\d+)\s+CARNATIONS\s+(.+?)\s+'
+                r'(\d+)\s+Taba\w*\s+(\d+)\s+'
+                r'(MINICARNATIONS?|CARNATIONS|CLAVEL\s+SURTIDOS?)'
+                r'(?:\s+(.+?))?\s+'
                 r'(?:DUTY\s*FREE?|DUTYFREE|REGULAR)\s+(\w+)\s+'
-                r'[.0\s]+CO-[\d]+\s+'
+                r'(?:[A-Za-z0-9.]+\s+)*'
+                r'CO-[\d]+\s+'
                 r'\$?([\d.]+)\s+\$?([\d.,]+)',
                 ln_n, re.I)
             if not pm:
                 continue
             boxes = int(pm.group(1)); stems = int(pm.group(2))
-            desc = pm.group(3).strip()
-            grade = pm.group(4).strip().upper()  # FANCY, SELECT, etc.
-            price = float(pm.group(5)); total = float(pm.group(6).replace(',',''))
-            # Separar variedad y color del desc: "BERNARD NOVELTY" -> var=BERNARD, color=NOVELTY
-            parts = desc.upper().split()
-            var = parts[0] if parts else desc.upper()
-            color = ' '.join(parts[1:]) if len(parts) > 1 else ''
-            full_var = var
-            if color and color not in ('SURTIDOS',):
-                full_var = f'{var} {color}'
-            spb = stems // (boxes * 20) if boxes else 20  # Claveles: 20 SPB default
+            species_tok = pm.group(3).upper().replace(' ', '')
+            desc = (pm.group(4) or '').strip()
+            grade = pm.group(5).strip().upper()  # FANCY, SELECT, etc.
+            price = float(pm.group(6)); total = float(pm.group(7).replace(',',''))
+            # Mini claveles vienen empaquetados en bouquets de 10 tallos.
+            spb_default = 10 if species_tok.startswith('MINI') else 20
+            # CLAVEL SURTIDO: el desc lleva el color/exclusión entre
+            # paréntesis (ej. "(no pink)"). Lo descartamos para el
+            # match — la variedad efectiva es siempre MIXTO.
+            if species_tok.startswith('CLAVELSURTIDO'):
+                full_var = 'MIXTO'
+            else:
+                # Separar variedad y color del desc:
+                #   "BERNARD NOVELTY" → var=BERNARD, color=NOVELTY
+                parts = desc.upper().split()
+                var = parts[0] if parts else desc.upper()
+                color = ' '.join(parts[1:]) if len(parts) > 1 else ''
+                full_var = var
+                if color and color not in ('SURTIDOS',):
+                    full_var = f'{var} {color}'
             il = InvoiceLine(raw_description=ln, species='CARNATIONS', variety=full_var, origin='COL',
-                             size=70, stems_per_bunch=20, stems=stems,
+                             size=70, stems_per_bunch=spb_default, stems=stems,
                              price_per_stem=price, line_total=total, box_type='TB', grade=grade)
             lines.append(il)
-        # Total from sum of lines
-        h.total = sum(l.line_total for l in lines)
+        # Preferir el total impreso; sólo caer al sum(lines) si la
+        # factura no expone un total parseable (raro).
+        h.total = printed_total or sum(l.line_total for l in lines)
         return h, lines
 
 
@@ -2954,7 +3240,14 @@ class InfinityParser:
                              size=sz, stems_per_bunch=spb, bunches=bunches, stems=stems,
                              price_per_stem=round(price, 4), line_total=total, box_type='HB')
             lines.append(il)
-        h.total = sum(l.line_total for l in lines)
+        # Total real: línea resumen al final de la tabla, formato:
+        # "16 Full Equivalent:7.750 ... 4,475 179 1,337.50". El último
+        # número con 2 decimales tras la columna "bunches" es el total.
+        m = re.search(
+            r'Full\s+Equivalent[:\s\d.,]*\s+\d+\s+\d+\s+([\d,]+\.\d{2})',
+            text, re.I)
+        printed = float(m.group(1).replace(',', '')) if m else 0.0
+        h.total = printed or sum(l.line_total for l in lines)
         return h, lines
 
 
@@ -3117,5 +3410,9 @@ class SuccessParser:
                              size=sz, stems_per_bunch=spb, bunches=bunches, stems=stems,
                              price_per_stem=price, line_total=total, box_type='HB')
             lines.append(il)
-        h.total = sum(l.line_total for l in lines)
+        # Total real impreso ("TOTAL USD $ XXX.XX" / "VALOR TOTAL XXX,XX").
+        # Sin esto, derivar de sum(lines) ocultaría líneas no parseadas.
+        m = re.search(r'(?:TOTAL\s+USD?|VALOR\s+TOTAL|TOTAL\s+A\s+PAGAR)\s*\$?\s*([\d,]+\.\d{2})', text, re.I)
+        printed = float(m.group(1).replace(',', '')) if m else 0.0
+        h.total = printed or sum(l.line_total for l in lines)
         return h, lines

@@ -41,6 +41,7 @@ class AgrivaldaniParser:
 
         raw_lines=text.split('\n')
         lines=[]; current_variety=''; current_sz=50; current_spb=25; current_btype=''
+        current_label=''
 
         for ln in raw_lines:
             ln=ln.strip()
@@ -48,6 +49,15 @@ class AgrivaldaniParser:
 
             bt=self._BTYPE.search(ln)
             if bt: current_btype=bt.group(1).upper()
+
+            # -- Capturar MARK (destino/etiqueta del bloque) ANTES de
+            # limpiar el prefijo. "1 - 1 R15 ..." o "2 - 2 ARTURO ..."
+            # \u2192 label = "R15" / "ARTURO". Las sub-l\u00edneas sin prefijo de
+            # orden heredan el \u00faltimo label visto (mismas variedades en
+            # la misma caja f\u00edsica comparten destino).
+            mark_m=re.match(r'^\d+\s*[-\u2013]\s*\d+\s+(\S+)\s+',ln)
+            if mark_m:
+                current_label=mark_m.group(1).strip().upper()
 
             # -- Limpiar prefijos de orden y tipo de caja --
             clean=re.sub(r'^\d+\s*[-\u2013]\s*\d+\s+\S+\s+','',ln)              # "1 - 1 R15 "
@@ -81,7 +91,8 @@ class AgrivaldaniParser:
                 if not current_variety: continue
                 il=InvoiceLine(raw_description=ln,species='ROSES',variety=current_variety,
                                size=sz,stems_per_bunch=spb,stems=stems,
-                               price_per_stem=price,line_total=total,box_type=current_btype)
+                               price_per_stem=price,line_total=total,box_type=current_btype,
+                               label=current_label)
                 lines.append(il); continue
 
             # -- Patron B: variedad + bunches + stems + price + total (sin CM/SPB) --
@@ -102,7 +113,8 @@ class AgrivaldaniParser:
                 except: continue
                 il=InvoiceLine(raw_description=ln,species='ROSES',variety=current_variety,
                                size=current_sz,stems_per_bunch=current_spb,stems=stems,
-                               price_per_stem=price,line_total=total,box_type=current_btype)
+                               price_per_stem=price,line_total=total,box_type=current_btype,
+                               label=current_label)
                 lines.append(il); continue
 
             # -- Patron C: solo numeros -- hereda variedad y CM/SPB
@@ -114,7 +126,8 @@ class AgrivaldaniParser:
                 except: price=0.0; total=0.0
                 il=InvoiceLine(raw_description=ln,species='ROSES',variety=current_variety,
                                size=sz,stems_per_bunch=spb,stems=stems,
-                               price_per_stem=price,line_total=total,box_type=current_btype)
+                               price_per_stem=price,line_total=total,box_type=current_btype,
+                               label=current_label)
                 lines.append(il); continue
 
             # -- Variedad sola (actualiza current_variety para siguiente linea) --
@@ -129,10 +142,8 @@ class AgrivaldaniParser:
                 candidate=hm.group(1).strip()
                 if not self._NOISE.match(candidate): current_variety=candidate
 
-        # Deduplicar: agrupa multiples cajas de misma variedad/talla/SPB
-        seen={}
-        for il in lines:
-            k=f"{il.variety}|{il.size}|{il.stems_per_bunch}"
-            if k not in seen: seen[k]=il
-            else: seen[k].stems+=il.stems; seen[k].line_total+=il.line_total
-        return h, list(seen.values())
+        # NO deduplicar: cada caja física = una línea separada en la
+        # UI, aunque comparta variedad/talla/SPB con otra. Sumar líneas
+        # destruye la trazabilidad del destino (label) y dificulta la
+        # revisión por el operador, que necesita verificar caja por caja.
+        return h, lines
