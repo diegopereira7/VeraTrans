@@ -117,6 +117,25 @@ class AutoParser:
         m = _HAWB_RE.search(text)
         if m:
             header.hawb = m.group(1)
+        # Total impreso: "Total <pcs_box> <full> <stems> <total>" al final
+        # de la tabla. Ejemplo: "Total 5 2,5 1240 2 66,00" — OCR rompe el
+        # decimal con espacios → "2 66,00" significa 266,00. Capturamos
+        # todo el resto y eliminamos espacios internos antes de parsear.
+        m = re.search(
+            r'(?m)^Total\s+\d+\s+[\d.,]+\s+\d+\s+([\d.,\s]+)$', text)
+        if m:
+            try:
+                raw = re.sub(r'\s+', '', m.group(1))
+                if not raw:
+                    pass
+                elif ',' in raw and '.' in raw:
+                    header.total = float(raw.replace('.', '').replace(',', '.'))
+                elif ',' in raw:
+                    header.total = float(raw.replace(',', '.'))
+                else:
+                    header.total = float(raw)
+            except ValueError:
+                pass
 
         lines: list[InvoiceLine] = []
         last_box_type = 'HB'

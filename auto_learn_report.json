@@ -9050,7 +9050,7 @@
         "extraction_engine": "",
         "extraction_confidence": 1.0,
         "extraction_degraded": false,
-        "avg_link_confidence": 0.999,
+        "avg_link_confidence": 1.0,
         "autoapprovable_lines": 7,
         "needs_review_lines": 0,
         "validation_errors_lines": 0,
@@ -9106,14 +9106,14 @@
     "samples": 5,
     "detected": 5,
     "parsed_any": 5,
-    "totals_ok": 4,
-    "total_parsed": 41,
+    "totals_ok": 5,
+    "total_parsed": 42,
     "total_rescued": 0,
-    "ok_lines": 41,
+    "ok_lines": 42,
     "ambiguous_lines": 0,
     "sin_match_lines": 0,
     "sin_parser_lines": 0,
-    "autoapprovable_lines": 41,
+    "autoapprovable_lines": 42,
     "autoapprove_rate": 1.0,
     "needs_review_lines": 0,
     "validation_errors_lines": 0,
@@ -9127,40 +9127,40 @@
       "color_modifier_extra": 4
     },
     "match_statuses": {
-      "ok": 41
+      "ok": 42
     },
     "samples_raw": [
       {
         "file": "01 - 075-67714625 - MEAFLOS MEAFLOS.pdf",
         "detected_as": "Meaflos",
         "fmt": "meaflos",
-        "parsed_lines": 12,
+        "parsed_lines": 13,
         "rescued_lines": 0,
-        "ok_lines": 12,
+        "ok_lines": 13,
         "ambiguous_lines": 0,
         "sin_match_lines": 0,
         "sin_parser_lines": 0,
         "header_total": 1632.0,
-        "sum_line_total": 1332.0,
-        "header_ok": false,
-        "diff_pct": 18.38,
+        "sum_line_total": 1632.0,
+        "header_ok": true,
+        "diff_pct": 0.0,
         "extraction_source": "native",
         "extraction_engine": "",
         "extraction_confidence": 1.0,
         "extraction_degraded": false,
         "avg_link_confidence": 1.0,
-        "autoapprovable_lines": 12,
+        "autoapprovable_lines": 13,
         "needs_review_lines": 0,
         "validation_errors_lines": 0,
         "penalties": {
           "color_modifier_extra": 1
         },
         "match_statuses": {
-          "ok": 12
+          "ok": 13
         },
         "invoice": "EC1000035075",
         "error": "",
-        "lane_auto": 12,
+        "lane_auto": 13,
         "lane_quick": 0,
         "lane_full": 0
       },
@@ -10744,7 +10744,7 @@
         "extraction_engine": "",
         "extraction_confidence": 1.0,
         "extraction_degraded": false,
-        "avg_link_confidence": 0.986,
+        "avg_link_confidence": 0.987,
         "autoapprovable_lines": 27,
         "needs_review_lines": 1,
         "validation_errors_lines": 0,
@@ -11712,7 +11712,7 @@
     "samples": 5,
     "detected": 5,
     "parsed_any": 5,
-    "totals_ok": 5,
+    "totals_ok": 4,
     "total_parsed": 24,
     "total_rescued": 0,
     "ok_lines": 24,
@@ -11877,10 +11877,10 @@
         "ambiguous_lines": 0,
         "sin_match_lines": 0,
         "sin_parser_lines": 0,
-        "header_total": 664.5,
+        "header_total": 1027.0,
         "sum_line_total": 664.5,
-        "header_ok": true,
-        "diff_pct": 0.0,
+        "header_ok": false,
+        "diff_pct": 35.3,
         "extraction_source": "native",
         "extraction_engine": "",
         "extraction_confidence": 1.0,
@@ -14349,13 +14349,13 @@
     "totals_ok": 4,
     "total_parsed": 50,
     "total_rescued": 0,
-    "ok_lines": 47,
+    "ok_lines": 50,
     "ambiguous_lines": 0,
-    "sin_match_lines": 3,
+    "sin_match_lines": 0,
     "sin_parser_lines": 0,
-    "autoapprovable_lines": 47,
+    "autoapprovable_lines": 50,
     "autoapprove_rate": 1.0,
-    "needs_review_lines": 3,
+    "needs_review_lines": 0,
     "validation_errors_lines": 0,
     "extraction_source_mix": {
       "native": 3,
@@ -14366,12 +14366,10 @@
       "ocrmypdf": 2
     },
     "penalties": {
-      "size_off": 3,
-      "foreign_brand": 3
+      "weak_synonym": 42
     },
     "match_statuses": {
-      "ok": 47,
-      "sin_match": 3
+      "ok": 50
     },
     "samples_raw": [
       {
@@ -14380,9 +14378,9 @@
         "fmt": "tessa",
         "parsed_lines": 27,
         "rescued_lines": 0,
-        "ok_lines": 26,
+        "ok_lines": 27,
         "ambiguous_lines": 0,
-        "sin_match_lines": 1,
+        "sin_match_lines": 0,
         "sin_parser_lines": 0,
         "header_total": 250.0,
         "sum_line_total": 130.0,
@@ -14392,23 +14390,21 @@
         "extraction_engine": "",
         "extraction_confidence": 1.0,
         "extraction_degraded": false,
-        "avg_link_confidence": 0.979,
-        "autoapprovable_lines": 26,
-        "needs_review_lines": 1,
+        "avg_link_confidence": 1.0,
+        "autoapprovable_lines": 27,
+        "needs_review_lines": 0,
         "validation_errors_lines": 0,
         "penalties": {
-          "size_off": 1,
-          "foreign_brand": 1
+          "weak_synonym": 25
         },
         "match_statuses": {
-          "ok": 26,
-          "sin_match": 1
+          "ok": 27
         },
         "invoice": "90570861",
         "error": "",
-        "lane_auto": 26,
+        "lane_auto": 27,
         "lane_quick": 0,
-        "lane_full": 1
+        "lane_full": 0
       },
       {
         "file": "01 - 139-47856513 - TESSA TESSA.pdf",
@@ -14432,7 +14428,9 @@
         "autoapprovable_lines": 6,
         "needs_review_lines": 0,
         "validation_errors_lines": 0,
-        "penalties": {},
+        "penalties": {
+          "weak_synonym": 5
+        },
         "match_statuses": {
           "ok": 6
         },
@@ -14464,7 +14462,9 @@
         "autoapprovable_lines": 5,
         "needs_review_lines": 0,
         "validation_errors_lines": 0,
-        "penalties": {},
+        "penalties": {
+          "weak_synonym": 5
+        },
         "match_statuses": {
           "ok": 5
         },
@@ -14480,9 +14480,9 @@
         "fmt": "tessa",
         "parsed_lines": 4,
         "rescued_lines": 0,
-        "ok_lines": 2,
+        "ok_lines": 4,
         "ambiguous_lines": 0,
-        "sin_match_lines": 2,
+        "sin_match_lines": 0,
         "sin_parser_lines": 0,
         "header_total": 550.0,
         "sum_line_total": 550.0,
@@ -14492,23 +14492,19 @@
         "extraction_engine": "",
         "extraction_confidence": 1.0,
         "extraction_degraded": false,
-        "avg_link_confidence": 0.72,
-        "autoapprovable_lines": 2,
-        "needs_review_lines": 2,
+        "avg_link_confidence": 1.0,
+        "autoapprovable_lines": 4,
+        "needs_review_lines": 0,
         "validation_errors_lines": 0,
-        "penalties": {
-          "size_off": 2,
-          "foreign_brand": 2
-        },
+        "penalties": {},
         "match_statuses": {
-          "ok": 2,
-          "sin_match": 2
+          "ok": 4
         },
         "invoice": "90727313",
         "error": "",
-        "lane_auto": 2,
+        "lane_auto": 4,
         "lane_quick": 0,
-        "lane_full": 2
+        "lane_full": 0
       },
       {
         "file": "03 - 075-67711210 - TESSA TESSA.pdf",
@@ -14532,7 +14528,9 @@
         "autoapprovable_lines": 8,
         "needs_review_lines": 0,
         "validation_errors_lines": 0,
-        "penalties": {},
+        "penalties": {
+          "weak_synonym": 7
+        },
         "match_statuses": {
           "ok": 8
         },
@@ -15158,13 +15156,13 @@
     "detected": 5,
     "parsed_any": 5,
     "totals_ok": 4,
-    "total_parsed": 95,
+    "total_parsed": 96,
     "total_rescued": 0,
-    "ok_lines": 95,
+    "ok_lines": 96,
     "ambiguous_lines": 0,
     "sin_match_lines": 0,
     "sin_parser_lines": 0,
-    "autoapprovable_lines": 95,
+    "autoapprovable_lines": 96,
     "autoapprove_rate": 1.0,
     "needs_review_lines": 0,
     "validation_errors_lines": 0,
@@ -15179,7 +15177,7 @@
       "variety_no_overlap": 1
     },
     "match_statuses": {
-      "ok": 95
+      "ok": 96
     },
     "samples_raw": [
       {
@@ -15220,33 +15218,33 @@
         "file": "01 - 729-4932 4995 (232) - UMA 14903.pdf",
         "detected_as": "Uma Flowers",
         "fmt": "uma",
-        "parsed_lines": 30,
+        "parsed_lines": 31,
         "rescued_lines": 0,
-        "ok_lines": 30,
+        "ok_lines": 31,
         "ambiguous_lines": 0,
         "sin_match_lines": 0,
         "sin_parser_lines": 0,
         "header_total": 4025.0,
-        "sum_line_total": 4004.0,
+        "sum_line_total": 4025.0,
         "header_ok": true,
-        "diff_pct": 0.52,
+        "diff_pct": 0.0,
         "extraction_source": "native",
         "extraction_engine": "",
         "extraction_confidence": 1.0,
         "extraction_degraded": false,
         "avg_link_confidence": 1.0,
-        "autoapprovable_lines": 30,
+        "autoapprovable_lines": 31,
         "needs_review_lines": 0,
         "validation_errors_lines": 0,
         "penalties": {
           "weak_synonym": 3
         },
         "match_statuses": {
-          "ok": 30
+          "ok": 31
         },
         "invoice": "14903",
         "error": "",
-        "lane_auto": 30,
+        "lane_auto": 31,
         "lane_quick": 0,
         "lane_full": 0
       },

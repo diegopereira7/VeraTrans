@@ -53,6 +53,249 @@ correspondiente en [`sessions.md`](sessions.md).
   que ningún regex puede recuperarlas. Aceptar pass_ratio < 100% en
   esos casos (MILONGA scan, SAYONARA scan).
 
+## shadow_report puede mostrar estado viejo de sinónimos
+
+El reporte `shadow_report --top-missing-articles` agrega
+**rescates históricos** del operador (decisiones donde
+`proposed_articulo_id=0` y el humano asignó manualmente). Esos
+rescates son del momento en que ocurrieron — no reflejan si el
+sinónimo fue después confirmado y ya no es "pendiente".
+
+Caso concreto (sesión 12m): Brissas `GARDEN ROSE APPLE 50/60`
+salía con 6 rescates en el reporte, sugiriendo "alta en ERP
+pendiente". En realidad ya estaban `manual_confirmado` desde
+hace varias sesiones — el matcher actual ya lo encuentra solo.
+
+**Política antes de actuar sobre items del shadow report**:
+verificar el estado actual del sinónimo en
+`sinonimos_universal.json`:
+
+```bash
+grep -F "<provider_id>|ROSES|<VARIETY>|" sinonimos_universal.json
+# o programáticamente:
+python -c "
+import sys, json
+sys.stdout.reconfigure(encoding='utf-8')
+syns = json.load(open('sinonimos_universal.json', encoding='utf-8'))
+for k, v in syns.items():
+    if 'GARDEN ROSE APPLE' in k.upper():
+        print(k, '→', v.get('articulo_id'), v.get('status'))
+"
+```
+
+Si está `manual_confirmado` ya, no hay nada que hacer — el
+shadow lo está mostrando por inercia histórica. Si está
+`aprendido_en_prueba` o `None`, entonces sí es candidato a
+confirmación o corrección.
+
+## Tests de regresión sin pytest (unittest built-in)
+
+Si el repo no tiene `pytest` instalado y no quieres añadir
+dependencia, `unittest` (built-in) es perfectamente válido para
+tests de regresión de parsers. Características recomendadas:
+
+- Usar PDFs reales del `batch_uploads/<id>/` del operador (no
+  mockear) — los samples ya cubren los casos edge históricos.
+- Cada test cita la sesión que introdujo el comportamiento.
+- Solo testear el parser, no el matcher (los `articulo_id`
+  cambian al reimportar catálogo).
+- Usar `subTest` para múltiples casos del mismo invariante:
+  ```python
+  for pdf, expected in [...]:
+      with self.subTest(pdf=pdf):
+          ...
+  ```
+- Skip en lugar de fail si el PDF no está disponible:
+  ```python
+  if not pdf_path.exists():
+      raise unittest.SkipTest(f'Sample no disponible: {pdf_path}')
+  ```
+
+Comando: `python -m unittest tests.test_parser_regressions -v`.
+
+## Sync JSON↔MySQL de sinónimos
+
+El backend Python actualiza `sinonimos_universal.json`
+(autoritativo en local). El frontend PHP escribe directamente a
+la tabla MySQL `sinonimos` cuando el operador interactúa via UI.
+**No hay sync automático** entre los dos en el sentido
+JSON→MySQL.
+
+Si modificas `sinonimos_universal.json` directamente (script de
+mantenimiento, corrección masiva), MySQL queda desactualizado en
+producción. Dos opciones:
+
+1. **Regenerar SQL** y aplicar manualmente (sesión 12m generó
+   `sql_sync_12m.sql` con UPDATEs y DELETEs).
+2. **Reset MySQL desde JSON** — `verabuy_trainer.py` o un script
+   ad-hoc que borre `sinonimos` y haga INSERT bulk desde el JSON
+   (`SynonymStore.export_sql()` lo genera).
+
+En la máquina del developer NO hay `mysql.connector` instalado,
+así que `_bulk_sync_to_mysql()` falla silenciosamente desde
+Python. Es esperado. Solo afecta cuando se ejecuta en
+producción.
+
+## Regenerar golden files tras fixes que cambian composición
+
+Cuando un fix de parser cambia el **número** o **composición**
+de líneas que produce (no solo el contenido de cada línea), los
+golden files quedan invalidados. Política tras un fix así:
+
+1. Correr `python tools/evaluate_golden.py` para detectar
+   `missing_line` y `extra_system_line`.
+2. Para cada gold afectado: regenerar desde el PDF original
+   (en el path absoluto del operador, ej.
+   `C:/Users/diego.pereira/Desktop/DOC VERA/.../<PROVEEDOR>/`)
+   ejecutando el pipeline manualmente y reemplazando `lines`.
+3. Mantener `_status: reviewed` y añadir `_regenerated:
+   <ISO date>` + `_regenerated_reason: <sesión>` al JSON
+   para trazabilidad.
+4. Si la regeneración cambia `articulo_id` (link_mismatch),
+   investigar caso por caso — puede ser sinónimo aprendido vs
+   asignación manual histórica del operador.
+
+Si esto no se hace, el roadmap arrastra una "regresión
+esperada" indefinida que esconde desviaciones reales.
+
+Ejemplos históricos:
+- **12d MIXTO consolidación** (split por color → MIXTO single-line):
+  invalidó `benchmark_103685.json` (32 → 29 líneas, regenerado
+  en 12l).
+- **12h MEAFLOS miles** (`(\d+)` → `([\d.]+)` en stems):
+  faltaba la línea `MONDIAL 1.200` ($300) en
+  `meaflos_EC1000035075.json` (12 → 13 líneas, gold sum
+  cuadraba con header tras añadirla en 12l).
+
+## `spb` vs `bunches` en regex multi-columna
+
+Cuando el patrón captura `... SIZE BUNCHES STEMS PRICE TOTAL`
+(orden común en proveedores con plantilla "boxes/box bunches/
+stems"), no asignar el group de `bunches` a la variable `spb`.
+El comentario del regex puede decir correctamente
+`BUNCHES STEMS` pero el código asigna mal — bug invisible con
+coste oculto en rescates del operador (sesión 12j, TessaParser:
+MONDIAL 70 caía siempre en spb=10, el operador rescataba
+manualmente al artículo correcto spb=25).
+
+Patrón seguro:
+```python
+sz = int(group(3))
+bunches = int(group(4))
+stems = int(group(5))
+spb = stems // bunches if bunches > 0 else 25
+il = InvoiceLine(..., stems_per_bunch=spb, bunches=bunches, stems=stems)
+```
+
+Importante poblar también `bunches=` en el `InvoiceLine` para
+que la UI tenga la información completa y la validación cruzada
+pueda detectar inconsistencias. Síntoma a buscar en
+shadow_report `--top-missing-articles`: el mismo proveedor +
+variety + size pero **spb anómalo** (ej. spb=10 en MONDIAL/
+EXPLORER cuando lo normal es spb=25).
+
+## Mixed-box sub-líneas con variety colgada
+
+Los proveedores de flor empaquetan a menudo varias variedades en
+una "caja física" (HB/QB/TB). En el PDF impreso, esto suele
+expresarse con un **parent** que trae el prefijo de cantidad de
+caja (`<box_n>/<total>`, `N hb XXX`, etc.) seguido por **N
+sub-líneas** que comparten esa caja pero solo traen variety y
+totales propios. Tres patrones encontrados:
+
+- **UmaParser** (sesión 12i): parent `<COD> 1 hb 300 ...`,
+  sub-line `<COD> Brighton 60 cm Farm 50 25 2 $ 0,26 $ 13,00`
+  (solo cambia que falta `1 hb 300`). Fix: regex pm3 sin prefijo
+  `N hb XXX`, hereda `last_btype`/`last_farm`.
+- **VerdesEstacionParser** (sesión 12i): parent `1/37 HB 0,50 1,00 BRIGHTON 40CM ...`,
+  sub-line empieza directamente por talla porque la variety está
+  colgada en la línea anterior con sufijo OCR
+  (`MAYRA'S BRIDAL FRESH CUT` arriba, `40CM 25 25 CO ... $ 8,00`
+  abajo). Fix: regex `_RE_C` que matchea `^<size>CM` y busca
+  variety en `text_lines[i-1]` extrayendo bloque mayúsculas
+  inicial antes de `FRESH CUT`/`ROSES*`.
+
+**Auditoría**: parsers donde `N hb XXX`/`<box>/<total>` sea
+prefijo obligatorio. Sin un segundo regex de sub-line con
+herencia de estado, las líneas extra se pierden silenciosas
+(no aparecen en `rescue_unparsed_lines` porque tampoco encajan
+en el regex genérico de rescate).
+
+## Variety con caracteres especiales
+
+Nombres de variedades comerciales pueden incluir:
+
+- **Apóstrofes**: `Pink O'Hara`, `Mayra's Bridal`. Si el regex
+  trae `[A-Za-z\s\-]`, falla. Añadir `'` (y normalizar curly
+  quotes `'`/`'`/`´`/U+0092/U+FFFD a `'` antes de parsear, como
+  ya hace VerdesEstacionParser).
+- **Dígitos**: `RM001`, códigos numéricos de variedades sin
+  nombre comercial todavía. Char class debe incluir `0-9`.
+- **`Roses` vs `Rosas`**: cuantificador `s?` no abarca ambos.
+  Usar `Ros[ae]s?` (sesión 12h, MeaflosParser con
+  `Garden Roses -`).
+
+## Regex de detalle en parsers
+
+- **`Rosas?` no matchea `Roses`**: el cuantificador `s?` hace `s`
+  opcional al final de `Rosa`, no en alternation. Para aceptar
+  ambos idiomas (proveedores que mezclan español/inglés) usar
+  `Ros[ae]s?` o `(?:Rosas?|Roses?)`. Caso típico: `Garden Roses -`
+  en MEAFLOS (sesión 12h), `Roses` en facturas de proveedores
+  internacionales.
+- **`(\d+)` no acepta `1.200`**: cuando una caja lleva ≥1000 stems
+  el PDF imprime el separador de miles con punto. El regex
+  `(\d+)` sólo matchea dígitos contiguos y la línea entera se
+  ignora silenciosamente. Patrón seguro: `([\d.]+)` y al
+  convertir `int(s.replace('.', ''))`. Aplicable a stems, bunches
+  y cualquier "cantidad alta" potencial. Bug encontrado en MEAFLOS
+  (sesión 12h) — auditar otros parsers con cuantificador `\d+`
+  para stems.
+
+## Reproceso de batches con `reparse_batch.py`
+
+- **Propagar el dict `validation` al JSON**: `validate_invoice`
+  produce `sum_lines`/`header_total`/`header_diff`/`header_ok` que
+  la UI usa para el badge "Parcial" en cabecera. Si solo
+  reescribes `lines` y los `total_usd`/`ok_count` derivados, el
+  campo `validation` queda con los valores viejos del primer
+  procesamiento — el badge sigue mostrando el gap antiguo aunque
+  el sum nuevo cuadre. Fix: `inv['validation'] = validation` tras
+  el `validate_invoice` del pipeline (sesión 12h).
+- **Sincronizar thresholds entre tools**: el threshold de
+  `needs_review` por confidence vive en 5 sitios distintos
+  (`api.php`, `app.js`, `app.extras.js`, `tools/rematch_batch.py`,
+  `tools/reparse_batch.py`). Cuando cambia uno, sincronizar todos
+  o algunas vistas mostrarán números distintos. Histórico: 0.90 →
+  0.84 en sesión que cerró el problema "stuck en Revisar".
+
+## Validación cruzada y totales
+
+- **`header.total = sum(lines)` sin fallback al total impreso es un
+  bug silencioso**: si una línea no parsea, `sum_lines` es trivialmente
+  igual al "total" derivado y la validación cruzada NUNCA dispara
+  aviso. El operador no ve "Parcial" en la cabecera y el hueco pasa
+  inadvertido. Patrón correcto: extraer primero el total impreso del
+  texto (`Total Value`, `TOTAL USD`, `TOTAL A PAGAR`, `Amount Due`,
+  según proveedor) y dejar el `sum(lines)` SOLO como fallback. El
+  `if not h.total and lines: h.total = sum(...)` es necesario pero
+  no suficiente — debe haber una extracción del total impreso ANTES.
+- **Comando de auditoría**: `Grep h\.total\s*=\s*(?:round\()?sum\(`
+  en `src/parsers/`. Para cada hit, verificar que el parser tenga
+  `m = re.search(r'<patrón_total_impreso>', text)` ANTES del fallback.
+  Si no, el parser oculta líneas faltantes.
+- **Multi-invoice PDFs**: usa `re.finditer(...)` no `re.search(...)`
+  cuando el texto puede traer varias facturas concatenadas (FLORSANI
+  trae 1-3 secciones "Single Flowers" según número de invoices del
+  PDF). Sumar todas, no solo la primera.
+- **Propagar `pdata['pdf_path']` en TODOS los callsites que recreen
+  pdata**: parsers tabulares (AlegriaParser → Tierra Verde, Olimpo,
+  Ceres) usan `pdfplumber.extract_tables()` desde ahí. Sin la ruta,
+  caen silenciosamente al fallback de texto y restan ok-matches sin
+  avisar. Callsites a auditar: `cli.py`, `procesar_pdf.py`,
+  `batch_process.py`, `tools/{evaluate_all, golden_bootstrap,
+  golden_apply, evaluate_golden, reparse_batch, auto_learn_parsers}.py`.
+
 ## Parseo de decimales y formatos
 
 - **Decimal con coma vs punto**: muchos proveedores COL/EC usan coma.

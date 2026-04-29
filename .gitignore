@@ -20,3 +20,7 @@ articulos*.sql
 articulos_backup_*.sql
 golden/backups_*/
 golden/pendientes/
+# Outputs ad-hoc de debugging (scripts manuales)
+*_out.json
+milonga_*.png
+altas_erp.txt

@@ -8,6 +8,427 @@ aquí y se quita de CLAUDE.md.
 Para el estado actual del proyecto, ver [`CLAUDE.md`](../CLAUDE.md) (raíz).
 Para lecciones transversales reutilizables, ver [`lessons.md`](lessons.md).
 
+### 2026-04-29 — sesión 12k: audit cleanup — items 3/4/5 verificados sin deuda activa, roadmap limpiado
+
+Sesión de cierre de las 3 auditorías preventivas que las
+sesiones 12i/12j dejaron en el roadmap (`auditar otros parsers
+con X` para los patrones de bug ya encontrados). El objetivo era
+verificar si el bug existe en otros parsers o si es único de los
+ya arreglados.
+
+**(a) Item 3 — variety regex restrictiva**: para cada PDF del
+batch del operador, comparé líneas con apóstrofes/dígitos en el
+texto vs líneas parseadas. Las 7 candidatas detectadas eran
+todas falsos positivos (texto de cabecera tipo "FBE's: 0.50",
+direcciones tipo "N39-34"). **No hay líneas perdidas con
+apóstrofe ni dígito en variety en el batch actual**.
+
+**(b) Item 4 — prefijo de caja `N hb XXX` obligatorio**: tras
+los fixes 12i (UMA + VerdesEstacion), todos los gaps del batch
+del operador están cerrados (excepto SAYONARA $1610 NO_PARSEA
+conocido). Si hubiera otro parser perdiendo sub-líneas
+silenciosas, ya habría aparecido como gap. **Verificado limpio
+en el batch actual**.
+
+**(c) Item 5 — `BUNCHES STEMS` confundido con `spb`**: hice
+script que detecta líneas de rosa estándar (MONDIAL/EXPLORER/
+FREEDOM/BRIGHTON/...) con spb=10 anómalo. Encontré 3 casos
+(VerdesEstacion 11, VALTHO 1, VUELVEN 2) — TODOS legítimos:
+PDFs dicen `ROSES*10STEMS` o `10ST` o `X 10` explícitamente.
+**TessaParser sigue siendo el único parser real con el bug**
+(ya arreglado en 12j).
+
+**Resultado**: `Próximos pasos posibles` reescrito en CLAUDE.md
+separando acción operativa (1 item: alta ERP con operador) de
+deuda preventiva (2 items: 7 parsers `auto_*` + NO_PARSEA), con
+7 items adicionales marcados ✓ "verificado sin deuda activa".
+Sin cambios de código en esta sesión, solo verificaciones.
+
+### 2026-04-29 — sesión 12j: TessaParser — `bunches` confundidos con `spb` + items obsoletos de roadmap
+
+Sesión disparada por el primer caso del shadow_report
+`--top-missing-articles`: **Tessa Corp MONDIAL 70 spb=10 con 6
+rescates**. MONDIAL es rosa estándar (spb=25 o 20), nunca 10.
+Sospecha de bug del parser confirmada.
+
+**Diagnóstico** (`src/parsers/otros.py` `TessaParser`). El
+comentario del patrón ya decía `SIZE BUNCHES STEMS $PRICE
+$TOTAL`, pero el código asignaba el group de **bunches** a la
+variable `spb`. Para
+`1 911316242 HB XL 2 TESSA-F MONDIAL 70 10 250 $0.55 $137.50 R13`:
+group(4)=10=bunches (no spb), group(5)=250=stems, spb real =
+250/10 = 25. El bug afectaba a los 4 patrones del parser
+(pm/pm2/pm3/pm4).
+
+**Fix**: `bunches = int(group(4))`, `stems = int(group(5))`,
+`spb = stems // bunches if bunches > 0 else 25`. Y poblar
+`bunches=` en el `InvoiceLine`.
+
+**Resultado**: 50 líneas Tessa pasan de spb=10 erróneo a spb=25
+correcto. Los 6 rescates "MONDIAL spb=10" del shadow eran
+asignaciones manuales del operador que ahora el matcher hará
+solo. Benchmark global: 3598 líneas, ok 3420 (+3 vs 12i),
+autoapprove 96.3% estable.
+
+**Auditoría adicional**: revisada lista de "próximos pasos" —
+2 items ya estaban implementados (shadow_report
+`--top-missing-articles`, UI lookup_article por id_erp/
+referencia desde sesión 10r), retirados del roadmap.
+
+**Lección transversal** ("`spb` vs `bunches` en regex
+multi-columna"): cuando el patrón captura
+`... SIZE BUNCHES STEMS PRICE TOTAL`, no asignar el group de
+`bunches` a la variable `spb`. Bug invisible con coste oculto en
+rescates del operador.
+
+### 2026-04-29 — sesión 12i: UMA + GARDA + VerdesEstacion sub-líneas mixed-box → 6/7 gaps cerrados
+
+Sesión de cierre de los 4 gaps pendientes en el batch tras
+12g/12h: UMA $196, GARDA1 $22.50, PONDEROSA $40, Factura_Veraleza
+$5.60. Tres parsers con un patrón común: **sub-líneas de mixed
+boxes** que el regex principal no capturaba.
+
+(a) **UmaParser** — añadido `pm3` para sub-líneas sin prefijo
+`N hb XXX`, herencia de `last_btype`/`last_farm`. UMA.pdf 14→23
+líneas, $3700→$3896 (= total impreso ✓).
+
+(b) **GardaParser** — `_LINE_RE` ampliada char class de variety
+a `[A-Za-z0-9\s.\-/&!']+?` para aceptar apóstrofes
+(`Pink O'Hara`) y dígitos (`RM001`). GARDA1.pdf 39→41 líneas,
+$976.25→$998.75 ✓.
+
+(c) **VerdesEstacionParser** — nuevo `_RE_C` para sub-líneas
+con variety colgada en línea anterior (`MAYRA'S BRIDAL FRESH
+CUT` arriba, `40CM 25 25 CO ... $ 8,00` abajo). PONDEROSA.pdf
+72→76 líneas $3137.75→$3177.75 ✓, Factura_Veraleza_22-04
+108→109 líneas $5772.20→$5777.80 ✓.
+
+**Métricas**: 3598 líneas, ok 3417 (+1), 96.3% autoapprove
+estable. Batch del operador: de 7 gaps invisibles iniciales,
+**6 cerrados, queda solo SAYONARA $1610** (NO_PARSEA conocido,
+OCR muy degradado).
+
+**Lección transversal**: nuevas secciones "Mixed-box sub-líneas
+con variety colgada" y "Variety con caracteres especiales" en
+`docs/lessons.md`. Patrón de auditoría: parsers con regex que
+exija prefijo de caja, char class de variety solo
+`[A-Za-z\s\-]`.
+
+### 2026-04-29 — sesión 12h: MEAFLOS — `Garden Roses` + stems con punto miles + reparse_batch propaga validation
+
+Sesión disparada por el primer "próximo paso" anotado en 12g: gap
+consistente de $300/$344/$1055 en 3 facturas MEAFLOS del batch
+sugería bug estructural. Confirmado y arreglado.
+
+**Diagnóstico del MeaflosParser** (`src/parsers/otros.py`
+línea ~3208). Dos defectos en la regex de detalle:
+
+1. **`Rosas?` no matchea `Roses`**: `s?` hace `s` opcional al final
+   de `Rosa` → matchea `Rosa`/`Rosas` pero NO `Rose`/`Roses`. Las
+   facturas traen `Garden Roses - Country Home 50cm ...` (rosa de
+   jardín) que el regex ignoraba silenciosamente.
+2. **`(\d+)` para stems no acepta `1.200`**: cuando una caja lleva
+   ≥1000 stems el PDF imprime con punto de miles
+   (`Rosas - Mondial 50cm 0,00 0,00 1.200 0,25 300,00`). El `\d+`
+   sólo matchea dígitos contiguos, dejando líneas grandes fuera.
+
+**Fix** — regex ampliado `\b(?:Garden\s+)?Ros[ae]s?` + `([\d.]+)`
+con `int(s.replace('.', ''))`.
+
+**Resultado**: 5 facturas MEAFLOS del batch cuadran exacto al
+total impreso (MEAFLOS.pdf 63→69 líneas $7510.50, MEAFLOS_075
+43→45 líneas $4965, MEAFLOS_1 15→16 líneas $1810.50, los otros
+sin cambios).
+
+**Bug bonus en `reparse_batch.py`**: el campo `validation` del JSON
+del batch (con `sum_lines` y `header_total` que la UI usa para el
+badge "Parcial") NO se actualizaba al reprocesar. Solo se
+escribían `lines`, `total_usd`, `ok_count`, etc. Resultado: tras
+arreglar MEAFLOS y reprocessar, los gaps **seguían apareciendo en
+la UI** porque el JSON guardaba los valores viejos de validation.
+Fix: `_process_pdf` retorna `validation` y `reparse_batch` lo
+escribe con `inv['validation'] = validation`. Además sincronizado
+threshold local de `_recompute_invoice_stats` 0.90 → 0.84.
+
+**Métricas globales** (post-12h): 3597 líneas (+1), ok 3416 (+1),
+autoapprove 96.3% estable. Batch del operador: las 3 facturas
+MEAFLOS y BG-106379 dejan de aparecer con gap.
+
+**Lección transversal**: `Rosas?` no matchea `Roses` —
+cuantificador `s?` no abarca alternation. Para mezcla
+español/inglés usar `Ros[ae]s?`. Cualquier regex que capture
+`stems`/`bunches` debe aceptar separador de miles cuando el
+proveedor llega a ≥1000 unidades por caja. Patrón seguro:
+`([\d.]+)` y `int(s.replace('.', ''))`.
+
+### 2026-04-29 — sesión 12g: auditoría `header.total = sum` + `pdata['pdf_path']` en callsites
+
+Sesión de cierre de las dos auditorías transversales que las
+sesiones 12e y 12f dejaron abiertas como deuda técnica. Ambas
+trampas son **bugs silenciosos** (no rompen el pipeline, solo
+ocultan datos faltantes).
+
+**(a) Auditoría `h.total = sum(lines)` sin total impreso**
+
+Lección 12e: si el parser deriva `h.total` de la suma de líneas,
+una línea que no parsea NUNCA dispara aviso de validación porque
+`sum_lines == h.total` es trivialmente cierto.
+
+`Grep h\.total\s*=\s*(?:round\()?sum\(` en `src/parsers/`: 26 sites
+en 18 parsers. Para cada uno, verificar que ANTES haya una
+extracción del total impreso (`Total Value`, `TOTAL USD`, `TOTAL A
+PAGAR`, `Amount Due`, etc.). Resultado:
+
+- **OK (15 sites)**: BrissasParser, TurflorParser, DaflorParser,
+  EqrParser, BosqueParser, MultifloraParser, MaxiParser,
+  CondorParser, MalimaParser, TessaParser, UmaParser,
+  FloraromaParser, GardaParser, UtopiaParser, ColFarmParser,
+  IwaParser, TimanaParser, NativeParser (otros.py), RosaledaParser,
+  UniqueParser, AposentosParser, CustomerInvoiceParser,
+  PremiumColParser, DomenicaParser, InvosParser, MeaflosParser,
+  HeraflorParser, InfinityParser, ProgresoParser, ColonParser,
+  AguablancaParser, SuccessParser. Auto_*: conejera, campanario,
+  milagro, cean, mountain, floreloy, agrinag, qualisa, farin.
+  Manuales: sayonara, ecoflor, mystic.
+- **Gap (11 sites)**: FlorsaniParser, PrestigeParser,
+  VerdesEstacionParser. Auto_*: native, elite, natuflor, zorro,
+  sanjorge, sanfrancisco, rosabella, agrosanalfonso.
+
+**Fix aplicado a los 4 con sample disponible** (regla "no tocar
+parsers sin evidencia"):
+
+1. `PrestigeParser` (otros.py) — `TOTAL\s+A\s+PAGAR\s+\$?\s*([\d.,]+)`
+   con normalización USD (coma decimal). Verificado: PRESTIGE.pdf
+   total $87.50 ✓.
+2. `VerdesEstacionParser` (otros.py) — `TOTAL\s*[:\s]\s*\$?\s*([\d.,]+)`
+   con detección formato europeo (3.177,75 vs 3177,75 vs 3177.75).
+   Verificado: PONDEROSA.pdf total $3177.75 ✓ vs sum $3137.75 →
+   **gap real de $40 antes invisible**.
+3. `FlorsaniParser` (otros.py) — `re.finditer` (no `re.search`)
+   sobre la sección `Single Flowers` para sumar todas las
+   secciones cuando el PDF trae multi-invoices. La línea de cada
+   especie: `<species_name>+ <pieces> <stems> <price> <total>`.
+   Verificado: FLORSANI/FLORSANI1/FLORSANI2 + multi-invoice ✓.
+4. `auto_native.py` — `^Total\s+\d+\s+[\d.,]+\s+\d+\s+([\d.,\s]+)$`
+   con limpieza de espacios internos (OCR rompe `266,00` en
+   `2 66,00`). Verificado: NATIVE.pdf $266.00 ✓.
+
+Para los 7 `auto_*` restantes sin sample en repo (auto_elite,
+auto_natuflor, auto_zorro, auto_sanjorge, auto_sanfrancisco,
+auto_rosabella, auto_agrosanalfonso): documentados como deuda
+técnica. Atender cuando aparezcan facturas reales con gap detectado.
+
+**(b) Auditoría `pdata['pdf_path']` en callsites**
+
+Lección 12f: AlegriaParser y otros parsers tabulares usan
+`pdfplumber.extract_tables()` desde `pdata['pdf_path']`. Sin la
+ruta caen silenciosamente al fallback de texto, restando
+ok-matches sin avisar.
+
+Auditados los 9 callsites que recrean `pdata`. Ya propagaban:
+`procesar_pdf.py`, `batch_process.py`, `tools/auto_learn_parsers.py`,
+`tools/evaluate_all.py`, `tools/evaluate_golden.py`,
+`tools/golden_bootstrap.py`, `tools/golden_apply.py`,
+`tools/reparse_batch.py`. **`cli.py:168` no propagaba** — fix aplicado.
+
+**Validación end-to-end**: Benchmark global 3596 líneas, ok 3415,
+autoapprove 96.3% sin regresión. Reparse del batch del operador
+(114 facturas, preserva ediciones manuales): 7 facturas con gap
+real visible que antes pasaban silenciosas (SAYONARA $1610,
+MEAFLOS x3 $1700 acumulado, BG-106379 $324, UMA $196, GARDA1 $22).
+
+**Lección transversal**: nueva sección "Validación cruzada y
+totales" en `docs/lessons.md` con la regla "`h.total = sum(lines)`
+sin fallback al total impreso es bug silencioso", patrón correcto,
+comando de auditoría grep, y nota sobre multi-invoice PDFs
+(`re.finditer` no `re.search`) y propagación de
+`pdata['pdf_path']` en TODOS los callsites que recreen pdata.
+
+### 2026-04-28 — sesión 12f: review batch — DAFLOR + GOLDEN inline-color + reparse_batch tool
+
+Sesión de revisión del batch real (`20260427083117_229c58c3`, 114
+facturas) tras los fixes de 12d/12e. Tres correcciones nuevas + un
+tool de reproceso que preserva ediciones manuales del operador.
+
+(a) **DAFLOR — cajas mixtas, grade lookahead y label tri-fuente**
+`src/parsers/otros.py` `DaflorParser`. Tres
+problemas observados en el batch:
+
+1. *Variedad `Virginia/Dubai` (mixta) se splitteaba 50/50 en
+   sublíneas Virginia + Dubai con destinos artificiales*. Fix:
+   variedad con `/` o `ASSORTED` → `MIXTO` en una sola línea.
+2. *Grade `Selecto`/`Fancy` perdido en el formato colgado*. La
+   plantilla tiene 3 líneas por entrada y el grade aparece en la
+   3ª (`Selecto 0603190107` o `Selecto ASTURIAS 0603190107`). Fix:
+   variable `grade_pending_il` que apunta a la línea recién creada
+   sin grade; la siguiente iteración del loop la rellena si empieza
+   por Selecto/Fancy/Super. Normaliza `Selecto`→`SELECT`.
+3. *Label perdido*. Hay 3 sitios donde aparece el destino:
+   - Inline tras grade: `1 QB Alstroemeria Assorted - Fancy MARCA DECO - - 200 200 Stems...`
+   - Colgado tras btype: `1 QB MARCA PYTI - - 200 200 Stems...`
+   - Junto al grade lookahead: `Selecto ASTURIAS 0603190107`
+   Fix: extracción específica para cada caso, prefijo `MARCA `
+   eliminado, dashes residuales limpios.
+
+Resultado en batch: las 14 líneas DAFLOR ahora con variety MIXTO
+(no splitted), grade SELECT/FANCY correcto, labels DECO/PYTI/
+ASTURIAS/LUCAS preservados, suma cuadra al total $798.
+
+(b) **GOLDEN/BENCHMARK — layout secundario `CARNATION FANCY <COLOR>` con destino**
+`src/parsers/golden.py`. Las facturas Benchmark traen, además del
+estándar `CONSUMER BUNCH CARNATION FANCY R45- MIX WH RD CB S2 ...`,
+líneas tipo:
+```
+1 Q 300 300 CARNATION FANCY DARK PINK ARCEDIANO FCY DP S2 DP 0.180 54.00
+3 Q 300 900 CARNATION FANCY BICOLOR ARCEDIANO BICOLORES S2 BI 0.180 162.00
+```
+(sin `CONSUMER BUNCH`, color inline tras `FANCY`, label en medio,
+item code `S2 <abrev>` distinto de `CB`/`MC`). Antes: NO PARSEADO.
+
+Fix: nuevo bloque alternativo en la regex `desc_m` que captura
+`CARNATION (FANCY|SELEC) (DARK|LIGHT)? <COLOR>`. Helper
+`_translate_inline_color` traduce `DARK PINK`→`ROSA OSCURO`,
+`LIGHT BLUE`→`AZUL CLARO`, etc. Item code `\b(CB|MC|S\d+)\s+\S+\s*$`
+amplía el patrón de stripping. Set `_LABELS` ampliado:
+ARCEDIANO, CORUNA, ELIXIR, ORQUIDEA. Spb se mantiene en 20 (clavel
+regular) — solo `MINICARNS` marca mini, **no** este layout (el
+operador confirmó: ARCEDIANO/CORUÑA son destinos, no mini-claveles).
+
+Resultado: 4 líneas ARCEDIANO de BG-106379 ahora se parsean y
+matchean a `CLAVEL FANCY {BICOLOR,ROSA OSCURO,ROSA,AMARILLO} 70CM
+20U GOLDEN`.
+
+(c) **`tools/reparse_batch.py` — reproceso de batch preservando ediciones**
+Nueva herramienta. Lee `batch_status/{id}.json`, encuentra los PDFs
+en `batch_uploads/{id}/`, los re-extrae con la pipeline actual y
+mergea con los datos viejos por `raw_description`:
+
+- **Preserva del viejo**: `_deleted` (líneas borradas), `label`
+  (destino editado a mano por el operador), `articulo_id` cuando
+  el operador asignó manualmente y la nueva línea quedó
+  sin/ambiguous (siempre que `match_method` indique manual).
+- **Toma del nuevo**: variety/size/spb/stems/precios/totales (lo
+  que el parser actualizado extrae) y `articulo_id` cuando viene
+  vía sinónimo aprendido (los sinónimos persisten entre runs).
+- **Splits→merge**: si N líneas viejas comparten `raw_description`
+  y la nueva extracción produce 1 línea (ej. cajas MIX de Golden
+  o Daflor que ahora son MIXTO), se toma la nueva tal cual y se
+  descartan las correcciones de las sublíneas — ese es el caso
+  que motiva el reproceso.
+- **Counters**: recalcula `ok_count`/`sin_match`/`needs_review`
+  por factura y `procesadas_ok`/`con_error`/`total_usd` global.
+
+Bug detectado en la primera iteración: no se propagaba `pdf_path`
+a `pdata`. AlegriaParser usa `pdfplumber.extract_tables()` desde
+ahí; sin la ruta, caía silenciosamente al fallback de texto. Tras
+el fix, LAILA pasó de 0→15 líneas y el reproceso global +130 ok
+matches.
+
+Uso: `python tools/reparse_batch.py <batch_id>`.
+
+**Métricas globales** (post-12f):
+- Benchmark global: **3596 líneas, ok 3415, ambig 55**, autoapprove
+  **96.3% (récord, +0.3pp)** tras los sinónimos confirmados durante
+  la revisión del batch (de 3801 a 3849 sinónimos en la sesión).
+- DAFLOR (batch): 14 líneas, suma cuadra al $798 del total real
+  de la factura.
+- Batch del operador (`20260427083117_229c58c3`): 114/114 facturas
+  ok, 1874 líneas, 1795 ok, 155 needs_review (vs 280 pre-fix).
+- **Golden 985/995 link 99.0% / 984/997 full_line 98.7%** (regresión
+  esperada: el golden file `benchmark_103685.json` quedó congelado
+  con la conducta vieja del split 50/50 multi-color — pendiente
+  regenerarlo con `golden_bootstrap.py`).
+
+**Lección transversal** (candidata
+`docs/lessons.md`): cuando un parser usa
+infraestructura externa al texto (pdfplumber.extract_tables(),
+imágenes, OCR), un script auxiliar que re-ejecute el pipeline
+debe pasarle TODO el contexto que el flujo principal le pasa —
+no solo el texto. El bug de `pdf_path` en `reparse_batch.py`
+estuvo ~1 hora oculto porque "el parser no fallaba", solo caía a
+un fallback peor sin avisar. Auditar otros sitios que recreen
+`pdata` (no debería haber muchos: `procesar_pdf.py`,
+`evaluate_all.py`, `reparse_batch.py`). Auditoría completa
+ejecutada en sesión 12g — solo `cli.py` faltaba.
+
+### 2026-04-27 — sesión 12e: APOSENTOS — 3 variantes nuevas + total real impreso + MINI CLAVEL COL
+
+Ángel mostró una factura APOSENTOS donde el total de la fila salía
+$2,125.00 cuando el real era $3,915.00 (gap de $1,790 = 1 línea
+faltante de 10 cajas + 2 sub-líneas) y el badge de "Parcial" no
+disparaba. Diagnóstico:
+
+**Causa raíz**:
+1. El regex de `AposentosParser` solo aceptaba `CARNATIONS` como
+   cabecera de línea. Las facturas tienen también `MINICARNATIONS`
+   (mini claveles, spb=10) y `CLAVEL SURTIDO` (mezcla en español).
+2. En `CLAVEL SURTIDO DUTY FREE FANCY ...` la descripción entre el
+   tipo y `DUTY FREE` está vacía, y el regex exigía `\s+(.+?)\s+`
+   (al menos un char).
+3. El separador entre grade y `CO-XXXX` admitía solo `[.0\s]+`
+   pero hay líneas con label `R14`: `FANCY R14 CO-0603129000`.
+4. **Crítico**: `header.total = sum(l.line_total for l in lines)` —
+   es decir, el "total" de la cabecera siempre era la suma de las
+   líneas parseadas. Cuando una línea no parseaba, el sum cuadraba
+   trivialmente y la validación cruzada nunca detectaba el hueco.
+
+**Fix multi-pieza** (`src/parsers/otros.py` `AposentosParser`):
+
+(a) **Cabecera de línea ampliada** —
+`(MINICARNATIONS?|CARNATIONS|CLAVEL\s+SURTIDOS?)`. Token detectado
+controla `spb_default` (10 para MINI, 20 resto) y maneja `CLAVEL
+SURTIDO` mapeando a `variety='MIXTO'` (descarta el `(no pink)` u
+otra exclusión entre paréntesis del desc).
+
+(b) **Descripción opcional** — `(?:\s+(.+?))?` permite que la línea
+no traiga descripción específica entre tipo y `DUTY FREE`.
+
+(c) **Separador label-tolerante** — `(?:[A-Za-z0-9.]+\s+)*CO-`
+acepta `R14`, `R-14`, `0`, `.`, etc. entre grade y `CO-XXXX`.
+
+(d) **Total real impreso** —
+`re.search(r'Total\s+Value\s*\$?\s*([\d,]+\.\d{2})', text)`
+(con fallback a `SubTotal Value`). `header.total` ahora es el total
+impreso; sólo cae al `sum(lines)` si la factura no expone ningún
+total parseable. La validación cruzada vuelve a tener señal: si
+falta una línea por parsear, `sum_lines != header.total` y la UI
+pinta "Parcial" en la cabecera.
+
+**Cambio en matcher** (`src/models.py` línea ~140):
+`expected_name` para `species='CARNATIONS'` no-golden ahora prefija
+`MINI CLAVEL COL` cuando `spb=10`. El catálogo tiene la familia
+`MINI CLAVEL COL FANCY/SELECT <COLOR> 70CM 10U` (id 26772+) que
+antes era inalcanzable por nombre exacto desde proveedores no-Golden
+(solo lograba match vía sinónimo). Aposentos `MINICARNATIONS ZUMBA
+RED` ahora propone `MINI CLAVEL COL SELECT ROJO 70CM 10U` como
+candidato — la variedad ZUMBA específica no existe en catálogo, por
+lo que el ganador final es ambiguous_match (operador confirma desde
+UI).
+
+**Métricas**:
+- Benchmark global: 3589 líneas (+23 vs 12d), ok 3376 (+0 — los
+  +23 nuevos son ambiguous/needs_review en samples APOSENTOS), ambig
+  56 (+0), autoapprove **96.0% estable**.
+- APOSENTOS: bucket TOTALES_MAL → **OK**. 5/5 detect/parsed,
+  4/5 totales_ok (1 sample OCR-corrupto sigue 391/791), 32/35 ok,
+  **97% autoapprove sobre el folder**. Antes: 29 líneas, 26 ok.
+  Ahora: 35 líneas (+6 — descubre líneas que antes simplemente no
+  parseaba), 32 ok (+6).
+- Factura del usuario en
+  `batch_uploads/20260427083117_229c58c3/APOSENTOS.pdf`: 4/4 líneas
+  (antes 3/3 con la 4ta perdida). Total $3,915 = sum_lines $3,915 ✓.
+- Golden 988/995 (regresión heredada de 12d con `benchmark_103685`
+  congelado a la conducta vieja del split 50/50 — pendiente
+  regenerar el golden file con el comportamiento nuevo).
+
+**Lección transversal**: si el parser deriva `header.total` de
+`sum(lines)`, las líneas que no parsean **nunca** disparan el aviso
+de validación, porque el `sum_lines == header.total` es
+trivialmente cierto. El total impreso de la factura es la única
+señal independiente. Auditar otros parsers que hagan
+`h.total = sum(...)` sin fallback a un total parseado del texto:
+`grep -n "h.total = sum\|h.total = round(sum"` en `src/parsers/`.
+
 ### 2026-04-27 — sesión 12d: parsers CONDOR/MAXI/NATIVE rotos en batch real + GOLDEN MIX→MIXTO
 
 Ángel hizo importación masiva de 80+ facturas y reportó 3 parsers

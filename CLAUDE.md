@@ -1,7 +1,7 @@
 # CLAUDE.md — Guía operativa para el agente
 
-**Última actualización:** 2026-04-28 (sesión 12f — DAFLOR mixed→MIXTO + GOLDEN inline color + tools/reparse_batch.py)
-**Estado:** **96.3% autoapprove** (récord, +0.3pp tras revisión del batch que añadió 48 sinónimos confirmados) · 3596 líneas · ok 3415 · ambiguous 55 · Golden 985/995 link 99.0% / 984/997 full_line 98.7% (regresión esperada heredada de 12d, golden file congelado con split 50/50 — pendiente regenerar). Sesión 12f cierra revisión del batch real (114 facturas reprocesadas in-place): (a) DAFLOR colapsa `Virginia/Dubai`/`Assorted` etc. a una sola línea `MIXTO`, captura `Selecto/Fancy` cuando aparece en la 3ª línea del formato colgado, y extrae label de las 3 posiciones (inline tras grade, colgado tras btype, junto al grade lookahead) limpiando `MARCA `; (b) GOLDEN/BENCHMARK añade layout secundario `CARNATION FANCY <COLOR> <LABEL>` (sin `CONSUMER BUNCH`, color inline tipo `DARK PINK`/`BICOLOR`) con helper `_translate_inline_color` y labels ARCEDIANO/CORUNA/ELIXIR/ORQUIDEA — antes salía como NO PARSEADO; (c) nuevo `tools/reparse_batch.py` que re-procesa un batch desde cero preservando ediciones manuales (label, _deleted, articulo_id manual) y mergeando por `raw_description` — bug crítico cazado: faltaba propagar `pdf_path` a `pdata`, lo que tiraba silenciosamente AlegriaParser al fallback de texto y restaba 130 ok-matches al batch (LAILA salía con 0 líneas). Sesiones 12d (CONDOR/MAXI/NATIVE/GOLDEN MIX) y 12c (MILONGA CMap) archivadas en [`docs/sessions.md`](docs/sessions.md).
+**Última actualización:** 2026-04-29 (sesión 12m — limpieza técnica + tests de regresión + correcciones de catálogo del operador)
+**Estado:** **96.3% autoapprove** estable · 3598 líneas · ok 3420 · ambiguous 55 · Golden 992/993 link 99.9% / 993/995 full_line 99.8%. Sesión 12m cubre 3 frentes tras feedback del operador: (A) **Limpieza técnica** — borrados 7 archivos huérfanos en raíz (`*_out.json`, `milonga_*.png`), patrones añadidos a `.gitignore`. (B) **Tests de regresión** ([`tests/test_parser_regressions.py`](tests/test_parser_regressions.py)) — 13 tests `unittest` que cubren los fixes 12g–12l (MeaflosParser Garden Roses + miles, UmaParser sub-líneas, GardaParser apóstrofes/dígitos, VerdesEstacionParser variety colgada, TessaParser bunches/spb, FlorsaniParser multi-invoice, PrestigeParser total impreso, auto_native total OCR). 13/13 OK en 11s. (C) **Correcciones de catálogo** según operador: Mystic CARROUSEL (typo OCR de CAROUSEL) → 33181 `ROSA EC CARROUSEL BICOLOR 50CM 25U` confirmado; Maxiflores ASSORTED/SPECIAL ASSTD 40/60 → 32569/32571 `ROSA COL COLOR MIXTO XCM 25U` confirmados; Mystic MISS PIGGY → eliminado (apuntaba erróneamente a `MISS WHITE`, sin marca propia y sin genérico EC, queda sin_match para alta). Brissas APPLE JACK ya estaba `manual_confirmado`. SQL sync `sql_sync_12m.sql` generado para MySQL prod. Sesiones 12k (audit cleanup) y 12l (regenerar golden files) archivadas en [`docs/sessions.md`](docs/sessions.md).
 
 ---
 
@@ -70,34 +70,78 @@ operador en `shadow_log.jsonl`. `tools/shadow_report.py` cruza por
 Activo desde sesión 10k. `--verify-current` filtra entradas
 obsoletas tras parser fixes (sesión 11b).
 
-**Última sesión** — 2026-04-27 (12c): MILONGA OCR condicional para
-PDFs con CMap roto (`ocr_if_corrupt: r'\bRlse\b'`). Detalle en
-"Historial reciente" abajo. Histórico completo en
-[`docs/sessions.md`](docs/sessions.md).
+**Última sesión** — 2026-04-29 (12m): limpieza técnica
+(archivos huérfanos) + tests de regresión (13 tests unittest)
++ correcciones de catálogo del operador (Mystic CARROUSEL,
+Maxiflores COLOR MIXTO, Mystic MISS PIGGY eliminado). Detalle
+en "Historial reciente" abajo.
 
 ### Próximos pasos posibles
 
-1. **Auditar dedupe / line-merging en otros parsers**. AGRIVALDANI
-   tenía un `seen={}` final que sumaba líneas de cajas distintas
-   (eliminado post-12c, además captura MARK como `label`). Política
-   confirmada por usuario: **ningún parser debe sumar líneas, ni
-   aunque variety/size/spb coincidan** — cada caja física es una
-   fila. Buscar patrones similares en parsers no auditados.
-2. **Box-code-in-variety pendiente** en SAYONARA (SP), APOSENTOS
-   (ILIAS), MONTEROSA (EUGENIA), EL CAMPANARIO (ZAIRA). Patrón ya
-   resuelto en GARDA, MYSTIC, LIFE, ROSALEDA, TURFLOR, PONDEROSA.
-   Atender solo cuando aparezca en errores de shadow reales o se
-   quiera eliminar penalty residual.
-3. **UI `lookup_article` por id_erp/referencia**. Backend ya
-   persiste `articulo_id_erp`. Falta que el frontend
-   ([`web/assets/app.js`](web/assets/app.js) ~línea 1479,
-   `lookup_article` call en batch-line-save) acepte buscar por
-   id_erp/referencia, no solo `id` autoincrement.
-4. **`shadow_report.py --top-missing-articles`**: listar variedades
-   `sin_match` por frecuencia para priorizar altas en ERP
-   (MYSTIC/VALTHOMIG son típicos según Ángel).
-5. **NO_PARSEA restantes** (CEAN GLOBAL, NATIVE BLOOMS, SAYONARA
+**Acción operativa (requiere operador / decisión de catálogo)**:
+
+1. **Casos del shadow `--top-missing-articles`** — el reporte
+   ya genera lista accionable. Ejemplos del último run:
+   - Tessa MONDIAL spb=10 × 6 rescates → resuelto en 12j (era
+     bug del parser, no falta de catálogo).
+   - Brissas GARDEN ROSE APPLE 50/60 (3+3 rescates) → alta en
+     ERP del artículo "ROSA GARDEN APPLE BRISSAS" si el
+     operador lo confirma.
+   - Mystic CAROUSEL spb=25 (3 rescates) → alta en ERP.
+   - Maxiflores ASSORTED/SPECIAL ASSTD 60 spb=25 (3+3
+     rescates) → mapear a SURTIDO MIXTO.
+   - Agrivaldani RED MIKADO/PURPLE IRISCHKA/PINK IRISCHKA
+     50/60 spb=10 (2 c/u) → spray roses, posiblemente alta o
+     mapeo confirmado.
+   Comando: `python tools/shadow_report.py --top-missing-articles 30`.
+
+**Deuda preventiva** (auditorías sin evidencia activa):
+
+2. **Total impreso en 7 parsers `auto_*` sin sample** (deuda
+   12g): auto_elite, auto_natuflor, auto_zorro, auto_sanjorge,
+   auto_sanfrancisco, auto_rosabella, auto_agrosanalfonso. El
+   `h.total = sum(lines)` sin total impreso es bug silencioso
+   (no rompe pipeline pero esconde líneas faltantes). Aplicar
+   patrón cuando llegue una factura del proveedor.
+3. **NO_PARSEA restantes** (CEAN GLOBAL, NATIVE BLOOMS, SAYONARA
    64811): ROI bajo — cerrado en 10h salvo cambio de prioridad.
+
+**Auditorías ya cerradas** (sin deuda activa, salvar para
+referencia futura):
+
+- ✓ **Variety regex restrictiva** (post-12i): grep
+  `[A-Za-z][A-Za-z\s\-]+?` en `src/parsers/`. Verificado en
+  sesión 12k contra el batch del operador — no hay líneas
+  perdidas con apóstrofe o dígito en variety. Nota: si llega
+  una factura con `Pink O'Hara`, `Mayra's Bridal`, `RM001` o
+  similar de un proveedor distinto a Garda, revisar.
+- ✓ **Prefijo de caja obligatorio** (post-12i): patrón parent
+  `<box_n>/<total>` con sub-líneas heredando `last_btype`.
+  Verificado en sesión 12k — los gaps del batch ya fueron
+  cerrados en 12i. Si aparece nueva factura con sub-líneas
+  perdidas, mismo enfoque: regex sin prefijo, herencia de
+  estado.
+- ✓ **`BUNCHES STEMS` confundido con `spb`** (post-12j):
+  verificado en sesión 12k contra el batch del operador. Las
+  anomalías de spb=10 en VerdesEstacion/VALTHO/VUELVEN son
+  legítimas (el PDF dice `ROSES*10STEMS` o `X 10` o `10ST`
+  explícitamente).
+- ✓ **Dedupe / line-merging**: verificado, ningún parser
+  suma líneas hoy. AGRIVALDANI eliminado post-12c.
+- ✓ **Box-code-in-variety** en SAYONARA (SP), APOSENTOS
+  (ILIAS), MONTEROSA (EUGENIA), EL CAMPANARIO (ZAIRA): sin
+  evidencia activa en batch ni shadow log. Atender si aparece.
+- ✓ **UI `lookup_article` por id_erp/referencia**: implementado
+  desde sesión 10r (backend rechaza id autoincrement, frontend
+  usa id_erp/referencia con placeholder explícito).
+- ✓ **`shadow_report --top-missing-articles`**: implementado
+  con scoring (3×rescates + pendientes + foreign_only).
+- ✓ **Golden set actualizado tras 12d/12h** (sesión 12l):
+  `benchmark_103685` regenerado, `meaflos_EC1000035075`
+  añadida línea MONDIAL 1200. Golden 992/993 link 99.9% / 993/995
+  full_line 99.8%. Queda 1 link_mismatch en `mystic_0000281780`
+  (MISS PIGGY → CANTIZA en gold vs MISS WHITE en sistema por
+  sinónimo del operador) — decisión del operador, dejado intacto.
 
 ## Documentación de seguimiento
 
@@ -405,6 +449,11 @@ python tools/auto_learn_parsers.py register <key> auto_<key>
 
 # Lote con Excel
 python batch_process.py carpeta_con_pdfs/ --output resultado.xlsx
+
+# Tests de regresión (sesión 12m, unittest built-in)
+python -m unittest tests.test_parser_regressions
+python -m unittest tests.test_parser_regressions -v   # detalle por test
+python -m unittest tests.test_parser_regressions.TestMeaflosParser   # un caso
 ```
 
 Comandos con flags (`--provider`, `--max-samples`, `--verbose`,
@@ -418,190 +467,159 @@ Comandos con flags (`--provider`, `--max-samples`, `--verbose`,
 Solo las 2 últimas sesiones. Todas las anteriores en
 [`docs/sessions.md`](docs/sessions.md).
 
-### 2026-04-28 — sesión 12f: review batch — DAFLOR + GOLDEN inline-color + reparse_batch tool
+### 2026-04-29 — sesión 12l: regenerar 2 golden files desactualizados → 985/995 → 992/993
 
-Sesión de revisión del batch real (`20260427083117_229c58c3`, 114
-facturas) tras los fixes de 12d/12e. Tres correcciones nuevas + un
-tool de reproceso que preserva ediciones manuales del operador.
+Sesión de cierre de la regresión heredada de 12d que se
+arrastraba en el TL;DR como "Golden 985/995 link 99.0% / 984/997
+full_line 98.7% (regresión esperada heredada de 12d, golden file
+congelado con split 50/50 — pendiente regenerar)". Diagnóstico:
+2 golden files con discrepancias reales por cambios de
+comportamiento del parser desde su creación.
 
-(a) **DAFLOR — cajas mixtas, grade lookahead y label tri-fuente**
-[`src/parsers/otros.py`](src/parsers/otros.py) `DaflorParser`. Tres
-problemas observados en el batch:
+**(a) `golden/benchmark_103685.json`** — el parser viejo (pre-12d)
+splitteaba cajas multi-color en sub-líneas por color (ROSA 250 +
+BLANCO 250 + ROJO 250 + ...). El parser actual (post-12d)
+consolida cajas mixtas a una sola línea `MIXTO`. El gold quedó
+congelado con la conducta vieja (32 líneas split por color),
+mientras el sistema ahora produce 29 líneas consolidadas.
+Suma idéntica en ambos: $3494 = $3494 ✓.
 
-1. *Variedad `Virginia/Dubai` (mixta) se splitteaba 50/50 en
-   sublíneas Virginia + Dubai con destinos artificiales*. Fix:
-   variedad con `/` o `ASSORTED` → `MIXTO` en una sola línea.
-2. *Grade `Selecto`/`Fancy` perdido en el formato colgado*. La
-   plantilla tiene 3 líneas por entrada y el grade aparece en la
-   3ª (`Selecto 0603190107` o `Selecto ASTURIAS 0603190107`). Fix:
-   variable `grade_pending_il` que apunta a la línea recién creada
-   sin grade; la siguiente iteración del loop la rellena si empieza
-   por Selecto/Fancy/Super. Normaliza `Selecto`→`SELECT`.
-3. *Label perdido*. Hay 3 sitios donde aparece el destino:
-   - Inline tras grade: `1 QB Alstroemeria Assorted - Fancy MARCA DECO - - 200 200 Stems...`
-   - Colgado tras btype: `1 QB MARCA PYTI - - 200 200 Stems...`
-   - Junto al grade lookahead: `Selecto ASTURIAS 0603190107`
-   Fix: extracción específica para cada caso, prefijo `MARCA `
-   eliminado, dashes residuales limpios.
+Fix: regeneré el gold completo desde el PDF original (en
+`C:/Users/diego.pereira/Desktop/DOC VERA/.../BENCHMARK/`) usando
+el pipeline actual. Marqué con `_regenerated` + razón. Status
+sigue `reviewed` (el sistema actual es la verdad terreno).
 
-Resultado en batch: las 14 líneas DAFLOR ahora con variety MIXTO
-(no splitted), grade SELECT/FANCY correcto, labels DECO/PYTI/
-ASTURIAS/LUCAS preservados, suma cuadra al total $798.
+**(b) `golden/meaflos_EC1000035075.json`** — el gold tenía 12
+líneas con `sum=$1332` pero `header_total=$1632`, exactamente
+$300 menos. La línea faltante es `MONDIAL 50cm 1.200 stems $300`
+que el parser viejo perdía por el bug `(\d+)` en stems no acepta
+`1.200` (separador de miles con punto), arreglado en sesión 12h.
 
-(b) **GOLDEN/BENCHMARK — layout secundario `CARNATION FANCY <COLOR>` con destino**
-[`src/parsers/golden.py`](src/parsers/golden.py). Las facturas
-Benchmark traen, además del estándar `CONSUMER BUNCH CARNATION
-FANCY R45- MIX WH RD CB S2 ...`, líneas tipo:
-```
-1 Q 300 300 CARNATION FANCY DARK PINK ARCEDIANO FCY DP S2 DP 0.180 54.00
-3 Q 300 900 CARNATION FANCY BICOLOR ARCEDIANO BICOLORES S2 BI 0.180 162.00
-```
-(sin `CONSUMER BUNCH`, color inline tras `FANCY`, label en medio,
-item code `S2 <abrev>` distinto de `CB`/`MC`). Antes: NO PARSEADO.
+Fix: añadí la línea MONDIAL 1200 al gold en posición correcta.
+Ahora 13 líneas con sum=$1632 ✓.
 
-Fix: nuevo bloque alternativo en la regex `desc_m` que captura
-`CARNATION (FANCY|SELEC) (DARK|LIGHT)? <COLOR>`. Helper
-`_translate_inline_color` traduce `DARK PINK`→`ROSA OSCURO`,
-`LIGHT BLUE`→`AZUL CLARO`, etc. Item code `\b(CB|MC|S\d+)\s+\S+\s*$`
-amplía el patrón de stripping. Set `_LABELS` ampliado:
-ARCEDIANO, CORUNA, ELIXIR, ORQUIDEA. Spb se mantiene en 20 (clavel
-regular) — solo `MINICARNS` marca mini, **no** este layout (el
-operador confirmó: ARCEDIANO/CORUÑA son destinos, no mini-claveles).
+**(c) `golden/mystic_0000281780.json`** — link_mismatch entre
+gold (`MISS PIGGY` → 35818 `ROSA MISS PIGGY 50CM 25U CANTIZA`)
+y sistema (`MISS PIGGY` → 33558 `ROSA EC MISS WHITE 50CM 25U`).
+Causa: sinónimo `442|ROSES|MISS PIGGY|50|25` está
+`aprendido_confirmado` (times_confirmed=2) apuntando a
+`ROSA EC MISS WHITE 50CM 25U`. El operador cambió de criterio
+post-creación del gold. **Decisión**: dejado intacto, requiere
+revisión del operador (¿cuál de los dos es realmente correcto?).
 
-Resultado: 4 líneas ARCEDIANO de BG-106379 ahora se parsean y
-matchean a `CLAVEL FANCY {BICOLOR,ROSA OSCURO,ROSA,AMARILLO} 70CM
-20U GOLDEN`.
+**Resultado** (`tools/evaluate_golden.py`):
 
-(c) **`tools/reparse_batch.py` — reproceso de batch preservando ediciones**
-Nueva herramienta. Lee `batch_status/{id}.json`, encuentra los PDFs
-en `batch_uploads/{id}/`, los re-extrae con la pipeline actual y
-mergea con los datos viejos por `raw_description`:
+| Métrica | Antes (12k) | Ahora (12l) |
+|---|---|---|
+| Gold lines | 997 | 995 |
+| variety | 99.3% | **100%** |
+| species | 99.6% | **100%** |
+| origin | 99.6% | **100%** |
+| size | 99.6% | **100%** |
+| stems_per_bunch | 99.4% | 99.8% |
+| stems | 99.3% | **100%** |
+| line_total | 99.3% | **100%** |
+| articulo_id | 99.0% (985/995) | **99.9% (992/993)** |
+| full_line | 98.7% (984/997) | **99.8% (993/995)** |
+| Discrepancias | 6 link + 4 miss + 2 extra | **1 link** |
 
-- **Preserva del viejo**: `_deleted` (líneas borradas), `label`
-  (destino editado a mano por el operador), `articulo_id` cuando
-  el operador asignó manualmente y la nueva línea quedó
-  sin/ambiguous (siempre que `match_method` indique manual).
-- **Toma del nuevo**: variety/size/spb/stems/precios/totales (lo
-  que el parser actualizado extrae) y `articulo_id` cuando viene
-  vía sinónimo aprendido (los sinónimos persisten entre runs).
-- **Splits→merge**: si N líneas viejas comparten `raw_description`
-  y la nueva extracción produce 1 línea (ej. cajas MIX de Golden
-  o Daflor que ahora son MIXTO), se toma la nueva tal cual y se
-  descartan las correcciones de las sublíneas — ese es el caso
-  que motiva el reproceso.
-- **Counters**: recalcula `ok_count`/`sin_match`/`needs_review`
-  por factura y `procesadas_ok`/`con_error`/`total_usd` global.
+**Métricas globales** (post-12l): 3598 líneas, ok 3420,
+autoapprove 96.3% estable (no cambia, las regeneraciones de
+golden no afectan el benchmark `evaluate_all`).
 
-Bug detectado en la primera iteración: no se propagaba `pdf_path`
-a `pdata`. AlegriaParser usa `pdfplumber.extract_tables()` desde
-ahí; sin la ruta, caía silenciosamente al fallback de texto. Tras
-el fix, LAILA pasó de 0→15 líneas y el reproceso global +130 ok
-matches.
+**Lección transversal**: cuando un fix de parser cambia el
+**número** o **composición** de líneas que produce (no solo el
+contenido de cada línea), los golden files quedan invalidados.
+Política: tras un fix así (12d MIXTO consolidación, 12h MEAFLOS
+miles), correr `evaluate_golden.py` y regenerar los golden
+afectados desde el PDF original (manteniendo `_status=reviewed`
+y añadiendo `_regenerated` + razón). Si no se hace, el roadmap
+arrastra una "regresión esperada" indefinida que esconde
+desviaciones reales.
 
-Uso: `python tools/reparse_batch.py <batch_id>`.
+### 2026-04-29 — sesión 12m: limpieza técnica + tests de regresión + correcciones de catálogo del operador
 
-**Métricas globales** (post-12f):
-- Benchmark global: **3596 líneas, ok 3415, ambig 55**, autoapprove
-  **96.3% (récord, +0.3pp)** tras los sinónimos confirmados durante
-  la revisión del batch (de 3801 a 3849 sinónimos en la sesión).
-- DAFLOR (batch): 14 líneas, suma cuadra al $798 del total real
-  de la factura.
-- Batch del operador (`20260427083117_229c58c3`): 114/114 facturas
-  ok, 1874 líneas, 1795 ok, 155 needs_review (vs 280 pre-fix).
-- **Golden 985/995 link 99.0% / 984/997 full_line 98.7%** (regresión
-  esperada: el golden file `benchmark_103685.json` quedó congelado
-  con la conducta vieja del split 50/50 multi-color — pendiente
-  regenerarlo con `golden_bootstrap.py`).
+Sesión disparada por feedback directo del operador (Diego) tras
+revisar el shadow report:
 
-**Lección transversal** (candidata
-[`docs/lessons.md`](docs/lessons.md)): cuando un parser usa
-infraestructura externa al texto (pdfplumber.extract_tables(),
-imágenes, OCR), un script auxiliar que re-ejecute el pipeline
-debe pasarle TODO el contexto que el flujo principal le pasa —
-no solo el texto. El bug de `pdf_path` en `reparse_batch.py`
-estuvo ~1 hora oculto porque "el parser no fallaba", solo caía a
-un fallback peor sin avisar. Auditar otros sitios que recreen
-`pdata` (no debería haber muchos: `procesar_pdf.py`,
-`evaluate_all.py`, `reparse_batch.py`).
+> "Brissas garden rose apple es apple jack, Carousel suele ser
+> Carrousel con 2 r, Assorted significa mixto, surtido mixto o
+> color mixto. Miss piggy en mystic no puede ser de cantiza
+> tiene que ser el genérico si no hay marca propia"
 
-### 2026-04-27 — sesión 12e: APOSENTOS — 3 variantes nuevas + total real impreso + MINI CLAVEL COL
+**(A) Limpieza técnica**: borrados 7 archivos huérfanos en raíz
+(`agrival_out.json`, `garda_out.json`, `milonga_out.json`,
+`ponderosa_out.json`, `rosaleda_out.json`, `milonga_400.png`,
+`milonga_page1.png` — outputs ad-hoc de debugging sin
+referencia en código). Añadidos patrones `*_out.json`,
+`milonga_*.png`, `altas_erp.txt` al `.gitignore`.
 
-Ángel mostró una factura APOSENTOS donde el total de la fila salía
-$2,125.00 cuando el real era $3,915.00 (gap de $1,790 = 1 línea
-faltante de 10 cajas + 2 sub-líneas) y el badge de "Parcial" no
-disparaba. Diagnóstico:
+**(B) Tests de regresión** ([`tests/test_parser_regressions.py`](tests/test_parser_regressions.py)):
+13 tests con `unittest` (sin nueva dependencia) cubriendo los
+fixes de las sesiones 12g–12l. Cada test cita la sesión que
+introdujo el comportamiento y usa los PDFs reales del batch del
+operador. Cobertura:
+- `TestMeaflosParser`: Garden Roses (12h) + stems con miles
+  + total cuadra para 3 facturas MEAFLOS.
+- `TestUmaParser`: sub-líneas mixed-box (12i).
+- `TestGardaParser`: variety con apóstrofes + dígitos (12i)
+  + total cuadra.
+- `TestVerdesEstacionParser`: variety colgada en línea anterior
+  (12i).
+- `TestTessaParser`: bunches no confundidos con spb + bunches
+  poblados (12j).
+- `TestFlorsaniParser`: multi-invoice `Single Flowers` (12g).
+- `TestPrestigeParser`: total impreso `TOTAL A PAGAR` (12g).
+- `TestNativeParser`: total con espacios OCR (12g).
 
-**Causa raíz**:
-1. El regex de `AposentosParser` solo aceptaba `CARNATIONS` como
-   cabecera de línea. Las facturas tienen también `MINICARNATIONS`
-   (mini claveles, spb=10) y `CLAVEL SURTIDO` (mezcla en español).
-2. En `CLAVEL SURTIDO DUTY FREE FANCY ...` la descripción entre el
-   tipo y `DUTY FREE` está vacía, y el regex exigía `\s+(.+?)\s+`
-   (al menos un char).
-3. El separador entre grade y `CO-XXXX` admitía solo `[.0\s]+`
-   pero hay líneas con label `R14`: `FANCY R14 CO-0603129000`.
-4. **Crítico**: `header.total = sum(l.line_total for l in lines)` —
-   es decir, el "total" de la cabecera siempre era la suma de las
-   líneas parseadas. Cuando una línea no parseaba, el sum cuadraba
-   trivialmente y la validación cruzada nunca detectaba el hueco.
+Todos pasan en ~11s. Comando: `python -m unittest tests.test_parser_regressions`.
 
-**Fix multi-pieza** ([`src/parsers/otros.py`](src/parsers/otros.py)
-`AposentosParser`):
+**(C) Correcciones de catálogo de sinónimos** según operador:
 
-(a) **Cabecera de línea ampliada** —
-`(MINICARNATIONS?|CARNATIONS|CLAVEL\s+SURTIDOS?)`. Token detectado
-controla `spb_default` (10 para MINI, 20 resto) y maneja `CLAVEL
-SURTIDO` mapeando a `variety='MIXTO'` (descarta el `(no pink)` u
-otra exclusión entre paréntesis del desc).
+1. *Brissas APPLE JACK* (`90001|ROSES|GARDEN ROSE APPLE|50/60|25`):
+   ya estaban `manual_confirmado` ✓ — el shadow report mostraba
+   estados viejos.
+2. *Mystic CARROUSEL* (`442|ROSES|CAROUSEL|50|25`): existía con
+   `status=None` → `manual_confirmado` apuntando a 33181
+   `ROSA EC CARROUSEL BICOLOR 50CM 25U` (genérico EC encontrado
+   en el catálogo, no había que dar de alta nada nuevo).
+3. *Maxiflores ASSORTED/SPECIAL ASSTD*
+   (`281|ROSES|{ASSORTED,SPECIAL ASSTD}|{40,60}|25`): existían
+   con `status=None` → `manual_confirmado` apuntando a 32569/
+   32571 `ROSA COL COLOR MIXTO {40,60}CM 25U` (Maxiflores es
+   COL).
+4. *Mystic MISS PIGGY* (`442|ROSES|MISS PIGGY|50|25`):
+   **eliminado**. Apuntaba a `ROSA EC MISS WHITE 50CM 25U`
+   (id 33558, `aprendido_confirmado` con times_confirmed=2),
+   claramente erróneo (PIGGY ≠ WHITE). Mystic no tiene marca
+   propia y NO existe genérico `ROSA EC MISS PIGGY` — queda
+   sin_match para forzar alta del genérico en ERP.
 
-(b) **Descripción opcional** — `(?:\s+(.+?))?` permite que la línea
-no traiga descripción específica entre tipo y `DUTY FREE`.
+Backup en `sinonimos_universal.json.backup_catalog_12m_<ts>.json`.
 
-(c) **Separador label-tolerante** — `(?:[A-Za-z0-9.]+\s+)*CO-`
-acepta `R14`, `R-14`, `0`, `.`, etc. entre grade y `CO-XXXX`.
+**MySQL sync**: la máquina del developer no tiene
+`mysql.connector`, por lo que `_bulk_sync_to_mysql` falla
+silenciosamente. Generado script SQL `sql_sync_12m.sql` con los
+4 UPDATEs + 1 DELETE para que el operador (o la próxima ejecución
+en producción) sincronice MySQL con el JSON.
 
-(d) **Total real impreso** —
-`re.search(r'Total\s+Value\s*\$?\s*([\d,]+\.\d{2})', text)`
-(con fallback a `SubTotal Value`). `header.total` ahora es el total
-impreso; sólo cae al `sum(lines)` si la factura no expone ningún
-total parseable. La validación cruzada vuelve a tener señal: si
-falta una línea por parsear, `sum_lines != header.total` y la UI
-pinta "Parcial" en la cabecera.
+**Validación integral**:
+- Tests regresión: 13/13 OK en 11s.
+- Benchmark global: 3598 líneas, ok 3420, **autoapprove 96.3%**
+  estable. Sin regresión.
+- Golden: 992/993 link 99.9% / 993/995 full_line 99.8% (sin
+  cambios — golden no cubre estos casos directamente).
+- Batch del operador: 1 gap pendiente (SAYONARA $1610 NO_PARSEA),
+  igual que antes. Las 4 confirmaciones de sinónimos no afectan
+  totales — afectan solo la propuesta de artículo del matcher.
 
-**Cambio en matcher** ([`src/models.py`](src/models.py) línea ~140):
-`expected_name` para `species='CARNATIONS'` no-golden ahora prefija
-`MINI CLAVEL COL` cuando `spb=10`. El catálogo tiene la familia
-`MINI CLAVEL COL FANCY/SELECT <COLOR> 70CM 10U` (id 26772+) que
-antes era inalcanzable por nombre exacto desde proveedores no-Golden
-(solo lograba match vía sinónimo). Aposentos `MINICARNATIONS ZUMBA
-RED` ahora propone `MINI CLAVEL COL SELECT ROJO 70CM 10U` como
-candidato — la variedad ZUMBA específica no existe en catálogo, por
-lo que el ganador final es ambiguous_match (operador confirma desde
-UI).
-
-**Métricas**:
-- Benchmark global: 3589 líneas (+23 vs 12d), ok 3376 (+0 — los
-  +23 nuevos son ambiguous/needs_review en samples APOSENTOS), ambig
-  56 (+0), autoapprove **96.0% estable**.
-- APOSENTOS: bucket TOTALES_MAL → **OK**. 5/5 detect/parsed,
-  4/5 totales_ok (1 sample OCR-corrupto sigue 391/791), 32/35 ok,
-  **97% autoapprove sobre el folder**. Antes: 29 líneas, 26 ok.
-  Ahora: 35 líneas (+6 — descubre líneas que antes simplemente no
-  parseaba), 32 ok (+6).
-- Factura del usuario en
-  `batch_uploads/20260427083117_229c58c3/APOSENTOS.pdf`: 4/4 líneas
-  (antes 3/3 con la 4ta perdida). Total $3,915 = sum_lines $3,915 ✓.
-- Golden 988/995 (regresión heredada de 12d con `benchmark_103685`
-  congelado a la conducta vieja del split 50/50 — pendiente
-  regenerar el golden file con el comportamiento nuevo).
-
-**Lección transversal**: si el parser deriva `header.total` de
-`sum(lines)`, las líneas que no parsean **nunca** disparan el aviso
-de validación, porque el `sum_lines == header.total` es
-trivialmente cierto. El total impreso de la factura es la única
-señal independiente. Auditar otros parsers que hagan
-`h.total = sum(...)` sin fallback a un total parseado del texto:
-`grep -n "h.total = sum\|h.total = round(sum"` en `src/parsers/`.
+**Lección transversal** ([`docs/lessons.md`](docs/lessons.md)):
+"Estado del shadow_report puede estar viejo — siempre validar
+contra el JSON de sinónimos antes de actuar". El reporte de
+Brissas APPLE JACK marcaba "6 rescates pendientes" cuando ya
+estaban `manual_confirmado` desde antes. Para verificar estado
+real: `grep -F "<key>" sinonimos_universal.json` antes de hacer
+cambios.
 
 ---
 

@@ -197,7 +197,7 @@ def _recompute_invoice_stats(inv: dict) -> None:
         flag_status = st in flagged
         if (flag_status
                 or (isinstance(errs, list) and len(errs) > 0)
-                or conf < 0.90):
+                or conf < 0.84):
             needs += 1
     inv['ok_count'] = ok
     inv['sin_match'] = sin
@@ -208,7 +208,7 @@ def _recompute_invoice_stats(inv: dict) -> None:
         for l in lines), 2)
 
 
-def _process_pdf(pdf_path: Path, matcher: Matcher) -> tuple[Any, list[Any]]:
+def _process_pdf(pdf_path: Path, matcher: Matcher) -> tuple[Any, list[Any], dict]:
     """Pipeline completa: extracción → parser → split → rescue → matcher.
 
     Réplica del orden de ``procesar_pdf._process_with_lines`` para que
@@ -217,7 +217,7 @@ def _process_pdf(pdf_path: Path, matcher: Matcher) -> tuple[Any, list[Any]]:
     """
     pdata = detect_provider(str(pdf_path))
     if not pdata:
-        return None, []
+        return None, [], {}
     # AlegriaParser y otros parsers tabulares usan `pdata['pdf_path']`
     # para abrir el PDF con pdfplumber.extract_tables(). procesar_pdf
     # lo añade en su pipeline; aquí también.
@@ -225,12 +225,12 @@ def _process_pdf(pdf_path: Path, matcher: Matcher) -> tuple[Any, list[Any]]:
     fmt = pdata.get('fmt')
     parser = FORMAT_PARSERS.get(fmt)
     if not parser:
-        return None, []
+        return None, [], {}
     text = pdata.get('text', '')
     try:
         header, lines = parser.parse(text, pdata)
     except Exception:  # noqa: BLE001
-        return None, []
+        return None, [], {}
 
     lines = split_mixed_boxes(lines)
     rescued = rescue_unparsed_lines(text, lines)
@@ -255,8 +255,8 @@ def _process_pdf(pdf_path: Path, matcher: Matcher) -> tuple[Any, list[Any]]:
     matched = reclassify_assorted(matched)
     matched.extend(rescued)
 
-    validate_invoice(header, matched)
-    return header, matched
+    validation = validate_invoice(header, matched)
+    return header, matched, validation
 
 
 def reparse_batch(status_path: Path, uploads_dir: Path) -> dict:
@@ -288,7 +288,7 @@ def reparse_batch(status_path: Path, uploads_dir: Path) -> dict:
             old_lines = list(inv.get('lines') or [])
             old_idx = _build_old_index(old_lines)
 
-            header, matched = _process_pdf(pdf_path, matcher)
+            header, matched, validation = _process_pdf(pdf_path, matcher)
             if header is None:
                 fallos.append(f'{pdf_name}: error en pipeline')
                 continue
@@ -335,6 +335,12 @@ def reparse_batch(status_path: Path, uploads_dir: Path) -> dict:
                     inv['invoice'] = header.invoice_number or ''
                 if not inv.get('date'):
                     inv['date'] = header.date or ''
+
+            # Recalcular validación cruzada (sum_lines vs header_total)
+            # contra los nuevos totales: si una línea antes oculta ahora
+            # parsea, el aviso "Parcial" debe disparar/desaparecer según
+            # corresponda. Sin esto el JSON queda con sum_lines viejo.
+            inv['validation'] = validation
 
             _recompute_invoice_stats(inv)
 

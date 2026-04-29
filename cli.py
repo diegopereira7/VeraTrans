@@ -169,6 +169,10 @@ def process_pdfs(pdfs, art, syns, hist, matcher):
         if not pdata:
             print(f"\n  {C.WARN}⚠ No reconocido:{C.RESET} {name}")
             continue
+        # Propagar pdf_path para parsers que usan pdfplumber.extract_tables
+        # (AlegriaParser → Tierra Verde, Olimpo, Ceres). Sin esto caen al
+        # fallback de texto silenciosamente — lección sesión 12f.
+        pdata['pdf_path'] = pdf
         fmt = pdata['fmt']
         parser = FORMAT_PARSERS.get(fmt)
         if not parser:

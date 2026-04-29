@@ -166,6 +166,21 @@
       "articulo_id_erp": "727"
     },
     {
+      "raw_description": "Rosas - Mondial 50cm 0,00 0,00 1.200 0,25 300,00",
+      "species": "ROSES",
+      "variety": "MONDIAL",
+      "origin": "EC",
+      "size": 50,
+      "stems_per_bunch": 25,
+      "stems": 1200,
+      "price_per_stem": 0.25,
+      "line_total": 300.0,
+      "box_type": "HB",
+      "articulo_id": 33579,
+      "articulo_id_erp": "",
+      "articulo_name": "ROSA EC MONDIAL 50CM 25U"
+    },
+    {
       "raw_description": "Rosas - Frutteto 50cm 0,00 0,00 350 0,26 91,00",
       "species": "ROSES",
       "variety": "FRUTTETO",
