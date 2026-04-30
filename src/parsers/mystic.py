@@ -10,6 +10,15 @@ from src.models import InvoiceHeader, InvoiceLine
 # TNT = "Tinted", etiqueta corta de secundaria (sesión 10m).
 _BLOCK_NAMES = {'SORIALES', 'IGLESIAS', 'NAVARRETE', 'TNT', 'VDAY', 'MDAY'}
 
+# El campo `code` del regex se mapea a la columna de destino del PDF
+# (CORUÑA, GAIA, VNG, R14, R19, MARL…). Por defecto se asigna a `label`
+# para que el operador vea a dónde va la línea al meterla en el ERP.
+# Excepción: en facturas sin destino real, el regex puede capturar el
+# primer token de la variedad como `code` (ej. `25 H FR Gyp Natural
+# Xlence 750 G` → code=FR pero FR es parte de la variedad). Esos casos
+# se enumeran abajo y NO van a label.
+_NOT_DESTINATIONS = {'FR'}
+
 # Línea con los 6 campos finales fijos: peso cantidad length stems price total.
 # Soporta box_code con dígitos (R14, R19, VNG, FR), variedad mixed-case y
 # bloque opcional antes de variety. Acepta acentos/Ñ en el code (CORUÑA es
@@ -110,6 +119,11 @@ class MysticParser:
             if not variety:
                 continue
             species = _species_from_variety(variety)
+            # `code` viene de la columna de destino del PDF; va a `label`
+            # salvo cuando el regex capturó un fragmento de variety por
+            # falta de destino real (lista _NOT_DESTINATIONS).
+            code = (pm.groupdict().get('code') or '').upper()
+            label = code if code and code not in _NOT_DESTINATIONS else ''
             spb = cantidad if cantidad > 0 else (25 if species == 'ROSES' else 1)
             bunches = peso if peso > 0 else (stems // spb if spb else 0)
             # En MYSTIC la paniculata (gypsophila) cotiza precio por ramo, no
@@ -136,6 +150,7 @@ class MysticParser:
                 price_per_bunch=price_per_bunch,
                 line_total=total,
                 box_type=pm.group('btype'),
+                label=label,
                 provider_key=pdata.get('key', ''),
             ))
 

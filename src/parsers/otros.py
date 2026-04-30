@@ -1481,7 +1481,8 @@ class MalimaParser:
                 spb=stems//bunches if bunches else 25
                 il=InvoiceLine(raw_description=ln,species='GYPSOPHILA',variety=variety,
                                stems_per_bunch=spb,bunches=bunches,stems=stems,
-                               price_per_bunch=ppb,line_total=total,box_type=current_btype)
+                               price_per_bunch=ppb,line_total=total,box_type=current_btype,
+                               label='EUROPA')
                 lines.append(il); continue
 
             # Parent mixed box: solo actualizar btype
@@ -1526,7 +1527,8 @@ class MalimaParser:
                 il=InvoiceLine(raw_description=ln,species='GYPSOPHILA',variety=variety,
                                stems_per_bunch=spb,bunches=bunches,stems=stems,
                                price_per_bunch=ppb,line_total=total,
-                               box_type=current_btype or 'HB')
+                               box_type=current_btype or 'HB',
+                               label='EUROPA')
                 lines.append(il)
         return h, lines
 

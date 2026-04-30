@@ -235,5 +235,49 @@ class TestNativeParser(unittest.TestCase):
                                    'limpiarse a 266,00 (fix 12g)')
 
 
+class TestMysticLabel(unittest.TestCase):
+    """Sesión 12n: destino del PDF (CORUÑA, VNG, GAIA…) → InvoiceLine.label.
+
+    El operador necesita el destino visible en la UI sin tener que mirar
+    `raw_description`, para meter la línea en el ERP. El regex captura
+    el primer token después de `btype` (columna destino del PDF) y se
+    asigna a `label` salvo blacklist (`FR` es prefijo de variety, no
+    destino).
+    """
+
+    def test_coruna_va_a_label(self):
+        """MYSTIC1.pdf: 7 líneas con `H CORUÑA TNT Gyp...` → label=CORUÑA."""
+        _, lines, _ = _parse('MYSTIC1.pdf')
+        coruna = [l for l in lines if l.label == 'CORUÑA']
+        self.assertGreaterEqual(len(coruna), 5,
+                                'CORUÑA debe llenarse en label desde la '
+                                'columna destino del PDF — fix 12n')
+
+    def test_fr_no_va_a_label(self):
+        """MYSTIC2.pdf: `25 H FR Gyp Natural Xlence...` → label vacío.
+
+        FR es prefijo de variedad (operador confirmó), no destino.
+        Está en _NOT_DESTINATIONS para que no contamine label.
+        """
+        _, lines, _ = _parse('MYSTIC2.pdf')
+        fr_label = [l for l in lines if l.label == 'FR']
+        self.assertEqual(len(fr_label), 0,
+                         'FR no debe llenarse en label (es variety, no '
+                         'destino) — fix 12n')
+
+
+class TestMalimaLabel(unittest.TestCase):
+    """Sesión 12n: MALIMA siempre exporta a EUROPA → label='EUROPA'."""
+
+    def test_europa_va_a_label(self):
+        """MALIMA.pdf: todas las líneas tienen label=EUROPA (hardcoded)."""
+        _, lines, _ = _parse('MALIMA.pdf')
+        self.assertGreater(len(lines), 0)
+        for l in lines:
+            self.assertEqual(l.label, 'EUROPA',
+                             f'línea {l.variety[:30]}: label debe ser '
+                             f'EUROPA, no {l.label!r}')
+
+
 if __name__ == '__main__':
     unittest.main()
