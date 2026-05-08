@@ -823,15 +823,16 @@ class MultifloraParser:
             qty = upb = total_units = None
             ppb = total = 0.0
             # A) "... N Box/Quarter/Half WORD N N PRICE TOTAL FBE"
-            pm=re.search(r'(\d+)\s+(?:Box|Quarter|Half)\s+\w+\s+(\d+)\s+(\d+)\s+([\d.]+)\s+([\d.]+)\s+([\d.]+)\s*$',ln)
+            # `total_units` puede traer coma de miles (3,220) — sesión 12o.
+            pm=re.search(r'(\d+)\s+(?:Box|Quarter|Half)\s+\w+\s+(\d+)\s+([\d,]+)\s+([\d.]+)\s+([\d.]+)\s+([\d.]+)\s*$',ln)
             if pm:
-                qty = int(pm.group(1)); upb = int(pm.group(2)); total_units = int(pm.group(3))
+                qty = int(pm.group(1)); upb = int(pm.group(2)); total_units = int(pm.group(3).replace(',', ''))
                 ppb = float(pm.group(4)); total = float(pm.group(5))
             # B) "... N Box/Quarter/Half N N PRICE TOTAL FBE"  (Half Tall sin segunda palabra)
             if qty is None:
-                pm = re.search(r'(\d+)\s+(?:Box|Quarter|Half)\s+(\d+)\s+(\d+)\s+([\d.]+)\s+([\d.]+)\s+([\d.]+)\s*$', ln)
+                pm = re.search(r'(\d+)\s+(?:Box|Quarter|Half)\s+(\d+)\s+([\d,]+)\s+([\d.]+)\s+([\d.]+)\s+([\d.]+)\s*$', ln)
                 if pm:
-                    qty = int(pm.group(1)); upb = int(pm.group(2)); total_units = int(pm.group(3))
+                    qty = int(pm.group(1)); upb = int(pm.group(2)); total_units = int(pm.group(3).replace(',', ''))
                     ppb = float(pm.group(4)); total = float(pm.group(5))
             # C) "FBE PIECES Half Tall UNITS description UPB St(Stems) PRICE $TOTAL"
             if qty is None:
@@ -1534,81 +1535,144 @@ class MalimaParser:
 
 
 class MonterosaParser:
-    """Formato Monterosas: QB/HB {pcs} {order} {mark} {variety} {spb} {b} {tb} {stems} {price} {total}
-    Ejemplo: "HB 1 3 COTTON XPRESSION 25 12 12 300 0.35 105.00"
-             "QB 1 4 PEACH WAVE 25 4 4 100 0.40 40.00"
-    El SPB (25) viene DESPUÉS de la variedad, no la talla.
-    La talla no aparece explícita en este formato — se infiere del contexto.
+    """Monterosas Farms — formato similar a Brissas (sesión 12o):
+
+    Línea principal (parent):
+      "1 - 1 R11 1 QB 8.65k #2 COUNTRY HOME 40 25 2 50 0.35 17.50"
+      <order> - <box_n> [R<n>] <pcs> <box_type> <peso> #<n> <variety> <size> <spb> <bunches> <stems> <price> <total>
+
+    Línea de continuación (sub-line de caja mixta):
+      "PINK X-PRESSION 40 25 1 25 0.40 10.00"
+      <variety> <size> <spb> <bunches> <stems> <price> <total>
+
+    El header total `TOTAL FCA <stems> <price> <total>` da el total real.
     """
+    _MAIN_RE = re.compile(
+        r'^\d+\s*-\s*\d+\s+'                     # order range "1 - 1"
+        r'(?:[A-Z]\d{1,3}\s+)?'                  # opcional R11 / R14
+        r'\d+\s+(?P<btype>QB|HB|FB|TB)\s+'       # pcs + box_type
+        r'\S+\s+#\d+\s+'                         # peso + "#2"
+        r'(?P<variety>[A-Z][A-Z0-9\s.\-/&\']+?)\s+'  # variety
+        r'(?P<size>\d{2,3})\s+'                  # size cm
+        r'(?P<spb>\d{2})\s+'                     # spb (2 dígitos)
+        r'(?P<bunches>\d+)\s+(?P<stems>\d+)\s+'  # bunches + stems
+        r'(?P<price>[\d.]+)\s+(?P<total>[\d.]+)\s*$',
+        re.I,
+    )
+    _CONT_RE = re.compile(
+        r'^(?P<variety>[A-Z][A-Z0-9\s.\-/&\']+?)\s+'
+        r'(?P<size>\d{2,3})\s+'
+        r'(?P<spb>\d{2})\s+'
+        r'(?P<bunches>\d+)\s+(?P<stems>\d+)\s+'
+        r'(?P<price>[\d.]+)\s+(?P<total>[\d.]+)\s*$',
+        re.I,
+    )
+
     def parse(self, text:str, pdata:dict):
         h=InvoiceHeader(); h.provider_key=pdata['key']; h.provider_id=pdata['id']; h.provider_name=pdata['name']
-        m=re.search(r'INVOICE\s+(\d+)',text,re.I); h.invoice_number=m.group(1) if m else ''
-        m=re.search(r'DATE[:\s]+([\d\-/]+)',text,re.I); h.date=m.group(1) if m else ''
-        m=re.search(r'M\s*A\s*W\s*B[:\s]*([\d\-/]+)',text,re.I); h.awb=re.sub(r'\s+','',m.group(1)) if m else ''
+        m=re.search(r'Invoice\s*#?\s*[:\s]*(\d+)',text,re.I); h.invoice_number=m.group(1) if m else ''
+        m=re.search(r'Date[:\s]+([\d\-/]+)',text,re.I); h.date=m.group(1) if m else ''
+        m=re.search(r'AWB[:\s]*([\d\-/]+)',text,re.I); h.awb=re.sub(r'\s+','',m.group(1)) if m else ''
+        # TOTAL FCA <stems> <price> <total> al final del cuerpo
+        m=re.search(r'TOTAL\s+FCA\s+\d+\s+[\d.]+\s+([\d.,]+)', text, re.I)
+        h.total = float(m.group(1).replace(',', '')) if m else 0.0
         lines=[]
+        last_btype = ''
         for ln in text.split('\n'):
-            ln=ln.strip()
-            # Formato: "QB/HB {num} {num} {MARK?} VARIETY SPB BUNCH TBUNCH STEMS PRICE TOTAL"
-            # Strip box type + numeric prefix: "HB 1 3 " → "COTTON XPRESSION 25 12 12 300 0.35 105.00"
-            pm = re.search(
-                r'(?:QB|HB)\s+\d+\s+\d+\s+'   # box_type + pieces + order
-                r'(?:[A-Z]+\s+)?'               # optional MARK (single uppercase word like "PEACH" — but this is part of variety!)
-                , ln)
-            if not pm:
+            ln = ln.strip()
+            # Skip noise typical de Monterosas
+            if re.match(r'(?:TOTAL|Box\s+Type|Forwarder|Air|HAWB|Packing|Shippment|Due|Observation|All\s+prices|PRODUCT)', ln, re.I):
                 continue
-            # Better approach: strip "QB/HB N N " prefix, then parse variety from rest
-            rest = re.sub(r'^(?:QB|HB)\s+\d+\s+\d+\s+', '', ln).strip()
-            # Strip optional mark code like "R11" (letter+digits, 2-4 chars)
-            rest = re.sub(r'^[A-Z]\d{1,3}\s+', '', rest).strip()
-            # rest = "COTTON XPRESSION 25 12 12 300 0.35 105.00"
-            # or     "PEACH WAVE 25 4 4 100 0.40 40.00"
-            # Variety = all alpha/space/punct until we hit: SPB(2digit) BUNCH TBUNCH STEMS
-            vm = re.match(
-                r'([A-Z][A-Z\s.\-/&]+?)\s+'    # variety (lazy but requires alpha start)
-                r'(\d{2})\s+'                   # SPB (always 2 digits: 10, 12, 25)
-                r'(\d+)\s+(\d+)\s+(\d+)\s+'    # bunches, total_bunches, stems
-                r'([\d.]+)\s+([\d.]+)',          # price, total
-                rest)
-            if not vm:
-                continue
-            var = vm.group(1).strip()
-            spb = int(vm.group(2))
-            bunches = int(vm.group(3))
-            stems = int(vm.group(5))
-            try: total = float(vm.group(7))
-            except: continue
-            price = total / stems if stems else 0.0
-            # Talla no está explícita en Monterosas — default 50
-            sz = 50
-            bt_m = re.search(r'(QB|HB)', ln)
-            btype = bt_m.group(1) if bt_m else ''
-            il = InvoiceLine(raw_description=ln, species='ROSES', variety=var,
-                             size=sz, stems_per_bunch=spb, bunches=bunches, stems=stems,
-                             price_per_stem=price, line_total=total, box_type=btype)
-            lines.append(il)
+            pm = self._MAIN_RE.match(ln)
+            if pm:
+                last_btype = pm.group('btype').upper()
+                il = InvoiceLine(
+                    raw_description=ln, species='ROSES',
+                    variety=pm.group('variety').strip().upper(),
+                    size=int(pm.group('size')),
+                    stems_per_bunch=int(pm.group('spb')),
+                    bunches=int(pm.group('bunches')),
+                    stems=int(pm.group('stems')),
+                    price_per_stem=float(pm.group('price')),
+                    line_total=float(pm.group('total')),
+                    box_type=last_btype,
+                )
+                lines.append(il); continue
+            cm = self._CONT_RE.match(ln)
+            if cm:
+                il = InvoiceLine(
+                    raw_description=ln, species='ROSES',
+                    variety=cm.group('variety').strip().upper(),
+                    size=int(cm.group('size')),
+                    stems_per_bunch=int(cm.group('spb')),
+                    bunches=int(cm.group('bunches')),
+                    stems=int(cm.group('stems')),
+                    price_per_stem=float(cm.group('price')),
+                    line_total=float(cm.group('total')),
+                    box_type=last_btype or 'QB',
+                )
+                lines.append(il)
+        if not h.total and lines:
+            h.total = round(sum(l.line_total for l in lines), 2)
         return h, lines
 
 
 class SecoreParser:
+    """Sécore Floral: dos formatos según especie.
+
+    Variante A (rosas): ``ROSE <variety> <size> CM <upb> <type> <stems> <price> <total>``
+    Variante B (claveles/otras especies, sesión 12o):
+        ``CARNATION <variety_full> <upb> <boxes> <type> <stems> <price> <total> <farm>``
+        sin ``CM`` (la talla no aparece en el formato).
+    """
+    _SPECIES_NON_ROSE = ('CARNATION', 'HYDRANGEA', 'ALSTROEMERIA',
+                         'GYPSOPHILA', 'CHRYSANTHEMUM')
+
     def parse(self, text:str, pdata:dict):
         h=InvoiceHeader(); h.provider_key=pdata['key']; h.provider_id=pdata['id']; h.provider_name=pdata['name']
         m=re.search(r'Invoice\s+N[o\xba]\s+(\d+)',text,re.I); h.invoice_number=m.group(1) if m else ''
         m=re.search(r'(\d+[-]\w+[-]\d+)',text); h.date=m.group(1) if m else ''
         m=re.search(r'AWB\s+([\d\s]+)',text,re.I); h.awb=re.sub(r'\s+','',m.group(1))[:12] if m else ''
+        # Total: preferir "Total value" (sin comisión); si no, "Total" (con comisión).
+        m_total = re.search(r'Total\s+value\s+([\d.,]+)', text, re.I)
+        if m_total:
+            try: h.total = float(m_total.group(1).replace(',', ''))
+            except: pass
         lines=[]
         for ln in text.split('\n'):
             ln=ln.strip()
+            # Variante A: ROSE
             pm=re.search(r'ROSE\s+([A-Z][A-Z\s.\-/]+?)\s+(\d{2})\s+CM',ln,re.I)
-            if not pm: continue
-            var=pm.group(1).strip(); sz=int(pm.group(2))
-            nm=re.search(r'(\d+)\s+(HALF|QUARTER|FULL)\s+(\d+)\s+([\d.]+)\s+([\d.]+)',ln,re.I)
-            if not nm: continue
-            try: upb=int(nm.group(1)); stems=int(nm.group(3)); price=float(nm.group(4)); total=float(nm.group(5))
-            except: continue
-            il=InvoiceLine(raw_description=ln,species='ROSES',variety=var,
-                           size=sz,stems_per_bunch=upb,stems=stems,
-                           price_per_stem=price,line_total=total)
-            lines.append(il)
+            if pm:
+                var=pm.group(1).strip(); sz=int(pm.group(2))
+                nm=re.search(r'(\d+)\s+(HALF|QUARTER|FULL)\s+(\d+)\s+([\d.]+)\s+([\d.]+)',ln,re.I)
+                if not nm: continue
+                try: upb=int(nm.group(1)); stems=int(nm.group(3)); price=float(nm.group(4)); total=float(nm.group(5))
+                except: continue
+                il=InvoiceLine(raw_description=ln,species='ROSES',variety=var,
+                               size=sz,stems_per_bunch=upb,stems=stems,
+                               price_per_stem=price,line_total=total)
+                lines.append(il); continue
+            # Variante B: CARNATION/HYDRANGEA/ALSTROEMERIA… sin CM
+            pm_b=re.search(
+                r'^(' + '|'.join(self._SPECIES_NON_ROSE) + r')\s+'
+                r'([A-Z][A-Z\s.\-/]+?)\s+'             # variety
+                r'(\d+)\s+(\d+)\s+(HALF|QUARTER|FULL)\s+'  # upb, boxes, btype
+                r'(\d+)\s+([\d.]+)\s+([\d.]+)',         # stems, price, total
+                ln, re.I)
+            if pm_b:
+                sp_raw = pm_b.group(1).upper()
+                species = 'CARNATIONS' if sp_raw == 'CARNATION' else (
+                          sp_raw + 'S' if not sp_raw.endswith('S') else sp_raw)
+                var = pm_b.group(2).strip().upper()
+                upb = int(pm_b.group(3)); stems = int(pm_b.group(6))
+                price = float(pm_b.group(7)); total = float(pm_b.group(8))
+                il = InvoiceLine(raw_description=ln, species=species, variety=var,
+                                 stems_per_bunch=upb, stems=stems,
+                                 price_per_stem=price, line_total=total)
+                lines.append(il)
+        if not h.total and lines:
+            h.total = round(sum(l.line_total for l in lines), 2)
         return h, lines
 
 
@@ -2402,6 +2466,11 @@ class ColFarmParser:
             # "X2-5" pegado (OCR rompe X25) → "X 25", " i ee" ruido → " "
             ln = re.sub(r'X(\d)-(\d)(?=\s)', r'X\1\2', ln)
             ln = re.sub(r'\s+i\s+ee\s+', ' ', ln)
+            # OCR de MILONGA con tabla de columnas estrechas mete una "X"
+            # mayúscula en medio de la variedad: "NenXa", "BrigthoXn",
+            # "ExploreXr", "MondiaXl" (sesión 12o). Solo cuando la X está
+            # entre dos minúsculas (no afecta "X-PRESSION", "GARDEN X").
+            ln = re.sub(r'([a-z])X([a-z])', r'\1\2', ln)
             # Dígito seguido de '~' o punto basura: "300 1~ " → "300 " (ruido stems_total)
             ln = re.sub(r'(?<=\d)\s*\d+[~\.]\s*(?=ST|SR|Sl)', ' ', ln, flags=re.I)
             # OCR de MILONGA (force_ocr=True) introduce ruido específico:
@@ -2489,6 +2558,26 @@ class ColFarmParser:
                                  size=sz, stems_per_bunch=spb, stems=stems,
                                  price_per_stem=price, line_total=total, box_type=box_type)
                 lines.append(il)
+                continue
+            # MILONGA sub-line tras limpieza OCR (sesión 12o): la "X" del
+            # spb se perdió al normalizar la X invasiva intercalada (ej.
+            # "NenXa 25 - 50" → "Nena 25 - 50"). El regex acepta variety
+            # sin "X" pegada al spb, exigiendo el patrón "<spb> - <size>"
+            # como ancla. Solo entra si el formato `<NN> - <NN[N]> <NN>
+            # <stems> <stems> ST <price>` es claro.
+            pm3_alt = re.search(
+                rf'^([A-Z][A-Za-z\s\-]+?)\s+(\d{{2}})\s*-\s*(\d{{2,3}})\s+\d+\s+(\d+)\s+(\d+)\s+{self._UNIT}\s+([\d,.]+)\s*$',
+                ln)
+            if pm3_alt:
+                var = pm3_alt.group(1).strip().upper()
+                spb = int(pm3_alt.group(2)); sz = int(pm3_alt.group(3))
+                stems = int(pm3_alt.group(5)); price = self._money(pm3_alt.group(6))
+                total = round(stems * price, 2)
+                if not re.match(r'(?:ROSE\s*MIX|ASSORTED|SURTID|MIX)\b', var, re.I):
+                    il = InvoiceLine(raw_description=ln, species='ROSES', variety=var, origin='COL',
+                                     size=sz, stems_per_bunch=spb, stems=stems,
+                                     price_per_stem=price, line_total=total, box_type=box_type)
+                    lines.append(il)
                 continue
             # Vuelven mixed box sub-line: "0 H Rose Freedom 50 - 50 - ... STEMS STEMS Stems PRICE $TOTAL"
             # Pattern: BOXES=0, Rose VARIETY SIZE - SIZE, then stems and price
@@ -2844,17 +2933,22 @@ class UniqueParser:
     # PROFORMA line regex (formato sample 01 y 02 que antes caían en NO_PARSEA).
     # El OCR puede partir el total en dos tokens ("$ 1 92.00" → 192.00);
     # toleramos uno o varios grupos de dígitos antes del `.dd` final.
+    # Sesión 12o (D&S Export): la columna BRAND vacía sale como "0" en
+    # texto entre size y box_type; el price OCR-roto puede tener espacios
+    # internos ("$ 0 .28" → 0.28). Permitimos token opcional entre size
+    # y box_type, y espacios dentro de price.
     _PROFORMA_RE = re.compile(
         r'06\d{2}\.\d{2}\.\d{2}\.\d{2}\s+'          # tariff code
         r'ROSES?\s+'
         r'(?P<variety>[A-Z][A-Z\s]*?)\s+'
         r'(?P<size>\d{2,3})\s+'
+        r'(?:\S+\s+)?'                               # BRAND opcional (puede ser "0")
         r'(?P<box_type>HB|QB|FB|TB)\s+'
         r'(?P<boxes>\d+)\s+'
         r'[\d.]+\s+'                                 # FULL PACKING
         r'(?P<stems_per_box>\d+)\s+'
         r'(?P<stems>\d+)\s+STEMS\s+'
-        r'\$\s*(?P<price>[\d.]+)\s+'
+        r'\$\s*(?P<price>[\d.\s]+?)\s+'
         r'\$\s*(?P<total>[\d\s.,]+?)\s*$',
         re.I,
     )
@@ -2881,7 +2975,12 @@ class UniqueParser:
                 sz = int(pm_pro.group('size'))
                 box_type = pm_pro.group('box_type').upper()
                 stems = int(pm_pro.group('stems'))
-                price = float(pm_pro.group('price'))
+                # Price OCR-roto puede tener espacios internos: "$ 0 .28" → 0.28.
+                price_raw = pm_pro.group('price').replace(' ', '')
+                try:
+                    price = float(price_raw)
+                except ValueError:
+                    price = 0.0
                 # El total puede venir como "192.00" o "1 92.00" (OCR split).
                 total_raw = pm_pro.group('total').replace(' ', '').replace(',', '')
                 try:

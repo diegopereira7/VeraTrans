@@ -91,14 +91,14 @@
     "fecha": "2026-03-30 17:11"
   },
   "750": {
-    "pdf": "FLORSANI2.pdf",
+    "pdf": "FLORSANI.pdf",
     "provider": "Florsani",
-    "total_usd": 3747.16,
-    "lineas": 58,
-    "ok": 58,
+    "total_usd": 192.0,
+    "lineas": 1,
+    "ok": 1,
     "sin_match": 0,
-    "fecha": "2026-04-27 10:35",
-    "pdf_path": "C:\\verabuy-traductor\\batch_uploads\\20260427083117_229c58c3\\FLORSANI2.pdf"
+    "fecha": "2026-05-07 16:44",
+    "pdf_path": "C:\\verabuy-traductor\\batch_uploads\\20260507144258_a5e9b107\\FLORSANI.pdf"
   },
   "GOLDEN 105369.pdf": {
     "pdf": "GOLDEN 105369.pdf",
@@ -183,14 +183,14 @@
     "fecha": "2026-03-30 17:11"
   },
   "ROSELY": {
-    "pdf": "ROSELY__3_.pdf",
+    "pdf": "ROSELY2.pdf",
     "provider": "Rosely Flowers",
-    "total_usd": 270.0,
-    "lineas": 2,
-    "ok": 0,
+    "total_usd": 66.0,
+    "lineas": 1,
+    "ok": 1,
     "sin_match": 0,
-    "fecha": "2026-04-27 10:53",
-    "pdf_path": "C:\\verabuy-traductor\\batch_uploads\\20260427083117_229c58c3\\ROSELY__3_.pdf"
+    "fecha": "2026-05-07 16:50",
+    "pdf_path": "C:\\verabuy-traductor\\batch_uploads\\20260507144258_a5e9b107\\ROSELY2.pdf"
   },
   "83155": {
     "pdf": "03 - 729-45996941 - SAYONARA SAYONARA 83155.pdf",
@@ -304,14 +304,14 @@
     "fecha": "2026-03-30 17:09"
   },
   "": {
-    "pdf": "BG-106379.pdf",
-    "provider": "Benchmark Growers",
-    "total_usd": 8520.0,
-    "lineas": 52,
-    "ok": 52,
+    "pdf": "STAMPSY.pdf",
+    "provider": "Stampsybox",
+    "total_usd": 112.0,
+    "lineas": 1,
+    "ok": 1,
     "sin_match": 0,
-    "fecha": "2026-04-28 10:52",
-    "pdf_path": "C:\\verabuy-traductor\\batch_uploads\\20260427083117_229c58c3\\BG-106379.pdf"
+    "fecha": "2026-05-07 16:50",
+    "pdf_path": "C:\\verabuy-traductor\\batch_uploads\\20260507144258_a5e9b107\\STAMPSY.pdf"
   },
   "7.149": {
     "pdf": "000 full.pdf",
@@ -902,14 +902,14 @@
     "fecha": "2026-03-30 17:00"
   },
   "001001": {
-    "pdf": "OLIMPO_1.pdf",
+    "pdf": "OLIMPO1.pdf",
     "provider": "Olimpo Flowers",
-    "total_usd": 1200.75,
-    "lineas": 24,
-    "ok": 18,
-    "sin_match": 6,
-    "fecha": "2026-04-28 14:01",
-    "pdf_path": "C:\\verabuy-traductor\\batch_uploads\\20260427083117_229c58c3\\OLIMPO_1.pdf"
+    "total_usd": 403.75,
+    "lineas": 5,
+    "ok": 5,
+    "sin_match": 0,
+    "fecha": "2026-05-07 16:48",
+    "pdf_path": "C:\\verabuy-traductor\\batch_uploads\\20260507144258_a5e9b107\\OLIMPO1.pdf"
   },
   "90688973": {
     "pdf": "SEMANA_3_075-6764_1615_(311)_TESSA.pdf",
@@ -4802,13 +4802,14 @@
     "fecha": "2026-03-30 17:07"
   },
   "00000166763": {
-    "pdf": "SEMANA_9_369-9900_9610_(292)_AGRIVALDANI.pdf",
+    "pdf": "1777971580_AGRIVALDANI.pdf",
     "provider": "Agrivaldani",
-    "total_usd": 0.0,
+    "total_usd": 115.0,
     "lineas": 4,
     "ok": 4,
     "sin_match": 0,
-    "fecha": "2026-03-30 17:07"
+    "fecha": "2026-05-05 10:59",
+    "pdf_path": "C:\\verabuy-traductor\\web\\uploads\\1777971580_AGRIVALDANI.pdf"
   },
   "00000165437": {
     "pdf": "SEMANA_9_369-9900_9610_(292)_AGRIVALDANI1.pdf",
@@ -4838,13 +4839,14 @@
     "fecha": "2026-03-30 17:07"
   },
   "000004125": {
-    "pdf": "SEMANA_9_369-9900_9610_(292)_BRISSAS.pdf",
+    "pdf": "1777971593_BRISSAS.pdf",
     "provider": "Brissas",
-    "total_usd": 0.0,
-    "lineas": 39,
-    "ok": 36,
+    "total_usd": 3118.5,
+    "lineas": 44,
+    "ok": 44,
     "sin_match": 0,
-    "fecha": "2026-03-30 17:07"
+    "fecha": "2026-05-05 11:00",
+    "pdf_path": "C:\\verabuy-traductor\\web\\uploads\\1777971593_BRISSAS.pdf"
   },
   "587559": {
     "pdf": "SEMANA_9_369-9900_9610_(292)_EQR1.pdf",
@@ -9147,12 +9149,12 @@
   "830068604": {
     "pdf": "APOSENTOS.pdf",
     "provider": "Flores de Aposentos",
-    "total_usd": 3915.0,
-    "lineas": 4,
-    "ok": 3,
-    "sin_match": 1,
-    "fecha": "2026-04-27 14:08",
-    "pdf_path": "C:\\verabuy-traductor\\batch_uploads\\20260427083117_229c58c3\\APOSENTOS.pdf"
+    "total_usd": 5260.0,
+    "lineas": 13,
+    "ok": 11,
+    "sin_match": 0,
+    "fecha": "2026-05-07 16:43",
+    "pdf_path": "C:\\verabuy-traductor\\batch_uploads\\20260507144258_a5e9b107\\APOSENTOS.pdf"
   },
   "INV-008307": {
     "pdf": "SEMANA_4_729-4494_2225_(220)_MILONGA.pdf",
@@ -9346,12 +9348,12 @@
   "002005": {
     "pdf": "LAILA.pdf",
     "provider": "Laila Flowers",
-    "total_usd": 705.5,
-    "lineas": 15,
-    "ok": 14,
-    "sin_match": 1,
-    "fecha": "2026-04-28 12:49",
-    "pdf_path": "C:\\verabuy-traductor\\batch_uploads\\20260427083117_229c58c3\\LAILA.pdf"
+    "total_usd": 245.0,
+    "lineas": 4,
+    "ok": 4,
+    "sin_match": 0,
+    "fecha": "2026-05-07 16:44",
+    "pdf_path": "C:\\verabuy-traductor\\batch_uploads\\20260507144258_a5e9b107\\LAILA.pdf"
   },
   "000004684": {
     "pdf": "SEMANA_5_369-9830_7753_(200)_ROSALEDA.pdf",
@@ -18163,5 +18165,375 @@
     "sin_match": 8,
     "fecha": "2026-04-27 13:28",
     "pdf_path": "C:\\verabuy-traductor\\batch_uploads\\20260427083117_229c58c3\\MAXI.pdf"
+  },
+  "00000169615": {
+    "pdf": "AGRIVALDANI.pdf",
+    "provider": "Agrivaldani",
+    "total_usd": 64.0,
+    "lineas": 8,
+    "ok": 8,
+    "sin_match": 0,
+    "fecha": "2026-05-07 16:43",
+    "pdf_path": "C:\\verabuy-traductor\\batch_uploads\\20260507144258_a5e9b107\\AGRIVALDANI.pdf"
+  },
+  "00000169613": {
+    "pdf": "AGRIVALDANI1.pdf",
+    "provider": "Agrivaldani",
+    "total_usd": 60.0,
+    "lineas": 3,
+    "ok": 3,
+    "sin_match": 0,
+    "fecha": "2026-05-07 16:43",
+    "pdf_path": "C:\\verabuy-traductor\\batch_uploads\\20260507144258_a5e9b107\\AGRIVALDANI1.pdf"
+  },
+  "00048903": {
+    "pdf": "ALEGRIA.pdf",
+    "provider": "La Alegria Farm",
+    "total_usd": 1405.0,
+    "lineas": 40,
+    "ok": 40,
+    "sin_match": 0,
+    "fecha": "2026-05-07 16:43",
+    "pdf_path": "C:\\verabuy-traductor\\batch_uploads\\20260507144258_a5e9b107\\ALEGRIA.pdf"
+  },
+  "001103615": {
+    "pdf": "AROMA.pdf",
+    "provider": "Floraroma",
+    "total_usd": 31.25,
+    "lineas": 1,
+    "ok": 1,
+    "sin_match": 0,
+    "fecha": "2026-05-07 16:43",
+    "pdf_path": "C:\\verabuy-traductor\\batch_uploads\\20260507144258_a5e9b107\\AROMA.pdf"
+  },
+  "001103601": {
+    "pdf": "AROMA1.pdf",
+    "provider": "Floraroma",
+    "total_usd": 174.0,
+    "lineas": 2,
+    "ok": 2,
+    "sin_match": 0,
+    "fecha": "2026-05-07 16:43",
+    "pdf_path": "C:\\verabuy-traductor\\batch_uploads\\20260507144258_a5e9b107\\AROMA1.pdf"
+  },
+  "001001000056935": {
+    "pdf": "BOSQUE.pdf",
+    "provider": "Bosque Flowers",
+    "total_usd": 90.0,
+    "lineas": 7,
+    "ok": 5,
+    "sin_match": 2,
+    "fecha": "2026-05-07 16:43",
+    "pdf_path": "C:\\verabuy-traductor\\batch_uploads\\20260507144258_a5e9b107\\BOSQUE.pdf"
+  },
+  "000004284": {
+    "pdf": "BRISSAS.pdf",
+    "provider": "Brissas",
+    "total_usd": 2494.25,
+    "lineas": 24,
+    "ok": 23,
+    "sin_match": 0,
+    "fecha": "2026-05-07 16:43",
+    "pdf_path": "C:\\verabuy-traductor\\batch_uploads\\20260507144258_a5e9b107\\BRISSAS.pdf"
+  },
+  "25065359": {
+    "pdf": "CANTIZA.pdf",
+    "provider": "Valthomig",
+    "total_usd": 618.5,
+    "lineas": 13,
+    "ok": 13,
+    "sin_match": 0,
+    "fecha": "2026-05-07 16:43",
+    "pdf_path": "C:\\verabuy-traductor\\batch_uploads\\20260507144258_a5e9b107\\CANTIZA.pdf"
+  },
+  "FA-119319": {
+    "pdf": "COLIBRI.pdf",
+    "provider": "Colibri Flowers",
+    "total_usd": 6045.0,
+    "lineas": 12,
+    "ok": 10,
+    "sin_match": 2,
+    "fecha": "2026-05-07 16:44",
+    "pdf_path": "C:\\verabuy-traductor\\batch_uploads\\20260507144258_a5e9b107\\COLIBRI.pdf"
+  },
+  "4": {
+    "pdf": "D_S.pdf",
+    "provider": "Unique Export SAS",
+    "total_usd": 560.0,
+    "lineas": 1,
+    "ok": 0,
+    "sin_match": 0,
+    "fecha": "2026-05-07 16:44",
+    "pdf_path": "C:\\verabuy-traductor\\batch_uploads\\20260507144258_a5e9b107\\D_S.pdf"
+  },
+  "0000082963": {
+    "pdf": "ECOFLOR.pdf",
+    "provider": "Ecoflor Groupchile",
+    "total_usd": 724.5,
+    "lineas": 12,
+    "ok": 12,
+    "sin_match": 0,
+    "fecha": "2026-05-07 16:44",
+    "pdf_path": "C:\\verabuy-traductor\\batch_uploads\\20260507144258_a5e9b107\\ECOFLOR.pdf"
+  },
+  "600845": {
+    "pdf": "EQR.pdf",
+    "provider": "EQR USA",
+    "total_usd": 128.75,
+    "lineas": 5,
+    "ok": 5,
+    "sin_match": 0,
+    "fecha": "2026-05-07 16:44",
+    "pdf_path": "C:\\verabuy-traductor\\batch_uploads\\20260507144258_a5e9b107\\EQR.pdf"
+  },
+  "169989": {
+    "pdf": "ESMERALDA.pdf",
+    "provider": "Utopia Farms",
+    "total_usd": 390.0,
+    "lineas": 1,
+    "ok": 1,
+    "sin_match": 0,
+    "fecha": "2026-05-07 16:44",
+    "pdf_path": "C:\\verabuy-traductor\\batch_uploads\\20260507144258_a5e9b107\\ESMERALDA.pdf"
+  },
+  "0000145693": {
+    "pdf": "FIORENTINA.pdf",
+    "provider": "Fiorentina Flowers",
+    "total_usd": 96.0,
+    "lineas": 4,
+    "ok": 4,
+    "sin_match": 0,
+    "fecha": "2026-05-07 16:44",
+    "pdf_path": "C:\\verabuy-traductor\\batch_uploads\\20260507144258_a5e9b107\\FIORENTINA.pdf"
+  },
+  "0000072458": {
+    "pdf": "HACIENDA.pdf",
+    "provider": "Flores de la Hacienda",
+    "total_usd": 120.0,
+    "lineas": 4,
+    "ok": 4,
+    "sin_match": 0,
+    "fecha": "2026-05-07 16:44",
+    "pdf_path": "C:\\verabuy-traductor\\batch_uploads\\20260507144258_a5e9b107\\HACIENDA.pdf"
+  },
+  "00049088": {
+    "pdf": "LA_ALEGRIA.pdf",
+    "provider": "La Alegria Farm",
+    "total_usd": 172.5,
+    "lineas": 6,
+    "ok": 6,
+    "sin_match": 0,
+    "fecha": "2026-05-07 16:44",
+    "pdf_path": "C:\\verabuy-traductor\\batch_uploads\\20260507144258_a5e9b107\\LA_ALEGRIA.pdf"
+  },
+  "001033446": {
+    "pdf": "LIFE.pdf",
+    "provider": "Life Flowers",
+    "total_usd": 231.0,
+    "lineas": 2,
+    "ok": 2,
+    "sin_match": 0,
+    "fecha": "2026-05-07 16:44",
+    "pdf_path": "C:\\verabuy-traductor\\batch_uploads\\20260507144258_a5e9b107\\LIFE.pdf"
+  },
+  "001033415": {
+    "pdf": "LIFE1.pdf",
+    "provider": "Life Flowers",
+    "total_usd": 261.0,
+    "lineas": 3,
+    "ok": 3,
+    "sin_match": 0,
+    "fecha": "2026-05-07 16:44",
+    "pdf_path": "C:\\verabuy-traductor\\batch_uploads\\20260507144258_a5e9b107\\LIFE1.pdf"
+  },
+  "001033398": {
+    "pdf": "LIFE2.pdf",
+    "provider": "Life Flowers",
+    "total_usd": 145.0,
+    "lineas": 10,
+    "ok": 10,
+    "sin_match": 0,
+    "fecha": "2026-05-07 16:44",
+    "pdf_path": "C:\\verabuy-traductor\\batch_uploads\\20260507144258_a5e9b107\\LIFE2.pdf"
+  },
+  "0000039447": {
+    "pdf": "LUXUS.pdf",
+    "provider": "Luxus Blumen",
+    "total_usd": 210.0,
+    "lineas": 2,
+    "ok": 2,
+    "sin_match": 0,
+    "fecha": "2026-05-07 16:44",
+    "pdf_path": "C:\\verabuy-traductor\\batch_uploads\\20260507144258_a5e9b107\\LUXUS.pdf"
+  },
+  "5120497": {
+    "pdf": "MALIMA.pdf",
+    "provider": "Starflowers (Malima)",
+    "total_usd": 885.5,
+    "lineas": 2,
+    "ok": 2,
+    "sin_match": 0,
+    "fecha": "2026-05-07 16:44",
+    "pdf_path": "C:\\verabuy-traductor\\batch_uploads\\20260507144258_a5e9b107\\MALIMA.pdf"
+  },
+  "09617": {
+    "pdf": "MAXIFLORES.pdf",
+    "provider": "Maxiflores",
+    "total_usd": 1161.9,
+    "lineas": 8,
+    "ok": 8,
+    "sin_match": 0,
+    "fecha": "2026-05-07 16:44",
+    "pdf_path": "C:\\verabuy-traductor\\batch_uploads\\20260507144258_a5e9b107\\MAXIFLORES.pdf"
+  },
+  "_": {
+    "pdf": "MILONGA.pdf",
+    "provider": "Flores Milonga",
+    "total_usd": 1042.75,
+    "lineas": 1,
+    "ok": 0,
+    "sin_match": 0,
+    "fecha": "2026-05-07 16:47",
+    "pdf_path": "C:\\verabuy-traductor\\batch_uploads\\20260507144258_a5e9b107\\MILONGA.pdf"
+  },
+  "A2599347": {
+    "pdf": "MULTIFLORA.pdf",
+    "provider": "Multiflora",
+    "total_usd": 1376.1,
+    "lineas": 12,
+    "ok": 12,
+    "sin_match": 0,
+    "fecha": "2026-05-07 16:47",
+    "pdf_path": "C:\\verabuy-traductor\\batch_uploads\\20260507144258_a5e9b107\\MULTIFLORA.pdf"
+  },
+  "0000289616": {
+    "pdf": "MYSTIC.pdf",
+    "provider": "Mystic Flowers",
+    "total_usd": 360.0,
+    "lineas": 26,
+    "ok": 26,
+    "sin_match": 0,
+    "fecha": "2026-05-07 16:47",
+    "pdf_path": "C:\\verabuy-traductor\\batch_uploads\\20260507144258_a5e9b107\\MYSTIC.pdf"
+  },
+  "0000289614": {
+    "pdf": "MYSTIC1.pdf",
+    "provider": "Mystic Flowers",
+    "total_usd": 576.0,
+    "lineas": 1,
+    "ok": 1,
+    "sin_match": 0,
+    "fecha": "2026-05-07 16:48",
+    "pdf_path": "C:\\verabuy-traductor\\batch_uploads\\20260507144258_a5e9b107\\MYSTIC1.pdf"
+  },
+  "2135": {
+    "pdf": "PONDEROSA.pdf",
+    "provider": "Verdes La Estacion / Ponderosa",
+    "total_usd": 5868.0,
+    "lineas": 97,
+    "ok": 95,
+    "sin_match": 0,
+    "fecha": "2026-05-07 16:49",
+    "pdf_path": "C:\\verabuy-traductor\\batch_uploads\\20260507144258_a5e9b107\\PONDEROSA.pdf"
+  },
+  "3647": {
+    "pdf": "PRESTIGE.pdf",
+    "provider": "Prestige Roses",
+    "total_usd": 435.0,
+    "lineas": 2,
+    "ok": 1,
+    "sin_match": 0,
+    "fecha": "2026-05-07 16:49",
+    "pdf_path": "C:\\verabuy-traductor\\batch_uploads\\20260507144258_a5e9b107\\PRESTIGE.pdf"
+  },
+  "90754344": {
+    "pdf": "TESSA.pdf",
+    "provider": "Tessa Corp",
+    "total_usd": 637.5,
+    "lineas": 5,
+    "ok": 5,
+    "sin_match": 0,
+    "fecha": "2026-05-07 16:50",
+    "pdf_path": "C:\\verabuy-traductor\\batch_uploads\\20260507144258_a5e9b107\\TESSA.pdf"
+  },
+  "90753766": {
+    "pdf": "TESSA1.pdf",
+    "provider": "Tessa Corp",
+    "total_usd": 40.0,
+    "lineas": 1,
+    "ok": 1,
+    "sin_match": 0,
+    "fecha": "2026-05-07 16:50",
+    "pdf_path": "C:\\verabuy-traductor\\batch_uploads\\20260507144258_a5e9b107\\TESSA1.pdf"
+  },
+  "00040813": {
+    "pdf": "TIERRA.pdf",
+    "provider": "Tierra Verde",
+    "total_usd": 37.5,
+    "lineas": 1,
+    "ok": 1,
+    "sin_match": 0,
+    "fecha": "2026-05-07 16:51",
+    "pdf_path": "C:\\verabuy-traductor\\batch_uploads\\20260507144258_a5e9b107\\TIERRA.pdf"
+  },
+  "00040824": {
+    "pdf": "TIERRA_VERDE.pdf",
+    "provider": "Tierra Verde",
+    "total_usd": 190.0,
+    "lineas": 4,
+    "ok": 4,
+    "sin_match": 0,
+    "fecha": "2026-05-07 16:51",
+    "pdf_path": "C:\\verabuy-traductor\\batch_uploads\\20260507144258_a5e9b107\\TIERRA_VERDE.pdf"
+  },
+  "18475": {
+    "pdf": "UMA.pdf",
+    "provider": "Uma Flowers",
+    "total_usd": 2652.5,
+    "lineas": 10,
+    "ok": 10,
+    "sin_match": 0,
+    "fecha": "2026-05-07 16:51",
+    "pdf_path": "C:\\verabuy-traductor\\batch_uploads\\20260507144258_a5e9b107\\UMA.pdf"
+  },
+  "18488": {
+    "pdf": "UMA1.pdf",
+    "provider": "Uma Flowers",
+    "total_usd": 392.0,
+    "lineas": 2,
+    "ok": 2,
+    "sin_match": 0,
+    "fecha": "2026-05-07 16:52",
+    "pdf_path": "C:\\verabuy-traductor\\batch_uploads\\20260507144258_a5e9b107\\UMA1.pdf"
+  },
+  "25065170": {
+    "pdf": "VALTHO.pdf",
+    "provider": "Valthomig",
+    "total_usd": 686.75,
+    "lineas": 34,
+    "ok": 34,
+    "sin_match": 0,
+    "fecha": "2026-05-07 16:52",
+    "pdf_path": "C:\\verabuy-traductor\\batch_uploads\\20260507144258_a5e9b107\\VALTHO.pdf"
+  },
+  "25065216": {
+    "pdf": "VALTHO1.pdf",
+    "provider": "Valthomig",
+    "total_usd": 251.25,
+    "lineas": 8,
+    "ok": 8,
+    "sin_match": 0,
+    "fecha": "2026-05-07 16:52",
+    "pdf_path": "C:\\verabuy-traductor\\batch_uploads\\20260507144258_a5e9b107\\VALTHO1.pdf"
+  },
+  "INV-011415": {
+    "pdf": "VUELVEN.pdf",
+    "provider": "Vuelven",
+    "total_usd": 525.0,
+    "lineas": 6,
+    "ok": 4,
+    "sin_match": 0,
+    "fecha": "2026-05-07 16:53",
+    "pdf_path": "C:\\verabuy-traductor\\batch_uploads\\20260507144258_a5e9b107\\VUELVEN.pdf"
   }
 }

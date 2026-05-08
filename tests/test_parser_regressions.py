@@ -29,15 +29,34 @@ if str(_ROOT) not in sys.path:
 from src.pdf import detect_provider  # noqa: E402
 from src.parsers import FORMAT_PARSERS  # noqa: E402
 
-# Batch del operador con los PDFs verificados en sesiones 12g–12l.
-BATCH = _ROOT / 'batch_uploads' / '20260427083117_229c58c3'
+# Batches del operador con PDFs verificados. Cada test indica el PDF
+# por nombre; el helper busca en todos los batches conocidos. Si un
+# batch fue purgado, los tests asociados se skippean automáticamente.
+_BATCH_DIRS = [
+    _ROOT / 'batch_uploads' / '20260507144258_a5e9b107',  # 12o
+    _ROOT / 'batch_uploads' / '20260427083117_229c58c3',  # 12g–12n
+]
+# Compat: BATCH apunta al primero existente para tests legacy que lo importan.
+BATCH = next((b for b in _BATCH_DIRS if b.exists()), _BATCH_DIRS[0])
 
 
-def _parse(pdf_name: str):
-    """Helper: ejecuta el parser para un PDF y devuelve (header, lines)."""
-    pdf_path = BATCH / pdf_name
-    if not pdf_path.exists():
-        raise unittest.SkipTest(f'Sample no disponible: {pdf_path}')
+def _parse(pdf_name: str, batch_id: str | None = None):
+    """Helper: ejecuta el parser para un PDF y devuelve (header, lines).
+
+    Si `batch_id` se especifica, solo busca en ese batch (skip si no
+    existe). Si no, busca en todos los batches conocidos.
+    """
+    if batch_id is not None:
+        pdf_path = _ROOT / 'batch_uploads' / batch_id / pdf_name
+        if not pdf_path.exists():
+            raise unittest.SkipTest(f'Batch {batch_id} no disponible: {pdf_name}')
+    else:
+        pdf_path = next(
+            (b / pdf_name for b in _BATCH_DIRS if (b / pdf_name).exists()),
+            None,
+        )
+        if pdf_path is None:
+            raise unittest.SkipTest(f'Sample no disponible: {pdf_name}')
     pdata = detect_provider(str(pdf_path))
     if not pdata:
         raise AssertionError(f'detect_provider devolvió None para {pdf_name}')
@@ -104,9 +123,9 @@ class TestUmaParser(unittest.TestCase):
 
         Las sub-líneas comparten caja física con un parent y NO traen
         el prefijo `N hb XXX`. Antes de 12i se perdían 9 líneas en
-        UMA.pdf sumando $196.
+        UMA.pdf (batch 12g) sumando $196.
         """
-        header, lines, _ = _parse('UMA.pdf')
+        header, lines, _ = _parse('UMA.pdf', batch_id='20260427083117_229c58c3')
         # UMA.pdf debe tener ≥20 líneas tras el fix de sub-líneas (antes: 14).
         self.assertGreaterEqual(len(lines), 20,
                                 'Sub-líneas mixed-box deben capturarse — fix 12i')
@@ -150,9 +169,9 @@ class TestVerdesEstacionParser(unittest.TestCase):
 
         El _RE_C debe buscar variety en text_lines[i-1] y parsearla
         sin perder la línea de detalle. Antes de 12i se perdían 4
-        líneas en PONDEROSA.pdf ($40 invisibles).
+        líneas en PONDEROSA.pdf del batch 12g ($40 invisibles).
         """
-        header, lines, _ = _parse('PONDEROSA.pdf')
+        header, lines, _ = _parse('PONDEROSA.pdf', batch_id='20260427083117_229c58c3')
         # PONDEROSA debe tener al menos una variety MAYRA's Bridal o similar
         mayras = [l for l in lines if 'MAYRA' in l.variety.upper()]
         self.assertGreater(len(mayras), 0,
@@ -217,8 +236,8 @@ class TestPrestigeParser(unittest.TestCase):
     """Sesión 12g: total impreso `TOTAL A PAGAR` con normalización USD."""
 
     def test_total_impreso(self):
-        """PRESTIGE.pdf: header.total = $87.50 (vs sum trivial)."""
-        header, _, _ = _parse('PRESTIGE.pdf')
+        """PRESTIGE.pdf: header.total = $87.50 (vs sum trivial) — batch 12g."""
+        header, _, _ = _parse('PRESTIGE.pdf', batch_id='20260427083117_229c58c3')
         self.assertAlmostEqual(header.total, 87.50, places=2,
                                msg='`TOTAL A PAGAR` debe extraerse del texto, '
                                    'no quedarse en 0 (fix 12g)')
@@ -246,8 +265,8 @@ class TestMysticLabel(unittest.TestCase):
     """
 
     def test_coruna_va_a_label(self):
-        """MYSTIC1.pdf: 7 líneas con `H CORUÑA TNT Gyp...` → label=CORUÑA."""
-        _, lines, _ = _parse('MYSTIC1.pdf')
+        """MYSTIC1.pdf: 7 líneas con `H CORUÑA TNT Gyp...` → label=CORUÑA (batch 12n)."""
+        _, lines, _ = _parse('MYSTIC1.pdf', batch_id='20260427083117_229c58c3')
         coruna = [l for l in lines if l.label == 'CORUÑA']
         self.assertGreaterEqual(len(coruna), 5,
                                 'CORUÑA debe llenarse en label desde la '
@@ -277,6 +296,88 @@ class TestMalimaLabel(unittest.TestCase):
             self.assertEqual(l.label, 'EUROPA',
                              f'línea {l.variety[:30]}: label debe ser '
                              f'EUROPA, no {l.label!r}')
+
+
+class TestMultifloraCarnationComma(unittest.TestCase):
+    """Sesión 12o: total_units con coma de miles (3,220) en Multiflora."""
+
+    def test_clavel_531(self):
+        """MULTIFLORA.pdf: línea Clavel `7 Half tall 460 3,220 0.1650 531.30 3.50`.
+
+        Antes el regex `(\\d+)\\s+(\\d+)` no aceptaba `3,220` y la
+        línea de claveles ($531.30) se perdía silenciosa.
+        """
+        h, lines, _ = _parse('MULTIFLORA.pdf')
+        carns = [l for l in lines if l.species == 'CARNATIONS']
+        self.assertGreater(len(carns), 0,
+                           'Clavel debe parsearse — fix 12o')
+        self.assertAlmostEqual(h.total, 1376.10, places=2)
+        sum_lines = round(sum(l.line_total for l in lines), 2)
+        self.assertAlmostEqual(sum_lines, 1376.10, places=2)
+
+
+class TestUniqueDS(unittest.TestCase):
+    """Sesión 12o: D&S Export con espacios OCR + token BRAND vacío."""
+
+    def test_total_cuadra(self):
+        """D_S.pdf: precios `$ 0 .28` y totales `$ 2 24.0` con espacios."""
+        h, lines, _ = _parse('D_S.pdf')
+        self.assertEqual(len(lines), 3)
+        self.assertAlmostEqual(h.total, 560.0, places=2)
+        sum_lines = round(sum(l.line_total for l in lines), 2)
+        self.assertAlmostEqual(sum_lines, 560.0, places=2,
+                               msg='Espacios OCR en price/total deben '
+                                   'limpiarse — fix 12o')
+
+
+class TestMonterosaParser(unittest.TestCase):
+    """Sesión 12o: formato Monterosas con parent + sub-líneas."""
+
+    def test_lines_y_total(self):
+        """MONTEROSA.pdf: 7 líneas, total $122.50."""
+        h, lines, _ = _parse('MONTEROSA.pdf')
+        self.assertEqual(len(lines), 7,
+                         'Parent + 6 sub-líneas deben parsearse — fix 12o')
+        self.assertAlmostEqual(h.total, 122.50, places=2)
+        sum_lines = round(sum(l.line_total for l in lines), 2)
+        self.assertAlmostEqual(sum_lines, 122.50, places=2)
+
+
+class TestSecoreCarnation(unittest.TestCase):
+    """Sesión 12o: Secore con CARNATION (sin `CM`)."""
+
+    def test_carnation_parseado(self):
+        """SECORE.pdf: `CARNATION BICOLOR PURPLE HYPNOSIS 375 1 HALF...`."""
+        h, lines, _ = _parse('SECORE.pdf')
+        self.assertEqual(len(lines), 1,
+                         'Variante CARNATION debe parsearse — fix 12o')
+        self.assertEqual(lines[0].species, 'CARNATIONS')
+        self.assertAlmostEqual(h.total, 67.50, places=2)
+
+
+class TestMilongaOCR(unittest.TestCase):
+    """Sesión 12o: Milonga con X invasiva en variety + sub-líneas sin H/Q."""
+
+    def test_x_invasiva(self):
+        """MILONGA.pdf: `NenXa`, `BrigthoXn`, `MondiaXl` se limpian a `Nena`,
+        `Brighton`, `Mondial` (X intercalada entre minúsculas).
+        """
+        _, lines, _ = _parse('MILONGA.pdf')
+        varieties = {l.variety for l in lines}
+        # Las variedades deben estar limpias (sin X intercalada)
+        self.assertTrue(any('NENA' in v for v in varieties),
+                        f'NENA debe aparecer (X invasiva limpia) — '
+                        f'tenemos: {varieties}')
+        self.assertTrue(any('MONDIAL' in v for v in varieties))
+
+    def test_total_cuadra(self):
+        """MILONGA.pdf: header.total = sum_lines = $1042.75."""
+        h, lines, _ = _parse('MILONGA.pdf')
+        self.assertAlmostEqual(h.total, 1042.75, places=2)
+        sum_lines = round(sum(l.line_total for l in lines), 2)
+        self.assertAlmostEqual(sum_lines, 1042.75, places=2,
+                               msg='Sub-líneas Milonga sin H/Q deben '
+                                   'capturarse — fix 12o')
 
 
 if __name__ == '__main__':

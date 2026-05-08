@@ -1,7 +1,12 @@
 # CLAUDE.md — Guía operativa para el agente
 
-**Última actualización:** 2026-04-30 (sesión 12n — destino del PDF a `label` en MysticParser + MalimaParser)
-**Estado:** **96.3% autoapprove** estable · 3598 líneas · ok 3420 · ambiguous 55 · Golden 992/993 link 99.9% / 993/995 full_line 99.8%. Sesión 12n: `MysticParser` y `MalimaParser` poblan ahora `InvoiceLine.label` con el destino del PDF (CORUÑA/VNG/GAIA/EUROPA…) para que el operador lo vea en la UI sin tener que abrir la `raw_description`. Approach blacklist (no whitelist): cualquier `code` capturado en la columna destino va a `label`, salvo blacklist `_NOT_DESTINATIONS={'FR'}` (FR es prefijo de variety en MYSTIC2.pdf, no destino). Validación contra batch del operador: 18 VNG + 7 CORUÑA + 1 GAIA poblados en facturas MYSTIC*.pdf; todas las líneas MALIMA con `label='EUROPA'`. Sin tocar `variety` (no afecta sinónimos ni matching). 3 tests añadidos a `tests/test_parser_regressions.py` (16/16 OK en 12s). Sesión 12m archivada en [`docs/sessions.md`](docs/sessions.md).
+**Última actualización:** 2026-05-08 (sesión 12o — 5 parser fixes en nuevo batch del operador)
+**Estado:** **96.2% autoapprove** estable · 3586 líneas · ok 3413 · ambiguous 56 · Golden 992/993 link 99.9% / 993/995 full_line 99.8%. Sesión 12o cierra 5 problemas reportados por el operador en el batch nuevo (`20260507144258`):
+(1) **MultifloraParser** — `total_units` con coma de miles `3,220` (línea Clavel $531.30 perdida). Fix: `(\d+)` → `([\d,]+)` + `.replace(',','')` en variantes A/B.
+(2) **UniqueParser** (D&S Export) — espacios OCR en precios `$ 0 .28` y total `$ 2 24.0`, columna BRAND vacía como "0" entre size y box_type. Fix: token opcional + price con espacios.
+(3) **SecoreParser** — variante CARNATION sin columna `CM` (formato distinto al de ROSE). Fix: regex aditivo `<species_non_rose> <variety> <upb> <boxes> <btype> <stems> <price> <total>`.
+(4) **MonterosaParser** — formato real similar a Brissas (`<order> - <box_n> R<n> <pcs> QB <peso> #<n> <variety> <size> <spb> <bunches> <stems> <price> <total>` + sub-líneas sin prefijo). Reescrito con `_MAIN_RE` + `_CONT_RE`.
+(5) **ColFarmParser** (Milonga) — OCR introduce `X` mayúscula intercalada en variety (`NenXa` → `Nena`, `BrigthoXn` → `Brighton`). Fix: limpieza `([a-z])X([a-z])` + nuevo regex sub-line `pm3_alt` sin `X` obligatoria. 6 tests nuevos (22/22 OK), benchmark/golden estables. Sesión 12n archivada en [`docs/sessions.md`](docs/sessions.md).
 
 ---
 
