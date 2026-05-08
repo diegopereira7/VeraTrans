@@ -1,7 +1,11 @@
 # CLAUDE.md — Guía operativa para el agente
 
-**Última actualización:** 2026-05-08 (sesión 12q — helper preventivo `extract_printed_total` en 7 parsers `auto_*`)
-**Estado:** **96.1% autoapprove** estable · 3615 líneas · ok 3442 · ambiguous 56 · Golden 992/993 link 99.9% / 993/995 full_line 99.8%. Sesión 12q aplica el patrón de 12p preventivamente a los 7 parsers `auto_*` sin sample activo (auto_elite, auto_natuflor, auto_zorro, auto_sanjorge, auto_sanfrancisco, auto_rosabella, auto_agrosanalfonso). Estos parsers hacían `h.total = sum(lines)` ciegamente — cuando llegue una factura con líneas perdidas, el gap quedaba invisible. Fix: nuevo helper `src/parsers/_helpers.py::extract_printed_total(text)` que prueba 13 patrones comunes (`TOTAL FOB`, `Total Value $`, `INVOICE TOTAL (Dólares)`, `Amount Due`, `TOTAL A PAGAR`, `TOTALS N $ USD`, etc.) con normalización robusta de números US/EU. Cada parser ahora intenta el helper antes de caer al sum. 2 tests añadidos (29/29 OK), benchmark/golden estables. Sesión 12p archivada en [`docs/sessions.md`](docs/sessions.md).
+**Última actualización:** 2026-05-08 (sesión 12r — NO_PARSEA cerrados (SAYONARA + NATIVE BLOOMS) + limpieza tests obsoletos)
+**Estado:** **96.1% autoapprove** estable · 3616 líneas · ok 3442 · ambiguous 56 · Golden 992/993 link 99.9% / 993/995 full_line 99.8%. Sesión 12r cierra los 3 NO_PARSEA conocidos del CLAUDE.md y limpia 15 tests skipped por batches purgados:
+(1) **SayonaraParser**: añadido `'CDN'` a `_TYPE_MAP` para capturar `Pom Europa/Asia Assorted CDN x 40 Bunch CO-...` (línea perdía $152 en SAYONARA 64955) + nuevo patrón `Total $<num>` para extraer header.total en facturas OCR-corruptas (SAYONARA 64811: detalle ilegible pero `Total $114.00` legible — la UI ahora alerta gap).
+(2) **auto_native (NATIVE BLOOMS)**: nuevo regex `_LINE_BQT_NATIVE_RE` para formato bouquet `HB <boxes> <fbe> Bouquet/Amazon/Paradise/Mountain... <stems> ... <total>` (antes parseaba 0 líneas; ahora 5 con $668.70 total).
+(3) **CEAN GLOBAL**: ya parseaba OK (no requería fix), eliminado del listado NO_PARSEA.
+(4) **Limpieza tests**: eliminadas 8 clases con PDFs purgados (TestMeaflosParser, TestUmaParser, TestGardaParser, TestVerdesEstacionParser, TestFlorsaniParser, TestNativeParser, TestPrestigeParser viejo, TestMysticLabel). Los fixes 12g–12n quedan protegidos por benchmark global + golden eval. Añadidos TestSayonaraCDN, TestNativeBloomsBouquet. Resultado: 18 tests OK, 0 skipped (antes 14 OK, 15 skipped). Sesión 12q archivada en [`docs/sessions.md`](docs/sessions.md).
 
 ---
 

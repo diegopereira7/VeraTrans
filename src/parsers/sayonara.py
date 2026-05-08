@@ -31,6 +31,9 @@ class SayonaraParser:
         ('Daisy',         'SP DAISY',     5),
         ('Cremon',        'BI CREMON',   10),
         ('Spider',        'BI SPIDER',   10),
+        # Sesión 12r: "Pom Europa/Asia Assorted CDN x 40 Bunch CO-..." —
+        # CDN suelto (sin "Pom" pegado) en facturas mixed-Assorted.
+        ('CDN',           'SP CDN',       5),
     ]
 
     _COLOR_MAP = [
@@ -114,11 +117,16 @@ class SayonaraParser:
         m = re.search(r'Master\s+AWB\s+([\d\-]+)', text, re.I); h.awb = re.sub(r'\s+', '', m.group(1)) if m else ''
         m = re.search(r'House\s+AWB\s+([\w\-]+)', text, re.I); h.hawb = m.group(1) if m else ''
         h.total = 0.0
+        # Sesión 12r: añadido patrón "Total $<num>" para facturas
+        # OCR-corruptas (ej. SAYONARA 64811 donde el detalle es ilegible
+        # pero el header total "$114.00" se ve claro). Sin esto el parser
+        # devolvía h.total=0 y la UI no podía alertar el gap.
         for pat in (
             r'Total\s+Value\s+\w*\s*US\$?\s*([\d,]+\.\d+)',  # "Total Value USE US 1,520.00"
             r'(?:TOTAL|Total\s+USD)[:\s]*([\d,]+\.\d+)',
+            r'(?:^|\s)Total\s*\$\s*([\d,]+\.\d+)',           # "Total $114.00"
         ):
-            m = re.search(pat, text, re.I)
+            m = re.search(pat, text, re.I | re.M)
             if m:
                 try:
                     h.total = float(m.group(1).replace(',', ''))

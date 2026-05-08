@@ -70,6 +70,23 @@ _LINE_BQT_PARENT_RE = re.compile(
     re.I,
 )
 
+# Layout BOUQUET (NATIVE BLOOMS facturas 2024):
+#   "HB 3 1,5 Bouquet Round Mix 12 4 ,65 5 5,80 167,40"
+#   "QB 1 0,25 Amazon Box 60 0 ,50 3 0,00 30,00"
+# Sesión 12r: caja con name de 1+ palabras tras "Bouquet|Amazon|Paradise|
+# Mountain|Tropical". El total es el último `\d+,\d{2}`. Las componentes
+# (Heliconia, Musa, etc.) NO traen `$` y NO matchean este regex.
+_LINE_BQT_NATIVE_RE = re.compile(
+    r'^(?P<box_type>HB|QB|FB|TB)\s+'
+    r'(?P<boxes>\d+)\s+'
+    r'(?P<eq_full>[\d,.]+)\s+'
+    r'(?P<name>(?:Bouquet|Amazon|Paradise|Mountain|Tropical)[A-Za-z\s]*?)\s+'
+    r'(?P<stems>\d+)\s+'
+    r'(?P<rest>[\d,. ]+?)\s+'
+    r'(?P<total>\d{1,4}[,.]\d{2})\s*$',
+    re.I,
+)
+
 _INVOICE_RE = re.compile(r'CUSTOMER\s+INVOICE\s+(\d+)', re.I)
 _DATE_RE    = re.compile(r'Date\s*:\s*(\d{1,2}/\d{1,2}/\d{4})', re.I)
 _AWB_RE     = re.compile(r'A\.W\.B\.\s*N[°º]?\s*:\s*(\S+)', re.I)
@@ -164,6 +181,37 @@ class AutoParser:
                     continue
                 lines.append(self._build_line(s, m, last_box_type, last_farm, provider_data))
                 continue
+
+            # Bouquet parent NATIVE BLOOMS (sesión 12r): boxes con
+            # nombres tipo "Bouquet Round Mix" / "Amazon Box" / etc.
+            m = _LINE_BQT_NATIVE_RE.match(s)
+            if m:
+                name = m.group('name').strip().upper()
+                if name and len(name) >= 4:
+                    try:
+                        boxes = int(m.group('boxes'))
+                        stems_per_box = int(m.group('stems'))
+                        total = _num(m.group('total')) * boxes
+                    except ValueError:
+                        continue
+                    total_stems = boxes * stems_per_box
+                    price = round(total / total_stems, 4) if total_stems else 0.0
+                    lines.append(InvoiceLine(
+                        raw_description=s[:120],
+                        species='OTHER',
+                        variety=name,
+                        origin='EC',
+                        size=0,
+                        stems_per_bunch=stems_per_box,
+                        bunches=boxes,
+                        stems=total_stems,
+                        price_per_stem=price,
+                        line_total=round(total, 2),
+                        box_type=m.group('box_type').upper(),
+                        grade='BOUQUET',
+                        provider_key=provider_data.get('key', ''),
+                    ))
+                    continue
 
             # Bouquet parent (NATIVEFARM tropical bouquets)
             m = _LINE_BQT_PARENT_RE.match(s)

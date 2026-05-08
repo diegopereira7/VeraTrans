@@ -32714,8 +32714,8 @@
     "times_used": 0,
     "times_confirmed": 1,
     "times_corrected": 0,
-    "first_seen_at": "2026-05-08T14:13:16",
-    "last_confirmed_at": "2026-05-08T14:13:16"
+    "first_seen_at": "2026-05-08T14:28:16",
+    "last_confirmed_at": "2026-05-08T14:28:16"
   },
   "90007|ROSES|BRIGHTON|50|25|": {
     "articulo_id": 32234,
@@ -33589,7 +33589,7 @@
     "raw": "5 H Rose Freedom X 10 - 50 47806- 50 GONZA x 10 0603.11.00.00 200 1000 ST 0.32 320.00",
     "invoice": "",
     "status": "ambiguo",
-    "times_corrected": 145,
+    "times_corrected": 146,
     "articulo_id_erp": "12607"
   },
   "90012|ROSES|TIFFANY|60|25|": {
@@ -37421,7 +37421,7 @@
     "times_used": 0,
     "times_confirmed": 0,
     "times_corrected": 0,
-    "first_seen_at": "2026-05-08T14:16:47",
+    "first_seen_at": "2026-05-08T14:31:49",
     "last_confirmed_at": ""
   },
   "90034|ROSES|BRIGHTON|60|25|": {
@@ -41003,7 +41003,7 @@
     "invoice": "",
     "times_used": 0,
     "times_confirmed": 2,
-    "times_corrected": 30,
+    "times_corrected": 31,
     "first_seen_at": "2026-04-15T17:06:11",
     "last_confirmed_at": "2026-04-22T09:15:41",
     "articulo_id_erp": "15541"
@@ -45132,8 +45132,8 @@
     "times_used": 0,
     "times_confirmed": 1,
     "times_corrected": 0,
-    "first_seen_at": "2026-05-08T14:18:15",
-    "last_confirmed_at": "2026-05-08T14:18:15"
+    "first_seen_at": "2026-05-08T14:33:14",
+    "last_confirmed_at": "2026-05-08T14:33:14"
   },
   "435|ROSES|VENDELA|40|25|": {
     "articulo_id": 38088,
@@ -46790,7 +46790,7 @@
     "invoice": "",
     "times_used": 0,
     "times_confirmed": 2,
-    "times_corrected": 30,
+    "times_corrected": 31,
     "first_seen_at": "2026-04-16T16:00:33",
     "last_confirmed_at": "2026-04-22T09:15:40",
     "articulo_id_erp": "28985"
@@ -46812,7 +46812,7 @@
     "times_used": 0,
     "times_confirmed": 0,
     "times_corrected": 0,
-    "first_seen_at": "2026-05-08T14:14:12",
+    "first_seen_at": "2026-05-08T14:29:12",
     "last_confirmed_at": ""
   },
   "90012|ROSES|FREEDOM|50|10|": {
@@ -48695,7 +48695,7 @@
     "invoice": "",
     "times_used": 0,
     "times_confirmed": 2,
-    "times_corrected": 30,
+    "times_corrected": 31,
     "first_seen_at": "2026-04-23T11:14:16",
     "last_confirmed_at": "2026-04-23T11:21:16"
   },
@@ -53174,8 +53174,8 @@
     "times_used": 0,
     "times_confirmed": 1,
     "times_corrected": 0,
-    "first_seen_at": "2026-05-08T14:18:15",
-    "last_confirmed_at": "2026-05-08T14:18:15"
+    "first_seen_at": "2026-05-08T14:33:14",
+    "last_confirmed_at": "2026-05-08T14:33:14"
   },
   "90046|ROSES|VIOLET HILL|60|0|": {
     "articulo_id": 33963,
@@ -59108,7 +59108,7 @@
     "invoice": "",
     "times_used": 0,
     "times_confirmed": 2,
-    "times_corrected": 30,
+    "times_corrected": 31,
     "first_seen_at": "2026-04-27T08:56:13",
     "last_confirmed_at": "2026-04-27T09:04:56"
   },

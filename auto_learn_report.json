@@ -10470,20 +10470,20 @@
   },
   {
     "folder": "NATIVE BLOOMS",
-    "verdict": "NO_PARSEA",
+    "verdict": "OK",
     "samples": 5,
     "detected": 5,
-    "parsed_any": 4,
-    "totals_ok": 2,
-    "total_parsed": 30,
+    "parsed_any": 5,
+    "totals_ok": 3,
+    "total_parsed": 31,
     "total_rescued": 0,
     "ok_lines": 21,
     "ambiguous_lines": 0,
-    "sin_match_lines": 9,
+    "sin_match_lines": 10,
     "sin_parser_lines": 0,
     "autoapprovable_lines": 21,
     "autoapprove_rate": 1.0,
-    "needs_review_lines": 9,
+    "needs_review_lines": 10,
     "validation_errors_lines": 0,
     "extraction_source_mix": {
       "native": 5
@@ -10492,12 +10492,12 @@
       "-": 5
     },
     "penalties": {
-      "variety_no_overlap": 5,
-      "foreign_brand": 4
+      "variety_no_overlap": 6,
+      "foreign_brand": 5
     },
     "match_statuses": {
       "ok": 21,
-      "sin_match": 9
+      "sin_match": 10
     },
     "samples_raw": [
       {
@@ -10603,31 +10603,36 @@
         "file": "02 - 729-9025 3063 (152) - NATIVE.pdf",
         "detected_as": "Native Blooms",
         "fmt": "auto_native",
-        "parsed_lines": 0,
+        "parsed_lines": 1,
         "rescued_lines": 0,
         "ok_lines": 0,
         "ambiguous_lines": 0,
-        "sin_match_lines": 0,
+        "sin_match_lines": 1,
         "sin_parser_lines": 0,
-        "header_total": 0.0,
-        "sum_line_total": 0,
-        "header_ok": null,
-        "diff_pct": null,
+        "header_total": 3571.2,
+        "sum_line_total": 3571.2,
+        "header_ok": true,
+        "diff_pct": 0.0,
         "extraction_source": "native",
         "extraction_engine": "",
         "extraction_confidence": 1.0,
         "extraction_degraded": false,
         "avg_link_confidence": 0.0,
         "autoapprovable_lines": 0,
-        "needs_review_lines": 0,
+        "needs_review_lines": 1,
         "validation_errors_lines": 0,
-        "penalties": {},
-        "match_statuses": {},
+        "penalties": {
+          "variety_no_overlap": 1,
+          "foreign_brand": 1
+        },
+        "match_statuses": {
+          "sin_match": 1
+        },
         "invoice": "",
         "error": "",
         "lane_auto": 0,
         "lane_quick": 0,
-        "lane_full": 0
+        "lane_full": 1
       },
       {
         "file": "03 - 075-67714544 - NATIVE BLOOMS NATIVE.pdf",
@@ -13267,10 +13272,10 @@
         "ambiguous_lines": 0,
         "sin_match_lines": 0,
         "sin_parser_lines": 0,
-        "header_total": 0.0,
+        "header_total": 114.0,
         "sum_line_total": 0,
-        "header_ok": null,
-        "diff_pct": null,
+        "header_ok": false,
+        "diff_pct": 100.0,
         "extraction_source": "native",
         "extraction_engine": "",
         "extraction_confidence": 1.0,
