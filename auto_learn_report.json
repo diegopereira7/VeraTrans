@@ -12573,7 +12573,7 @@
       "-": 5
     },
     "penalties": {
-      "weak_synonym": 10,
+      "weak_synonym": 5,
       "variety_no_overlap": 2,
       "size_off": 1
     },
@@ -12604,7 +12604,7 @@
         "needs_review_lines": 1,
         "validation_errors_lines": 0,
         "penalties": {
-          "weak_synonym": 4,
+          "weak_synonym": 2,
           "variety_no_overlap": 1
         },
         "match_statuses": {
@@ -12671,7 +12671,7 @@
         "needs_review_lines": 1,
         "validation_errors_lines": 0,
         "penalties": {
-          "weak_synonym": 5,
+          "weak_synonym": 2,
           "size_off": 1,
           "variety_no_overlap": 1
         },
@@ -12758,7 +12758,7 @@
     "samples": 5,
     "detected": 5,
     "parsed_any": 5,
-    "totals_ok": 5,
+    "totals_ok": 4,
     "total_parsed": 6,
     "total_rescued": 1,
     "ok_lines": 4,
@@ -12862,10 +12862,10 @@
         "ambiguous_lines": 0,
         "sin_match_lines": 1,
         "sin_parser_lines": 0,
-        "header_total": 440.0,
+        "header_total": 1640.0,
         "sum_line_total": 440.0,
-        "header_ok": true,
-        "diff_pct": 0.0,
+        "header_ok": false,
+        "diff_pct": 73.17,
         "extraction_source": "native",
         "extraction_engine": "",
         "extraction_confidence": 1.0,

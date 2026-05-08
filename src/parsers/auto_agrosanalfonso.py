@@ -11,6 +11,7 @@ from __future__ import annotations
 
 import re
 from src.models import InvoiceHeader, InvoiceLine
+from src.parsers._helpers import extract_printed_total
 
 
 # Split por "I" pero con espacios opcionales. Celdas vacías permitidas.
@@ -142,6 +143,9 @@ class AutoParser:
                 provider_key=provider_data.get('key', ''),
             ))
 
+        # Sesión 12q: extraer total impreso preventivamente.
+        if not header.total:
+            header.total = extract_printed_total(text)
         if not header.total and lines:
             header.total = round(sum(l.line_total for l in lines), 2)
         return header, lines

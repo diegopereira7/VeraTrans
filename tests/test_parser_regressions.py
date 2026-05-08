@@ -471,5 +471,41 @@ class TestEqrMixedBoxNoDoubleCount(unittest.TestCase):
                                    'line_total=0 — fix 12p')
 
 
+class TestPrintedTotalHelper(unittest.TestCase):
+    """Sesión 12q: helper compartido `extract_printed_total`.
+
+    Usado por los 7 parsers `auto_*` sin sample para extraer el total
+    preventivamente. Si el helper matchea un patrón equivocado en
+    facturas reales, las assertions de aquí se romperán antes que el
+    benchmark.
+    """
+
+    def test_formatos_comunes(self):
+        from src.parsers._helpers import extract_printed_total
+        cases = [
+            ('TOTAL FOB 200 0.32 64.00', 64.0),
+            ('TOTAL DUE USD 1,376.10', 1376.10),
+            ('Total Value $5,260.00', 5260.0),
+            ('INVOICE TOTAL (Dólares) 6,045.000', 6045.0),
+            ('TOTAL A PAGAR 435,00', 435.0),
+            ('Invoice Amount $40.00', 40.0),
+            ('TOTALS 475 $ USD 128.00', 128.0),
+            ('Amount Due $ 1,200.00', 1200.0),
+            ('Total Invoice USD $7,510.50', 7510.50),
+        ]
+        for text, expected in cases:
+            with self.subTest(text=text):
+                self.assertAlmostEqual(extract_printed_total(text), expected,
+                                       places=2,
+                                       msg=f'No matcheó: {text!r}')
+
+    def test_no_match_devuelve_cero(self):
+        from src.parsers._helpers import extract_printed_total
+        # Sin keyword conocida: 0.0
+        self.assertEqual(extract_printed_total('Box Total: 5'), 0.0)
+        self.assertEqual(extract_printed_total(''), 0.0)
+        self.assertEqual(extract_printed_total('No total here'), 0.0)
+
+
 if __name__ == '__main__':
     unittest.main()

@@ -1,16 +1,7 @@
 # CLAUDE.md — Guía operativa para el agente
 
-**Última actualización:** 2026-05-08 (sesión 12p — extracción de total impreso en 8 parsers)
-**Estado:** **96.1% autoapprove** estable · 3615 líneas · ok 3442 · ambiguous 56 · Golden 992/993 link 99.9% / 993/995 full_line 99.8%. Sesión 12p cierra 14 PDFs con `h.total=0` o mismatch que escondían líneas perdidas silenciosamente. Sin total impreso, la UI no podía alertar al operador de que faltaban líneas. Fixes:
-(1) **AgrivaldaniParser** — extrae `TOTAL FOB <stems> <price> <total>` (cubre AGRIVALDANI + LUXUS).
-(2) **ColibriParser** — extrae `INVOICE TOTAL (Dólares) <num>` o `Subtotal:` o `Total:`.
-(3) **LifeParser** — extrae línea de subtotales pre-`Net Weight`.
-(4) **RoselyParser** — extrae `TOTALS <stems> $ USD <total>` + nuevo regex sub-líneas sin prefijo `<n> TB` (ROSELY.pdf perdía `VINTAGE 60 $45`, ROSELY1.pdf perdía `MONDIAL 70 $22.50`).
-(5) **PrestigeParser** — stems con punto de miles `1.000` (antes `(\d+)` perdía la línea MONDIAL $300).
-(6) **AposentosParser** — acepta `CARNATION` singular además de `CARNATIONS` (antes perdía `CARNATION SPECIAL R14/CASTILLO` = $175).
-(7) **TessaParser** — bug crítico: `pm2` no seteaba `last_btype/last_label` (solo lo hacía `pm`), por lo que `pm4` (sub-líneas sin variety, ej. `60 2 50 $0.45 $22.50`) nunca activaba contexto y se perdían silenciosas.
-(8) **EqrParser** — sub-líneas `Garden Rose` / `Roses Color` post mixed-parent doble contaban (su total ya está en el parent QB/HB). Fix: `last_was_mixed_parent` flag → sub-líneas con `line_total=0` y `match_status='mixed_box'`.
-Resultado: 14/14 PDFs OK, +29 líneas capturadas (antes invisibles), 5 tests nuevos (27/27 OK). Sesión 12o archivada en [`docs/sessions.md`](docs/sessions.md).
+**Última actualización:** 2026-05-08 (sesión 12q — helper preventivo `extract_printed_total` en 7 parsers `auto_*`)
+**Estado:** **96.1% autoapprove** estable · 3615 líneas · ok 3442 · ambiguous 56 · Golden 992/993 link 99.9% / 993/995 full_line 99.8%. Sesión 12q aplica el patrón de 12p preventivamente a los 7 parsers `auto_*` sin sample activo (auto_elite, auto_natuflor, auto_zorro, auto_sanjorge, auto_sanfrancisco, auto_rosabella, auto_agrosanalfonso). Estos parsers hacían `h.total = sum(lines)` ciegamente — cuando llegue una factura con líneas perdidas, el gap quedaba invisible. Fix: nuevo helper `src/parsers/_helpers.py::extract_printed_total(text)` que prueba 13 patrones comunes (`TOTAL FOB`, `Total Value $`, `INVOICE TOTAL (Dólares)`, `Amount Due`, `TOTAL A PAGAR`, `TOTALS N $ USD`, etc.) con normalización robusta de números US/EU. Cada parser ahora intenta el helper antes de caer al sum. 2 tests añadidos (29/29 OK), benchmark/golden estables. Sesión 12p archivada en [`docs/sessions.md`](docs/sessions.md).
 
 ---
 
