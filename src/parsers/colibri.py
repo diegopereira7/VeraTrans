@@ -20,6 +20,18 @@ class ColibriParser:
         m=re.search(r'INVOICE\s+No\.\s*(\S+)',text,re.I); h.invoice_number=m.group(1) if m else ''
         m=re.search(r'Date Invoice[:\s]+([\d/]+)',text,re.I); h.date=m.group(1) if m else ''
         m=re.search(r'AWB[:\s]+([\d\-]+)',text,re.I); h.awb=re.sub(r'\s+','',m.group(1)) if m else ''
+        # Total impreso: "INVOICE TOTAL (Dólares) 6,045.000" o "Subtotal: 6,045.000"
+        # o "Total: 6,045.000" (sesión 12p). Necesario para alertar gaps.
+        m_tot = (re.search(r'INVOICE\s+TOTAL\s*\(?[^)]*\)?\s*([\d.,]+)', text, re.I)
+                 or re.search(r'Subtotal[:\s]+([\d.,]+)', text, re.I)
+                 or re.search(r'^Total[:\s]+([\d.,]+)', text, re.I | re.M))
+        if m_tot:
+            try:
+                raw_t = m_tot.group(1)
+                # 6,045.000 (US format con coma de miles)
+                h.total = float(raw_t.replace(',', ''))
+            except ValueError:
+                pass
         lines=[]
         for ln in text.split('\n'):
             # Patron: [N] H/Q  Carnation DESCRIPCION ...  [N] ST  PRICE  TOTAL

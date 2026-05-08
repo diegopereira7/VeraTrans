@@ -380,5 +380,96 @@ class TestMilongaOCR(unittest.TestCase):
                                    'capturarse — fix 12o')
 
 
+class TestPrintedTotalExtraction(unittest.TestCase):
+    """Sesión 12p: total impreso necesario para alertar líneas faltantes.
+
+    El operador necesita que h.total siempre se extraiga del impreso
+    (no derivado de sum(lines)) para que la UI marque "Parcial" si una
+    línea se perdió silenciosa. Cubre 6 parsers que antes dejaban
+    h.total=0.
+    """
+    CASES = [
+        ('AGRIVALDANI.pdf', 64.0),     # TOTAL FOB <stems> <price> <total>
+        ('LUXUS.pdf', 210.0),          # mismo formato
+        ('COLIBRI.pdf', 6045.0),       # INVOICE TOTAL (Dólares)
+        ('LIFE.pdf', 231.0),           # subtotal pre-Net Weight
+        ('ROSELY.pdf', 128.0),         # TOTALS <stems> $ USD <total>
+        ('ROSELY2.pdf', 66.0),
+    ]
+
+    def test_h_total_no_cero(self):
+        """Cada parser debe extraer h.total > 0 del texto impreso."""
+        for pdf, expected in self.CASES:
+            with self.subTest(pdf=pdf):
+                h, lines, _ = _parse(pdf)
+                self.assertAlmostEqual(h.total, expected, places=2,
+                                       msg=f'{pdf}: h.total debe ser '
+                                           f'{expected}, no {h.total}')
+
+
+class TestPrestigeStems(unittest.TestCase):
+    """Sesión 12p: stems con punto de miles (1.000) en Prestige."""
+
+    def test_mondial_1000_stems(self):
+        """PRESTIGE.pdf: `MONDIAL ROSE 40 CM ROSA0687 4 250 1.000 $ 0,30 300,00`.
+
+        Antes (\\d+) no aceptaba `1.000` y la línea MONDIAL ($300) se
+        perdía silenciosa.
+        """
+        h, lines, _ = _parse('PRESTIGE.pdf')
+        self.assertAlmostEqual(h.total, 435.0, places=2)
+        sum_lines = round(sum(l.line_total for l in lines), 2)
+        self.assertAlmostEqual(sum_lines, 435.0, places=2)
+        self.assertEqual(len(lines), 2,
+                         'Tanto VENDELA como MONDIAL deben capturarse')
+
+
+class TestAposentosCarnationSingular(unittest.TestCase):
+    """Sesión 12p: APOSENTOS con `CARNATION` (singular) además de `CARNATIONS`."""
+
+    def test_carnation_special_capturado(self):
+        """APOSENTOS.pdf: `CARNATION SPECIAL R14`, `CARNATION SPECIAL CASTILLO`
+        deben parsearse (antes se exigía plural y se perdían $175).
+        """
+        h, lines, _ = _parse('APOSENTOS.pdf')
+        self.assertAlmostEqual(h.total, 5260.0, places=2)
+        sum_lines = round(sum(l.line_total for l in lines), 2)
+        self.assertAlmostEqual(sum_lines, 5260.0, places=2,
+                               msg='CARNATION (singular) debe parsearse '
+                                   '— fix 12p')
+
+
+class TestTessaSubLine(unittest.TestCase):
+    """Sesión 12p: TessaParser pm2 setea last_btype para que pm4 funcione."""
+
+    def test_pink_mondial_sublinea(self):
+        """TESSA1.pdf: parent QB + sub-línea `60 2 50 $0.45 $22.50` deben
+        sumar al total impreso $40 (antes pm2 no seteaba last_btype y
+        pm4 nunca activaba — sub-línea perdida).
+        """
+        h, lines, _ = _parse('TESSA1.pdf')
+        self.assertAlmostEqual(h.total, 40.0, places=2)
+        sum_lines = round(sum(l.line_total for l in lines), 2)
+        self.assertAlmostEqual(sum_lines, 40.0, places=2)
+        self.assertEqual(len(lines), 2)
+
+
+class TestEqrMixedBoxNoDoubleCount(unittest.TestCase):
+    """Sesión 12p: EQR Garden Rose / Roses sub-líneas no doble cuentan."""
+
+    def test_sum_cuadra_con_total_impreso(self):
+        """EQR.pdf: parent `Roses Assorted Colors ... QB ... $35.00` + sub-líneas
+        `Garden Rose Country Home ...` deben sumar exactamente al total
+        impreso $128.75. Sub-líneas tienen line_total=0 (sus stems van al
+        parent).
+        """
+        h, lines, _ = _parse('EQR.pdf')
+        self.assertAlmostEqual(h.total, 128.75, places=2)
+        sum_lines = round(sum(l.line_total for l in lines), 2)
+        self.assertAlmostEqual(sum_lines, 128.75, places=2,
+                               msg='Sub-líneas mixed-box deben tener '
+                                   'line_total=0 — fix 12p')
+
+
 if __name__ == '__main__':
     unittest.main()

@@ -20,6 +20,18 @@ class LifeParser:
         m = re.search(r'Date\s*(\d{4}/\d{2}/\d{2})', text, re.I); h.date = m.group(1) if m else ''
         m = re.search(r'M\.?A\.?W\.?B[:\s]*([\d\-]+)', text, re.I)
         h.awb = re.sub(r'\s+', '', m.group(1)) if m else ''
+        # Total impreso: línea de subtotales antes de "Net Weight" con
+        # forma "<pieces> <full> <bunches> <stems> <unit_price> <total>"
+        # (sesión 12p). Sin esto, el operador no ve si faltan líneas.
+        m_tot = re.search(
+            r'PIECES\s+BOXES\s+BUNCH\s+STEMS\s*\n\s*'
+            r'\d+\s+[\d.]+\s+\d+\s+\d+\s+[\d.]+\s+([\d.,]+)',
+            text, re.I)
+        if m_tot:
+            try:
+                h.total = float(m_tot.group(1).replace(',', ''))
+            except ValueError:
+                pass
         lines = []
         for ln in text.split('\n'):
             raw = ln.strip()

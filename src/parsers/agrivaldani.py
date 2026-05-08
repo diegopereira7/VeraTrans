@@ -33,10 +33,14 @@ class AgrivaldaniParser:
         m=re.search(r'AWB[:\s]+([\d\-\s]+?)(?:\s{2,}|HAWB)',text,re.I); h.awb=re.sub(r'\s+','',m.group(1)) if m else ''
         m=re.search(r'HAWB[:\s]+(\S+)',text,re.I); h.hawb=m.group(1) if m else ''
         try:
-            m=re.search(r'TOTAL:\s+[A-Z\s]+AND\s+[\d/]+\s+USD',text,re.I)
-            # fallback: last number before USD
-            m2=re.search(r'\$([\d,]+\.?\d*)\s*$',text,re.M)
-            h.total=float(m2.group(1).replace(',','')) if m2 else 0.0
+            # Total impreso: "TOTAL FOB <stems> <price> <total>" — sesión 12p.
+            # Necesario para que la UI alerte si faltan líneas.
+            m_fob = re.search(r'TOTAL\s+FOB\s+\d+\s+[\d.]+\s+([\d.,]+)', text, re.I)
+            if m_fob:
+                h.total = float(m_fob.group(1).replace(',', ''))
+            else:
+                m2=re.search(r'\$([\d,]+\.?\d*)\s*$',text,re.M)
+                h.total=float(m2.group(1).replace(',','')) if m2 else 0.0
         except: h.total=0.0
 
         raw_lines=text.split('\n')

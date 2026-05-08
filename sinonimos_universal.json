@@ -32714,8 +32714,8 @@
     "times_used": 0,
     "times_confirmed": 1,
     "times_corrected": 0,
-    "first_seen_at": "2026-05-08T13:27:39",
-    "last_confirmed_at": "2026-05-08T13:27:39"
+    "first_seen_at": "2026-05-08T14:00:29",
+    "last_confirmed_at": "2026-05-08T14:00:29"
   },
   "90007|ROSES|BRIGHTON|50|25|": {
     "articulo_id": 32234,
@@ -33589,7 +33589,7 @@
     "raw": "5 H Rose Freedom X 10 - 50 47806- 50 GONZA x 10 0603.11.00.00 200 1000 ST 0.32 320.00",
     "invoice": "",
     "status": "ambiguo",
-    "times_corrected": 142,
+    "times_corrected": 144,
     "articulo_id_erp": "12607"
   },
   "90012|ROSES|TIFFANY|60|25|": {
@@ -37351,7 +37351,10 @@
     "grade": "",
     "raw": "1 TB SALMA *25 80 1 25 $ 0.3200 $8.00",
     "invoice": "",
-    "articulo_id_erp": "39073"
+    "articulo_id_erp": "39073",
+    "times_confirmed": 2,
+    "last_confirmed_at": "2026-05-08T14:03:59",
+    "status": "aprendido_confirmado"
   },
   "90034|ROSES|FREEDOM|50|25|": {
     "articulo_id": 34365,
@@ -37402,18 +37405,24 @@
     "articulo_id_erp": "43110"
   },
   "90034|ROSES|ASSORTED YELLOW|70|25|": {
-    "articulo_id": 11995,
-    "articulo_name": "CLAVEL COL SHORT AMARILLO 40CM 25U",
-    "origen": "auto-matching",
+    "articulo_id": 33611,
+    "articulo_id_erp": "18132",
+    "articulo_name": "ROSA EC NEW YELLOW 50CM 25U",
+    "origen": "auto-fuzzy",
+    "status": "aprendido_en_prueba",
     "provider_id": 90034,
     "species": "ROSES",
     "variety": "ASSORTED YELLOW",
     "size": 70,
     "stems_per_bunch": 25,
     "grade": "",
-    "raw": "1 TB ASSORTED YELLOW *25 70 3 75 $ 0.3000 $22.50",
+    "raw": "ASSORTED YELLOW *25 70 1 25 $ 0.3000 $7.50",
     "invoice": "",
-    "articulo_id_erp": "18132"
+    "times_used": 0,
+    "times_confirmed": 0,
+    "times_corrected": 0,
+    "first_seen_at": "2026-05-08T14:03:59",
+    "last_confirmed_at": ""
   },
   "90034|ROSES|BRIGHTON|60|25|": {
     "articulo_id": 32269,
@@ -37584,7 +37593,10 @@
     "grade": "",
     "raw": "1 TB KAHALA *25 50 8 200 $ 0.3000 $60.00",
     "invoice": "",
-    "articulo_id_erp": "39058"
+    "articulo_id_erp": "39058",
+    "times_confirmed": 2,
+    "last_confirmed_at": "2026-05-08T14:04:00",
+    "status": "aprendido_confirmado"
   },
   "90034|ROSES|BLUSH|60|25|": {
     "articulo_id": 32159,
@@ -40991,7 +41003,7 @@
     "invoice": "",
     "times_used": 0,
     "times_confirmed": 2,
-    "times_corrected": 27,
+    "times_corrected": 29,
     "first_seen_at": "2026-04-15T17:06:11",
     "last_confirmed_at": "2026-04-22T09:15:41",
     "articulo_id_erp": "15541"
@@ -45120,8 +45132,8 @@
     "times_used": 0,
     "times_confirmed": 1,
     "times_corrected": 0,
-    "first_seen_at": "2026-05-08T13:32:53",
-    "last_confirmed_at": "2026-05-08T13:32:53"
+    "first_seen_at": "2026-05-08T14:00:31",
+    "last_confirmed_at": "2026-05-08T14:00:31"
   },
   "435|ROSES|VENDELA|40|25|": {
     "articulo_id": 38088,
@@ -46778,7 +46790,7 @@
     "invoice": "",
     "times_used": 0,
     "times_confirmed": 2,
-    "times_corrected": 27,
+    "times_corrected": 29,
     "first_seen_at": "2026-04-16T16:00:33",
     "last_confirmed_at": "2026-04-22T09:15:40",
     "articulo_id_erp": "28985"
@@ -46800,7 +46812,7 @@
     "times_used": 0,
     "times_confirmed": 0,
     "times_corrected": 0,
-    "first_seen_at": "2026-05-08T13:28:39",
+    "first_seen_at": "2026-05-08T14:01:25",
     "last_confirmed_at": ""
   },
   "90012|ROSES|FREEDOM|50|10|": {
@@ -48683,7 +48695,7 @@
     "invoice": "",
     "times_used": 0,
     "times_confirmed": 2,
-    "times_corrected": 27,
+    "times_corrected": 29,
     "first_seen_at": "2026-04-23T11:14:16",
     "last_confirmed_at": "2026-04-23T11:21:16"
   },
@@ -53162,8 +53174,8 @@
     "times_used": 0,
     "times_confirmed": 1,
     "times_corrected": 0,
-    "first_seen_at": "2026-05-08T13:32:53",
-    "last_confirmed_at": "2026-05-08T13:32:53"
+    "first_seen_at": "2026-05-08T14:00:31",
+    "last_confirmed_at": "2026-05-08T14:00:31"
   },
   "90046|ROSES|VIOLET HILL|60|0|": {
     "articulo_id": 33963,
@@ -59096,7 +59108,7 @@
     "invoice": "",
     "times_used": 0,
     "times_confirmed": 2,
-    "times_corrected": 27,
+    "times_corrected": 29,
     "first_seen_at": "2026-04-27T08:56:13",
     "last_confirmed_at": "2026-04-27T09:04:56"
   },
@@ -66317,5 +66329,105 @@
     "size": 0,
     "stems_per_bunch": 0,
     "grade": ""
+  },
+  "90034|ROSES|RAINBOW|60|25|": {
+    "articulo_id": 37671,
+    "articulo_id_erp": "",
+    "articulo_name": "ROSA TEÑIDA RAINBOW 60CM 25U ROSELY",
+    "origen": "auto-fuzzy",
+    "status": "aprendido_confirmado",
+    "provider_id": 90034,
+    "species": "ROSES",
+    "variety": "RAINBOW",
+    "size": 60,
+    "stems_per_bunch": 25,
+    "grade": "",
+    "raw": "RAINBOW *25 60 5 125 $ 0.2700 $33.75",
+    "invoice": "",
+    "times_used": 0,
+    "times_confirmed": 2,
+    "times_corrected": 0,
+    "first_seen_at": "2026-05-08T13:57:53",
+    "last_confirmed_at": "2026-05-08T13:57:54"
+  },
+  "90034|ROSES|MULTICOLOR|60|25|": {
+    "articulo_id": 33277,
+    "articulo_id_erp": "",
+    "articulo_name": "ROSA EC DUETT BICOLOR 60CM 25U",
+    "origen": "auto-fuzzy",
+    "status": "aprendido_en_prueba",
+    "provider_id": 90034,
+    "species": "ROSES",
+    "variety": "MULTICOLOR",
+    "size": 60,
+    "stems_per_bunch": 25,
+    "grade": "",
+    "raw": "MULTICOLOR *25 60 1 25 $ 0.6000 $15.00",
+    "invoice": "",
+    "times_used": 0,
+    "times_confirmed": 0,
+    "times_corrected": 0,
+    "first_seen_at": "2026-05-08T13:57:53",
+    "last_confirmed_at": ""
+  },
+  "90034|ROSES|KAHALA|60|25|": {
+    "articulo_id": 35156,
+    "articulo_id_erp": "39059",
+    "articulo_name": "ROSA KAHALA 60CM 25U ROSELY",
+    "origen": "auto-matching",
+    "status": "aprendido_confirmado",
+    "provider_id": 90034,
+    "species": "ROSES",
+    "variety": "KAHALA",
+    "size": 60,
+    "stems_per_bunch": 25,
+    "grade": "",
+    "raw": "KAHALA *25 60 4 100 $ 0.2700 $27.00",
+    "invoice": "",
+    "times_used": 0,
+    "times_confirmed": 2,
+    "times_corrected": 0,
+    "first_seen_at": "2026-05-08T13:57:53",
+    "last_confirmed_at": "2026-05-08T14:03:58"
+  },
+  "90034|ROSES|VENDELA|70|25|": {
+    "articulo_id": 38176,
+    "articulo_id_erp": "39075",
+    "articulo_name": "ROSA VENDELA 70CM 25U ROSELY",
+    "origen": "auto-matching",
+    "status": "aprendido_confirmado",
+    "provider_id": 90034,
+    "species": "ROSES",
+    "variety": "VENDELA",
+    "size": 70,
+    "stems_per_bunch": 25,
+    "grade": "",
+    "raw": "VENDELA *25 70 3 75 $ 0.3000 $22.50",
+    "invoice": "",
+    "times_used": 0,
+    "times_confirmed": 2,
+    "times_corrected": 0,
+    "first_seen_at": "2026-05-08T13:57:53",
+    "last_confirmed_at": "2026-05-08T14:03:58"
+  },
+  "90034|ROSES|PINK MONDIAL|70|25|": {
+    "articulo_id": 36606,
+    "articulo_id_erp": "39068",
+    "articulo_name": "ROSA PINK MONDIAL 70CM 25U ROSELY",
+    "origen": "auto-matching",
+    "status": "aprendido_confirmado",
+    "provider_id": 90034,
+    "species": "ROSES",
+    "variety": "PINK MONDIAL",
+    "size": 70,
+    "stems_per_bunch": 25,
+    "grade": "",
+    "raw": "PINK MONDIAL *25 70 5 125 $ 0.3000 $37.50",
+    "invoice": "",
+    "times_used": 0,
+    "times_confirmed": 2,
+    "times_corrected": 0,
+    "first_seen_at": "2026-05-08T13:57:54",
+    "last_confirmed_at": "2026-05-08T14:03:59"
   }
 }

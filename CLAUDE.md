@@ -1,12 +1,16 @@
 # CLAUDE.md — Guía operativa para el agente
 
-**Última actualización:** 2026-05-08 (sesión 12o — 5 parser fixes en nuevo batch del operador)
-**Estado:** **96.2% autoapprove** estable · 3586 líneas · ok 3413 · ambiguous 56 · Golden 992/993 link 99.9% / 993/995 full_line 99.8%. Sesión 12o cierra 5 problemas reportados por el operador en el batch nuevo (`20260507144258`):
-(1) **MultifloraParser** — `total_units` con coma de miles `3,220` (línea Clavel $531.30 perdida). Fix: `(\d+)` → `([\d,]+)` + `.replace(',','')` en variantes A/B.
-(2) **UniqueParser** (D&S Export) — espacios OCR en precios `$ 0 .28` y total `$ 2 24.0`, columna BRAND vacía como "0" entre size y box_type. Fix: token opcional + price con espacios.
-(3) **SecoreParser** — variante CARNATION sin columna `CM` (formato distinto al de ROSE). Fix: regex aditivo `<species_non_rose> <variety> <upb> <boxes> <btype> <stems> <price> <total>`.
-(4) **MonterosaParser** — formato real similar a Brissas (`<order> - <box_n> R<n> <pcs> QB <peso> #<n> <variety> <size> <spb> <bunches> <stems> <price> <total>` + sub-líneas sin prefijo). Reescrito con `_MAIN_RE` + `_CONT_RE`.
-(5) **ColFarmParser** (Milonga) — OCR introduce `X` mayúscula intercalada en variety (`NenXa` → `Nena`, `BrigthoXn` → `Brighton`). Fix: limpieza `([a-z])X([a-z])` + nuevo regex sub-line `pm3_alt` sin `X` obligatoria. 6 tests nuevos (22/22 OK), benchmark/golden estables. Sesión 12n archivada en [`docs/sessions.md`](docs/sessions.md).
+**Última actualización:** 2026-05-08 (sesión 12p — extracción de total impreso en 8 parsers)
+**Estado:** **96.1% autoapprove** estable · 3615 líneas · ok 3442 · ambiguous 56 · Golden 992/993 link 99.9% / 993/995 full_line 99.8%. Sesión 12p cierra 14 PDFs con `h.total=0` o mismatch que escondían líneas perdidas silenciosamente. Sin total impreso, la UI no podía alertar al operador de que faltaban líneas. Fixes:
+(1) **AgrivaldaniParser** — extrae `TOTAL FOB <stems> <price> <total>` (cubre AGRIVALDANI + LUXUS).
+(2) **ColibriParser** — extrae `INVOICE TOTAL (Dólares) <num>` o `Subtotal:` o `Total:`.
+(3) **LifeParser** — extrae línea de subtotales pre-`Net Weight`.
+(4) **RoselyParser** — extrae `TOTALS <stems> $ USD <total>` + nuevo regex sub-líneas sin prefijo `<n> TB` (ROSELY.pdf perdía `VINTAGE 60 $45`, ROSELY1.pdf perdía `MONDIAL 70 $22.50`).
+(5) **PrestigeParser** — stems con punto de miles `1.000` (antes `(\d+)` perdía la línea MONDIAL $300).
+(6) **AposentosParser** — acepta `CARNATION` singular además de `CARNATIONS` (antes perdía `CARNATION SPECIAL R14/CASTILLO` = $175).
+(7) **TessaParser** — bug crítico: `pm2` no seteaba `last_btype/last_label` (solo lo hacía `pm`), por lo que `pm4` (sub-líneas sin variety, ej. `60 2 50 $0.45 $22.50`) nunca activaba contexto y se perdían silenciosas.
+(8) **EqrParser** — sub-líneas `Garden Rose` / `Roses Color` post mixed-parent doble contaban (su total ya está en el parent QB/HB). Fix: `last_was_mixed_parent` flag → sub-líneas con `line_total=0` y `match_status='mixed_box'`.
+Resultado: 14/14 PDFs OK, +29 líneas capturadas (antes invisibles), 5 tests nuevos (27/27 OK). Sesión 12o archivada en [`docs/sessions.md`](docs/sessions.md).
 
 ---
 

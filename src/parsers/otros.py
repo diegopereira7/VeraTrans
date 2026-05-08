@@ -626,6 +626,14 @@ class EqrParser:
             h.total=float(m.group(1).replace(',','')) if m else 0.0
         except: h.total=0.0
         lines=[]
+        # Sesión 12p: trackear si la última línea era un mixed-box parent
+        # (`<species> ... <boxes> <btype> <total_stems> $<unit> $<total>`).
+        # Las líneas Garden Rose / Roses Color que vienen DESPUÉS son
+        # sub-líneas del mismo box físico — su total ya está en el parent.
+        # Si las sumáramos otra vez, sum(lines) > h.total y la UI marca
+        # falsa anomalía. Las añadimos con line_total=0 y match_status
+        # 'mixed_box' para preservar la composición sin doble conteo.
+        last_was_mixed_parent = False
         for ln in text.split('\n'):
             # Strip "Bi - Color" / "Bi-Color" prefix before parsing
             had_bicolor = bool(re.search(r'Bi\s*-?\s*Color', ln, re.I))
@@ -649,6 +657,10 @@ class EqrParser:
                 price = float(pm_full.group(7))
                 total = float(pm_full.group(8))
                 spb = 25  # rosas default
+                # Mixed box parent: variety dice "Assorted Colors" (sufijo
+                # `x N Stem` con `boxes <btype> total_stems` después).
+                last_was_mixed_parent = bool(
+                    re.search(r'assorted\s+colors', var, re.I))
                 il = InvoiceLine(raw_description=ln, species='ROSES',
                                  variety=var.upper(), size=sz,
                                  stems_per_bunch=spb, stems=stems,
@@ -669,10 +681,36 @@ class EqrParser:
                 bunches=int(pm_g.group(3)); spb=int(pm_g.group(4))
                 stems=bunches*spb
                 nm=re.search(r'\$\s*([\d.]+)',ln); price=float(nm.group(1)) if nm else 0.0
-                total=round(price*stems,2)
+                # Si viene tras un mixed-box parent: el total ya está en
+                # el parent. Marcamos como child con line_total=0 para
+                # preservar el desglose sin inflar sum(lines).
+                if last_was_mixed_parent:
+                    total = 0.0
+                else:
+                    total = round(price * stems, 2)
                 il=InvoiceLine(raw_description=ln,species='ROSES',variety=var.upper(),
                                size=sz,stems_per_bunch=spb,stems=stems,
                                price_per_stem=price,line_total=total)
+                if last_was_mixed_parent:
+                    il.match_status = 'mixed_box'
+                lines.append(il)
+                continue
+            # Roses (no Garden Rose) sub-line con `Bun. ... St/Bun`: misma
+            # heurística — si viene tras mixed parent, total=0.
+            pm_rs = re.search(
+                r'Roses\s+(?:\w+\s+)?([A-Z][a-zA-Z\s.\-/]+?)\s+(\d{2})\s+Cm\s+'
+                r'(\d+)\s+Bun\.\s+(\d+)\s+St/Bun',
+                ln_clean, re.I)
+            if pm_rs and last_was_mixed_parent:
+                var = pm_rs.group(1).strip().upper()
+                sz = int(pm_rs.group(2))
+                bunches = int(pm_rs.group(3)); spb = int(pm_rs.group(4))
+                stems = bunches * spb
+                nm = re.search(r'\$\s*([\d.]+)', ln); price = float(nm.group(1)) if nm else 0.0
+                il = InvoiceLine(raw_description=ln, species='ROSES', variety=var,
+                                 size=sz, stems_per_bunch=spb, stems=stems,
+                                 price_per_stem=price, line_total=0.0)
+                il.match_status = 'mixed_box'
                 lines.append(il)
                 continue
 
@@ -1308,15 +1346,19 @@ class PrestigeParser:
         for ln in text.split('\n'):
             ln=ln.strip()
             # "MOMENTUM ROSE 50 CM ROSA0682 1 250 250 $ 0,33 82,50"
+            # "MONDIAL ROSE 40 CM ROSA0687 4 250 1.000 $ 0,30 300,00" (sesión 12p:
+            # stems con punto de miles 1.000 → antes (\d+) no matcheaba y se
+            # perdía la línea silenciosamente).
             # groups: variety, size, code, unit, qty, stems, price, total
-            pm=re.search(r'([A-Z][A-Z\s.\-/]+?)\s+ROSE\s+(\d{2})\s+CM\s+\w+\s+(\d+)\s+(\d+)\s+(\d+)\s+\$\s*([\d,]+)\s+([\d,.]+)',ln,re.I)
+            pm=re.search(r'([A-Z][A-Z\s.\-/]+?)\s+ROSE\s+(\d{2})\s+CM\s+\w+\s+(\d+)\s+(\d+)\s+([\d.]+)\s+\$\s*([\d,]+)\s+([\d,.]+)',ln,re.I)
             if not pm:
                 # Sin "ROSE": "ASSORTED 50 CM ROSA0091 1 250 250 ..."
-                pm=re.search(r'([A-Z][A-Z\s.\-/]+?)\s+(\d{2})\s+CM\s+\w+\s+(\d+)\s+(\d+)\s+(\d+)\s+\$\s*([\d,]+)\s+([\d,.]+)',ln,re.I)
+                pm=re.search(r'([A-Z][A-Z\s.\-/]+?)\s+(\d{2})\s+CM\s+\w+\s+(\d+)\s+(\d+)\s+([\d.]+)\s+\$\s*([\d,]+)\s+([\d,.]+)',ln,re.I)
             if pm:
                 var=pm.group(1).strip(); sz=int(pm.group(2))
                 try:
-                    stems=int(pm.group(5))
+                    # Stems puede venir con punto de miles: "1.000" → 1000
+                    stems=int(pm.group(5).replace('.', ''))
                     price_str=pm.group(6).replace(',','.')
                     total_str=pm.group(7).replace(',','.')
                     price=float(price_str)
@@ -1356,19 +1398,46 @@ class RoselyParser:
         m2=re.search(r'(Monday|Tuesday|Wednesday|Thursday|Friday|Saturday|Sunday)[^\d]*([\d]+)[^\d]*([\w]+)[^\d]*([\d]+)',text,re.I)
         h.date='' if not m2 else f"{m2.group(2)}/{m2.group(3)}/{m2.group(4)}"
         m=re.search(r'MAWB[:\s]*([\d\-]+)',text,re.I); h.awb=re.sub(r'\s+','',m.group(1)) if m else ''
+        # Total impreso: "TOTALS <stems> $ USD <total>" (sesión 12p).
+        m_tot = re.search(r'TOTALS\s+\d+\s+\$\s*USD\s+([\d.,]+)', text, re.I)
+        if m_tot:
+            try:
+                h.total = float(m_tot.group(1).replace(',', ''))
+            except ValueError:
+                pass
         lines=[]
+        last_btype = ''
         for ln in text.split('\n'):
             ln=ln.strip()
             pm=re.search(r'(\d+)\s+(TB|HB|QB)\s+([A-Z][A-Z\s.\-/]+?)\s+\*(\d+)\s+(\d{2})\s+\d+\s+(\d+)\s+\$\s*([\d.]+)\s+\$([\d.]+)',ln)
-            if not pm: continue
-            btype=pm.group(2); var=pm.group(3).strip(); spb=int(pm.group(4))
-            sz=int(pm.group(5)); stems=int(pm.group(6))
-            try: price=float(pm.group(7)); total=float(pm.group(8))
-            except: price=0.0; total=0.0
-            il=InvoiceLine(raw_description=ln,species='ROSES',variety=var,
-                           size=sz,stems_per_bunch=spb,stems=stems,
-                           price_per_stem=price,line_total=total,box_type=btype)
-            lines.append(il)
+            if pm:
+                btype=pm.group(2); var=pm.group(3).strip(); spb=int(pm.group(4))
+                sz=int(pm.group(5)); stems=int(pm.group(6))
+                try: price=float(pm.group(7)); total=float(pm.group(8))
+                except: price=0.0; total=0.0
+                last_btype = btype
+                il=InvoiceLine(raw_description=ln,species='ROSES',variety=var,
+                               size=sz,stems_per_bunch=spb,stems=stems,
+                               price_per_stem=price,line_total=total,box_type=btype)
+                lines.append(il)
+                continue
+            # Sub-línea de mixed box (sesión 12p): sin prefijo "<n> TB",
+            # hereda box_type del parent. Ejemplo: "VINTAGE *25 60 6 150
+            # $ 0.3000 $45.00".
+            if last_btype:
+                pm_sub = re.search(
+                    r'^([A-Z][A-Z\s.\-/]+?)\s+\*(\d+)\s+(\d{2})\s+\d+\s+(\d+)\s+\$\s*([\d.]+)\s+\$([\d.]+)\s*$',
+                    ln)
+                if pm_sub:
+                    var=pm_sub.group(1).strip(); spb=int(pm_sub.group(2))
+                    sz=int(pm_sub.group(3)); stems=int(pm_sub.group(4))
+                    try: price=float(pm_sub.group(5)); total=float(pm_sub.group(6))
+                    except: price=0.0; total=0.0
+                    il=InvoiceLine(raw_description=ln,species='ROSES',variety=var,
+                                   size=sz,stems_per_bunch=spb,stems=stems,
+                                   price_per_stem=price,line_total=total,
+                                   box_type=last_btype)
+                    lines.append(il)
         return h, lines
 
 
@@ -1739,6 +1808,11 @@ class TessaParser:
                 except: continue
                 spb = stems // bunches if bunches > 0 else 25
                 label_m=re.search(r'\$[\d,.]+\s+(\w+)\s*$',ln); label=label_m.group(1) if label_m else ''
+                # Sesión 12p: setear last_btype/last_label aquí también
+                # (estaban solo en pm). Sin esto, pm4 nunca tenía contexto
+                # y las sub-líneas tipo `60 2 50 $0.45 $22.50` se perdían.
+                last_btype = btype
+                last_label = label
                 # Buscar variedad en líneas siguientes
                 var_parts=[]
                 for j in range(i+1, min(i+3, len(text_lines))):
@@ -3084,9 +3158,12 @@ class AposentosParser:
             # `desc` es opcional (CLAVEL SURTIDO DUTY FREE FANCY ... viene
             # sin descripción). El separador entre grade y CO-XXX puede
             # ser ".", "0", o un label corto tipo "R14".
+            # Sesión 12p: aceptar `CARNATION` (singular) además de `CARNATIONS`.
+            # APOSENTOS.pdf trae líneas tipo `1 Tabaco 500 CARNATION SPECIAL R14
+            # DUTY FREE FANCY R14 CO-...` que antes se perdían por exigir plural.
             pm = re.search(
                 r'(\d+)\s+Taba\w*\s+(\d+)\s+'
-                r'(MINICARNATIONS?|CARNATIONS|CLAVEL\s+SURTIDOS?)'
+                r'(MINICARNATIONS?|CARNATIONS?|CLAVEL\s+SURTIDOS?)'
                 r'(?:\s+(.+?))?\s+'
                 r'(?:DUTY\s*FREE?|DUTYFREE|REGULAR)\s+(\w+)\s+'
                 r'(?:[A-Za-z0-9.]+\s+)*'
