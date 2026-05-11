@@ -127,8 +127,8 @@ producción. Dos opciones:
 
 1. **Regenerar SQL** y aplicar manualmente (sesión 12m generó
    `sql_sync_12m.sql` con UPDATEs y DELETEs).
-2. **Reset MySQL desde JSON** — `verabuy_trainer.py` o un script
-   ad-hoc que borre `sinonimos` y haga INSERT bulk desde el JSON
+2. **Reset MySQL desde JSON** — un script ad-hoc que borre
+   `sinonimos` y haga INSERT bulk desde el JSON
    (`SynonymStore.export_sql()` lo genera).
 
 En la máquina del developer NO hay `mysql.connector` instalado,

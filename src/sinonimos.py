@@ -460,7 +460,7 @@ class SynonymStore:
         if not self.syns:
             return '-- No hay sinónimos'
         lines = [
-            "-- Sinónimos Universales — verabuy_trainer.py",
+            "-- Sinónimos Universales — src/sinonimos.py export_sql",
             f"-- {datetime.now():%Y-%m-%d %H:%M} — {len(self.syns)} sinónimos", "",
             "INSERT INTO `sinonimos_producto`",
             "    (`id_proveedor`,`nombre_factura`,`especie`,`talla`,`stems_per_bunch`,",
